@@ -1,0 +1,22 @@
+== Main components ==
+kworship is divided into a number of key components.
+
+=== kworship ===
+Main kworship application.
+
+=== kworshipserver ===
+The part that runs on the display and is controlled by the application.
+
+=== kworshipdisplay ===
+Display code.
+This is essecially anything common between kworship and kworshipserver.
+
+=== unipresent ===
+Abstraction of control for different presentation software.
+Used by kworship and kworshipserver.
+Backends include:
+* MS Powerpoint
+* OO.org Impress
+* kpresenter
+* kworship's display
+

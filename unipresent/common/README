@@ -1,0 +1,8 @@
+Code common between all unipresent backends.
+
+Abstractions:
+  previews
+  controlling
+    changing slide
+    clicking through animations etc
+

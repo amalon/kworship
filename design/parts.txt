@@ -1,0 +1,13 @@
+presentation abstraction
+  parts for each format
+kworship display
+  kworship layer
+  overlay
+  background
+  text display
+kworship
+  song
+  litergy
+  scripture
+  playlist
+kworship server

@@ -1,0 +1,63 @@
+command scripts
+  open a file using a particular command
+  e.g. smplayer -fullscreen -close-at-end $*
+
+playlist
+  open a file with a command / script / kde-exec
+  import[/export] from amarok (playlists etc)
+
+preview
+  scaled and perfect
+
+overlay
+  notices
+    car number plate xxxx xxx please move car or whatever
+    potentially scrolling
+
+presentation software integration
+  generic so can be used by other such software
+  IR pens
+  as zionworx
+  software
+    msppt
+      wine integration?
+    ooimpress
+    kpresenter
+      as a kpart?
+
+lyric display
+  formats
+    simple lyric formats
+    html + css (litergy)
+    bible text
+  text
+    can load usual range of fonts
+    font
+      borders
+      shadows
+    vertical, horizontal sub/super alignment (inc vertical justify)
+  modes
+    verses (fit page to screen)
+    longer (split pages by screen)
+    scroll (scroll long pages)
+    children (much larger, more frequent changing)
+    line-by-line
+    karioke (moving thingy)
+  timing
+    manual (potentially separate triggers to usual)
+    synced to music
+  music
+    use some kde plugin or whatever to play lots of music types
+    including music from a video file
+  backgrounds
+    can also be timed
+    changes font colour (not so necessary with outlined fonts)
+    colour adjustment
+    colours, gradients etc
+    images
+    videos
+      live video feed
+      some plugin
+      looping
+      mute
+
