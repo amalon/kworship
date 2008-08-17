@@ -51,6 +51,9 @@ class KwImageLayer : public KwAbstractLayer
 
     /// Whether to stretch the image to fit the screen.
     bool m_stretch;
+
+    /// Whether to keep the aspect ratio of the image.
+    bool m_keepAspect;
 };
 
 #endif // _KwImageLayer_h_

@@ -15,6 +15,7 @@ set(kworshipdisplay_SRCS
     KwRemoteDisplay.cpp
     KwAbstractLayer.cpp
     KwImageLayer.cpp
+    KwImageWidget.cpp
     KwTextLayer.cpp
     ${kworshipdisplay_MOC_SRCS}
 )

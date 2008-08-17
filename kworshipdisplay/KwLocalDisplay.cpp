@@ -33,6 +33,7 @@ KwLocalDisplay::~KwLocalDisplay()
 void KwLocalDisplay::paintEvent(QPaintEvent *e)
 {
   QPainter painter(this);
+  painter.setClipRegion(e->region());
   painter.setBrush(QBrush(Qt::black));
   painter.setPen(QPen(Qt::black));
   painter.drawRect(e->rect());
