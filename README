@@ -9,7 +9,7 @@ The part that runs on the display and is controlled by the application.
 
 === kworshipdisplay ===
 Display code.
-This is essecially anything common between kworship and kworshipserver.
+This is essencially anything common between kworship and kworshipserver.
 
 === unipresent ===
 Abstraction of control for different presentation software.

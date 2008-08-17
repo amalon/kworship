@@ -26,6 +26,8 @@ presentation software integration
       as a kpart?
 
 lyric display
+  editing
+    special kpresenter style editor interface for these themes
   formats
     simple lyric formats
     html + css (litergy)

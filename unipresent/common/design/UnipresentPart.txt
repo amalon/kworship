@@ -1,0 +1,17 @@
+Interfaces
+
+Loading
+  load from a presentation descriptor object
+    in most cases a filename
+    in kworship's case a description of the presentation
+Getting
+  get slide information
+    thumbnail
+    notes
+  get current slide
+Controlling
+  start presentation at given position
+  go to slide
+  click forward / backward
+Callbacks
+  change slide

@@ -1,0 +1,168 @@
+<ui version="4.0" >
+ <class>kworshipview_base</class>
+ <widget class="QWidget" name="kworshipview_base" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>589</width>
+    <height>442</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>kworship_base</string>
+  </property>
+  <property name="autoFillBackground" >
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2" >
+   <item>
+    <widget class="QDockWidget" name="dockWidget" >
+     <property name="floating" >
+      <bool>false</bool>
+     </property>
+     <property name="windowTitle" >
+      <string>Presentation</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>23</y>
+        <width>573</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout" />
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDockWidget" name="dockWidget_2" >
+     <property name="accessibleName" >
+      <string/>
+     </property>
+     <property name="floating" >
+      <bool>false</bool>
+     </property>
+     <property name="features" >
+      <set>QDockWidget::AllDockWidgetFeatures</set>
+     </property>
+     <property name="allowedAreas" >
+      <set>Qt::AllDockWidgetAreas</set>
+     </property>
+     <property name="windowTitle" >
+      <string>Live Preview</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents_2" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>23</y>
+        <width>573</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_4" >
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_5" />
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDockWidget" name="dockWidget_3" >
+     <property name="floating" >
+      <bool>false</bool>
+     </property>
+     <property name="windowTitle" >
+      <string>Song Database</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents_3" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>23</y>
+        <width>573</width>
+        <height>19</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDockWidget" name="dockWidget_4" >
+     <property name="windowTitle" >
+      <string>Lyrics</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents_4" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>23</y>
+        <width>573</width>
+        <height>19</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDockWidget" name="dockWidget_5" >
+     <property name="windowTitle" >
+      <string>Themes</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents_5" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>23</y>
+        <width>573</width>
+        <height>19</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDockWidget" name="dockWidget_6" >
+     <property name="layoutDirection" >
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="features" >
+      <set>QDockWidget::DockWidgetClosable</set>
+     </property>
+     <property name="windowTitle" >
+      <string>Playlist</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents_6" >
+      <property name="geometry" >
+       <rect>
+        <x>4</x>
+        <y>23</y>
+        <width>573</width>
+        <height>157</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3" >
+       <item>
+        <widget class="QTreeWidget" name="treeWidget" >
+         <column>
+          <property name="text" >
+           <string>1</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <resources/>
+ <connections/>
+</ui>
