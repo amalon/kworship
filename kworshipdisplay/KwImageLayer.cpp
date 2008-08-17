@@ -67,6 +67,8 @@ void* KwImageLayer::addWidgets(QWidget* master) const
 
 void KwImageLayer::removeWidgets(QWidget* master, void* rawData) const
 {
+  Q_UNUSED(master)
+
   KwImageLayerData* data = reinterpret_cast<KwImageLayerData*>(rawData);
 
   delete data->imageWidget;

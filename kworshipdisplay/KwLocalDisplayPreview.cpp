@@ -72,10 +72,14 @@ void KwLocalDisplayPreview::clearLayersEvent()
 
 void KwLocalDisplayPreview::setLayerEvent(unsigned int index, const KwAbstractLayer* layer, bool insert)
 {
+  Q_UNUSED(index)
+  Q_UNUSED(layer)
+  Q_UNUSED(insert)
 }
 
 void KwLocalDisplayPreview::removeLayerEvent(unsigned int index)
 {
+  Q_UNUSED(index)
 }
 
 /*

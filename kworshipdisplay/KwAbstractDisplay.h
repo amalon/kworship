@@ -95,6 +95,7 @@ class KwAbstractDisplay
     /// @copydoc setDisplayResolution(QSize)
     virtual void setDisplayResolutionEvent(QSize size)
     {
+      Q_UNUSED(size)
     }
 
     /// @copydoc clearLayers()
@@ -105,11 +106,15 @@ class KwAbstractDisplay
     /// @copydoc setLayer(unsigned int, const KwAbstractLayer*, bool)
     virtual void setLayerEvent(unsigned int index, const KwAbstractLayer* layer, bool insert)
     {
+      Q_UNUSED(index)
+      Q_UNUSED(layer)
+      Q_UNUSED(insert)
     }
 
     /// @copydoc removeLayer(unsigned int)
     virtual void removeLayerEvent(unsigned int index)
     {
+      Q_UNUSED(index)
     }
 
     /*
@@ -119,11 +124,13 @@ class KwAbstractDisplay
     /// Called when a child is attached.
     virtual void childAttachedEvent(KwAbstractDisplay* display)
     {
+      Q_UNUSED(display)
     }
 
     /// Called when a child is detatched.
     virtual void childDetachedEvent(KwAbstractDisplay* display)
     {
+      Q_UNUSED(display)
     }
 
     /// Called when we get connected to a parent.

@@ -84,6 +84,8 @@ void* KwTextLayer::addWidgets(QWidget* master) const
 
 void KwTextLayer::removeWidgets(QWidget* master, void* rawData) const
 {
+  Q_UNUSED(master)
+
   KwTextLayerData* data = reinterpret_cast<KwTextLayerData*>(rawData);
 
   delete data;
