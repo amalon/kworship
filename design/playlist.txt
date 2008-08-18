@@ -1,0 +1,64 @@
+Playlist tree design
+
+Tree interface
+  drag or otherwise move bits of the tree into new dockers
+  more automatic mode which has docker for lyrics etc
+
+class KwPlaylistItem;
+class K
+class KwPlaylistTreeItem;
+
+Song
+  "$SONGNAME"
+    "Versions"
+      "$VERSIONNAME"
+        ...
+    ...
+    "Video"
+      "$VIDEONAME"
+        "length: xxx"
+        "audio: on"
+        "media controls"
+    "Audio"
+      "$AUDIONAME"
+        "media controls"
+        "length: xxx"
+    "Lyrics"
+      "(settings)"
+        "(display)"
+          "theme: $THEME/custom"
+            "background: $BACKGROUND"
+            "Font colour: XXX"
+            "Font: $FONT"
+            "Font size: $SIZE"
+            "Font outline: XXX"
+            "Font shadow: XXX"
+        "Timing: {automatic,manual}"
+      "$LYRICS"
+        double click to display
+        single click to select next
+        right click
+          "
+
+SongItem
+  SongVersions
+  *SongVersion
+
+SongVersions
+  SongVersion[]
+
+SongVersion
+  SongVideos
+  SongAudios
+  SongLyrics
+
+SongLyrics
+  SongLyricSettings
+  *SongVerses
+
+SongVerses
+  SongVerse[]
+
+SongVerse
+  *SongVerseSettings
+

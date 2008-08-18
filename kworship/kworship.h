@@ -21,15 +21,16 @@
 #ifndef PROTOTYPE2_H
 #define PROTOTYPE2_H
 
+#include "KwLocalDisplayController.h"
 
 #include <kxmlguiwindow.h>
-
-#include "KwLocalDisplayController.h"
-#include "KwLocalDisplayPreview.h"
 
 #include "ui_prefs_base.h"
 
 class kworshipView;
+class KwLocalDisplayPreview;
+class KwPlaylistList;
+
 class KPrinter;
 class KToggleAction;
 class KUrl;
@@ -70,6 +71,8 @@ private:
     KwLocalDisplayController m_displayController;
     KwLocalDisplayPreview* m_mainDisplay;
     KwLocalDisplayPreview* m_previewDisplay;
+
+    KwPlaylistList* m_primaryPlaylist;
 
     KPrinter   *m_printer;
     KToggleAction *m_toolbarAction;

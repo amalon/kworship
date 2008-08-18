@@ -25,6 +25,11 @@
 
 #include "KwImageLayer.h"
 #include "KwTextLayer.h"
+#include "KwLocalDisplayPreview.h"
+#include "KwPlaylistList.h"
+#include "KwPlaylistNote.h"
+#include "KwPlaylistModel.h"
+
 
 #include <QtGui/QDropEvent>
 #include <QtGui/QPainter>
@@ -66,11 +71,42 @@ kworship::kworship()
   // toolbar position, icon size, etc.
   setupGUI();
 
+  // Setup the dockers
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget);
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_2);
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_3);
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_4);
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_5);
+
+  // Setup some stuff in the tree
+#if 0
+#define TREE_ITEM(name, string, parent) QTreeWidgetItem* name = new QTreeWidgetItem(parent); name->setText(0, tr(string));
+
+  TREE_ITEM(song1, "Our God is a great big God", m_view->treeWidget);
+  TREE_ITEM(song1_style, "(style)", song1);
+  TREE_ITEM(song1_style_1, "Mode", song1_style);
+  TREE_ITEM(song1_v1, "Our God is a great big God,\nOur God is a great big God,\nOur God is a great big God,\nAnd He holds us in his hands.", song1);
+  TREE_ITEM(song1_v2, "He's higher than a skyscraper\nAnd he's deeper than a submarine.", song1);
+  TREE_ITEM(song1_v3, "He's wider than the universe\nAnd beyond my wildest dreams.", song1);
+
+#undef TREE_ITEM
+#endif
+
+  // Playlist
+  m_primaryPlaylist = new KwPlaylistList();
+  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #1"));
+  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #2"));
+  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #3"));
+
+  KwPlaylistList* list1 = new KwPlaylistList();
+  m_primaryPlaylist->addItem(list1);
+  list1->addItem(new KwPlaylistNote("This is a note #1"));
+  list1->addItem(new KwPlaylistNote("This is a note #2"));
+  list1->addItem(new KwPlaylistNote("This is a note #3"));
+
+  KwPlaylistModel* model = new KwPlaylistModel;
+  model->setRootNode(m_primaryPlaylist->getNode());
+  m_view->treeView->setModel(model);
 
   if (true)
   {
