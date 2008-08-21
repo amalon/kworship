@@ -14,8 +14,8 @@
  */
 
 /// Primary constructor.
-KwPlaylistListNode::KwPlaylistListNode(KwPlaylistList* item)
-: KwPlaylistNode()
+KwPlaylistListNode::KwPlaylistListNode(KwPlaylistNode* parent, KwPlaylistList* item)
+: KwPlaylistNode(parent)
 , m_item(item)
 {
 }
@@ -46,10 +46,10 @@ int KwPlaylistListNode::getChildCount() const
   return m_item->getItemCount();
 }
 
-KwPlaylistNode* KwPlaylistListNode::getChild(int index)
+KwPlaylistNode* KwPlaylistListNode::_getChild(int index)
 {
   KwPlaylistItem* item = m_item->getItem(index);
   assert(item != 0);
-  return item->getNode();
+  return item->getNode(this);
 }
 

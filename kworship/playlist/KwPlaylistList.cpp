@@ -7,6 +7,8 @@
 #include "KwPlaylistList.h"
 #include "KwPlaylistListNode.h"
 
+#include <cassert>
+
 /*
  * Constructors + destructor.
  */
@@ -42,12 +44,14 @@ int KwPlaylistList::getItemCount() const
 /// Get a specific child.
 KwPlaylistItem* KwPlaylistList::getItem(int index)
 {
+  assert(index < getItemCount());
   Playlist::iterator it = m_playlist.begin();
   while (index && it != m_playlist.end())
   {
     ++it;
     --index;
   }
+  assert(it != m_playlist.end());
   if (it == m_playlist.end())
   {
     return 0;
@@ -62,8 +66,8 @@ KwPlaylistItem* KwPlaylistList::getItem(int index)
  * Main interface.
  */
 
-KwPlaylistNode* KwPlaylistList::getNode()
+KwPlaylistNode* KwPlaylistList::getNode(KwPlaylistNode* parent)
 {
-  return new KwPlaylistListNode(this);
+  return new KwPlaylistListNode(parent, this);
 }
 

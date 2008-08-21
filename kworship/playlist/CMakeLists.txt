@@ -2,7 +2,10 @@ project(kworshipplaylist)
 
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
-include_directories( ${KDE4_INCLUDES} ${QT_INCLUDES} )
+include_directories(${KDE4_INCLUDES}
+                    ${QT_INCLUDES}
+                    ../../include
+)
 
 set(kworshipplaylist_MOC_SRCS
 )
@@ -11,6 +14,9 @@ set(kworshipplaylist_SRCS
     KwPlaylistModel.cpp
     KwPlaylistImage.cpp
     KwPlaylistItem.cpp
+    KwPlaylistPaged.cpp
+    KwPlaylistPagedNode.cpp
+    KwPlaylistPagedNodePage.cpp
     KwPlaylistList.cpp
     KwPlaylistListNode.cpp
     KwPlaylistNote.cpp
@@ -19,6 +25,7 @@ set(kworshipplaylist_SRCS
     KwPlaylistReading.cpp
     KwPlaylistSong.cpp
     KwPlaylistText.cpp
+    KwPlaylistTextNode.cpp
     ${kworshipplaylist_MOC_SRCS}
 )
 

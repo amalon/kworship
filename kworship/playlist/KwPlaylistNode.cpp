@@ -6,12 +6,15 @@
 
 #include "KwPlaylistNode.h"
 
+#include <cassert>
+
 /*
  * Constructors + destructor.
  */
 
-/// Default constructor.
-KwPlaylistNode::KwPlaylistNode()
+/// Primary constructor.
+KwPlaylistNode::KwPlaylistNode(KwPlaylistNode* parent)
+: m_parent(parent)
 {
 }
 
@@ -46,6 +49,40 @@ int KwPlaylistNode::getChildCount() const
 
 /// Get a child node by index.
 KwPlaylistNode* KwPlaylistNode::getChild(int index)
+{
+  assert(index < getChildCount());
+  if (index >= m_children.size())
+  {
+    int prevSize = m_children.size();
+    int newSize = getChildCount();
+    m_children.resize(newSize);
+    for (int i = prevSize; i < newSize; ++i)
+    {
+      m_children[i] = 0;
+    }
+  }
+  if (0 == m_children[index])
+  {
+    m_children[index] = _getChild(index);
+  }
+  return m_children[index];
+}
+
+/// Get the index of a certain child.
+int KwPlaylistNode::getChildIndex(KwPlaylistNode* node) const
+{
+  for (int i = 0; i < m_children.size(); ++i)
+  {
+    if (m_children[i] == node)
+    {
+      return i;
+    }
+  }
+  return -1;
+}
+
+/// Get a child node by index.
+KwPlaylistNode* KwPlaylistNode::_getChild(int index)
 {
   Q_UNUSED(index)
   return 0;

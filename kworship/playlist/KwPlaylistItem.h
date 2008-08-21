@@ -32,7 +32,7 @@ class KwPlaylistItem
      */
 
     /// Get a tree node for this item.
-    virtual KwPlaylistNode* getNode() = 0;
+    virtual KwPlaylistNode* getNode(KwPlaylistNode* parent) = 0;
 };
 
 #endif // _KwPlaylistItem_h_

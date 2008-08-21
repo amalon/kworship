@@ -12,8 +12,8 @@
  */
 
 /// Primary constructor.
-KwPlaylistNoteNode::KwPlaylistNoteNode(KwPlaylistNote* item)
-: KwPlaylistNode()
+KwPlaylistNoteNode::KwPlaylistNoteNode(KwPlaylistNode* parent, KwPlaylistNote* item)
+: KwPlaylistNode(parent)
 , m_item(item)
 {
 }

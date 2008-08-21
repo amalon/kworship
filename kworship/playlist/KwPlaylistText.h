@@ -7,10 +7,10 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlaylistItem.h"
+#include "KwPlaylistPaged.h"
 
 /// A plain text playlist item.
-class KwPlaylistText : public KwPlaylistItem
+class KwPlaylistText : public KwPlaylistPaged
 {
   public:
     
@@ -19,10 +19,28 @@ class KwPlaylistText : public KwPlaylistItem
      */
 
     /// Default constructor.
-    KwPlaylistText();
+    KwPlaylistText(const QString& label, const QStringList& blocks);
 
     /// Destructor.
     virtual ~KwPlaylistText();
+
+    /*
+     * Main interface
+     */
+
+    /// Get the label.
+    QString getLabel() const;
+
+    virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
+
+  private:
+    
+    /*
+     * Variables
+     */
+
+    /// Label.
+    QString m_label;
 };
 
 #endif // _KwPlaylistText_h_

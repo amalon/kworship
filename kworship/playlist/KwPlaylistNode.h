@@ -8,6 +8,7 @@
  */
 
 #include <QVariant>
+#include <QVector>
 
 /// A node on a playlist tree.
 /**
@@ -21,8 +22,8 @@ class KwPlaylistNode
      * Constructors + destructor.
      */
 
-    /// Default constructor.
-    KwPlaylistNode();
+    /// Primary constructor.
+    KwPlaylistNode(KwPlaylistNode* parent);
 
     /// Destructor.
     virtual ~KwPlaylistNode();
@@ -34,14 +35,22 @@ class KwPlaylistNode
     /// Get the parent.
     KwPlaylistNode* getParent();
 
+    /// Get a child node by index.
+    KwPlaylistNode* getChild(int index);
+
+    /// Get the index of a certain child.
+    int getChildIndex(KwPlaylistNode* node) const;
+
     /// Get data associated with the node.
     virtual QVariant getData(int role, int column);
 
     /// Get the number of children.
     virtual int getChildCount() const;
 
+  protected:
+
     /// Get a child node by index.
-    virtual KwPlaylistNode* getChild(int index);
+    virtual KwPlaylistNode* _getChild(int index);
 
   private:
 
@@ -51,6 +60,9 @@ class KwPlaylistNode
 
     /// Parent node.
     KwPlaylistNode* m_parent;
+
+    /// Child nodes.
+    QVector<KwPlaylistNode*> m_children;
 };
 
 #endif // _KwPlaylistNode_h_

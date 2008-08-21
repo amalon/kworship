@@ -5,6 +5,7 @@ include (KDE4Defaults)
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
                     playlist
+                    ../include
                     ../kworshipdisplay
 )
 add_subdirectory (playlist)

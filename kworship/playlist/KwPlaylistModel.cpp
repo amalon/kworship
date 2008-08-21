@@ -6,6 +6,8 @@
 
 #include "KwPlaylistModel.h"
 
+#include <cassert>
+
 /*
  * Constructors + destructor.
  */
@@ -37,57 +39,54 @@ void KwPlaylistModel::setRootNode(KwPlaylistNode* root)
 
 QModelIndex KwPlaylistModel::index(int row, int column, const QModelIndex& parent) const
 {
-  if (!m_root)
+  if (0 == m_root)
   {
     return QModelIndex();
   }
   KwPlaylistNode* parentNode = itemFromIndex(parent);
+  assert(0 != parentNode);
   return createIndex(row, column, parentNode->getChild(row));
 }
 
-QModelIndex KwPlaylistModel::parent(const QModelIndex &child) const
+QModelIndex KwPlaylistModel::parent(const QModelIndex& child) const
 {
-/*  KwPlaylistNode *node = itemFromIndex(child);
-  if (!node)
+  KwPlaylistNode* node = itemFromIndex(child);
+  assert(0 != node);
+  KwPlaylistNode* parentNode = node->getParent();
+  if (0 == parentNode)
   {
     return QModelIndex();
   }
-  KwPlaylistNode *parentNode = node->parent;
-  if (!parentNode)
+  KwPlaylistNode* grandParentNode = parentNode->getParent();
+  if (0 == grandParentNode)
   {
     return QModelIndex();
   }
-  KwPlaylistNode *grandparentNode = parentNode->parent;
-  if (!grandparentNode)
-  {
-    return QModelIndex();
-  }
-  int row = grandparentNode->children.indexOf(parentNode);
+  int row = grandParentNode->getChildIndex(parentNode);
+  assert(row != -1);
   return createIndex(row, child.column(), parentNode);
-  */
-  return QModelIndex();
 }
 
-int KwPlaylistModel::rowCount(const QModelIndex &parent) const
+int KwPlaylistModel::rowCount(const QModelIndex& parent) const
 {
-  KwPlaylistNode *parentNode = itemFromIndex(parent);
-  if (!parentNode)
+  KwPlaylistNode* parentNode = itemFromIndex(parent);
+  if (0 == parentNode)
   {
     return 0;
   }
   return parentNode->getChildCount();
 }
 
-int KwPlaylistModel::columnCount(const QModelIndex &parent) const
+int KwPlaylistModel::columnCount(const QModelIndex& parent) const
 {
   Q_UNUSED(parent);
   return 2;
 }
 
-QVariant KwPlaylistModel::data(const QModelIndex &index, int role) const
+QVariant KwPlaylistModel::data(const QModelIndex& index, int role) const
 {
-  KwPlaylistNode *item = itemFromIndex(index);
-  if (!item)
+  KwPlaylistNode* item = itemFromIndex(index);
+  if (0 == item)
   {
     return QVariant();
   }
@@ -97,7 +96,6 @@ QVariant KwPlaylistModel::data(const QModelIndex &index, int role) const
 
 QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-  /*
   if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
   {
     if (section == 0)
@@ -109,7 +107,6 @@ QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, i
       return tr("Value");
     }
   }
-  */
   return QVariant();
 }
 
@@ -117,7 +114,7 @@ QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, i
  * Private helpers
  */
 
-KwPlaylistNode* KwPlaylistModel::itemFromIndex(const QModelIndex &index) const
+KwPlaylistNode* KwPlaylistModel::itemFromIndex(const QModelIndex& index) const
 {
   if (index.isValid()) {
     return reinterpret_cast<KwPlaylistNode*>(index.internalPointer());

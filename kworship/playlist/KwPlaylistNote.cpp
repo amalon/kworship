@@ -33,8 +33,8 @@ QString KwPlaylistNote::getContent() const
   return m_content;
 }
 
-KwPlaylistNode* KwPlaylistNote::getNode()
+KwPlaylistNode* KwPlaylistNote::getNode(KwPlaylistNode* parent)
 {
-  return new KwPlaylistNoteNode(this);
+  return new KwPlaylistNoteNode(parent, this);
 }
 

@@ -46,7 +46,7 @@ class KwPlaylistList : public KwPlaylistItem
      * Main interface.
      */
 
-    virtual KwPlaylistNode* getNode();
+    virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:
 

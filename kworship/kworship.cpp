@@ -28,6 +28,7 @@
 #include "KwLocalDisplayPreview.h"
 #include "KwPlaylistList.h"
 #include "KwPlaylistNote.h"
+#include "KwPlaylistText.h"
 #include "KwPlaylistModel.h"
 
 
@@ -94,19 +95,27 @@ kworship::kworship()
 
   // Playlist
   m_primaryPlaylist = new KwPlaylistList();
-  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #1"));
-  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #2"));
-  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #3"));
+  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #1a#"));
+  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #2a#"));
+  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #3a#"));
+
+  KwPlaylistItem* song;
+  m_primaryPlaylist->addItem(song = new KwPlaylistText("Our God is a great big God", QStringList()
+    << "Our God is a great big God,\nOur God is a great big God,\nOur God is a great big God,\nAnd He holds us in his hands."
+    << "He's higher than a skyscraper\nAnd he's deeper than a submarine.\nHe's wider than the universe\nAnd beyond my wildest dreams."
+    << "And He's known me and He's loved me\nSince before the world began.\nHow wonderful\nthat I should be a part of God's amazing plan"
+  ));
 
   KwPlaylistList* list1 = new KwPlaylistList();
   m_primaryPlaylist->addItem(list1);
-  list1->addItem(new KwPlaylistNote("This is a note #1"));
-  list1->addItem(new KwPlaylistNote("This is a note #2"));
-  list1->addItem(new KwPlaylistNote("This is a note #3"));
+  list1->addItem(new KwPlaylistNote("This is a note #1b"));
+  list1->addItem(new KwPlaylistNote("This is a note #2b"));
+  list1->addItem(new KwPlaylistNote("This is a note #3b"));
 
   KwPlaylistModel* model = new KwPlaylistModel;
-  model->setRootNode(m_primaryPlaylist->getNode());
+  model->setRootNode(m_primaryPlaylist->getNode(0));
   m_view->treeView->setModel(model);
+  m_view->treeView->setExpandsOnDoubleClick(false);
 
   if (true)
   {

@@ -21,7 +21,7 @@ class KwPlaylistNoteNode : public KwPlaylistNode
      */
 
     /// Primary constructor.
-    KwPlaylistNoteNode(KwPlaylistNote* item);
+    KwPlaylistNoteNode(KwPlaylistNode* parent, KwPlaylistNote* item);
 
     /// Destructor.
     virtual ~KwPlaylistNoteNode();

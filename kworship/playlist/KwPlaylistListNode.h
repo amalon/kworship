@@ -21,7 +21,7 @@ class KwPlaylistListNode : public KwPlaylistNode
      */
 
     /// Primary constructor.
-    KwPlaylistListNode(KwPlaylistList* item);
+    KwPlaylistListNode(KwPlaylistNode* parent, KwPlaylistList* item);
 
     /// Destructor.
     virtual ~KwPlaylistListNode();
@@ -34,7 +34,7 @@ class KwPlaylistListNode : public KwPlaylistNode
 
     virtual int getChildCount() const;
 
-    virtual KwPlaylistNode* getChild(int index);
+    virtual KwPlaylistNode* _getChild(int index);
   private:
 
     /*
