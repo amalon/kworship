@@ -57,7 +57,7 @@ class KwLayerData
      */
 
     /// Get the number of layers.
-    unsigned int size()
+    unsigned int size() const
     {
       return m_layers.size();
     }

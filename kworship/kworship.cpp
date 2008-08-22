@@ -22,9 +22,8 @@
 #include "kworship.h"
 #include "kworshipview.h"
 #include "settings.h"
+#include "KwDisplayManager.h"
 
-#include "KwImageLayer.h"
-#include "KwTextLayer.h"
 #include "KwLocalDisplayPreview.h"
 #include "KwPlaylistList.h"
 #include "KwPlaylistNote.h"
@@ -45,9 +44,10 @@
 #include <KDE/KLocale>
 
 kworship::kworship()
-    : KXmlGuiWindow(),
-      m_view(new kworshipView(this)),
-      m_printer(0)
+: KXmlGuiWindow()
+, m_view(new kworshipView(this))
+, m_displayManager(0)
+, m_printer(0)
 {
   
   m_mainDisplay = 0;
@@ -117,26 +117,11 @@ kworship::kworship()
   m_view->treeView->setModel(model);
   m_view->treeView->setExpandsOnDoubleClick(false);
 
-  if (true)
-  {
-    // Initialise the display to a background image
-    unsigned int count = 0;
-    if (0)
-    {
-      KwImageLayer* background = new KwImageLayer(QPixmap("/home/james/media/images/projector/pmdata/Backgrounds/A15.JPG"));
-      m_displayController.setLayer(count++, background, true);
-    }
-
-    // Initialise the display to a background image
-    {
-      KwImageLayer* background = new KwImageLayer(QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
-      m_displayController.setLayer(count++, background, true);
-    }
-
-    // And some text
-    KwTextLayer* lyrics = new KwTextLayer("Wipidy-doo-dah, Yipidy-ay!\nMy oh my what a wonderful day!");
-    m_displayController.setLayer(count++, lyrics, true);
-  }
+  m_displayManager = new KwDisplayManager(&m_displayController);
+  // Background
+  m_displayManager->background.setImage(QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
+  // And some text
+  m_displayManager->text.setText("Wipidy-doo-dah, Yipidy-ay!\nMy oh my what a wonderful day!");
 
   m_previewDisplay = new KwLocalDisplayPreview;
   m_view->verticalLayout_5->addWidget(m_previewDisplay);

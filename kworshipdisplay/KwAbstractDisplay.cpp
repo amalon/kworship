@@ -189,6 +189,12 @@ KwAbstractDisplay* KwAbstractDisplay::getHighestParent()
  * Access to layer data.
  */
 
+/// Get the number of cached layers.
+unsigned int KwAbstractDisplay::getCachedLayerCount() const
+{
+  return m_layers.size();
+}
+
 /// Get cached layer.
 const KwAbstractLayer* KwAbstractDisplay::getCachedLayer(unsigned int index) const
 {

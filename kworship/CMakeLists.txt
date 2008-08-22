@@ -14,6 +14,11 @@ set(kworship_SRCS
     kworship.cpp
     main.cpp
     kworshipview.cpp
+    KwDisplayManager.cpp
+    KwAbstractDisplayManager.cpp
+    KwBackgroundManager.cpp
+    KwTextManager.cpp
+    KwOverlayManager.cpp
 )
 
 kde4_add_ui_files(kworship_SRCS kworshipview_base.ui prefs_base.ui)

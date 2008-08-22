@@ -29,6 +29,7 @@
 
 class kworshipView;
 class KwLocalDisplayPreview;
+class KwDisplayManager;
 class KwPlaylistList;
 
 class KPrinter;
@@ -67,7 +68,8 @@ private:
 private:
     Ui::prefs_base ui_prefs_base ;
     kworshipView *m_view;
-   
+
+    KwDisplayManager* m_displayManager;
     KwLocalDisplayController m_displayController;
     KwLocalDisplayPreview* m_mainDisplay;
     KwLocalDisplayPreview* m_previewDisplay;

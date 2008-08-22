@@ -147,6 +147,9 @@ class KwAbstractDisplay
      * Access to layer data.
      */
 
+    /// Get the number of cached layers.
+    unsigned int getCachedLayerCount() const;
+
     /// Get cached layer.
     const KwAbstractLayer* getCachedLayer(unsigned int index) const;
 
