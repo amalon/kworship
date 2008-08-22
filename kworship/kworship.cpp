@@ -103,7 +103,7 @@ kworship::kworship()
   m_primaryPlaylist->addItem(song = new KwPlaylistText("Our God is a great big God", QStringList()
     << "Our God is a great big God,\nOur God is a great big God,\nOur God is a great big God,\nAnd He holds us in his hands."
     << "He's higher than a skyscraper\nAnd he's deeper than a submarine.\nHe's wider than the universe\nAnd beyond my wildest dreams."
-    << "And He's known me and He's loved me\nSince before the world began.\nHow wonderful\nthat I should be a part of God's amazing plan"
+    << "And He's known me and He's loved me\nSince before the world began.\nHow wonderful\nto be a part\nof God's amazing plan"
   ));
 
   KwPlaylistList* list1 = new KwPlaylistList();
@@ -112,9 +112,9 @@ kworship::kworship()
   list1->addItem(new KwPlaylistNote("This is a note #2b"));
   list1->addItem(new KwPlaylistNote("This is a note #3b"));
 
-  KwPlaylistModel* model = new KwPlaylistModel;
-  model->setRootNode(m_primaryPlaylist->getNode(0));
-  m_view->treeView->setModel(model);
+  m_playlistModel = new KwPlaylistModel;
+  m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
+  m_view->treeView->setModel(m_playlistModel);
   m_view->treeView->setExpandsOnDoubleClick(false);
 
   m_displayManager = new KwDisplayManager(&m_displayController);
@@ -126,6 +126,9 @@ kworship::kworship()
   m_previewDisplay = new KwLocalDisplayPreview;
   m_view->verticalLayout_5->addWidget(m_previewDisplay);
   m_displayController.attachChild(m_previewDisplay);
+
+
+  connect(m_view->treeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
 }
 
 kworship::~kworship()
@@ -166,21 +169,27 @@ void kworship::fileNew()
 
 void kworship::optionsPreferences()
 {
-    // The preference dialog is derived from prefs_base.ui
-    //
-    // compare the names of the widgets in the .ui file
-    // to the names of the variables in the .kcfg file
-    //avoid to have 2 dialogs shown
-    if ( KConfigDialog::showDialog( "settings" ) )  {
-        return;
-    }
-    KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
-    QWidget *generalSettingsDlg = new QWidget;
-    ui_prefs_base.setupUi(generalSettingsDlg);
-    dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
-    connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
-    dialog->setAttribute( Qt::WA_DeleteOnClose );
-    dialog->show();
+  // The preference dialog is derived from prefs_base.ui
+  //
+  // compare the names of the widgets in the .ui file
+  // to the names of the variables in the .kcfg file
+  //avoid to have 2 dialogs shown
+  if ( KConfigDialog::showDialog( "settings" ) )  {
+    return;
+  }
+  KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
+  QWidget *generalSettingsDlg = new QWidget;
+  ui_prefs_base.setupUi(generalSettingsDlg);
+  dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
+  connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
+  dialog->setAttribute( Qt::WA_DeleteOnClose );
+  dialog->show();
+}
+
+void kworship::playlist_doubleClicked(QModelIndex index)
+{
+  KwPlaylistNode* node = m_playlistModel->itemFromIndex(index);
+  node->activate(m_displayManager);
 }
 
 #include "kworship.moc"

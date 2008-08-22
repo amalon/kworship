@@ -27,10 +27,13 @@
 
 #include "ui_prefs_base.h"
 
+#include <QModelIndex>
+
 class kworshipView;
 class KwLocalDisplayPreview;
 class KwDisplayManager;
 class KwPlaylistList;
+class KwPlaylistModel;
 
 class KPrinter;
 class KToggleAction;
@@ -61,6 +64,7 @@ public:
 private slots:
     void fileNew();
     void optionsPreferences();
+    void playlist_doubleClicked(QModelIndex);
 
 private:
     void setupActions();
@@ -75,6 +79,7 @@ private:
     KwLocalDisplayPreview* m_previewDisplay;
 
     KwPlaylistList* m_primaryPlaylist;
+    KwPlaylistModel* m_playlistModel;
 
     KPrinter   *m_printer;
     KToggleAction *m_toolbarAction;

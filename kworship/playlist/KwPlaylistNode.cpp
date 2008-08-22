@@ -81,6 +81,11 @@ int KwPlaylistNode::getChildIndex(KwPlaylistNode* node) const
   return -1;
 }
 
+/// Activate the node using a display manager.
+void KwPlaylistNode::activate(KwDisplayManager*)
+{
+}
+
 /// Get a child node by index.
 KwPlaylistNode* KwPlaylistNode::_getChild(int index)
 {

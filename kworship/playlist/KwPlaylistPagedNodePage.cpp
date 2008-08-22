@@ -7,6 +7,8 @@
 #include "KwPlaylistPagedNodePage.h"
 #include "KwPlaylistPaged.h"
 
+#include "KwDisplayManager.h"
+
 /*
  * Constructors + destructor.
  */
@@ -38,5 +40,10 @@ QVariant KwPlaylistPagedNodePage::getData(int role, int column)
     }
   }
   return QVariant();
+}
+
+void KwPlaylistPagedNodePage::activate(KwDisplayManager* manager)
+{
+  manager->text.setText(m_item->getPageText(m_page));
 }
 

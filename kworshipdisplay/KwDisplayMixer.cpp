@@ -135,6 +135,7 @@ void KwDisplayMixer::ProxyDisplay::clearLayersEvent()
   while (numLayers > 0)
   {
     m_mixer->removeLayer(m_firstLayer);
+    --numLayers;
   }
   adjustLayerCount(-numLayers);
 }

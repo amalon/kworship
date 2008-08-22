@@ -32,6 +32,7 @@ class KwPlaylistModel : public QAbstractItemModel
 
     /// Set the root node.
     void setRootNode(KwPlaylistNode* root);
+    KwPlaylistNode* itemFromIndex(const QModelIndex &index) const;
 
     QModelIndex index(int row, int column, const QModelIndex& parent) const;
     QModelIndex parent(const QModelIndex &child) const;
@@ -49,12 +50,6 @@ class KwPlaylistModel : public QAbstractItemModel
 
     /// Root item.
     KwPlaylistNode* m_root;
-
-    /*
-     * Private helpers
-     */
-
-    KwPlaylistNode* itemFromIndex(const QModelIndex &index) const;
 };
 
 #endif // _KwPlaylistModel_h_

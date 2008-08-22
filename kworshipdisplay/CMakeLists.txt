@@ -21,6 +21,11 @@ set(kworshipdisplay_SRCS
     KwImageLayer.cpp
     KwImageWidget.cpp
     KwTextLayer.cpp
+    KwDisplayManager.cpp
+    KwAbstractDisplayManager.cpp
+    KwBackgroundManager.cpp
+    KwTextManager.cpp
+    KwOverlayManager.cpp
     ${kworshipdisplay_MOC_SRCS}
 )
 

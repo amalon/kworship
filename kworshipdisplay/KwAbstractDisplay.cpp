@@ -51,6 +51,7 @@ void KwAbstractDisplay::attachChild(KwAbstractDisplay* child)
   /// @note Potential MT/Callback issue. child is attached before it is brought up to date so it may need locking.
 
   // Attach
+  assert(0 == child->m_parent);
   child->m_parent = this;
   m_children.push_back(child);
 

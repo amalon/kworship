@@ -37,6 +37,15 @@ void KwPlaylistModel::setRootNode(KwPlaylistNode* root)
   reset();
 }
 
+KwPlaylistNode* KwPlaylistModel::itemFromIndex(const QModelIndex& index) const
+{
+  if (index.isValid()) {
+    return reinterpret_cast<KwPlaylistNode*>(index.internalPointer());
+  } else {
+    return m_root;
+  }
+}
+
 QModelIndex KwPlaylistModel::index(int row, int column, const QModelIndex& parent) const
 {
   if (0 == m_root)
@@ -109,18 +118,4 @@ QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, i
   }
   return QVariant();
 }
-
-/*
- * Private helpers
- */
-
-KwPlaylistNode* KwPlaylistModel::itemFromIndex(const QModelIndex& index) const
-{
-  if (index.isValid()) {
-    return reinterpret_cast<KwPlaylistNode*>(index.internalPointer());
-  } else {
-    return m_root;
-  }
-}
-
 

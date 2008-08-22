@@ -10,6 +10,8 @@
 #include <QVariant>
 #include <QVector>
 
+class KwDisplayManager;
+
 /// A node on a playlist tree.
 /**
  * Inherit from this class for each playlist node type.
@@ -46,6 +48,9 @@ class KwPlaylistNode
 
     /// Get the number of children.
     virtual int getChildCount() const;
+
+    /// Activate the node using a display manager.
+    virtual void activate(KwDisplayManager* manager);
 
   protected:
 

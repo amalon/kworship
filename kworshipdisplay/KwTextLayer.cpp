@@ -69,8 +69,7 @@ void* KwTextLayer::addWidgets(QWidget* master) const
     fmt.setForeground(QBrush(gradient));
     fmt.setTextOutline(QPen(Qt::blue, 3));
 
-    cursor.insertText("Hello there i am doing a long verse of a song\nWoo does it work?\n", fmt);
-    cursor.insertText("Hello there i am doing a long verse of a song\nWoo does it work?\n", fmt);
+    cursor.insertText(m_text, fmt);
   }
 
   QStackedLayout* layout = new QStackedLayout();

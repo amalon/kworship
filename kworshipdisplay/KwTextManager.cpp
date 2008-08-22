@@ -15,8 +15,6 @@
 /// Default constructor.
 KwTextManager::KwTextManager()
 {
-  // Reserve a layer.
-  m_display.setLayer(0, 0, true);
 }
 
 /// Destructor.
@@ -32,7 +30,8 @@ KwTextManager::~KwTextManager()
 void KwTextManager::setText(QString text)
 {
   KwTextLayer* lyrics = new KwTextLayer(text);
-  m_display.setLayer(0, lyrics);
+  m_display.clearLayers();
+  m_display.setLayer(0, lyrics, true);
   /// @todo Delete previous layer
 }
 
