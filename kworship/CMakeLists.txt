@@ -25,6 +25,7 @@ kde4_add_executable(kworship ${kworship_SRCS})
 target_link_libraries(kworship
                       ${KDE4_KDEUI_LIBS}
                       ${QT_LIBRARIES}
+                      ${PHONON_LIBS}
                       kworshipdisplay
                       kworshipplaylist
 )

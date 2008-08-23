@@ -118,6 +118,8 @@ kworship::kworship()
   m_view->treeView->setExpandsOnDoubleClick(false);
 
   m_displayManager = new KwDisplayManager(&m_displayController);
+  // Video Background
+  //m_displayManager->background.setVideo("/home/james/media/images/projector/pmdata/Movies_WorshipFilms/BGMW-06.mpg");
   // Background
   m_displayManager->background.setImage(QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
   // And some text

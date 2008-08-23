@@ -7,6 +7,9 @@
 #include "KwBackgroundManager.h"
 
 #include "KwImageLayer.h"
+#include "KwVideoLayer.h"
+
+#include <phonon/mediaobject.h>
 
 /*
  * Constructors + destructors
@@ -35,3 +38,17 @@ void KwBackgroundManager::setImage(const QPixmap& pixmap)
   m_display.setLayer(0, background);
   /// @todo Delete previous layer
 }
+
+/// Set the background to a video.
+void KwBackgroundManager::setVideo(QString path)
+{
+  Phonon::MediaObject* video = new Phonon::MediaObject();
+  video->setCurrentSource(path);
+
+  KwVideoLayer* background = new KwVideoLayer(video);
+  m_display.setLayer(0, background);
+  /// @todo Delete previous layer
+
+  video->play();
+}
+

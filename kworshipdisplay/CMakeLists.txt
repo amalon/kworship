@@ -19,6 +19,7 @@ set(kworshipdisplay_SRCS
     KwDisplayMixer.cpp
     KwAbstractLayer.cpp
     KwImageLayer.cpp
+    KwVideoLayer.cpp
     KwImageWidget.cpp
     KwTextLayer.cpp
     KwDisplayManager.cpp
