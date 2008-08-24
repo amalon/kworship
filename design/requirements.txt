@@ -1,15 +1,15 @@
 In order of priority
-[ ] local display window
+[X] local display window
 [ ] change backgrond colours
-[ ] very simple playlist
+[X] very simple playlist
 [ ] display song lyrics
-[ ] background pictures
-[ ] font outlining
+[X] background pictures
+[X] font outlining
 [ ] font shadows
-[ ] lyric word-wrap
+[X] lyric word-wrap
 [ ] lyric auto arrangement
-[ ] preview
-[ ] nested playlists
+[X] preview
+[X] nested playlists
 [ ] playlist icons for timed, music, video etc
 [ ] song database
 [ ] playing of audio file

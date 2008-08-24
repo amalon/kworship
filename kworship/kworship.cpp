@@ -73,11 +73,12 @@ kworship::kworship()
   setupGUI();
 
   // Setup the dockers
-  addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget);
-  addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_2);
-  addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_3);
-  addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_4);
-  addDockWidget(Qt::RightDockWidgetArea, m_view->dockWidget_5);
+  addDockWidget(Qt::LeftDockWidgetArea, m_view->dockPresentation);
+  tabifyDockWidget(m_view->dockPresentation, m_view->dockBible);
+  tabifyDockWidget(m_view->dockPresentation, m_view->dockSongs);
+  addDockWidget(Qt::RightDockWidgetArea, m_view->dockPreview);
+  addDockWidget(Qt::RightDockWidgetArea, m_view->dockLyrics);
+  addDockWidget(Qt::BottomDockWidgetArea, m_view->dockThemes);
 
   // Setup some stuff in the tree
 #if 0
@@ -114,8 +115,8 @@ kworship::kworship()
 
   m_playlistModel = new KwPlaylistModel;
   m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
-  m_view->treeView->setModel(m_playlistModel);
-  m_view->treeView->setExpandsOnDoubleClick(false);
+  m_view->treePlaylist->setModel(m_playlistModel);
+  m_view->treePlaylist->setExpandsOnDoubleClick(false);
 
   m_displayManager = new KwDisplayManager(&m_displayController);
   // Video Background
@@ -123,14 +124,14 @@ kworship::kworship()
   // Background
   m_displayManager->background.setImage(QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
   // And some text
-  m_displayManager->text.setText("Wipidy-doo-dah, Yipidy-ay!\nMy oh my what a wonderful day!");
+  m_displayManager->text.setText("Ziperty-do-dah, Ziperty-ay!\nMy oh my what a wonderful day!");
 
   m_previewDisplay = new KwLocalDisplayPreview;
-  m_view->verticalLayout_5->addWidget(m_previewDisplay);
+  m_view->layoutPreview->addWidget(m_previewDisplay);
   m_displayController.attachChild(m_previewDisplay);
 
 
-  connect(m_view->treeView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
+  connect(m_view->treePlaylist, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
 }
 
 kworship::~kworship()
@@ -145,9 +146,9 @@ void kworship::setupActions()
     KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
 
     // custom menu and menu item - the slot is in the class kworshipView
-    KAction *custom = new KAction(KIcon("colorize"), i18n("Swi&tch Colors"), this);
-    actionCollection()->addAction( QLatin1String("switch_action"), custom );
-    connect(custom, SIGNAL(triggered(bool)), m_view, SLOT(switchColors()));
+    //KAction *custom = new KAction(KIcon("colorize"), i18n("Swi&tch Colors"), this);
+    //actionCollection()->addAction( QLatin1String("switch_action"), custom );
+    //connect(custom, SIGNAL(triggered(bool)), m_view, SLOT(switchColors()));
 }
 
 void kworship::fileNew()

@@ -1,8 +1,22 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
 <kpartgui name="KApp4" version="1">
 <MenuBar>
-  <Menu name="move"><text>&amp;Move</text>
-    <Action name="switch_action" />
+  <Menu name="menuPresentation"><text>&amp;Presentation</text>
+  </Menu>
+  <Menu name="menuSongs"><text>&amp;Song DB</text>
+    <Action name="song_unlock" />
+    <Action name="song_lock" />
+    <Action name="song_new" />
+    <Action name="song_edit" />
+    <Action name="song_delete" />
+    <Action name="song_add_to_playlist" />
+  </Menu>
+  <Menu name="menuBible"><text>&amp;Bible</text>
+  </Menu>
+  <Menu name="menuPlaylist"><text>&amp;Playlist</text>
+    <Action name="playlist_move_up" />
+    <Action name="playlist_move_down" />
+    <Action name="playlist_delete" />
   </Menu>
 </MenuBar>
 </kpartgui>
