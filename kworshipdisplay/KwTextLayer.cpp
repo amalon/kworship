@@ -62,11 +62,13 @@ void* KwTextLayer::addWidgets(QWidget* master) const
     QTextCharFormat fmt;
     fmt.setFontPointSize(64);
 
+#if 0
     QLinearGradient gradient(0, 0, 500, 500);
     gradient.setColorAt(0, Qt::red);
     gradient.setColorAt(1, Qt::green);
+#endif
 
-    fmt.setForeground(QBrush(gradient));
+    fmt.setForeground(QBrush(Qt::yellow));
     fmt.setTextOutline(QPen(Qt::blue, 3));
 
     cursor.insertText(m_text, fmt);

@@ -33,6 +33,9 @@ class KwTextManager : public KwAbstractDisplayManager
      * Main interface
      */
 
+    /// Clear all text.
+    void clear();
+
     /// Set the text.
     void setText(QString text);
 };

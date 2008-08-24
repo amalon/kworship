@@ -7,6 +7,8 @@
 #include "KwPlaylistListNode.h"
 #include "KwPlaylistList.h"
 
+#include <KIcon>
+
 #include <cassert>
 
 /*
@@ -36,6 +38,13 @@ QVariant KwPlaylistListNode::getData(int role, int column)
     if (column == 0)
     {
       return "List";
+    }
+  }
+  else if (role == Qt::DecorationRole)
+  {
+    if (column == 0)
+    {
+      return KIcon("playlist");
     }
   }
   return QVariant();

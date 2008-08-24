@@ -28,6 +28,8 @@
 #include "KwPlaylistList.h"
 #include "KwPlaylistNote.h"
 #include "KwPlaylistText.h"
+#include "KwPlaylistImage.h"
+#include "KwPlaylistVideo.h"
 #include "KwPlaylistModel.h"
 
 
@@ -113,18 +115,15 @@ kworship::kworship()
   list1->addItem(new KwPlaylistNote("This is a note #2b"));
   list1->addItem(new KwPlaylistNote("This is a note #3b"));
 
+  m_primaryPlaylist->addItem(new KwPlaylistImage("/home/james/media/images/projector/misc/love-god-light.jpg"));
+  m_primaryPlaylist->addItem(new KwPlaylistVideo("/home/james/YouTube/songs/great_big_god.flv"));
+
   m_playlistModel = new KwPlaylistModel;
   m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
   m_view->treePlaylist->setModel(m_playlistModel);
   m_view->treePlaylist->setExpandsOnDoubleClick(false);
 
   m_displayManager = new KwDisplayManager(&m_displayController);
-  // Video Background
-  //m_displayManager->background.setVideo("/home/james/media/images/projector/pmdata/Movies_WorshipFilms/BGMW-06.mpg");
-  // Background
-  m_displayManager->background.setImage(QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
-  // And some text
-  m_displayManager->text.setText("Ziperty-do-dah, Ziperty-ay!\nMy oh my what a wonderful day!");
 
   m_previewDisplay = new KwLocalDisplayPreview;
   m_view->layoutPreview->addWidget(m_previewDisplay);

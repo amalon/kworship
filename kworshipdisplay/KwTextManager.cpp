@@ -26,6 +26,12 @@ KwTextManager::~KwTextManager()
  * Main interface
  */
 
+/// Clear all text.
+void KwTextManager::clear()
+{
+  m_display.clearLayers();
+}
+
 /// Set the text.
 void KwTextManager::setText(QString text)
 {

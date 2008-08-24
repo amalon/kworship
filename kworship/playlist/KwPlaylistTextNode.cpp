@@ -7,6 +7,8 @@
 #include "KwPlaylistTextNode.h"
 #include "KwPlaylistText.h"
 
+#include <KIcon>
+
 /*
  * Constructors + destructor.
  */
@@ -34,6 +36,13 @@ QVariant KwPlaylistTextNode::getData(int role, int column)
     if (column == 0)
     {
       return m_item->getLabel();
+    }
+  }
+  else if (role == Qt::DecorationRole)
+  {
+    if (column == 0)
+    {
+      return KIcon("kwrite");
     }
   }
   return QVariant();

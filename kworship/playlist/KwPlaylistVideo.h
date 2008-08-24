@@ -1,16 +1,16 @@
-#ifndef _KwPlaylistImage_h_
-#define _KwPlaylistImage_h_
+#ifndef _KwPlaylistVideo_h_
+#define _KwPlaylistVideo_h_
 
 /**
- * @file KwPlaylistImage.h
- * @brief An image playlist item.
+ * @file KwPlaylistVideo.h
+ * @brief An video playlist item.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include "KwPlaylistFile.h"
 
-/// An image playlist item.
-class KwPlaylistImage : public KwPlaylistFile
+/// An video playlist item.
+class KwPlaylistVideo : public KwPlaylistFile
 {
   public:
     
@@ -19,10 +19,10 @@ class KwPlaylistImage : public KwPlaylistFile
      */
 
     /// Primary constructor.
-    KwPlaylistImage(QString url);
+    KwPlaylistVideo(QString url);
 
     /// Destructor.
-    virtual ~KwPlaylistImage();
+    virtual ~KwPlaylistVideo();
 
     /*
      * Main interface.
@@ -31,5 +31,5 @@ class KwPlaylistImage : public KwPlaylistFile
     virtual void activate(KwDisplayManager* manager);
 };
 
-#endif // _KwPlaylistImage_h_
+#endif // _KwPlaylistVideo_h_
 

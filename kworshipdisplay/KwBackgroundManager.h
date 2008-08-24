@@ -37,7 +37,7 @@ class KwBackgroundManager : public KwAbstractDisplayManager
     void setImage(const QPixmap& pixmap);
 
     /// Set the background to a video.
-    void setVideo(QString path);
+    void setVideo(QString path, bool loop, bool mute);
 };
 
 #endif // _KwBackgroundManager_h_

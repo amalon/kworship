@@ -12,7 +12,10 @@ set(kworshipplaylist_MOC_SRCS
 set(kworshipplaylist_SRCS
     KwPlaylistNode.cpp
     KwPlaylistModel.cpp
+    KwPlaylistFile.cpp
+    KwPlaylistFileNode.cpp
     KwPlaylistImage.cpp
+    KwPlaylistVideo.cpp
     KwPlaylistItem.cpp
     KwPlaylistPaged.cpp
     KwPlaylistPagedNode.cpp
