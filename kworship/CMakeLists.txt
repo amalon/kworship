@@ -4,10 +4,11 @@ find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
-                    playlist
                     ../include
-                    ../kworshipdisplay
+                    display
+                    playlist
 )
+add_subdirectory (display)
 add_subdirectory (playlist)
 
 set(kworship_SRCS

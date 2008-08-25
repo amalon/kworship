@@ -1,1 +1,6 @@
 Code for the main kworship application.
+
+sub modules
+
+display - fairly low level display management
+playlist - playlist management and data structures
