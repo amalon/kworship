@@ -34,6 +34,7 @@ class KwLocalDisplayPreview;
 class KwDisplayManager;
 class KwPlaylistList;
 class KwPlaylistModel;
+class KwMediaManager;
 
 class KPrinter;
 class KToggleAction;
@@ -73,6 +74,7 @@ private:
     Ui::prefs_base ui_prefs_base ;
     kworshipView *m_view;
 
+    KwMediaManager* m_mediaManager;
     KwDisplayManager* m_displayManager;
     KwLocalDisplayController m_displayController;
     KwLocalDisplayPreview* m_mainDisplay;

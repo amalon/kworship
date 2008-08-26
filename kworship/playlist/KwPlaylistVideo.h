@@ -3,13 +3,15 @@
 
 /**
  * @file KwPlaylistVideo.h
- * @brief An video playlist item.
+ * @brief A media playlist item.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include "KwPlaylistFile.h"
 
-/// An video playlist item.
+#include "KwMediaItem.h"
+
+/// A media playlist item.
 class KwPlaylistVideo : public KwPlaylistFile
 {
   public:
@@ -29,6 +31,15 @@ class KwPlaylistVideo : public KwPlaylistFile
      */
 
     virtual void activate(KwDisplayManager* manager);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Video item
+    KwMediaItem m_mediaItem;
 };
 
 #endif // _KwPlaylistVideo_h_

@@ -11,6 +11,12 @@
 
 #include <QPixmap>
 
+class KwMediaManager;
+class KwMediaItemVideo;
+
+class KwImageLayer;
+class KwVideoLayer;
+
 /// Background manager.
 /**
  * High level interface for controlling backgrounds.
@@ -24,7 +30,7 @@ class KwBackgroundManager : public KwAbstractDisplayManager
      */
 
     /// Default constructor.
-    KwBackgroundManager();
+    KwBackgroundManager(KwMediaManager* mediaManager);
 
     /// Destructor.
     virtual ~KwBackgroundManager();
@@ -33,11 +39,29 @@ class KwBackgroundManager : public KwAbstractDisplayManager
      * Main interface
      */
 
+    /// Clear the background.
+    void clear();
+
     /// Set the background to an image.
     void setImage(const QPixmap& pixmap);
 
-    /// Set the background to a video.
-    void setVideo(QString path, bool loop, bool mute);
+    /// Set the background up forvideo.
+    void setVideo();
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Media manager.
+    KwMediaManager* m_mediaManager;
+
+    /// Image layer.
+    KwImageLayer* m_imageLayer;
+
+    /// Video layer.
+    KwVideoLayer* m_videoLayer;
 };
 
 #endif // _KwBackgroundManager_h_

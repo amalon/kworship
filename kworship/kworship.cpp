@@ -22,9 +22,7 @@
 #include "kworship.h"
 #include "kworshipview.h"
 #include "settings.h"
-#include "KwDisplayManager.h"
 
-#include "KwLocalDisplayPreview.h"
 #include "KwPlaylistList.h"
 #include "KwPlaylistNote.h"
 #include "KwPlaylistText.h"
@@ -32,18 +30,22 @@
 #include "KwPlaylistVideo.h"
 #include "KwPlaylistModel.h"
 
+#include "KwDisplayManager.h"
+#include "KwLocalDisplayPreview.h"
 
-#include <QtGui/QDropEvent>
-#include <QtGui/QPainter>
+#include "KwMediaManager.h"
 
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
-
 #include <kaction.h>
 #include <kactioncollection.h>
 #include <kstandardaction.h>
-
 #include <KDE/KLocale>
+
+#include <phonon/audiooutput.h>
+
+#include <QtGui/QDropEvent>
+#include <QtGui/QPainter>
 
 kworship::kworship()
 : KXmlGuiWindow()
@@ -123,7 +125,9 @@ kworship::kworship()
   m_view->treePlaylist->setModel(m_playlistModel);
   m_view->treePlaylist->setExpandsOnDoubleClick(false);
 
-  m_displayManager = new KwDisplayManager(&m_displayController);
+  m_mediaManager = new KwMediaManager();
+  m_mediaManager->linkAudio(new Phonon::AudioOutput(Phonon::MusicCategory));
+  m_displayManager = new KwDisplayManager(&m_displayController, m_mediaManager);
 
   m_previewDisplay = new KwLocalDisplayPreview;
   m_view->layoutPreview->addWidget(m_previewDisplay);

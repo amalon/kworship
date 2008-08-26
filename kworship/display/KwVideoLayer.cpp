@@ -6,7 +6,8 @@
 
 #include "KwVideoLayer.h"
 
-#include <phonon/mediaobject.h>
+#include "KwMediaManager.h"
+
 #include <phonon/videowidget.h>
 
 #include <QStackedLayout>
@@ -16,9 +17,9 @@
  */
 
 /// Primary constructor.
-KwVideoLayer::KwVideoLayer(Phonon::MediaObject* media)
+KwVideoLayer::KwVideoLayer(KwMediaManager* mediaManager)
 : KwAbstractLayer()
-, m_media(media)
+, m_mediaManager(mediaManager)
 , m_stretch(false)
 , m_keepAspect(false)
 {
@@ -47,10 +48,10 @@ void* KwVideoLayer::addWidgets(QWidget* master) const
   KwVideoLayerData* data = new KwVideoLayerData;
 
   data->widget = new Phonon::VideoWidget(master);
-  Phonon::createPath(m_media, data->widget);
+  m_mediaManager->linkVideo(data->widget);
   data->widget->setAspectRatio(Phonon::VideoWidget::AspectRatioWidget);
 
-  QStackedLayout* layout = new QStackedLayout();
+  QStackedLayout* layout = new QStackedLayout(master);
   layout->setStackingMode(QStackedLayout::StackAll);
   layout->addWidget(data->widget);
   master->setLayout(layout);
@@ -64,6 +65,7 @@ void KwVideoLayer::removeWidgets(QWidget* master, void* rawData) const
 
   KwVideoLayerData* data = reinterpret_cast<KwVideoLayerData*>(rawData);
 
+  m_mediaManager->unlinkVideo(data->widget);
   delete data->widget;
 
   delete data;

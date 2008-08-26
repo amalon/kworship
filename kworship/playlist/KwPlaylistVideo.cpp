@@ -15,7 +15,10 @@
 /// Default constructor.
 KwPlaylistVideo::KwPlaylistVideo(QString url)
 : KwPlaylistFile(url)
+, m_mediaItem(url)
 {
+  m_mediaItem.setAudio(true);
+  m_mediaItem.setVideo(true);
 }
 
 /// Destructor.
@@ -29,7 +32,8 @@ KwPlaylistVideo::~KwPlaylistVideo()
 
 void KwPlaylistVideo::activate(KwDisplayManager* manager)
 {
+  manager->background.setVideo();
   manager->text.clear();
-  manager->background.setVideo(getUrl(), false, false);
+  m_mediaItem.playMedia(manager->getMediaManager());
 }
 

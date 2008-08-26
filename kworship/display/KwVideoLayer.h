@@ -12,10 +12,7 @@
 #include <QSize>
 #include <QPixmap>
 
-namespace Phonon
-{
-  class MediaObject;
-}
+class KwMediaManager;
 
 /// Background video layer.
 class KwVideoLayer : public KwAbstractLayer
@@ -27,7 +24,7 @@ class KwVideoLayer : public KwAbstractLayer
      */
 
     /// Primary constructor.
-    KwVideoLayer(Phonon::MediaObject* media);
+    KwVideoLayer(KwMediaManager* media);
 
     /// Destructor.
     virtual ~KwVideoLayer();
@@ -48,8 +45,8 @@ class KwVideoLayer : public KwAbstractLayer
      * Variables
      */
 
-    /// Media object.
-    Phonon::MediaObject* m_media;
+    /// Media manager.
+    KwMediaManager* m_mediaManager;
 
     /// Whether to stretch the video to fit the screen.
     bool m_stretch;

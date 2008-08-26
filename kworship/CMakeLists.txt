@@ -5,9 +5,11 @@ include (KDE4Defaults)
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
                     ../include
+                    media
                     display
                     playlist
 )
+add_subdirectory (media)
 add_subdirectory (display)
 add_subdirectory (playlist)
 
@@ -27,8 +29,9 @@ target_link_libraries(kworship
                       ${KDE4_KDEUI_LIBS}
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
-                      kworshipdisplay
                       kworshipplaylist
+                      kworshipdisplay
+                      kworshipmedia
 )
 
 install(TARGETS kworship DESTINATION ${BIN_INSTALL_DIR} )

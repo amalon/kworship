@@ -1,0 +1,66 @@
+Media uses
+  audio (songs)
+  sound effects (drama or whatever, triggered sequentially or spontaniously)
+  video background (looping)
+  video with audio (song with lyrics or video)
+
+requirements
+  [ ] audio media have individual saved volumes / mute
+  [ ] video media have individual saved settings (brightness, contract, saturation, hue etc)
+  [ ] playing media information
+      [ ] seeker if seekable
+      [ ] volumes, mute, brightness, contrast, saturation, hue etc. saving to individual item
+      [ ] "remember for this file" button
+          [ ] resolution in case another playlist already has overrides
+  [ ] extract metadata (track name etc)
+  [ ] remember audio output device (pulse audio or whatever)
+  [ ] simple media player, randomising, queueing etc
+      [ ] crossfading
+      [ ] fade out before switching track
+
+workings
+  one audio, one video at a time
+  now playing shows that one
+  item preferences window may have another instance with the file playing so can get it right
+
+classes
+  KwAbstractMediaPreferences
+    current media manager
+  KwMediaPreferencesSequence
+    range of time to play
+  KwMediaPreferencesAudio
+    volume
+    mute
+    fade out duration
+  KwMediaPreferencesVisual
+    brightness
+    contrast
+    saturation
+    hue
+    fullscreen
+    keep aspect
+  KwMediaControlWidget
+    KwMediaManager
+    KwMediaControlWidgetSequence (x2 if unlinked)
+    KwMediaControlWidgetAudio (if audio is playing)
+    KwMediaControlWidgetVisual (if visual is playing)
+  KwMediaControlWidgetSequence
+    - seek if possible (or just show position)
+    - play/pause, stop
+    KwMediaManager
+  KwMediaControlWidgetAudio
+    - volume, mute
+    KwMediaManager
+  KwMediaControlWidgetVisual
+    - usual visual settings
+    - show/hide video (turns to audio only, allowing other stuff to happen on screen
+    KwMediaManager
+  KwMediaManager
+    now playing audio item source and output
+    now playing video item source and output
+  KwMediaItem
+    url
+    KwMediaPreferencesSequence* sequencePreferences
+    KwMediaPreferencesAudio*    audioPreferences
+    KwMediaPreferencesVisual*   visualPreferences
+

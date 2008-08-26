@@ -17,47 +17,51 @@
  */
 
 /// Default constructor.
-KwBackgroundManager::KwBackgroundManager()
+KwBackgroundManager::KwBackgroundManager(KwMediaManager* mediaManager)
+: KwAbstractDisplayManager()
+, m_mediaManager(mediaManager)
+, m_imageLayer(0)
+, m_videoLayer(0)
 {
 }
 
 /// Destructor.
 KwBackgroundManager::~KwBackgroundManager()
 {
+  clear();
 }
 
 /*
  * Main interface
  */
 
+/// Clear the background.
+void KwBackgroundManager::clear()
+{
+  m_display.clearLayers();
+  delete m_imageLayer;
+  delete m_videoLayer;
+  m_imageLayer = 0;
+  m_videoLayer = 0;
+}
+
 /// Set the background to an image.
 void KwBackgroundManager::setImage(const QPixmap& pixmap)
 {
-  KwImageLayer* background = new KwImageLayer(pixmap);
-  m_display.clearLayers();
-  m_display.setLayer(0, background, true);
-  /// @todo Delete previous layer
+  clear();
+  m_imageLayer = new KwImageLayer(pixmap);
+  m_display.setLayer(0, m_imageLayer, true);
 }
 
-/// Set the background to a video.
-void KwBackgroundManager::setVideo(QString path, bool loop, bool mute)
+/// Set the background up for video.
+void KwBackgroundManager::setVideo()
 {
-  Q_UNUSED(loop)
-
-  Phonon::MediaObject* video = new Phonon::MediaObject();
-  video->setCurrentSource(path);
-
-  if (!mute)
+  // Make sure the background video layer is set up
+  if (0 == m_videoLayer)
   {
-    Phonon::AudioOutput *audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory);
-    Phonon::createPath(video, audioOutput);
+    clear();
+    m_videoLayer = new KwVideoLayer(m_mediaManager);
+    m_display.setLayer(0, m_videoLayer, true);
   }
-
-  KwVideoLayer* background = new KwVideoLayer(video);
-  m_display.clearLayers();
-  m_display.setLayer(0, background, true);
-  /// @todo Delete previous layer
-
-  video->play();
 }
 

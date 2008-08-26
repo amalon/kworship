@@ -11,8 +11,12 @@
  */
 
 /// Default constructor.
-KwDisplayManager::KwDisplayManager(KwAbstractDisplay* display)
-: m_mixer()
+KwDisplayManager::KwDisplayManager(KwAbstractDisplay* display, KwMediaManager* mediaManager)
+: background(mediaManager)
+, text()
+, overlay()
+, m_mixer()
+, m_mediaManager(mediaManager)
 {
   m_mixer.attachChild(display);
 
@@ -24,5 +28,15 @@ KwDisplayManager::KwDisplayManager(KwAbstractDisplay* display)
 /// Destructor.
 KwDisplayManager::~KwDisplayManager()
 {
+}
+
+/*
+ * Accessors
+ */
+
+/// Get the media manager.
+KwMediaManager* KwDisplayManager::getMediaManager()
+{
+  return m_mediaManager;
 }
 

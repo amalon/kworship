@@ -2,5 +2,6 @@ Code for the main kworship application.
 
 sub modules
 
+media - media management code
 display - fairly low level display management
 playlist - playlist management and data structures

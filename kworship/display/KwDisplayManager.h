@@ -12,6 +12,8 @@
 #include "KwTextManager.h"
 #include "KwOverlayManager.h"
 
+class KwMediaManager;
+
 /// Abstract display management.
 /**
  * High level interface for controlling a display object.
@@ -38,10 +40,17 @@ class KwDisplayManager
      */
 
     /// Default constructor.
-    KwDisplayManager(KwAbstractDisplay* display);
+    KwDisplayManager(KwAbstractDisplay* display, KwMediaManager* mediaManager);
 
     /// Destructor.
     virtual ~KwDisplayManager();
+
+    /*
+     * Accessors
+     */
+
+    /// Get the media manager.
+    KwMediaManager* getMediaManager();
 
   private:
 
@@ -51,6 +60,9 @@ class KwDisplayManager
 
     /// Display object.
     KwDisplayMixer m_mixer;
+
+    /// Media manager.
+    KwMediaManager* m_mediaManager;
 };
 
 #endif // _KwDisplayManager_h_
