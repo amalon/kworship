@@ -120,6 +120,8 @@ KwMediaObject* KwMediaManager::setupAudio(QString url, KwMediaPreferencesSequenc
 
   connectAudioObject();
 
+  audioAdded(false);
+
   return mediaObject;
 }
 
@@ -172,7 +174,9 @@ KwMediaObject* KwMediaManager::setupVideo(QString url, KwMediaPreferencesSequenc
     }
 
     connectAudioObject();
+    audioAdded(true);
   }
+  videoAdded(prefsAudio != 0);
 
   return mediaObject;
 }
@@ -195,6 +199,7 @@ void KwMediaManager::stopAudio(bool stopLinkedVideo)
   {
     disconnectAudioObject();
     bool linked = isLinked();
+    audioRemoved(linked && stopLinkedVideo);
     if (!linked)
     {
       delete m_audio.object;
@@ -229,6 +234,7 @@ void KwMediaManager::stopVideo(bool stopLinkedAudio)
   {
     disconnectVideoObject();
     bool linked = isLinked();
+    videoRemoved(linked && stopLinkedAudio);
     if (!linked)
     {
       delete m_video.object;
@@ -416,8 +422,6 @@ void KwMediaManager::connectAudioObject()
 
   volumeChanged(m_audio.prefs->getVolume());
   mutedChanged(m_audio.prefs->getMuted());
-
-  audioChanged();
 }
 
 /// Remove the internal connections for an old media object.
@@ -441,8 +445,6 @@ void KwMediaManager::connectVideoObject()
 {
   connect(m_video.object, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SIGNAL(videoStateChanged(Phonon::State,Phonon::State)));
   connect(m_video.object, SIGNAL(metaDataChanged()), this, SLOT(videoMetaDataHasChanged()));
-
-  videoChanged();
 }
 
 /// Remove the internal connections for an old video object.

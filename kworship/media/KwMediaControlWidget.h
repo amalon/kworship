@@ -17,6 +17,7 @@ class KwMediaControlWidgetVisual;
 /// Controls the preferences of the currently playing media items.
 class KwMediaControlWidget : public QWidget
 {
+    Q_OBJECT
   public:
 
     /*
@@ -28,6 +29,22 @@ class KwMediaControlWidget : public QWidget
 
     /// Destructor.
     virtual ~KwMediaControlWidget();
+
+  public slots:
+
+    /*
+     * Slots
+     */
+
+    /// Audio has been added.
+    void addAudio(bool linkedVideo);
+    /// Video has been added.
+    void addVideo(bool linkedAudio);
+
+    /// Audio has been removed.
+    void removeAudio(bool removeLinkedVideo);
+    /// Video has been removed.
+    void removeVideo(bool removeLinkedAudio);
 
   private:
 

@@ -7,12 +7,12 @@ set(kworshipmedia_MOC_SRCS
     KwMediaManager.cpp
     KwMediaPreferencesSequence.cpp
     KwMediaPreferencesAudio.cpp
-)
-set(kworshipmedia_SRCS
-    KwMediaControlWidgetAudio.cpp
     KwMediaControlWidget.cpp
+    KwMediaControlWidgetAudio.cpp
     KwMediaControlWidgetSequence.cpp
     KwMediaControlWidgetVisual.cpp
+)
+set(kworshipmedia_SRCS
     KwAbstractMediaPreferences.cpp
     KwMediaPreferencesVisual.cpp
     KwMediaItem.cpp

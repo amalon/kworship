@@ -151,9 +151,14 @@ class KwMediaManager : public QObject
      */
 
     /// Audio has changed.
-    void audioChanged();
-    /// Video has changed.
-    void videoChanged();
+    void audioAdded(bool videoLinked);
+    /// Video has been added.
+    void videoAdded(bool audioLinked);
+
+    /// Audio has been removed.
+    void audioRemoved(bool linkedVideoRemoved);
+    /// Video has been removed.
+    void videoRemoved(bool linkedVideoRemoved);
 
     /// Audio media name changed.
     void audioMediaNameChanged(QString name);
