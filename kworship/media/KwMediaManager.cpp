@@ -44,6 +44,7 @@ void KwMediaManager::linkAudio(KwAudioOutput* audioOut)
   {
     path = Phonon::createPath(m_audio.object, audioOut);
     assert(path.isValid());
+    connectAudioOutput(audioOut);
   }
   m_audio.outputs.insert(audioOut, path);
 }
@@ -56,6 +57,7 @@ void KwMediaManager::unlinkAudio(KwAudioOutput* audioOut)
   {
     assert((*it).isValid());
     (*it).disconnect();
+    disconnectAudioOutput(audioOut);
   }
   m_audio.outputs.erase(it);
 }
@@ -68,6 +70,7 @@ void KwMediaManager::linkVideo(KwVideoWidget* videoOut)
   {
     path = Phonon::createPath(m_video.object, videoOut);
     assert(path.isValid());
+    connectVideoOutput(videoOut);
   }
   m_video.outputs.insert(videoOut, path);
 }
@@ -80,6 +83,7 @@ void KwMediaManager::unlinkVideo(KwVideoWidget* videoOut)
   {
     assert((*it).isValid());
     (*it).disconnect();
+    disconnectVideoOutput(videoOut);
   }
   m_video.outputs.erase(it);
 }
@@ -111,7 +115,10 @@ KwMediaObject* KwMediaManager::setupAudio(QString url, KwMediaPreferencesSequenc
   {
     *it = Phonon::createPath(mediaObject, it.key());
     assert((*it).isValid());
+    connectAudioOutput(it.key());
   }
+
+  connectAudioObject();
 
   return mediaObject;
 }
@@ -140,7 +147,10 @@ KwMediaObject* KwMediaManager::setupVideo(QString url, KwMediaPreferencesSequenc
   {
     *it = Phonon::createPath(mediaObject, it.key());
     assert((*it).isValid());
+    connectVideoOutput(it.key());
   }
+
+  connectVideoObject();
 
   // Keep audio playing if we don't want audio from this video
   if (prefsAudio != 0)
@@ -158,7 +168,10 @@ KwMediaObject* KwMediaManager::setupVideo(QString url, KwMediaPreferencesSequenc
     {
       *it = Phonon::createPath(mediaObject, it.key());
       assert((*it).isValid());
+      connectAudioOutput(it.key());
     }
+
+    connectAudioObject();
   }
 
   return mediaObject;
@@ -180,6 +193,7 @@ void KwMediaManager::stopAudio(bool stopLinkedVideo)
 {
   if (isAudio())
   {
+    disconnectAudioObject();
     bool linked = isLinked();
     if (!linked)
     {
@@ -193,6 +207,7 @@ void KwMediaManager::stopAudio(bool stopLinkedVideo)
       {
         assert((*it).isValid());
         (*it).disconnect();
+        disconnectAudioOutput(it.key());
       }
     }
     m_audio.object = 0;
@@ -212,6 +227,7 @@ void KwMediaManager::stopVideo(bool stopLinkedAudio)
 {
   if (isVideo())
   {
+    disconnectVideoObject();
     bool linked = isLinked();
     if (!linked)
     {
@@ -226,6 +242,7 @@ void KwMediaManager::stopVideo(bool stopLinkedAudio)
         assert((*it).isValid());
         bool disconnected = (*it).disconnect();
         assert(disconnected);
+        disconnectVideoOutput(it.key());
       }
     }
     m_video.object = 0;
@@ -272,5 +289,196 @@ bool KwMediaManager::isAudio() const
 bool KwMediaManager::isVideo() const
 {
   return m_video.object != 0;
+}
+
+/*
+ * Media control slots
+ */
+
+/// Play/pause audio.
+void KwMediaManager::audioPlayPause()
+{
+  if (isAudio())
+  {
+    switch (m_audio.object->state())
+    {
+      case Phonon::PlayingState:
+      case Phonon::BufferingState:
+        m_audio.object->pause();
+        break;
+
+      case Phonon::StoppedState:
+      case Phonon::PausedState:
+        m_audio.object->play();
+        break;
+
+      default:
+        break;
+    }
+  }
+}
+
+/// Play/pause video.
+void KwMediaManager::videoPlayPause()
+{
+  if (isVideo())
+  {
+    switch (m_video.object->state())
+    {
+      case Phonon::PlayingState:
+      case Phonon::BufferingState:
+        m_video.object->pause();
+        break;
+
+      case Phonon::StoppedState:
+      case Phonon::PausedState:
+        m_video.object->play();
+        break;
+
+      default:
+        break;
+    }
+  }
+}
+
+/// Stop audio.
+void KwMediaManager::audioStop()
+{
+  if (isAudio())
+  {
+    m_audio.object->stop();
+  }
+}
+
+/// Stop video.
+void KwMediaManager::videoStop()
+{
+  if (isVideo())
+  {
+    m_video.object->stop();
+  }
+}
+
+/*
+ * Private slots
+ */
+
+/// The audio object's metadata has changed.
+void KwMediaManager::audioMetaDataHasChanged()
+{
+  assert(isAudio());
+
+  QStringList title = m_audio.object->metaData("TITLE");
+  if (!title.empty())
+  {
+    audioMediaNameChanged(title.first());
+  }
+  else
+  {
+    audioMediaNameChanged("");
+  }
+}
+
+/// The video object's metadata has changed.
+void KwMediaManager::videoMetaDataHasChanged()
+{
+  assert(isVideo());
+
+  QStringList title = m_video.object->metaData("TITLE");
+  if (!title.empty())
+  {
+    videoMediaNameChanged(title.first());
+  }
+  else
+  {
+    videoMediaNameChanged("");
+  }
+}
+
+/*
+ * Internal functions
+ */
+
+/// Make the internal connections for a new media object.
+void KwMediaManager::connectAudioObject()
+{
+  // Sequence
+  assert(m_audio.object != 0);
+  connect(m_audio.object, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SIGNAL(audioStateChanged(Phonon::State,Phonon::State)));
+  connect(m_audio.object, SIGNAL(metaDataChanged()), this, SLOT(audioMetaDataHasChanged()));
+  // Audio
+  assert(m_audio.prefs != 0);
+  connect(this, SIGNAL(setVolume(qreal)), m_audio.prefs, SLOT(setVolume(qreal)));
+  connect(this, SIGNAL(setMuted(bool)), m_audio.prefs, SLOT(setMuted(bool)));
+  connect(this, SIGNAL(setFadeoutMsec(qint32)), m_audio.prefs, SLOT(setFadeoutMsec(qint32)));
+  connect(m_audio.prefs, SIGNAL(volumeChanged(qreal)), this, SIGNAL(volumeChanged(qreal)));
+  connect(m_audio.prefs, SIGNAL(mutedChanged(bool)), this, SIGNAL(mutedChanged(bool)));
+
+  volumeChanged(m_audio.prefs->getVolume());
+  mutedChanged(m_audio.prefs->getMuted());
+
+  audioChanged();
+}
+
+/// Remove the internal connections for an old media object.
+void KwMediaManager::disconnectAudioObject()
+{
+  // Sequence
+  assert(m_audio.object != 0);
+  disconnect(m_audio.object, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SIGNAL(audioStateChanged(Phonon::State,Phonon::State)));
+  disconnect(m_audio.object, SIGNAL(metaDataChanged()), this, SLOT(audioMetaDataHasChanged()));
+  // Audio
+  assert(m_audio.prefs != 0);
+  disconnect(this, SIGNAL(setVolume(qreal)), m_audio.prefs, SLOT(setVolume(qreal)));
+  disconnect(this, SIGNAL(setMuted(bool)), m_audio.prefs, SLOT(setMuted(bool)));
+  disconnect(this, SIGNAL(setFadeoutMsec(qint32)), m_audio.prefs, SLOT(setFadeoutMsec(qint32)));
+  disconnect(m_audio.prefs, SIGNAL(volumeChanged(qreal)), this, SIGNAL(volumeChanged(qreal)));
+  disconnect(m_audio.prefs, SIGNAL(mutedChanged(bool)), this, SIGNAL(mutedChanged(bool)));
+}
+
+/// Make the internal connections for a new video object.
+void KwMediaManager::connectVideoObject()
+{
+  connect(m_video.object, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SIGNAL(videoStateChanged(Phonon::State,Phonon::State)));
+  connect(m_video.object, SIGNAL(metaDataChanged()), this, SLOT(videoMetaDataHasChanged()));
+
+  videoChanged();
+}
+
+/// Remove the internal connections for an old video object.
+void KwMediaManager::disconnectVideoObject()
+{
+  disconnect(m_video.object, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SIGNAL(videoStateChanged(Phonon::State,Phonon::State)));
+  disconnect(m_video.object, SIGNAL(metaDataChanged()), this, SLOT(videoMetaDataHasChanged()));
+}
+
+/// Make the internal connections for a new audio ouptut.
+void KwMediaManager::connectAudioOutput(KwAudioOutput* output)
+{
+  assert(m_audio.prefs != 0);
+  connect(m_audio.prefs, SIGNAL(volumeChanged(qreal)), output, SLOT(setVolume(qreal)));
+  connect(m_audio.prefs, SIGNAL(mutedChanged(bool)), output, SLOT(setMuted(bool)));
+}
+
+/// Remove the internal connections for an old audio output.
+void KwMediaManager::disconnectAudioOutput(KwAudioOutput* output)
+{
+  assert(m_audio.prefs != 0);
+  disconnect(m_audio.prefs, SIGNAL(volumeChanged(qreal)), output, SLOT(setVolume(qreal)));
+  disconnect(m_audio.prefs, SIGNAL(mutedChanged(bool)), output, SLOT(setMuted(bool)));
+}
+
+/// Make the internal connections for a new video ouptut.
+void KwMediaManager::connectVideoOutput(KwVideoWidget* output)
+{
+  Q_UNUSED(output);
+  assert(isVideo());
+}
+
+/// Remove the internal connections for an old video output.
+void KwMediaManager::disconnectVideoOutput(KwVideoWidget* output)
+{
+  Q_UNUSED(output);
+  assert(isVideo());
 }
 

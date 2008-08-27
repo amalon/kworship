@@ -28,7 +28,7 @@ KwMediaPreferencesAudio::~KwMediaPreferencesAudio()
  */
 
 /// Get the volume level.
-KwMediaPreferencesAudio::Volume KwMediaPreferencesAudio::getVolume() const
+qreal KwMediaPreferencesAudio::getVolume() const
 {
   return m_volume;
 }
@@ -40,29 +40,31 @@ bool KwMediaPreferencesAudio::getMuted() const
 }
 
 /// Get the fadeout time in msecs.
-KwMediaPreferencesAudio::TimeInterval KwMediaPreferencesAudio::getFadeoutMsec() const
+qint32 KwMediaPreferencesAudio::getFadeoutMsec() const
 {
   return m_fadeoutMsec;
 }
 
 /*
- * Mutators
+ * Slots
  */
 
 /// Set the volume level.
-void KwMediaPreferencesAudio::setVolume(Volume volume)
+void KwMediaPreferencesAudio::setVolume(qreal volume)
 {
   m_volume = volume;
+  volumeChanged(volume);
 }
 
 /// Set whether the audio is muted.
 void KwMediaPreferencesAudio::setMuted(bool muted)
 {
   m_muted = muted;
+  mutedChanged(muted);
 }
 
 /// Set the fadeout time in msecs.
-void KwMediaPreferencesAudio::setFadeoutMsec(TimeInterval fadeoutMsec)
+void KwMediaPreferencesAudio::setFadeoutMsec(qint32 fadeoutMsec)
 {
   m_fadeoutMsec = fadeoutMsec;
 }

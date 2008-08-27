@@ -9,25 +9,14 @@
 
 #include "KwAbstractMediaPreferences.h"
 
-#include <QtGlobal>
-
 /// A media item's audio preferences.
 /**
  * Basically this is audio preferences such as volume, muted, fadeout time.
  */
 class KwMediaPreferencesAudio : public KwAbstractMediaPreferences
 {
+    Q_OBJECT
   public:
-
-    /*
-     * Types
-     */
-
-    /// Time interval type.
-    typedef qint32 TimeInterval;
-
-    /// Volume level type.
-    typedef qreal Volume;
 
     /*
      * Constructors + destructors
@@ -44,26 +33,40 @@ class KwMediaPreferencesAudio : public KwAbstractMediaPreferences
      */
 
     /// Get the volume level.
-    Volume getVolume() const;
+    qreal getVolume() const;
 
     /// Get whether the audio is muted.
     bool getMuted() const;
 
     /// Get the fadeout time in msecs.
-    TimeInterval getFadeoutMsec() const;
+    qint32 getFadeoutMsec() const;
+
+  public slots:
 
     /*
-     * Mutators
+     * Slots
      */
 
     /// Set the volume level.
-    void setVolume(Volume volume);
+    void setVolume(qreal volume);
 
     /// Set whether the audio is muted.
     void setMuted(bool muted);
 
     /// Set the fadeout time in msecs.
-    void setFadeoutMsec(TimeInterval fadeoutMsec);
+    void setFadeoutMsec(qint32 fadeoutMsec);
+
+  signals:
+
+    /*
+     * Signals
+     */
+
+    /// Volume level has changed.
+    void volumeChanged(qreal newVolume);
+
+    /// Muted has changed.
+    void mutedChanged(bool muted);
 
   private:
 
@@ -72,13 +75,13 @@ class KwMediaPreferencesAudio : public KwAbstractMediaPreferences
      */
 
     /// Volume level.
-    Volume m_volume;
+    qreal m_volume;
 
     /// Whether the sound is muted.
     bool m_muted;
 
     /// Audio fadeout time in msec.
-    TimeInterval m_fadeoutMsec;
+    qint32 m_fadeoutMsec;
 
 };
 

@@ -7,13 +7,15 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <QObject>
+
 class KwMediaManager;
 
 /// A media item's preferences.
 /**
  * To allow live updating of outputs.
  */
-class KwAbstractMediaPreferences
+class KwAbstractMediaPreferences : public QObject
 {
   public:
 

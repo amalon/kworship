@@ -9,6 +9,9 @@
 
 #include <phonon/path.h>
 
+#include <phonon/phononnamespace.h>
+
+#include <QObject>
 #include <QString>
 #include <QSet>
 
@@ -34,8 +37,9 @@ typedef Phonon::MediaObject KwMediaSource;
 typedef Phonon::VideoWidget KwVideoWidget;
 
 /// Manage currently playing media.
-class KwMediaManager
+class KwMediaManager : public QObject
 {
+    Q_OBJECT
   public:
 
     /*
@@ -122,6 +126,75 @@ class KwMediaManager
     /// Is video playing?
     bool isVideo() const;
 
+  public slots:
+
+    /*
+     * Media control slots
+     */
+
+    /// Play/pause audio.
+    void audioPlayPause();
+
+    /// Play/pause video.
+    void videoPlayPause();
+
+    /// Stop audio.
+    void audioStop();
+
+    /// Stop video.
+    void videoStop();
+
+  signals:
+
+    /*
+     * Sequence signals
+     */
+
+    /// Audio has changed.
+    void audioChanged();
+    /// Video has changed.
+    void videoChanged();
+
+    /// Audio media name changed.
+    void audioMediaNameChanged(QString name);
+    /// Video media name changed.
+    void videoMediaNameChanged(QString name);
+
+    /// Audio has changed state.
+    void audioStateChanged(Phonon::State newState, Phonon::State oldState);
+    /// Video has changed state.
+    void videoStateChanged(Phonon::State newState, Phonon::State oldState);
+
+    /*
+     * Audio signals
+     */
+
+    /// Set the volume level.
+    void setVolume(qreal volume);
+
+    /// Set whether the audio is muted.
+    void setMuted(bool muted);
+
+    /// Set the fadeout time in msecs.
+    void setFadeoutMsec(qint32 fadeoutMsec);
+
+    /// Volume level has changed.
+    void volumeChanged(qreal newVolume);
+
+    /// Muted has changed.
+    void mutedChanged(bool muted);
+
+  private slots:
+
+    /*
+     * Private slots
+     */
+
+    /// The audio object's metadata has changed.
+    void audioMetaDataHasChanged();
+    /// The video object's metadata has changed.
+    void videoMetaDataHasChanged();
+
   private:
 
     /*
@@ -183,6 +256,31 @@ class KwMediaManager
 
     /// Now playing video data.
     NowPlayingDataVideo m_video;
+
+    /*
+     * Internal functions
+     */
+
+    /// Make the internal connections for a new media object.
+    void connectAudioObject();
+    /// Remove the internal connections for an old media object.
+    void disconnectAudioObject();
+
+    /// Make the internal connections for a new video object.
+    void connectVideoObject();
+    /// Remove the internal connections for an old video object.
+    void disconnectVideoObject();
+
+    /// Make the internal connections for a new audio ouptut.
+    void connectAudioOutput(KwAudioOutput* output);
+    /// Remove the internal connections for an old audio output.
+    void disconnectAudioOutput(KwAudioOutput* output);
+
+    /// Make the internal connections for a new video ouptut.
+    void connectVideoOutput(KwVideoWidget* output);
+    /// Remove the internal connections for an old video output.
+    void disconnectVideoOutput(KwVideoWidget* output);
+
 
 };
 

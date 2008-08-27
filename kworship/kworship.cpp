@@ -34,6 +34,7 @@
 #include "KwLocalDisplayPreview.h"
 
 #include "KwMediaManager.h"
+#include "KwMediaControlWidget.h"
 
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
@@ -83,6 +84,7 @@ kworship::kworship()
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockPreview);
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockLyrics);
   addDockWidget(Qt::BottomDockWidgetArea, m_view->dockThemes);
+  addDockWidget(Qt::BottomDockWidgetArea, m_view->dockNowPlaying);
 
   // Setup some stuff in the tree
 #if 0
@@ -119,6 +121,7 @@ kworship::kworship()
 
   m_primaryPlaylist->addItem(new KwPlaylistImage("/home/james/media/images/projector/misc/love-god-light.jpg"));
   m_primaryPlaylist->addItem(new KwPlaylistVideo("/home/james/YouTube/songs/great_big_god.flv"));
+  m_primaryPlaylist->addItem(new KwPlaylistVideo("/home/james/YouTube/songs/Hillsong_Kidz_Rainbow.flv"));
 
   m_playlistModel = new KwPlaylistModel;
   m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
@@ -135,6 +138,9 @@ kworship::kworship()
 
 
   connect(m_view->treePlaylist, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
+
+  KwMediaControlWidget* mediaWidget = new KwMediaControlWidget(m_mediaManager, m_view->dockNowPlaying);
+  m_view->layoutNowPlaying->addWidget(mediaWidget);
 }
 
 kworship::~kworship()

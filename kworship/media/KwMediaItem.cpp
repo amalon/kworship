@@ -46,12 +46,12 @@ void KwMediaItem::playMedia(KwMediaManager* mediaManager)
     if (0 != m_visualPreferences)
     {
       // The media has video
-      mediaManager->setupVideo(m_url, m_sequencePreferences, m_visualPreferences, m_audioPreferences)->play();
+      mediaManager->setupVideo(m_url, m_sequencePreferences, m_visualPreferences, m_audioPreferences); //->play();
     }
     else if (0 != m_audioPreferences)
     {
       // The media has audio
-      mediaManager->setupAudio(m_url, m_sequencePreferences, m_audioPreferences)->play();
+      mediaManager->setupAudio(m_url, m_sequencePreferences, m_audioPreferences); //->play();
     }
   }
 }
