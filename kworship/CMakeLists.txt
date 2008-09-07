@@ -7,10 +7,12 @@ include_directories(${KDE4_INCLUDES}
                     ../include
                     media
                     display
+                    css
                     playlist
 )
 add_subdirectory (media)
 add_subdirectory (display)
+add_subdirectory (css)
 add_subdirectory (playlist)
 
 set(kworship_SRCS
@@ -30,6 +32,7 @@ target_link_libraries(kworship
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
                       kworshipplaylist
+                      kworshipcss
                       kworshipdisplay
                       kworshipmedia
 )

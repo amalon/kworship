@@ -44,6 +44,8 @@ QVariant KwPlaylistPagedNodePage::getData(int role, int column)
 
 void KwPlaylistPagedNodePage::activate(KwDisplayManager* manager)
 {
+  manager->applyStyles(m_item);
+  // Set text
   manager->text.setText(m_item->getPageText(m_page));
 }
 

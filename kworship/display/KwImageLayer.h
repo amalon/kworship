@@ -10,6 +10,7 @@
 #include "KwAbstractLayer.h"
 
 #include <QSize>
+#include <QBrush>
 #include <QPixmap>
 
 /// Background image layer.
@@ -23,6 +24,9 @@ class KwImageLayer : public KwAbstractLayer
 
     /// Default constructor.
     KwImageLayer();
+
+    /// Primary constructor.
+    KwImageLayer(QBrush brush);
 
     /// Primary constructor.
     KwImageLayer(const QPixmap& pixmap);
@@ -45,6 +49,9 @@ class KwImageLayer : public KwAbstractLayer
     /*
      * Variables
      */
+
+    /// Background brush.
+    QBrush m_brush;
 
     /// Pixmap image.
     QPixmap m_pixmap;

@@ -19,7 +19,13 @@ class KwImageWidget : public QWidget
      */
 
     /// Primary constructor.
+    KwImageWidget(QBrush brush);
+
+    /// Primary constructor.
     KwImageWidget(const QPixmap& pixmap, bool stretch, bool keepAspect);
+
+    /// Primary constructor.
+    KwImageWidget(QBrush brush, const QPixmap& pixmap, bool stretch, bool keepAspect);
 
     /// Destructor.
     virtual ~KwImageWidget();
@@ -38,6 +44,9 @@ class KwImageWidget : public QWidget
     /*
      * Variables
      */
+
+    /// Background brush.
+    QBrush m_brush;
 
     /// Pixmap image.
     QPixmap m_pixmap;

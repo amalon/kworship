@@ -9,6 +9,8 @@
 
 #include "KwAbstractDisplayManager.h"
 
+class KwCssScope;
+
 /// Overlay manager.
 /**
  * High level interface for controlling overlay notices.
@@ -27,6 +29,12 @@ class KwOverlayManager : public KwAbstractDisplayManager
     /// Destructor.
     virtual ~KwOverlayManager();
 
+    /*
+     * Main interface
+     */
+
+    /// Apply the styles in a scope.
+    void applyStyles(KwCssScope* scope);
 };
 
 #endif // _KwOverlayManager_h_

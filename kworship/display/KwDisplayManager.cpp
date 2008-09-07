@@ -31,6 +31,18 @@ KwDisplayManager::~KwDisplayManager()
 }
 
 /*
+ * Main interface
+ */
+
+/// Apply the styles in a scope.
+void KwDisplayManager::applyStyles(KwCssScope* scope)
+{
+  background.applyStyles(scope);
+  text.applyStyles(scope);
+  overlay.applyStyles(scope);
+}
+
+/*
  * Accessors
  */
 

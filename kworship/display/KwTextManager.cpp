@@ -26,6 +26,12 @@ KwTextManager::~KwTextManager()
  * Main interface
  */
 
+/// Apply the styles in a scope.
+void KwTextManager::applyStyles(KwCssScope* scope)
+{
+  Q_UNUSED(scope)
+}
+
 /// Clear all text.
 void KwTextManager::clear()
 {

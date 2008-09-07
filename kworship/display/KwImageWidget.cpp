@@ -14,8 +14,29 @@
  */
 
 /// Primary constructor.
+KwImageWidget::KwImageWidget(QBrush brush)
+: QWidget()
+, m_brush(brush)
+, m_pixmap()
+, m_stretch(false)
+, m_keepAspect(false)
+{
+}
+
+/// Primary constructor.
 KwImageWidget::KwImageWidget(const QPixmap& pixmap, bool stretch, bool keepAspect)
 : QWidget()
+, m_brush()
+, m_pixmap(pixmap)
+, m_stretch(stretch)
+, m_keepAspect(keepAspect)
+{
+}
+
+/// Primary constructor.
+KwImageWidget::KwImageWidget(QBrush brush, const QPixmap& pixmap, bool stretch, bool keepAspect)
+: QWidget()
+, m_brush(brush)
 , m_pixmap(pixmap)
 , m_stretch(stretch)
 , m_keepAspect(keepAspect)
@@ -35,10 +56,12 @@ KwImageWidget::~KwImageWidget()
 /// Repaint evemt.
 void KwImageWidget::paintEvent(QPaintEvent* e)
 {
+  QPainter painter(this);
+  painter.setClipRegion(e->region());
+
+  // Image
   if (!m_pixmap.isNull())
   {
-    QPainter painter(this);
-    painter.setClipRegion(e->region());
     QSize sizeOnScreen(m_pixmap.size());
     QRect fragment(0, 0, m_pixmap.width(), m_pixmap.height());
 
@@ -61,6 +84,13 @@ void KwImageWidget::paintEvent(QPaintEvent* e)
     QRect placement(0, 0, sizeOnScreen.width(), sizeOnScreen.height());
     placement.moveCenter(QPoint(width()>>1, height()>>1));
     painter.drawPixmap(placement, m_pixmap, fragment);
+
+    /// @todo Brush the background
+  }
+  else
+  {
+    // Just brush it
+    painter.fillRect(e->region().boundingRect(), m_brush);
   }
 }
 

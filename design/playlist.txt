@@ -10,35 +10,34 @@ class KwPlaylistTreeItem;
 
 Song
   "$SONGNAME"
-    "Versions"
-      "$VERSIONNAME"
-        ...
+    "(Settings)"
+      "Version" "[version drop down]" "[save as ...]"
+        "$VERSIONNAME"
+        "$VERSIONDESCRIPTION"
     ...
-    "Video"
-      "$VIDEONAME"
-        "length: xxx"
-        "audio: on"
-        "media controls"
-    "Audio"
-      "$AUDIONAME"
-        "media controls"
-        "length: xxx"
-    "Lyrics"
-      "(settings)"
-        "(display)"
-          "theme: $THEME/custom"
-            "background: $BACKGROUND"
-            "Font colour: XXX"
-            "Font: $FONT"
-            "Font size: $SIZE"
-            "Font outline: XXX"
-            "Font shadow: XXX"
-        "Timing: {automatic,manual}"
-      "$LYRICS"
-        double click to display
-        single click to select next
-        right click
-          "
+    "(Customisation)" "<customisation icons>"
+      "Theme" "[theme drop down]" "[save as ...]"
+        "Background"
+          "[background type drop down: plain, file]"
+          "$URL" "[browse]" "[preview]"
+          "length: %f"
+          "loop: on/off"
+          "audio: on/off"
+        "Text" "<sample text>"
+          "Font colour: XXX"
+          "Font: $FONT"
+          "Font size: $SIZE"
+          "Font outline: XXX"
+          "Font shadow: XXX"
+        "Lyrics"
+          lyric fitting options
+      "Audio"
+        "$URL" "[browse]" "[preview]"
+        "length: %f"
+        "loop: on/off"
+    "$LYRIC" "<trigger icon>" "[customise]"
+    ...
+
 
 SongItem
   SongVersions

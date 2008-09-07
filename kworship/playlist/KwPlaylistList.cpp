@@ -33,6 +33,7 @@ KwPlaylistList::~KwPlaylistList()
 void KwPlaylistList::addItem(KwPlaylistItem* item)
 {
   m_playlist.push_back(item);
+  item->setParentScope(this);
 }
 
 /// Get the number of children.

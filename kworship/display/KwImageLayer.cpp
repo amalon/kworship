@@ -18,6 +18,7 @@
 /// Default constructor.
 KwImageLayer::KwImageLayer()
 : KwAbstractLayer()
+, m_brush()
 , m_pixmap()
 , m_stretch(false)
 , m_keepAspect(false)
@@ -25,8 +26,19 @@ KwImageLayer::KwImageLayer()
 }
 
 /// Primary constructor.
+KwImageLayer::KwImageLayer(QBrush brush)
+: KwAbstractLayer()
+, m_brush(brush)
+, m_pixmap()
+, m_stretch(true)
+, m_keepAspect(false)
+{
+}
+
+/// Primary constructor.
 KwImageLayer::KwImageLayer(const QPixmap& pixmap)
 : KwAbstractLayer()
+, m_brush()
 , m_pixmap(pixmap)
 , m_stretch(true)
 , m_keepAspect(false)
@@ -55,7 +67,7 @@ void* KwImageLayer::addWidgets(QWidget* master) const
 {
   KwImageLayerData* data = new KwImageLayerData;
 
-  data->imageWidget = new KwImageWidget(m_pixmap, m_stretch, m_keepAspect);
+  data->imageWidget = new KwImageWidget(m_brush, m_pixmap, m_stretch, m_keepAspect);
 
   QStackedLayout* layout = new QStackedLayout();
   layout->setStackingMode(QStackedLayout::StackAll);

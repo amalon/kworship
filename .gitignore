@@ -1,0 +1,24 @@
+# Misc
+*~
+lib
+temp
+
+# CMake
+Makefile
+CMakeFiles
+CMakeCache.txt
+CMakeTmp
+DartTestfile.txt
+cmake_install.cmake
+cmake_uninstall.cmake
+
+# Qt MOC
+moc_*.cpp
+*_automoc.cpp
+*_automoc.cpp.files
+*.moc
+
+# KDE
+ui_*.h
+settings.h
+settings.cpp

@@ -30,6 +30,9 @@
 #include "KwPlaylistVideo.h"
 #include "KwPlaylistModel.h"
 
+#include "KwCssStyleSheet.h"
+#include "KwCssStyleRule.h"
+
 #include "KwDisplayManager.h"
 #include "KwLocalDisplayPreview.h"
 
@@ -47,6 +50,7 @@
 
 #include <QtGui/QDropEvent>
 #include <QtGui/QPainter>
+#include <QColor>
 
 kworship::kworship()
 : KXmlGuiWindow()
@@ -106,12 +110,23 @@ kworship::kworship()
   m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #2a#"));
   m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #3a#"));
 
+  KwCssStyleSheet* styleRules = new KwCssStyleSheet;
+
+  KwCssStyleRule beachyTheme;
+  beachyTheme.setCriteriaClasses(QSet<QString>() << "beachy");
+  beachyTheme.setStyle<QBrush>("background.brush", Qt::black);
+  beachyTheme.setStyle<QPixmap>("background.image.pixmap", QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
+  styleRules->addRule(beachyTheme);
+
+  m_primaryPlaylist->addStyleSheet(styleRules);
+
   KwPlaylistItem* song;
   m_primaryPlaylist->addItem(song = new KwPlaylistText("Our God is a great big God", QStringList()
     << "Our God is a great big God,\nOur God is a great big God,\nOur God is a great big God,\nAnd He holds us in his hands."
     << "He's higher than a skyscraper\nAnd he's deeper than a submarine.\nHe's wider than the universe\nAnd beyond my wildest dreams."
     << "And He's known me and He's loved me\nSince before the world began.\nHow wonderful\nto be a part\nof God's amazing plan"
   ));
+  song->addClass("beachy");
 
   KwPlaylistList* list1 = new KwPlaylistList();
   m_primaryPlaylist->addItem(list1);
@@ -135,7 +150,6 @@ kworship::kworship()
   m_previewDisplay = new KwLocalDisplayPreview;
   m_view->layoutPreview->addWidget(m_previewDisplay);
   m_displayController.attachChild(m_previewDisplay);
-
 
   connect(m_view->treePlaylist, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
 

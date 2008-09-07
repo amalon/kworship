@@ -132,12 +132,16 @@ void KwDisplayMixer::ProxyDisplay::setDisplayResolutionEvent(QSize size)
 void KwDisplayMixer::ProxyDisplay::clearLayersEvent()
 {
   unsigned int numLayers = getCachedLayerCount();
-  while (numLayers > 0)
+  if (numLayers > 0)
   {
-    m_mixer->removeLayer(m_firstLayer);
-    --numLayers;
+    adjustLayerCount(-numLayers);
+    do
+    {
+      m_mixer->removeLayer(m_firstLayer);
+      --numLayers;
+    }
+    while (numLayers > 0);
   }
-  adjustLayerCount(-numLayers);
 }
 
 void KwDisplayMixer::ProxyDisplay::setLayerEvent(unsigned int index, const KwAbstractLayer* layer, bool insert)
@@ -174,6 +178,8 @@ void KwDisplayMixer::ProxyDisplay::removeLayerEvent(unsigned int index)
 /// Adjust the layer count of layer proxy displays in the list.
 void KwDisplayMixer::ProxyDisplay::adjustLayerCount(int adjustment)
 {
+  /// @pre @p adjustment != 0
+  assert(adjustment != 0);
   ProxyDisplay* it = m_next;
   while (it != 0)
   {

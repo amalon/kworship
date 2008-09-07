@@ -12,6 +12,7 @@ set(kworshipdisplay_SRCS
     KwLocalDisplayController.cpp
     KwRemoteDisplayController.cpp
     KwRemoteDisplay.cpp
+    KwLoggingDisplay.cpp
     KwDisplayMixer.cpp
     KwAbstractLayer.cpp
     KwImageLayer.cpp

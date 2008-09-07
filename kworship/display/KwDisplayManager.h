@@ -12,6 +12,8 @@
 #include "KwTextManager.h"
 #include "KwOverlayManager.h"
 
+class KwCssScope;
+
 class KwMediaManager;
 
 /// Abstract display management.
@@ -44,6 +46,13 @@ class KwDisplayManager
 
     /// Destructor.
     virtual ~KwDisplayManager();
+
+    /*
+     * Main interface
+     */
+
+    /// Apply the styles in a scope.
+    void applyStyles(KwCssScope* scope);
 
     /*
      * Accessors

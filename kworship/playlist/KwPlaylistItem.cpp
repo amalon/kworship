@@ -12,6 +12,7 @@
 
 /// Default constructor.
 KwPlaylistItem::KwPlaylistItem()
+: KwCssScope()
 {
 }
 

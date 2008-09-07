@@ -1,0 +1,97 @@
+classes
+  AbstractStyle
+  AbstractStyleState
+  Scope
+  Style
+  StylesDefinition
+  Styles
+  StyleState
+  StyleStates
+ +StyleSheet
+ +StyleSheetFile
+
+
+Simple heirarchy of elements
+  default
+    system
+      user#james
+        profile#default
+          file
+            playlist
+              song#GreatBigGod.actions.music
+                text#songname.smallprint
+                text#copyright.smallprint
+                verse#1.noah
+                verse#2.chorus
+                  page
+                    text#lyrics.lyrics
+every scope has:
+  type:name key
+  set of classes
+  set of css stylesheets (like a css file local to the scope of the item)
+    each definition can have multiple triggers (ref counted)
+    scope type and name are implied
+    therefore only needed when applying to children
+      e.g. song style may be stored in song db and copied to song object
+           song_instance styles get stored in file and override song object
+  hardcoded style lists (the content of {} in css)
+
+recalculateStyles(scope)
+  get parent styles (recursive)
+  get parent style definitions
+  fast lookup in definitions for this->type#this->name as next type#name
+    check matching classes
+      if last type#name
+        apply styles
+        remove from list
+  add local stylesheets to list
+  apply local style lists
+  recalculate children
+
+class categories
+  background_%s
+  tag_%s
+  verse_%u
+items
+  song
+  bible
+
+style definition
+  types/names of scopes
+  classes
+  use classes
+  styles
+
+== backgrounds ==
+
+.background_sunset
+{
+  background-image: "sunset.jpg";
+  background-aspect: stretch;
+  font-fill: solid red;
+  font-outline: 8% solid black;
+  font-shadow: solid gray;
+  font-shadow-offset: 20%;
+}
+
+.background_sunset #overlay
+{
+  position: top;
+  overlay-fill: solid grey;
+  overlay-opacity: 30%;
+  font-shadow: none;
+}
+
+== profiles ==
+
+== playlist ==
+
+== song ==
+.chorus : .tag_wonderous;
+
+=== 1 ===
+.chorus;
+
+{
+  font-size: 90%;
+}

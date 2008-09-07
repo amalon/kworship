@@ -1,0 +1,123 @@
+Use a customisation structure similar to cascading stylesheets
+
+Cascading customisations
+  each item has a list of class names
+  simple rules determine the styles based on the class names
+    global
+    nested
+  scopes manage most things
+    contain a stylesheet like a CSS file, a set of definitions
+      list of labels that must be applied to activate this style
+        what to apply the style to
+      list of classes that must be applied to activate this style
+        in what case to apply the style
+      list of style overrides
+        the style to apply
+  to resolve the styles we need
+    the scope to apply the styles
+    what we're applying it to
+      type of object {song, verse etc}
+    what classes are active
+      e.g. song_tag_creation
+           profile_traditional
+           profile_colourful
+
+scopes
+  default  - program defaults
+  system   - system styles, global to all users
+    installed backgrounds
+  user     - user styles, specific to the user
+    user backgrounds
+  profile  - profile styles
+    
+  playlist - specific styles for the playlist
+
+parameters
+  background
+    brush
+    image
+    video
+      path
+      loop
+  audio
+  font
+    face
+    decoration
+    color
+    shadow
+    outline
+
+playlist tree
+  playlist
+    (styles)
+      [<apply here>] class: plain "[globalise]" <select and the properties are displayed in a separate tree>
+        (style refefrences)
+        <style tree modifications only>
+    (style references) [style drop down][add]
+      some_other_class [remove]
+    some item
+      (classes)
+
+style tree
+  [ ] show modifications only
+  background (bold if modified)
+    name | <value> [revert button]
+{{{
+
+KwCssAbstractStyleState
+
+template <typename T> KwCssStyleState : KwCssAbstractStyleState
+  QList<T> stack
+  operator KwCssStyle
+
+KwCssAbstractStyle
+
+template <typename T> KwCssStyle : KwCssAbstractStyle
+  enum {
+    override,
+    clear,
+    pop
+  } mode;
+  T value
+  operator KwCssStyleState
+
+KwCssStyleDefinition
+  QString class;
+  KwCssPropertyMap styles;
+
+typedef QMap<QString, KwCssAbstractStyleProperty> KwCssPropertyMap;
+
+KwCssScope
+  KwCssStyleDefinition* findStyleDefinition(QString class);
+  KwCssPropertyMap* getStyles();
+  KwCssPropertyMap* recalculateStyles();
+
+  KwCssScope* parentScope;
+  QMap<QString,KwCssStyleDefinition*> styleDefinitions;
+  QStringList classes;
+  QSet<KwCssScope*> childScopes;
+
+}}}
+
+class AbstractStylePropertyState
+
+template <T>
+class StylePropertyState
+  stack<T> value;
+
+class AbstractStyleCustomisation
+  virtual applyToState(AbstractStylePropertyState*) = 0;
+
+template <T>
+class StyleCustomisation
+  {clear, revert, override} type
+  T newValue
+
+// apply a customisation to a state
+operator << (StylePropertyState*, StyleCustomisation*)
+
+class StyleBankState
+  Map<String, StylePropertyState> states
+
+class StyleBank
+  Map<String, StyleCustomisation> properties

@@ -7,13 +7,15 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "KwCssScope.h"
+
 class KwPlaylistNode;
 
 /// An item that can be added to a playlist.
 /**
  * Inherit from this class for each playlist item type.
  */
-class KwPlaylistItem
+class KwPlaylistItem : public KwCssScope
 {
   public:
     

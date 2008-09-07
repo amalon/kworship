@@ -11,6 +11,8 @@
 
 #include <QString>
 
+class KwCssScope;
+
 /// Text manager.
 /**
  * High level interface for controlling text on screen.
@@ -32,6 +34,9 @@ class KwTextManager : public KwAbstractDisplayManager
     /*
      * Main interface
      */
+
+    /// Apply the styles in a scope.
+    void applyStyles(KwCssScope* scope);
 
     /// Clear all text.
     void clear();

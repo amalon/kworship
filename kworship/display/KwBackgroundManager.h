@@ -10,12 +10,15 @@
 #include "KwAbstractDisplayManager.h"
 
 #include <QPixmap>
+#include <QBrush>
 
 class KwMediaManager;
 class KwMediaItemVideo;
 
 class KwImageLayer;
 class KwVideoLayer;
+
+class KwCssScope;
 
 /// Background manager.
 /**
@@ -39,8 +42,14 @@ class KwBackgroundManager : public KwAbstractDisplayManager
      * Main interface
      */
 
+    /// Apply the styles in a scope.
+    void applyStyles(KwCssScope* scope);
+
     /// Clear the background.
     void clear();
+
+    /// Set background to a brush.
+    void setPlain(QBrush brush);
 
     /// Set the background to an image.
     void setImage(const QPixmap& pixmap);

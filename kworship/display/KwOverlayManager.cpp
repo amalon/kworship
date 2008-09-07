@@ -20,3 +20,13 @@ KwOverlayManager::~KwOverlayManager()
 {
 }
 
+/*
+ * Main interface
+ */
+
+/// Apply the styles in a scope.
+void KwOverlayManager::applyStyles(KwCssScope* scope)
+{
+  Q_UNUSED(scope)
+}
+
