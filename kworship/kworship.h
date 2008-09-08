@@ -64,7 +64,13 @@ public:
     virtual ~kworship();
 
 private slots:
+    void toggleMainDisplay(bool checked);
+    void mainDisplayClosed();
     void fileNew();
+    void fileOpen();
+    void fileSave();
+    void fileSaveAs();
+    void toggleFullscreen(bool checked);
     void optionsPreferences();
     void playlist_doubleClicked(QModelIndex);
 
@@ -85,6 +91,7 @@ private:
     KwPlaylistModel* m_playlistModel;
 
     KPrinter   *m_printer;
+    KToggleAction* m_mainDisplayAction;
     KToggleAction *m_toolbarAction;
     KToggleAction *m_statusbarAction;
 };

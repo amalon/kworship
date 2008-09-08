@@ -63,6 +63,11 @@ void KwLocalDisplay::resizeEvent(QResizeEvent*)
   }
 }
 
+void KwLocalDisplay::closeEvent(QCloseEvent*)
+{
+  closed();
+}
+
 /*
  * Main interface events for extension
  */

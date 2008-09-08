@@ -43,6 +43,7 @@
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
 #include <kaction.h>
+#include <ktoggleaction.h>
 #include <kactioncollection.h>
 #include <kstandardaction.h>
 #include <KDE/KLocale>
@@ -164,34 +165,81 @@ kworship::~kworship()
 
 void kworship::setupActions()
 {
-    KStandardAction::openNew(this, SLOT(fileNew()), actionCollection());
-    KStandardAction::quit(qApp, SLOT(quit()), actionCollection());
+  // Application
+  KStandardAction::quit(qApp, SLOT(quit()), actionCollection());
+  KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
 
-    KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
+  // File management
+  KStandardAction::openNew(this, SLOT(fileNew()), actionCollection());
+  KStandardAction::open(this, SLOT(fileOpen()), actionCollection());
+  KStandardAction::save(this, SLOT(fileSave()), actionCollection());
+  KStandardAction::saveAs(this, SLOT(fileSaveAs()), actionCollection());
 
-    // custom menu and menu item - the slot is in the class kworshipView
-    //KAction *custom = new KAction(KIcon("colorize"), i18n("Swi&tch Colors"), this);
-    //actionCollection()->addAction( QLatin1String("switch_action"), custom );
-    //connect(custom, SIGNAL(triggered(bool)), m_view, SLOT(switchColors()));
+  // View
+  KStandardAction::fullScreen(this, SLOT(toggleFullscreen(bool)), this, actionCollection());
+
+  // custom menu and menu item - the slot is in the class kworshipView
+  m_mainDisplayAction = new KToggleAction(KIcon("colorize"), i18n("Show Main Display"), this);
+  actionCollection()->addAction( QLatin1String("show_main_display"), m_mainDisplayAction );
+  connect(m_mainDisplayAction, SIGNAL(triggered(bool)), this, SLOT(toggleMainDisplay(bool)));
+}
+
+void kworship::toggleMainDisplay(bool checked)
+{
+  if (checked)
+  {
+    // Ensure the display exists
+    if (0 == m_mainDisplay)
+    {
+      m_mainDisplay = new KwLocalDisplay;
+      m_mainDisplay->setPrimary(true);
+      m_displayController.attachChild(m_mainDisplay);
+      connect(m_mainDisplay, SIGNAL(closed()), this, SLOT(mainDisplayClosed()));
+    }
+    m_mainDisplay->showFullScreen();
+  }
+  else
+  {
+    if (0 != m_mainDisplay)
+    {
+      m_mainDisplay->close();
+    }
+  }
+}
+
+void kworship::mainDisplayClosed()
+{
+  m_mainDisplay->deleteLater();
+  m_mainDisplay = 0;
+  m_mainDisplayAction->setChecked(false);
+}
+
+void kworship::toggleFullscreen(bool checked)
+{
+  if (checked)
+  {
+    showFullScreen();
+  }
+  else
+  {
+    showNormal();
+  }
 }
 
 void kworship::fileNew()
 {
-  // this slot is called whenever the File->New menu is selected,
-  // the New shortcut is pressed (usually CTRL+N) or the New toolbar
-  // button is clicked
+}
 
-  // create a new window
-  //(new kworship)->show();
-  bool newlyCreated = (0 == m_mainDisplay);
-  if (newlyCreated)
-  {
-    m_mainDisplay = new KwLocalDisplay;
-    m_mainDisplay->setPrimary(true);
-    m_displayController.attachChild(m_mainDisplay);
-  }
-  m_mainDisplay->showFullScreen();
-//  m_mainDisplay->show();
+void kworship::fileOpen()
+{
+}
+
+void kworship::fileSave()
+{
+}
+
+void kworship::fileSaveAs()
+{
 }
 
 void kworship::optionsPreferences()

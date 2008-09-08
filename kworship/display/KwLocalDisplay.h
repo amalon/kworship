@@ -39,6 +39,11 @@ class KwLocalDisplay : public QWidget, public KwAbstractDisplay
      */
     void setPrimary(bool newIsPrimary = true);
 
+  signals:
+
+    /// Triggered by closeEvent.
+    void closed();
+
   protected:
 
     /*
@@ -66,6 +71,9 @@ class KwLocalDisplay : public QWidget, public KwAbstractDisplay
 
     /// @copydoc QWidget::resizeEvent(QResizeEvent*)
     void resizeEvent(QResizeEvent*);
+
+    /// @copydoc QWidget::closeEvent(QCloseEvent*)
+    void closeEvent(QCloseEvent*);
 
   private:
 
