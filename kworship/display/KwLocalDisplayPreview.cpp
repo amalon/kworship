@@ -23,7 +23,6 @@ KwLocalDisplayPreview::KwLocalDisplayPreview(QWidget* parent)
 {
   // Set up graphics view
   setFrameShape(QFrame::NoFrame);
-  setFrameShadow(QFrame::Plain);
   setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -102,25 +101,10 @@ void KwLocalDisplayPreview::resizeEvent(QResizeEvent*)
 /// Resize contents.
 void KwLocalDisplayPreview::resizeContents(QSize fullSize, QSize localSize)
 {
-  QSizeF viewportSize = fullSize;
-  float localAspect = (float)localSize.width() / localSize.height();
-  float fullAspect = (float)viewportSize.width() / viewportSize.height();
-  if (localAspect > fullAspect)
-  {
-    viewportSize.setWidth((float)viewportSize.height() * localAspect);
-  }
-  else
-  {
-    viewportSize.setHeight((float)viewportSize.width() / localAspect);
-  }
+  Q_UNUSED(localSize);
 
-  m_displayProxy->setPos(-0.5f * fullSize.width(), -0.5f * fullSize.height());
   m_displayProxy->resize(fullSize);
-
   resetMatrix();
-  fitInView(-0.5f * viewportSize.width(),
-            -0.5f * viewportSize.height(),
-            viewportSize.width(),
-            viewportSize.height());
+  fitInView(m_displayProxy, Qt::KeepAspectRatio);
 }
 

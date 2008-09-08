@@ -34,6 +34,7 @@
 #include "KwCssStyleRule.h"
 
 #include "KwDisplayManager.h"
+#include "KwLocalDisplay.h"
 #include "KwLocalDisplayPreview.h"
 
 #include "KwMediaManager.h"
@@ -185,7 +186,7 @@ void kworship::fileNew()
   bool newlyCreated = (0 == m_mainDisplay);
   if (newlyCreated)
   {
-    m_mainDisplay = new KwLocalDisplayPreview;
+    m_mainDisplay = new KwLocalDisplay;
     m_mainDisplay->setPrimary(true);
     m_displayController.attachChild(m_mainDisplay);
   }

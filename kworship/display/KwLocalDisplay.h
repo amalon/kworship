@@ -29,6 +29,16 @@ class KwLocalDisplay : public QWidget, public KwAbstractDisplay
     /// Destructor.
     virtual ~KwLocalDisplay();
 
+    /*
+     * Public methods
+     */
+
+    /// Set whether this display is the primary display.
+    /**
+     * This makes the size of the display match the size of this widget.
+     */
+    void setPrimary(bool newIsPrimary = true);
+
   protected:
 
     /*
@@ -54,6 +64,9 @@ class KwLocalDisplay : public QWidget, public KwAbstractDisplay
     /// @copydoc QWidget::paintEvent(QPaintEvent*)
     void paintEvent(QPaintEvent *);
 
+    /// @copydoc QWidget::resizeEvent(QResizeEvent*)
+    void resizeEvent(QResizeEvent*);
+
   private:
 
     /*
@@ -66,6 +79,9 @@ class KwLocalDisplay : public QWidget, public KwAbstractDisplay
     /*
      * Variables
      */
+
+    /// Is this preview the primary display?
+    bool m_isPrimary;
 
     /// To store the result of KwAbstractLayer::addWidgets.
     LayerData m_layerWidgetData;

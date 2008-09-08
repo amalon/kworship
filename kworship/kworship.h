@@ -30,6 +30,7 @@
 #include <QModelIndex>
 
 class kworshipView;
+class KwLocalDisplay;
 class KwLocalDisplayPreview;
 class KwDisplayManager;
 class KwPlaylistList;
@@ -77,7 +78,7 @@ private:
     KwMediaManager* m_mediaManager;
     KwDisplayManager* m_displayManager;
     KwLocalDisplayController m_displayController;
-    KwLocalDisplayPreview* m_mainDisplay;
+    KwLocalDisplay* m_mainDisplay;
     KwLocalDisplayPreview* m_previewDisplay;
 
     KwPlaylistList* m_primaryPlaylist;

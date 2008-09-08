@@ -18,6 +18,7 @@
 KwLocalDisplay::KwLocalDisplay(QWidget* parent)
 : QWidget(parent)
 , KwAbstractDisplay()
+, m_isPrimary(false)
 , m_layout(new QStackedLayout)
 {
   m_layout->setStackingMode(QStackedLayout::StackAll);
@@ -30,6 +31,21 @@ KwLocalDisplay::~KwLocalDisplay()
   delete m_layout;
 }
 
+/*
+ * Public methods
+ */
+
+/// Set whether this display is the primary display.
+void KwLocalDisplay::setPrimary(bool newIsPrimary)
+{
+  m_isPrimary = newIsPrimary;
+  resizeEvent(0);
+}
+
+/*
+ * QT Events
+ */
+
 void KwLocalDisplay::paintEvent(QPaintEvent *e)
 {
   QPainter painter(this);
@@ -37,6 +53,14 @@ void KwLocalDisplay::paintEvent(QPaintEvent *e)
   painter.setBrush(QBrush(Qt::black));
   painter.setPen(QPen(Qt::black));
   painter.drawRect(e->rect());
+}
+
+void KwLocalDisplay::resizeEvent(QResizeEvent*)
+{
+  if (m_isPrimary)
+  {
+    getHighestParent()->setDisplayResolution(size());
+  }
 }
 
 /*
