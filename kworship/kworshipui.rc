@@ -3,6 +3,7 @@
   <MenuBar>
     <Menu name="menuDisplay"><text>&amp;Display</text>
       <Action name="show_main_display" />
+      <Action name="display_clear" />
     </Menu>
     <Menu name="menuPresentation"><text>&amp;Presentation</text>
     </Menu>

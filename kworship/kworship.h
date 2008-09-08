@@ -66,6 +66,7 @@ public:
 private slots:
     void toggleMainDisplay(bool checked);
     void mainDisplayClosed();
+    void displayClear();
     void fileNew();
     void fileOpen();
     void fileSave();

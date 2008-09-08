@@ -175,13 +175,18 @@ void kworship::setupActions()
   KStandardAction::save(this, SLOT(fileSave()), actionCollection());
   KStandardAction::saveAs(this, SLOT(fileSaveAs()), actionCollection());
 
-  // View
+  // Display
   KStandardAction::fullScreen(this, SLOT(toggleFullscreen(bool)), this, actionCollection());
-
-  // custom menu and menu item - the slot is in the class kworshipView
-  m_mainDisplayAction = new KToggleAction(KIcon("colorize"), i18n("Show Main Display"), this);
-  actionCollection()->addAction( QLatin1String("show_main_display"), m_mainDisplayAction );
-  connect(m_mainDisplayAction, SIGNAL(triggered(bool)), this, SLOT(toggleMainDisplay(bool)));
+  {
+    m_mainDisplayAction = new KToggleAction(KIcon("colorize"), i18n("Show Main Display"), this);
+    actionCollection()->addAction( QLatin1String("show_main_display"), m_mainDisplayAction );
+    connect(m_mainDisplayAction, SIGNAL(triggered(bool)), this, SLOT(toggleMainDisplay(bool)));
+  }
+  {
+    KAction* clearDisplayAction = new KAction(KIcon("clear"), i18n("Clear display"), this);
+    actionCollection()->addAction( QLatin1String("display_clear"), clearDisplayAction);
+    connect(clearDisplayAction, SIGNAL(triggered()), this, SLOT(displayClear()));
+  }
 }
 
 void kworship::toggleMainDisplay(bool checked)
@@ -212,6 +217,12 @@ void kworship::mainDisplayClosed()
   m_mainDisplay->deleteLater();
   m_mainDisplay = 0;
   m_mainDisplayAction->setChecked(false);
+}
+
+void kworship::displayClear()
+{
+  m_displayManager->background.clear();
+  m_displayManager->text.clear();
 }
 
 void kworship::toggleFullscreen(bool checked)
