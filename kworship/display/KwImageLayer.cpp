@@ -71,8 +71,8 @@ void* KwImageLayer::addWidgets(QWidget* master) const
 
   QStackedLayout* layout = new QStackedLayout();
   layout->setStackingMode(QStackedLayout::StackAll);
-  layout->addWidget(data->imageWidget);
   master->setLayout(layout);
+  layout->addWidget(data->imageWidget);
 
   return (void*)data;
 }

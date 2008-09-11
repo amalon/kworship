@@ -76,8 +76,8 @@ void* KwTextLayer::addWidgets(QWidget* master) const
 
   QStackedLayout* layout = new QStackedLayout();
   layout->setStackingMode(QStackedLayout::StackAll);
-  layout->addWidget(data->textBrowser);
   master->setLayout(layout);
+  layout->addWidget(data->textBrowser);
 
 
   return (void*)data;
