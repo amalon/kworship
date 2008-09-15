@@ -7,9 +7,9 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlaylistNode.h"
-
 #include <QAbstractItemModel>
+
+class KwPlaylistNode;
 
 /// A Qt model for playlist items.
 class KwPlaylistModel : public QAbstractItemModel

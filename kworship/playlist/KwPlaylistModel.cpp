@@ -5,6 +5,7 @@
  */
 
 #include "KwPlaylistModel.h"
+#include "KwPlaylistNode.h"
 
 #include <cassert>
 

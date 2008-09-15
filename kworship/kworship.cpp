@@ -23,6 +23,7 @@
 #include "kworshipview.h"
 #include "settings.h"
 
+#include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
 #include "KwPlaylistNote.h"
 #include "KwPlaylistText.h"
