@@ -53,8 +53,8 @@ void* KwVideoLayer::addWidgets(QWidget* master) const
 
   QStackedLayout* layout = new QStackedLayout(master);
   layout->setStackingMode(QStackedLayout::StackAll);
-  layout->addWidget(data->widget);
   master->setLayout(layout);
+  layout->addWidget(data->widget);
 
   return (void*)data;
 }
