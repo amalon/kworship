@@ -21,9 +21,12 @@ set(kworship_SRCS
     kworship.cpp
     main.cpp
     kworshipview.cpp
+    prefsDisplay.cpp
+    DesktopView.cpp
 )
 
-kde4_add_ui_files(kworship_SRCS kworshipview_base.ui prefs_base.ui)
+kde4_add_ui_files(kworship_SRCS kworshipview_base.ui prefs_base.ui
+                  prefsDisplay_base.ui)
 
 kde4_add_kcfg_files(kworship_SRCS settings.kcfgc )
 

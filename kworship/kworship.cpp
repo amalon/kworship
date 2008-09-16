@@ -22,6 +22,7 @@
 #include "kworship.h"
 #include "kworshipview.h"
 #include "settings.h"
+#include "prefsDisplay.h"
 
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -231,9 +232,6 @@ void kworship::toggleMainDisplay(bool checked)
       m_displayController.attachChild(m_mainDisplay);
       connect(m_mainDisplay, SIGNAL(closed()), this, SLOT(mainDisplayClosed()));
     }
-    QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
-    m_mainDisplay->move(desktop->screen(0)->pos());
-    //m_mainDisplay->resize(desktop->screen(0)->size());
     m_mainDisplay->showFullScreen();
   }
   else
@@ -298,12 +296,11 @@ void kworship::optionsPreferences()
   }
   KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
 
-  QWidget *generalSettingsDlg = new QWidget;
+  QWidget *generalSettingsDlg = new QWidget(dialog);
   ui_prefs_base.setupUi(generalSettingsDlg);
   dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
 
-  QWidget *displaySettingsDlg = new QWidget;
-  ui_prefsDisplay_base.setupUi(displaySettingsDlg);
+  prefsDisplay *displaySettingsDlg = new prefsDisplay(dialog);
   dialog->addPage(displaySettingsDlg, i18n("Display"), "display_setting");
 
   QWidget *songdbSettingsDlg = new QWidget;

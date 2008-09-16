@@ -10,20 +10,30 @@
    </rect>
   </property>
   <layout class="QGridLayout" >
-   <item row="0" column="0" >
-    <widget class="QGraphicsView" name="screenPreview" />
+   <item row="2" column="0" >
+    <layout class="QVBoxLayout" name="layoutScreens" />
    </item>
-   <item row="1" column="0" >
-    <widget class="QLabel" name="labelPosition" >
+   <item row="3" column="0" >
+    <widget class="QLabel" name="labelStatus" >
      <property name="text" >
       <string/>
      </property>
     </widget>
    </item>
-   <item row="2" column="0" >
-    <widget class="QLabel" name="labelResolution" >
+   <item row="0" column="0" >
+    <widget class="QRadioButton" name="radioAuto" >
      <property name="text" >
-      <string/>
+      <string>Choose the display screen automatically.</string>
+     </property>
+     <property name="checked" >
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QRadioButton" name="radioChoose" >
+     <property name="text" >
+      <string>Let me choose the display screen.</string>
      </property>
     </widget>
    </item>
