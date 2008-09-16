@@ -38,7 +38,7 @@ class KwDisplayManager;
 class KwPlaylistList;
 class KwPlaylistModel;
 class KwMediaManager;
-class KwSongDatabaseModel;
+class KwSongdbModel;
 
 class KPrinter;
 class KToggleAction;
@@ -95,7 +95,7 @@ private:
     KwPlaylistList* m_primaryPlaylist;
     KwPlaylistModel* m_playlistModel;
 
-    KwSongDatabaseModel* m_songDbModel;
+    KwSongdbModel* m_songDbModel;
 
     KPrinter   *m_printer;
     KToggleAction* m_mainDisplayAction;

@@ -6,9 +6,9 @@ include (KDE4Defaults)
 set(kworshipsongdb_MOC_SRCS
 )
 set(kworshipsongdb_SRCS
-    KwSongDatabase.cpp
-    KwSongDatabaseModel.cpp
-    KwSongDatabaseNode.cpp
+    KwSongdb.cpp
+    KwSongdbModel.cpp
+    KwSongdbNode.cpp
     ${kworshipsongdb_MOC_SRCS}
 )
 

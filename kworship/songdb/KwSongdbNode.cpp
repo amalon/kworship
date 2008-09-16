@@ -1,10 +1,10 @@
 /**
- * @file KwSongDatabaseNode.cpp
+ * @file KwSongdbNode.cpp
  * @brief A node on a song database tree.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwSongDatabaseNode.h"
+#include "KwSongdbNode.h"
 
 #include <cassert>
 
@@ -13,13 +13,13 @@
  */
 
 /// Primary constructor.
-KwSongDatabaseNode::KwSongDatabaseNode(KwSongDatabaseNode* parent)
+KwSongdbNode::KwSongdbNode(KwSongdbNode* parent)
 : m_parent(parent)
 {
 }
 
 /// Destructor.
-KwSongDatabaseNode::~KwSongDatabaseNode()
+KwSongdbNode::~KwSongdbNode()
 {
 }
 
@@ -28,13 +28,13 @@ KwSongDatabaseNode::~KwSongDatabaseNode()
  */
 
 /// Get the parent.
-KwSongDatabaseNode* KwSongDatabaseNode::getParent()
+KwSongdbNode* KwSongdbNode::getParent()
 {
   return m_parent;
 }
 
 /// Get data associated with the node.
-QVariant KwSongDatabaseNode::getData(int role, int column)
+QVariant KwSongdbNode::getData(int role, int column)
 {
   Q_UNUSED(role)
   Q_UNUSED(column)
@@ -42,13 +42,13 @@ QVariant KwSongDatabaseNode::getData(int role, int column)
 }
 
 /// Get the number of children.
-int KwSongDatabaseNode::getChildCount() const
+int KwSongdbNode::getChildCount() const
 {
   return 0;
 }
 
 /// Get a child node by index.
-KwSongDatabaseNode* KwSongDatabaseNode::getChild(int index)
+KwSongdbNode* KwSongdbNode::getChild(int index)
 {
   assert(index < getChildCount());
   if (index >= m_children.size())
@@ -69,7 +69,7 @@ KwSongDatabaseNode* KwSongDatabaseNode::getChild(int index)
 }
 
 /// Get the index of a certain child.
-int KwSongDatabaseNode::getChildIndex(KwSongDatabaseNode* node) const
+int KwSongdbNode::getChildIndex(KwSongdbNode* node) const
 {
   for (int i = 0; i < m_children.size(); ++i)
   {
@@ -82,12 +82,12 @@ int KwSongDatabaseNode::getChildIndex(KwSongDatabaseNode* node) const
 }
 
 /// Activate the node using a display manager.
-void KwSongDatabaseNode::activate(KwDisplayManager*)
+void KwSongdbNode::activate(KwDisplayManager*)
 {
 }
 
 /// Get a child node by index.
-KwSongDatabaseNode* KwSongDatabaseNode::_getChild(int index)
+KwSongdbNode* KwSongdbNode::_getChild(int index)
 {
   Q_UNUSED(index)
   return 0;

@@ -1,8 +1,8 @@
-#ifndef _KwSongDatabaseNode_h_
-#define _KwSongDatabaseNode_h_
+#ifndef _KwSongdbNode_h_
+#define _KwSongdbNode_h_
 
 /**
- * @file KwSongDatabaseNode.h
+ * @file KwSongdbNode.h
  * @brief A node on a song database tree.
  * @author James Hogan <james@albanarts.com>
  */
@@ -16,7 +16,7 @@ class KwDisplayManager;
 /**
  * Inherit from this class for each playlist node type.
  */
-class KwSongDatabaseNode
+class KwSongdbNode
 {
   public:
     
@@ -25,23 +25,23 @@ class KwSongDatabaseNode
      */
 
     /// Primary constructor.
-    KwSongDatabaseNode(KwSongDatabaseNode* parent);
+    KwSongdbNode(KwSongdbNode* parent);
 
     /// Destructor.
-    virtual ~KwSongDatabaseNode();
+    virtual ~KwSongdbNode();
 
     /*
      * Main interface
      */
 
     /// Get the parent.
-    KwSongDatabaseNode* getParent();
+    KwSongdbNode* getParent();
 
     /// Get a child node by index.
-    KwSongDatabaseNode* getChild(int index);
+    KwSongdbNode* getChild(int index);
 
     /// Get the index of a certain child.
-    int getChildIndex(KwSongDatabaseNode* node) const;
+    int getChildIndex(KwSongdbNode* node) const;
 
     /// Get data associated with the node.
     virtual QVariant getData(int role, int column);
@@ -55,7 +55,7 @@ class KwSongDatabaseNode
   protected:
 
     /// Get a child node by index.
-    virtual KwSongDatabaseNode* _getChild(int index);
+    virtual KwSongdbNode* _getChild(int index);
 
   private:
 
@@ -64,11 +64,11 @@ class KwSongDatabaseNode
      */
 
     /// Parent node.
-    KwSongDatabaseNode* m_parent;
+    KwSongdbNode* m_parent;
 
     /// Child nodes.
-    QVector<KwSongDatabaseNode*> m_children;
+    QVector<KwSongdbNode*> m_children;
 };
 
-#endif // _KwSongDatabaseNode_h_
+#endif // _KwSongdbNode_h_
 

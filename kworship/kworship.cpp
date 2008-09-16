@@ -42,7 +42,7 @@
 #include "KwMediaManager.h"
 #include "KwMediaControlWidget.h"
 
-#include "KwSongDatabaseModel.h"
+#include "KwSongdbModel.h"
 
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
@@ -184,7 +184,7 @@ kworship::kworship()
   groupByActions->addAction("Label / Song name / Version");
   groupByMenu->addActions(groupByActions->actions());
 
-  m_songDbModel = new KwSongDatabaseModel;
+  m_songDbModel = new KwSongdbModel;
   //m_songDbModel->setRootNode(m_primaryPlaylist->getNode(0));
   m_view->treeSongs->setModel(m_songDbModel);
 

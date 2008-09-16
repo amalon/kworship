@@ -1,18 +1,18 @@
-#ifndef _KwSongDatabaseModel_h_
-#define _KwSongDatabaseModel_h_
+#ifndef _KwSongdbModel_h_
+#define _KwSongdbModel_h_
 
 /**
- * @file KwSongDatabaseModel.h
+ * @file KwSongdbModel.h
  * @brief A Qt model for songs in the database.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include <QAbstractItemModel>
 
-class KwSongDatabaseNode;
+class KwSongdbNode;
 
 /// A Qt model for playlist items.
-class KwSongDatabaseModel : public QAbstractItemModel
+class KwSongdbModel : public QAbstractItemModel
 {
   public:
     
@@ -21,18 +21,18 @@ class KwSongDatabaseModel : public QAbstractItemModel
      */
 
     /// Default constructor.
-    KwSongDatabaseModel(QObject* parent = 0);
+    KwSongdbModel(QObject* parent = 0);
 
     /// Destructor.
-    virtual ~KwSongDatabaseModel();
+    virtual ~KwSongdbModel();
 
     /*
      * Main interface
      */
 
     /// Set the root node.
-    void setRootNode(KwSongDatabaseNode* root);
-    KwSongDatabaseNode* itemFromIndex(const QModelIndex &index) const;
+    void setRootNode(KwSongdbNode* root);
+    KwSongdbNode* itemFromIndex(const QModelIndex &index) const;
 
     QModelIndex index(int row, int column, const QModelIndex& parent) const;
     QModelIndex parent(const QModelIndex &child) const;
@@ -49,8 +49,8 @@ class KwSongDatabaseModel : public QAbstractItemModel
      */
 
     /// Root item.
-    KwSongDatabaseNode* m_root;
+    KwSongdbNode* m_root;
 };
 
-#endif // _KwSongDatabaseModel_h_
+#endif // _KwSongdbModel_h_
 
