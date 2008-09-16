@@ -20,9 +20,11 @@
 
 
 #include "kworship.h"
+
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
+#include <kconfigdialogmanager.h>
 #include <KDE/KLocale>
 
 static const char description[] =
@@ -41,6 +43,10 @@ int main(int argc, char **argv)
     options.add("+[URL]", ki18n( "Document to open" ));
     KCmdLineArgs::addCmdLineOptions(options);
     KApplication app;
+
+    // Screen number can be managed by a DesktopView widget
+    KConfigDialogManager::changedMap()->insert("DesktopView", SIGNAL(screenChanged(int)));
+    KConfigDialogManager::propertyMap()->insert("DesktopView", "selectedScreen");
 
     kworship *widget = new kworship;
 

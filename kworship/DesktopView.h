@@ -10,7 +10,9 @@
 #include <QGraphicsView>
 #include <QVector>
 
-/// Screens preview widget.
+/** Screens preview widget.
+ * @todo Ensure works well with out of range screen id
+ */
 class DesktopView : public QGraphicsView
 {
   Q_OBJECT
@@ -27,11 +29,29 @@ class DesktopView : public QGraphicsView
     ~DesktopView();
 
     /*
+     * Properties
+     */
+
+    Q_PROPERTY(int selectedScreen READ selectedScreen WRITE setSelectedScreen)
+
+    /*
      * Main interface
      */
 
     /// Find whether a screen is selected.
-    bool isScreenSelected(int screen);
+    bool isScreenSelected(int screen) const;
+
+    /// Find which single screen is selected.
+    int selectedScreen() const;
+
+  public slots:
+
+    /*
+     * Public slots
+     */
+
+    /// Set the selected screen.
+    void setSelectedScreen(int selectedScreen);
 
   signals:
 
@@ -41,6 +61,9 @@ class DesktopView : public QGraphicsView
 
     /// A screen selection has changed.
     void screenSelected(int screen, bool selected);
+
+    /// Current single select screen has changed.
+    void screenChanged(int screen);
 
     /// Status message has changed.
     void statusChanged(QString status);

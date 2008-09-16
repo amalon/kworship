@@ -21,19 +21,19 @@
     </widget>
    </item>
    <item row="0" column="0" >
-    <widget class="QRadioButton" name="radioAuto" >
+    <widget class="QRadioButton" name="kcfg_displayScreenAuto" >
      <property name="text" >
       <string>Choose the display screen automatically.</string>
-     </property>
-     <property name="checked" >
-      <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="1" column="0" >
-    <widget class="QRadioButton" name="radioChoose" >
+    <widget class="QRadioButton" name="kcfg_displayScreenChoose" >
      <property name="text" >
       <string>Let me choose the display screen.</string>
+     </property>
+     <property name="checked" >
+      <bool>true</bool>
      </property>
     </widget>
    </item>

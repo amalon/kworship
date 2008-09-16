@@ -40,7 +40,7 @@ DesktopView::~DesktopView()
  */
 
 /// Find whether a screen is selected.
-bool DesktopView::isScreenSelected(int screen)
+bool DesktopView::isScreenSelected(int screen) const
 {
   assert(screen >= 0 && screen < m_selectedScreens.size());
   if (m_multiSelect)
@@ -50,6 +50,41 @@ bool DesktopView::isScreenSelected(int screen)
   else
   {
     return (screen == m_selectedScreen);
+  }
+}
+
+/// Find which single screen is selected.
+int DesktopView::selectedScreen() const
+{
+  if (m_multiSelect)
+  {
+    /// @todo Implement multiselect selectedScreen()
+    return -1;
+  }
+  else
+  {
+    return m_selectedScreen;
+  }
+}
+
+/*
+ * Public slots
+ */
+
+/// Set the selected screen.
+void DesktopView::setSelectedScreen(int selectedScreen)
+{
+  if (m_multiSelect)
+  {
+    /// @todo Implement multiselect setSelectedScreen(int)
+  }
+  else if (m_selectedScreen != selectedScreen)
+  {
+    screenSelected(m_selectedScreen, false);
+    m_selectedScreen = selectedScreen;
+    screenSelected(m_selectedScreen, true);
+    singleSelectRestatus();
+    setup();
   }
 }
 
@@ -226,18 +261,25 @@ void DesktopView::singleSelectRestatus()
   assert(!m_multiSelect);
   if (m_selectedScreen >= 0)
   {
-    assert(m_selectedScreen < m_selectedScreens.size());
     QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
     assert(0 != desktop);
-    QRectF geom = desktop->screenGeometry(m_selectedScreen);
-    statusChanged(tr("Screen %1: \%2x%3.")
-                  .arg(m_selectedScreen+1)
-                  .arg(geom.width())
-                  .arg(geom.height()));
+    if (m_selectedScreen < m_selectedScreens.size())
+    {
+      QRectF geom = desktop->screenGeometry(m_selectedScreen);
+      statusChanged(tr("Screen %1: \%2x%3.")
+                    .arg(m_selectedScreen+1)
+                    .arg(geom.width())
+                    .arg(geom.height()));
+    }
+    else
+    {
+      statusChanged(tr("Screen %1: not plugged in."));
+    }
   }
   else
   {
     statusChanged("");
   }
+  screenChanged(m_selectedScreen);
 }
 

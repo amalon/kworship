@@ -4,18 +4,18 @@
       xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="KApp4rc"/>
-  <group name="Preferences">
-    <entry name="col_background" type="Color">
-	    <label>color of the background</label>
-	    <default>black</default>
+  <group name="Display">
+    <entry name="displayScreenAuto" type="Int">
+      <label>screen mode automatic</label>
+      <default>1</default>
     </entry>
-    <entry name="col_foreground" type="Color">
-	    <label>color of the foreground</label>
-	    <default>yellow</default>
+    <entry name="displayScreenChoose" type="Int">
+      <label>screen mode choose</label>
+      <default>0</default>
     </entry>
-    <entry name="val_time" type="Int">
-	    <label>size of a ball</label>
-	    <default>2</default>
+    <entry name="displayScreen" type="Int">
+      <label>screen number</label>
+      <default>1</default>
     </entry>
   </group>
 </kcfg>
