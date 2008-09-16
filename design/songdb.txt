@@ -1,0 +1,9 @@
+Song database treeview
+  lets use amarok for inspiration
+    Group by selector + search box
+      Song name / Version
+        song name and song versions
+      Song book / Numbered version
+        lists song books and numbered songs within each
+      Label / Song name / Song version
+

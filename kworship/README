@@ -4,4 +4,6 @@ sub modules
 
 media - media management code
 display - fairly low level display management
+css - fairly abstract cascading stylesheet code
+songdb - song management and models
 playlist - playlist management and data structures

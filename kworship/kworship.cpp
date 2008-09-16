@@ -41,9 +41,13 @@
 #include "KwMediaManager.h"
 #include "KwMediaControlWidget.h"
 
+#include "KwSongDatabaseModel.h"
+
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
 #include <kaction.h>
+#include <kactionmenu.h>
+#include <kmenu.h>
 #include <ktoggleaction.h>
 #include <kactioncollection.h>
 #include <kstandardaction.h>
@@ -54,6 +58,9 @@
 #include <QtGui/QDropEvent>
 #include <QtGui/QPainter>
 #include <QColor>
+#include <QDesktopWidget>
+#include <QToolBar>
+#include <QToolButton>
 
 kworship::kworship()
 : KXmlGuiWindow()
@@ -158,6 +165,28 @@ kworship::kworship()
 
   KwMediaControlWidget* mediaWidget = new KwMediaControlWidget(m_mediaManager, m_view->dockNowPlaying);
   m_view->layoutNowPlaying->addWidget(mediaWidget);
+
+  QToolBar* songToolBar = new QToolBar("Songs");
+  m_view->layoutSongsToolbar->layout()->addWidget(songToolBar);
+
+  KActionMenu* groupByAction = new KActionMenu(KIcon("ogg"), "Group By", songToolBar);
+  groupByAction->setDelayed(false);
+  songToolBar->addAction(groupByAction);
+
+  KMenu* groupByMenu = new KMenu(songToolBar);
+  groupByAction->setMenu(groupByMenu);
+
+  /// @todo Move to the model or something
+  QActionGroup* groupByActions = new QActionGroup(groupByMenu);
+  groupByActions->addAction("Song name / Version");
+  groupByActions->addAction("Song book / Song number");
+  groupByActions->addAction("Label / Song name / Version");
+  groupByMenu->addActions(groupByActions->actions());
+
+  m_songDbModel = new KwSongDatabaseModel;
+  //m_songDbModel->setRootNode(m_primaryPlaylist->getNode(0));
+  m_view->treeSongs->setModel(m_songDbModel);
+
 }
 
 kworship::~kworship()
@@ -202,6 +231,9 @@ void kworship::toggleMainDisplay(bool checked)
       m_displayController.attachChild(m_mainDisplay);
       connect(m_mainDisplay, SIGNAL(closed()), this, SLOT(mainDisplayClosed()));
     }
+    QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
+    m_mainDisplay->move(desktop->screen(0)->pos());
+    //m_mainDisplay->resize(desktop->screen(0)->size());
     m_mainDisplay->showFullScreen();
   }
   else
@@ -265,9 +297,19 @@ void kworship::optionsPreferences()
     return;
   }
   KConfigDialog *dialog = new KConfigDialog(this, "settings", Settings::self());
+
   QWidget *generalSettingsDlg = new QWidget;
   ui_prefs_base.setupUi(generalSettingsDlg);
   dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
+
+  QWidget *displaySettingsDlg = new QWidget;
+  ui_prefsDisplay_base.setupUi(displaySettingsDlg);
+  dialog->addPage(displaySettingsDlg, i18n("Display"), "display_setting");
+
+  QWidget *songdbSettingsDlg = new QWidget;
+  //ui_prefsSongdb_base.setupUi(songdbSettingsDlg);
+  dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "songdb_setting");
+
   connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
   dialog->setAttribute( Qt::WA_DeleteOnClose );
   dialog->show();

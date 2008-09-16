@@ -89,7 +89,7 @@ int KwPlaylistModel::rowCount(const QModelIndex& parent) const
 
 int KwPlaylistModel::columnCount(const QModelIndex& parent) const
 {
-  Q_UNUSED(parent);
+  Q_UNUSED(parent)
   return 2;
 }
 
@@ -101,7 +101,6 @@ QVariant KwPlaylistModel::data(const QModelIndex& index, int role) const
     return QVariant();
   }
   return item->getData(role, index.column());
-
 }
 
 QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, int role) const

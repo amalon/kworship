@@ -25,7 +25,9 @@
 
 #include <kxmlguiwindow.h>
 
+#include "ui_prefsDisplay_base.h"
 #include "ui_prefs_base.h"
+
 
 #include <QModelIndex>
 
@@ -36,6 +38,7 @@ class KwDisplayManager;
 class KwPlaylistList;
 class KwPlaylistModel;
 class KwMediaManager;
+class KwSongDatabaseModel;
 
 class KPrinter;
 class KToggleAction;
@@ -80,6 +83,7 @@ private:
 
 private:
     Ui::prefs_base ui_prefs_base ;
+    Ui::prefsDisplay_base ui_prefsDisplay_base ;
     kworshipView *m_view;
 
     KwMediaManager* m_mediaManager;
@@ -90,6 +94,8 @@ private:
 
     KwPlaylistList* m_primaryPlaylist;
     KwPlaylistModel* m_playlistModel;
+
+    KwSongDatabaseModel* m_songDbModel;
 
     KPrinter   *m_printer;
     KToggleAction* m_mainDisplayAction;

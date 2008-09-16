@@ -1,0 +1,39 @@
+<ui version="4.0" >
+ <class>prefsDisplay_base</class>
+ <widget class="QWidget" name="prefsDisplay_base" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>312</width>
+    <height>235</height>
+   </rect>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <widget class="QGraphicsView" name="screenPreview" />
+   </item>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="labelPosition" >
+     <property name="text" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="labelResolution" >
+     <property name="text" >
+      <string/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <includes>
+  <include location="local" >kcolorbutton.h</include>
+ </includes>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,9 @@
+display
+  preview of screen layout (QGraphicsView)
+    screens: greys
+    display: blue border
+  options
+    select or click screen number
+    bound multiple screens by ctrl+clicking or shift+clicking
+  display position and resolution
+

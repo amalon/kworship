@@ -150,29 +150,6 @@
      </widget>
     </widget>
    </item>
-   <item row="5" column="1" >
-    <widget class="QDockWidget" name="dockSongs" >
-     <property name="floating" >
-      <bool>false</bool>
-     </property>
-     <property name="windowTitle" >
-      <string>Song DB</string>
-     </property>
-     <widget class="QWidget" name="dockWidgetContents_3" >
-      <layout class="QVBoxLayout" name="verticalLayout_5" >
-       <item>
-        <widget class="QLineEdit" name="searchSongs" />
-       </item>
-       <item>
-        <widget class="QListView" name="listSongs" />
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6" />
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </item>
    <item row="5" column="0" >
     <widget class="QDockWidget" name="dockPlaylist" >
      <property name="layoutDirection" >
@@ -237,6 +214,32 @@
       <layout class="QVBoxLayout" name="verticalLayout_7" >
        <item>
         <widget class="QTreeView" name="treeView" />
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="5" column="1" >
+    <widget class="QDockWidget" name="dockSongs" >
+     <property name="floating" >
+      <bool>false</bool>
+     </property>
+     <property name="windowTitle" >
+      <string>Song DB</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents_3" >
+      <layout class="QVBoxLayout" name="verticalLayout_5" >
+       <item>
+        <layout class="QVBoxLayout" name="layoutSongsToolbar" />
+       </item>
+       <item>
+        <widget class="QLineEdit" name="searchSongs" />
+       </item>
+       <item>
+        <widget class="QTreeView" name="treeSongs" />
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6" />
        </item>
       </layout>
      </widget>
