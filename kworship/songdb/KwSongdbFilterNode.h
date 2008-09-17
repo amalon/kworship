@@ -30,6 +30,7 @@ class KwSongdbFilterNode : public KwSongdbNode
       QString labelExpression;
       QStringList innerJoinClauses;
       QStringList whereClauses;
+      QStringList orderBy;
     };
 
     typedef QVector<FilterLevel> FilterLevelList;

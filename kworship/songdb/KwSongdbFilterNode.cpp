@@ -125,10 +125,7 @@ void KwSongdbFilterNode::setupQuery()
 {
   if (0 == m_query)
   {
-    const FilterLevel& filterLevel = m_filterLevels->at(m_currentFilter);
-    QString query = "SELECT " + filterLevel.idExpression    + " AS id,"
-                              + filterLevel.labelExpression + " AS label "
-                    "FROM " + m_filterLevels->at(0).tableName + " ";
+    // Collect joins and where conditions
     QString innerJoins;
     QStringList whereClauses;
     for (int i = 0; i <= m_currentFilter; ++i)
@@ -148,11 +145,23 @@ void KwSongdbFilterNode::setupQuery()
       knownValue = knownValue->next;
     }
 
+    // Generate the SQL query
+    const FilterLevel& filterLevel = m_filterLevels->at(m_currentFilter);
+    QString query = "SELECT " + filterLevel.idExpression    + " AS id,"
+                              + filterLevel.labelExpression + " AS label "
+                    "FROM " + m_filterLevels->at(0).tableName + " ";
     query += innerJoins;
     if (!whereClauses.empty())
     {
-      query += "WHERE " + whereClauses.join(" AND ") + ";";
+      query += "WHERE " + whereClauses.join(" AND ") + " ";
     }
+    if (!filterLevel.orderBy.empty())
+    {
+      query += "ORDER BY " + filterLevel.orderBy.join(",");
+    }
+    query += ";";
+
+    // perform the query
     m_query = new QSqlQuery();
     m_query->prepare(query);
     knownValue = &m_knownValue;
