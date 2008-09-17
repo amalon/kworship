@@ -81,11 +81,6 @@ int KwSongdbNode::getChildIndex(KwSongdbNode* node) const
   return -1;
 }
 
-/// Activate the node using a display manager.
-void KwSongdbNode::activate(KwDisplayManager*)
-{
-}
-
 /// Get a child node by index.
 KwSongdbNode* KwSongdbNode::_getChild(int index)
 {

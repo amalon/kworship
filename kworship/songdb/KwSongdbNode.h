@@ -12,9 +12,9 @@
 
 class KwDisplayManager;
 
-/// A node on a playlist tree.
+/// A node on a song database tree.
 /**
- * Inherit from this class for each playlist node type.
+ * Inherit from this class for each song database node type.
  */
 class KwSongdbNode
 {
@@ -48,9 +48,6 @@ class KwSongdbNode
 
     /// Get the number of children.
     virtual int getChildCount() const;
-
-    /// Activate the node using a display manager.
-    virtual void activate(KwDisplayManager* manager);
 
   protected:
 

@@ -9,6 +9,8 @@ set(kworshipsongdb_SRCS
     KwSongdb.cpp
     KwSongdbModel.cpp
     KwSongdbNode.cpp
+    KwSongdbFilterNode.cpp
+    KwSongdbVersionNode.cpp
     ${kworshipsongdb_MOC_SRCS}
 )
 

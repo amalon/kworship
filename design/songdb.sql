@@ -1,0 +1,150 @@
+/* MySQL */
+
+CREATE DATABASE `kworship` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+USE DATABASE `kworship`;
+
+/* Style sheets */
+
+CREATE TABLE CssStyleSheet (
+  `id`                  INT            NOT NULL  AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE = INNODB;
+
+CREATE TABLE CssRule (
+  `id`                  INT            NOT NULL  AUTO_INCREMENT,
+  `style_sheet_id`      INT            NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`style_sheet_id`),
+  FOREIGN KEY (`style_sheet_id`) REFERENCES CssStyleSheet (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE CssRuleCriteriaScope (
+  `rule_id`             INT            NOT NULL,
+  `order`               INT            NOT NULL,
+  `type`                VARCHAR(32)    NULL,
+  `name`                VARCHAR(32)    NULL,
+  PRIMARY KEY (`rule_id`, `order`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE CssRuleCriteriaClass (
+  `rule_id`             INT            NOT NULL,
+  `class`               VARCHAR(64)    NOT NULL,
+  PRIMARY KEY (`rule_id`, `class`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE CssRuleUsedClass (
+  `rule_id`             INT            NOT NULL,
+  `class`               VARCHAR(64)    NOT NULL,
+  PRIMARY KEY (`rule_id`, `class`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE CssRuleStyle (
+  `rule_id`             INT            NOT NULL,
+  `style`               VARCHAR(64)    NOT NULL,
+  `value`               VARCHAR(256)   NOT NULL,
+  PRIMARY KEY (`rule_id`, `style`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+/* Songs */
+
+CREATE TABLE Song (
+  `id`                  INT            NOT NULL  AUTO_INCREMENT,
+  `name`                VARCHAR(128)   NOT NULL,
+  `css_style_sheet_id`  INT            NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`name`),
+  UNIQUE (`css_style_sheet_id`),
+  FOREIGN KEY (`css_style_sheet_id`) REFERENCES CssStyleSheet (`id`)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE = INNODB;
+
+CREATE TABLE SongBook (
+  `id`                  INT            NOT NULL  AUTO_INCREMENT,
+  `abreviation`         VARCHAR(8)     NOT NULL,
+  `name`                VARCHAR(128)   NOT NULL,
+  `description`         MEDIUMTEXT     NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`abreviation`)
+) ENGINE = INNODB;
+
+CREATE TABLE SongVersion (
+  `id`                  INT            NOT NULL  AUTO_INCREMENT,
+  `song_id`             INT            NOT NULL,
+  `name`                VARCHAR(128)   NULL,
+  `css_style_sheet_id`  INT            NULL,
+  `writer`              VARCHAR(128)   NULL,
+  `copyright`           VARCHAR(128)   NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE (`song_id`, `name`),
+  FOREIGN KEY (`song_id`) REFERENCES Song (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (`css_style_sheet_id`) REFERENCES CssStyleSheet (`id`)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE = INNODB;
+
+CREATE TABLE SongBookSong (
+  `book_id`             INT            NOT NULL,
+  `book_number`         INT            NOT NULL,
+  `version_id`          INT            NOT NULL,
+  PRIMARY KEY (`book_id`, `book_number`),
+  FOREIGN KEY (`book_id`) REFERENCES SongBook (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE SongMedia (
+  `id`                  INT            NOT NULL  AUTO_INCREMENT,
+  `version_id`          INT            NOT NULL,
+  `url`                 VARCHAR(128)   NOT NULL,
+  `audio_use`           BOOLEAN        NOT NULL  DEFAULT FALSE,
+  `audio_volume`        FLOAT          NOT NULL  DEFAULT 1.0,
+  `video_use`           BOOLEAN        NOT NULL  DEFAULT FALSE,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE SongLyrics (
+  `id`                  INT            NOT NULL  AUTO_INCREMENT,
+  `version_id`          INT            NOT NULL,
+  `lyrics`              MEDIUMTEXT     NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE SongLyricsClass (
+  `lyrics_id`           INT            NOT NULL,
+  `css_class`           VARCHAR(64)    NOT NULL,
+  PRIMARY KEY (`lyrics_id`, `css_class`),
+  FOREIGN KEY (`lyrics_id`) REFERENCES SongLyrics (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+CREATE TABLE SongLyricsOrder (
+  `version_id`          INT            NOT NULL,
+  `order`               INT            NOT NULL,
+  `lyrics_id`           INT            NOT NULL,
+  `start_time`          INT            NULL COMMENT "Measured in milliseconds",
+  `duration`            INT            NULL COMMENT "Measured in milliseconds",
+  PRIMARY KEY (`version_id`, `order`),
+  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (`lyrics_id`) REFERENCES SongLyrics (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+) ENGINE = INNODB;
+
+
+/* Populate the database with some data */
+

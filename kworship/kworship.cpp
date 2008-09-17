@@ -43,6 +43,7 @@
 #include "KwMediaControlWidget.h"
 
 #include "KwSongdbModel.h"
+#include "KwSongdbFilterNode.h"
 
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
@@ -62,6 +63,7 @@
 #include <QDesktopWidget>
 #include <QToolBar>
 #include <QToolButton>
+#include <QSqlDatabase>
 
 kworship::kworship()
 : KXmlGuiWindow()
@@ -184,8 +186,43 @@ kworship::kworship()
   groupByActions->addAction("Label / Song name / Version");
   groupByMenu->addActions(groupByActions->actions());
 
+
+  // Setup song db
+  QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+  db.setHostName("localhost");
+  db.setDatabaseName("kworship");
+  db.setUserName("root");
+  bool ok = db.open();
+  assert(ok);
+
+  KwSongdbFilterNode::FilterLevelList* filters = new KwSongdbFilterNode::FilterLevelList;
+  if (false)
+  {
+    filters->resize(2);
+    (*filters)[0].tableName = "Song";
+    (*filters)[0].idExpression = "Song.id";
+    (*filters)[0].labelExpression = "Song.name";
+    (*filters)[1].tableName = "SongVersion";
+    (*filters)[1].idExpression = "SongVersion.id";
+    (*filters)[1].labelExpression = "SongVersion.name";
+    (*filters)[1].innerJoinClauses << "SongVersion ON SongVersion.song_id = Song.id";
+  }
+  if (true)
+  {
+    filters->resize(2);
+    (*filters)[0].tableName = "SongBook";
+    (*filters)[0].idExpression = "SongBook.id";
+    (*filters)[0].labelExpression = "CONCAT(SongBook.abreviation, \" \", SongBook.name)";
+    (*filters)[1].tableName = "SongVersion";
+    (*filters)[1].idExpression = "SongVersion.id";
+    (*filters)[1].labelExpression = "CONCAT(SongBookSong.book_number, \" - \", Song.name)";
+    (*filters)[1].innerJoinClauses << "SongBookSong ON SongBookSong.book_id = SongBook.id"
+                                   << "SongVersion ON SongVersion.id = SongBookSong.version_id"
+                                   << "Song ON Song.id = SongVersion.song_id";
+  }
+
   m_songDbModel = new KwSongdbModel;
-  //m_songDbModel->setRootNode(m_primaryPlaylist->getNode(0));
+  m_songDbModel->setRootNode(new KwSongdbFilterNode(filters, "", 0));
   m_view->treeSongs->setModel(m_songDbModel);
 
 }
