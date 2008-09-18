@@ -236,7 +236,7 @@
         <widget class="QLineEdit" name="searchSongs" />
        </item>
        <item>
-        <widget class="QTreeView" name="treeSongs" />
+        <layout class="QHBoxLayout" name="layoutSongsTree" />
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_6" />

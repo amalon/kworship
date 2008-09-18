@@ -16,7 +16,7 @@
  */
 
 /// Primary constructor.
-KwSongdbFilterNode::KwSongdbFilterNode(const KwSongdbFilterNode::FilterLevelList* filters, QString label, KwSongdbNode* parent)
+KwSongdbFilterNode::KwSongdbFilterNode(const KwSongdbFilterLevelList* filters, QString label, KwSongdbNode* parent)
 : KwSongdbNode(parent)
 , m_label(label)
 , m_filterLevels(filters)
@@ -130,7 +130,7 @@ void KwSongdbFilterNode::setupQuery()
     QStringList whereClauses;
     for (int i = 0; i <= m_currentFilter; ++i)
     {
-      const FilterLevel& filterI = m_filterLevels->at(i);
+      const KwSongdbFilterLevel& filterI = m_filterLevels->at(i);
       QStringList::const_iterator it;
       for (it = filterI.innerJoinClauses.begin(); it != filterI.innerJoinClauses.end(); ++it)
       {
@@ -146,7 +146,7 @@ void KwSongdbFilterNode::setupQuery()
     }
 
     // Generate the SQL query
-    const FilterLevel& filterLevel = m_filterLevels->at(m_currentFilter);
+    const KwSongdbFilterLevel& filterLevel = m_filterLevels->at(m_currentFilter);
     QString query = "SELECT " + filterLevel.idExpression    + " AS id,"
                               + filterLevel.labelExpression + " AS label "
                     "FROM " + m_filterLevels->at(0).tableName + " ";

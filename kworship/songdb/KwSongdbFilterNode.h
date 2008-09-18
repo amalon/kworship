@@ -8,8 +8,9 @@
  */
 
 #include "KwSongdbNode.h"
+#include "KwSongdbFilter.h"
 
-#include <QStringList>
+#include <QString>
 
 class QSqlQuery;
 
@@ -19,28 +20,11 @@ class KwSongdbFilterNode : public KwSongdbNode
   public:
 
     /*
-     * Types
-     */
-
-    /// A level in the filter stack.
-    struct FilterLevel
-    {
-      QString tableName;
-      QString idExpression;
-      QString labelExpression;
-      QStringList innerJoinClauses;
-      QStringList whereClauses;
-      QStringList orderBy;
-    };
-
-    typedef QVector<FilterLevel> FilterLevelList;
-    
-    /*
      * Constructors + destructor
      */
 
     /// Primary constructor.
-    KwSongdbFilterNode(const FilterLevelList* filters, QString label, KwSongdbNode* parent);
+    KwSongdbFilterNode(const KwSongdbFilterLevelList* filters, QString label, KwSongdbNode* parent);
 
     /// Destructor.
     virtual ~KwSongdbFilterNode();
@@ -88,7 +72,7 @@ class KwSongdbFilterNode : public KwSongdbNode
     QString m_label;
 
     /// The shared list of filters.
-    const FilterLevelList* m_filterLevels;
+    const KwSongdbFilterLevelList* m_filterLevels;
 
     /// The current filter level we're on.
     int m_currentFilter;
@@ -114,5 +98,5 @@ class KwSongdbFilterNode : public KwSongdbNode
     void setupQuery();
 };
 
-#endif // _KwSongdbNode_h_
+#endif // _KwSongdbFilterNode_h_
 

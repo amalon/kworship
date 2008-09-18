@@ -44,6 +44,7 @@
 
 #include "KwSongdbModel.h"
 #include "KwSongdbFilterNode.h"
+#include "KwSongdbTree.h"
 
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
@@ -179,14 +180,6 @@ kworship::kworship()
   KMenu* groupByMenu = new KMenu(songToolBar);
   groupByAction->setMenu(groupByMenu);
 
-  /// @todo Move to the model or something
-  QActionGroup* groupByActions = new QActionGroup(groupByMenu);
-  groupByActions->addAction("Song name / Version");
-  groupByActions->addAction("Song book / Song number");
-  groupByActions->addAction("Label / Song name / Version");
-  groupByMenu->addActions(groupByActions->actions());
-
-
   // Setup song db
   QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
   db.setHostName("localhost");
@@ -195,40 +188,9 @@ kworship::kworship()
   bool ok = db.open();
   assert(ok);
 
-  KwSongdbFilterNode::FilterLevelList* filters = new KwSongdbFilterNode::FilterLevelList;
-  if (false)
-  {
-    filters->resize(2);
-    (*filters)[0].tableName = "Song";
-    (*filters)[0].idExpression = "Song.id";
-    (*filters)[0].labelExpression = "Song.name";
-    (*filters)[0].orderBy << "Song.name ASC";
-    (*filters)[1].tableName = "SongVersion";
-    (*filters)[1].idExpression = "SongVersion.id";
-    (*filters)[1].labelExpression = "SongVersion.name";
-    (*filters)[1].innerJoinClauses << "SongVersion ON SongVersion.song_id = Song.id";
-    (*filters)[1].orderBy << "SongVersion.name ASC";
-  }
-  if (true)
-  {
-    filters->resize(2);
-    (*filters)[0].tableName = "SongBook";
-    (*filters)[0].idExpression = "SongBook.id";
-    (*filters)[0].labelExpression = "CONCAT(SongBook.abreviation, \" \", SongBook.name)";
-    (*filters)[0].orderBy << "SongBook.name ASC";
-    (*filters)[1].tableName = "SongVersion";
-    (*filters)[1].idExpression = "SongVersion.id";
-    (*filters)[1].labelExpression = "CONCAT(SongBookSong.book_number, \" - \", Song.name)";
-    (*filters)[1].innerJoinClauses << "SongBookSong ON SongBookSong.book_id = SongBook.id"
-                                   << "SongVersion ON SongVersion.id = SongBookSong.version_id"
-                                   << "Song ON Song.id = SongVersion.song_id";
-    (*filters)[1].orderBy << "SongBookSong.book_number ASC";
-  }
-
-  m_songDbModel = new KwSongdbModel;
-  m_songDbModel->setRootNode(new KwSongdbFilterNode(filters, "", 0));
-  m_view->treeSongs->setModel(m_songDbModel);
-
+  KwSongdbTree* treeView = new KwSongdbTree(m_view);
+  m_view->layoutSongsTree->addWidget(treeView);
+  groupByMenu->addActions(treeView->groupByActions()->actions());
 }
 
 kworship::~kworship()
