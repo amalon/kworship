@@ -195,23 +195,6 @@ void DesktopView::setup()
       ++oldSize;
     }
   }
-  else
-  {
-    if (m_selectedScreen >= screens)
-    {
-      screenSelected(m_selectedScreen, false);
-      if (m_noSelect)
-      {
-        m_selectedScreen = -1;
-      }
-      else
-      {
-        m_selectedScreen = 0;
-        screenSelected(m_selectedScreen, true);
-      }
-      singleSelectRestatus();
-    }
-  }
 
   // Set up the screens preview
   QGraphicsScene* scene = new QGraphicsScene(this);
@@ -273,7 +256,8 @@ void DesktopView::singleSelectRestatus()
     }
     else
     {
-      statusChanged(tr("Screen %1: not plugged in."));
+      statusChanged(tr("Screen %1: not plugged in.")
+                    .arg(m_selectedScreen+1));
     }
   }
   else

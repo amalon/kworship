@@ -11,7 +11,7 @@
 #include <QVector>
 
 /** Screens preview widget.
- * @todo Ensure works well with out of range screen id
+ * @todo Ensure works well with out of range screen id in multiselect mode
  */
 class DesktopView : public QGraphicsView
 {
