@@ -111,3 +111,18 @@ QVariant KwSongdbModel::headerData(int section, Qt::Orientation orientation, int
   return QVariant();
 }
 
+Qt::ItemFlags KwSongdbModel::flags(const QModelIndex& index) const
+{
+  Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+
+  KwSongdbNode* item = itemFromIndex(index);
+  if (0 != item)
+  {
+    return item->getFlags(defaultFlags);
+  }
+  else
+  {
+    return defaultFlags;
+  }
+}
+

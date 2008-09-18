@@ -31,6 +31,9 @@ class KwSongdbVersionNode : public KwSongdbNode
     /// Get data associated with the node.
     virtual QVariant getData(int role, int column);
 
+    /// Get flags for this item.
+    virtual Qt::ItemFlags getFlags(Qt::ItemFlags defaultFlags) const;
+
   private:
 
     /*

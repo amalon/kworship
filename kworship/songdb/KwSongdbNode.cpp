@@ -81,6 +81,12 @@ int KwSongdbNode::getChildIndex(KwSongdbNode* node) const
   return -1;
 }
 
+/// Get flags for this item.
+Qt::ItemFlags KwSongdbNode::getFlags(Qt::ItemFlags defaultFlags) const
+{
+  return defaultFlags;
+}
+
 /// Get a child node by index.
 KwSongdbNode* KwSongdbNode::_getChild(int index)
 {

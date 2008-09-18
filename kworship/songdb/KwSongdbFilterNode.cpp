@@ -104,6 +104,18 @@ KwSongdbNode* KwSongdbFilterNode::_getChild(int index)
   }
 }
 
+/// Get flags for this item.
+Qt::ItemFlags KwSongdbFilterNode::getFlags(Qt::ItemFlags defaultFlags) const
+{
+  Qt::ItemFlags flags = defaultFlags;
+  // Only allow dragging if only one final song version within
+  if (m_currentFilter == m_filterLevels->size()-1 && m_query->size() == 1)
+  {
+    flags |= Qt::ItemIsDragEnabled;
+  }
+  return flags;
+}
+
 /// Get a new node of this type.
 KwSongdbFilterNode* KwSongdbFilterNode::_newNode(QString label, QString idExpression, int idValue)
 {

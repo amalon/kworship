@@ -59,8 +59,9 @@ KwSongdbTree::KwSongdbTree(QWidget* parent)
 
   actionNameVersion->trigger();
 
-  // setup filter
+  // setup tree view
   setModel(m_model);
+  setDragEnabled(true);
 }
 
 /// Destructor.

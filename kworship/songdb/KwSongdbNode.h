@@ -49,6 +49,9 @@ class KwSongdbNode
     /// Get the number of children.
     virtual int getChildCount() const;
 
+    /// Get flags for this item.
+    virtual Qt::ItemFlags getFlags(Qt::ItemFlags defaultFlags) const;
+
   protected:
 
     /// Get a child node by index.

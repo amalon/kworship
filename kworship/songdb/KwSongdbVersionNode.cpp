@@ -44,3 +44,9 @@ QVariant KwSongdbVersionNode::getData(int role, int column)
   return QVariant();
 }
 
+/// Get flags for this item.
+Qt::ItemFlags KwSongdbVersionNode::getFlags(Qt::ItemFlags defaultFlags) const
+{
+  return Qt::ItemIsDragEnabled | defaultFlags;
+}
+
