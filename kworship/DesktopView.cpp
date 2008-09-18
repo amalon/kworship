@@ -237,8 +237,8 @@ void DesktopView::setup()
     text->setFont(font);
 
     QRectF textRect = text->boundingRect();
-    text->setPos(QPointF((geom.width()  - textRect.width()) / 2,
-                         (geom.height() - textRect.height()) / 2));
+    text->setPos(QPointF(geom.x() + (geom.width()  - textRect.width()) / 2,
+                         geom.y() + (geom.height() - textRect.height()) / 2));
   }
   m_desktopRect = desktop->rect();
   resizeEvent(0);

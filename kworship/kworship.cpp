@@ -223,6 +223,50 @@ void kworship::setupActions()
   }
 }
 
+void kworship::settingsChanged()
+{
+  // If the main display is on and screen has changed, move it now
+  if (0 != m_mainDisplay && getCorrectDisplayScreen() != getCurrentDisplayScreen())
+  {
+    toggleMainDisplay(false);
+    toggleMainDisplay(true);
+  }
+}
+
+int kworship::getCorrectDisplayScreen()
+{
+  QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
+  assert(0 != desktop);
+
+  int screens = desktop->numScreens();
+  int displayScreen = -1;
+  if (Settings::displayScreenChoose())
+  {
+    displayScreen = Settings::displayScreen();
+  }
+  if (-1 == displayScreen)
+  {
+    int currentScreen = desktop->screenNumber(m_view);
+    displayScreen = 0;
+    if (displayScreen == currentScreen && displayScreen < screens-1)
+    {
+      ++displayScreen;
+    }
+  }
+
+  return displayScreen;
+}
+
+int kworship::getCurrentDisplayScreen()
+{
+  QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
+  assert(0 != desktop);
+
+  int previousScreen = desktop->screenNumber(m_mainDisplay);
+
+  return previousScreen;
+}
+
 void kworship::toggleMainDisplay(bool checked)
 {
   if (checked)
@@ -235,6 +279,19 @@ void kworship::toggleMainDisplay(bool checked)
       m_displayController.attachChild(m_mainDisplay);
       connect(m_mainDisplay, SIGNAL(closed()), this, SLOT(mainDisplayClosed()));
     }
+
+    QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
+    assert(0 != desktop);
+
+    int previousScreen = getCurrentDisplayScreen();
+    int screens = desktop->numScreens();
+    int displayScreen = getCorrectDisplayScreen();
+
+    if (displayScreen >= 0 && displayScreen < screens)
+    {
+      m_mainDisplay->move(desktop->screenGeometry(displayScreen).topLeft());
+    }
+
     m_mainDisplay->showFullScreen();
   }
   else
@@ -311,6 +368,7 @@ void kworship::optionsPreferences()
   dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "songdb_setting");
 
   connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
+  connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
   dialog->setAttribute( Qt::WA_DeleteOnClose );
   dialog->show();
 }

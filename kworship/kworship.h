@@ -67,6 +67,7 @@ public:
     virtual ~kworship();
 
 private slots:
+    void settingsChanged();
     void toggleMainDisplay(bool checked);
     void mainDisplayClosed();
     void displayClear();
@@ -80,6 +81,8 @@ private slots:
 
 private:
     void setupActions();
+    int getCorrectDisplayScreen();
+    int getCurrentDisplayScreen();
 
 private:
     Ui::prefs_base ui_prefs_base ;
