@@ -230,6 +230,7 @@ void kworship::settingsChanged()
   {
     toggleMainDisplay(false);
     toggleMainDisplay(true);
+    m_mainDisplayAction->setChecked(true);
   }
 }
 
