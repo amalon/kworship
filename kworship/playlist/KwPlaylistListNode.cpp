@@ -28,6 +28,15 @@ KwPlaylistListNode::~KwPlaylistListNode()
 }
 
 /*
+ * Accessors
+ */
+
+KwPlaylistList* KwPlaylistListNode::getItem()
+{
+  return m_item;
+}
+
+/*
  * Main interface
  */
 

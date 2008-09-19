@@ -18,20 +18,11 @@ class KwPlaylistSong : public KwPlaylistPaged
      * Constructors + destructor.
      */
 
-    /// Default constructor.
-    KwPlaylistSong(const QString& label, const QStringList& blocks);
+    /// Primary constructor.
+    KwPlaylistSong(int versionId);
 
     /// Destructor.
     virtual ~KwPlaylistSong();
-
-    /*
-     * Main interface
-     */
-
-    /// Get the label.
-    QString getLabel() const;
-
-    virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:
     

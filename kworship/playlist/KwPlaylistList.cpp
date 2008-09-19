@@ -30,9 +30,16 @@ KwPlaylistList::~KwPlaylistList()
  */
 
 /// Add a child.
-void KwPlaylistList::addItem(KwPlaylistItem* item)
+void KwPlaylistList::addItem(KwPlaylistItem* item, int position)
 {
-  m_playlist.push_back(item);
+  if (position == -1)
+  {
+    m_playlist.push_back(item);
+  }
+  else
+  {
+    m_playlist.insert(position, item);
+  }
   item->setParentScope(this);
 }
 

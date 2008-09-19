@@ -27,6 +27,12 @@ class KwPlaylistListNode : public KwPlaylistNode
     virtual ~KwPlaylistListNode();
 
     /*
+     * Accessors
+     */
+
+    KwPlaylistList* getItem();
+
+    /*
      * Main interface
      */
 
@@ -34,7 +40,10 @@ class KwPlaylistListNode : public KwPlaylistNode
 
     virtual int getChildCount() const;
 
+  protected:
+
     virtual KwPlaylistNode* _getChild(int index);
+
   private:
 
     /*

@@ -9,7 +9,7 @@
 
 #include "KwPlaylistItem.h"
 
-#include <list>
+#include <QList>
 
 /// A list of playlist items.
 /**
@@ -34,7 +34,7 @@ class KwPlaylistList : public KwPlaylistItem
      */
 
     /// Add a child.
-    void addItem(KwPlaylistItem* item);
+    void addItem(KwPlaylistItem* item, int position = -1);
 
     /// Get the number of children.
     int getItemCount() const;
@@ -55,7 +55,7 @@ class KwPlaylistList : public KwPlaylistItem
      */
 
     /// List of playlist items.
-    typedef std::list<KwPlaylistItem*> Playlist;
+    typedef QList<KwPlaylistItem*> Playlist;
 
     /*
      * Variables

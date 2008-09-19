@@ -68,6 +68,12 @@ KwPlaylistNode* KwPlaylistNode::getChild(int index)
   return m_children[index];
 }
 
+/// Clear the cache of child nodes.
+void KwPlaylistNode::clearChildCache()
+{
+  m_children.clear();
+}
+
 /// Get the index of a certain child.
 int KwPlaylistNode::getChildIndex(KwPlaylistNode* node) const
 {

@@ -40,6 +40,9 @@ class KwPlaylistNode
     /// Get a child node by index.
     KwPlaylistNode* getChild(int index);
 
+    /// Clear the cache of child nodes.
+    void clearChildCache();
+
     /// Get the index of a certain child.
     int getChildIndex(KwPlaylistNode* node) const;
 

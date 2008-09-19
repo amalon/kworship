@@ -6,6 +6,9 @@
 
 #include "KwPlaylistModel.h"
 #include "KwPlaylistNode.h"
+#include "KwPlaylistList.h"
+#include "KwPlaylistListNode.h"
+#include "KwPlaylistSong.h"
 
 #include <QMimeData>
 #include <QStringList>
@@ -174,12 +177,20 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
           int versionId = words[1].toInt(&ok, 0);
           if (ok)
           {
-            /// @todo Insert a song version playlist item.
-            assert(0);
+            KwPlaylistNode* item = itemFromIndex(parent);
+            KwPlaylistListNode* list = dynamic_cast<KwPlaylistListNode*>(item);
+            if (0 != list)
+            {
+              KwPlaylistSong* newSong = new KwPlaylistSong(versionId);
+              list->getItem()->addItem(newSong, row);
+              item->clearChildCache();
+            }
           }
         }
       }
     }
+
+    reset();
 
     return true;
   }
