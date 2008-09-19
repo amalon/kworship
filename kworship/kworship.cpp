@@ -156,6 +156,9 @@ kworship::kworship()
   m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
   m_view->treePlaylist->setModel(m_playlistModel);
   m_view->treePlaylist->setExpandsOnDoubleClick(false);
+  m_view->treePlaylist->setAcceptDrops(true);
+
+  connect(m_view->treePlaylist, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
 
   m_mediaManager = new KwMediaManager();
   m_mediaManager->linkAudio(new Phonon::AudioOutput(Phonon::MusicCategory));
@@ -164,8 +167,6 @@ kworship::kworship()
   m_previewDisplay = new KwLocalDisplayPreview;
   m_view->layoutPreview->addWidget(m_previewDisplay);
   m_displayController.attachChild(m_previewDisplay);
-
-  connect(m_view->treePlaylist, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
 
   KwMediaControlWidget* mediaWidget = new KwMediaControlWidget(m_mediaManager, m_view->dockNowPlaying);
   m_view->layoutNowPlaying->addWidget(mediaWidget);

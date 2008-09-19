@@ -50,3 +50,9 @@ Qt::ItemFlags KwSongdbVersionNode::getFlags(Qt::ItemFlags defaultFlags) const
   return Qt::ItemIsDragEnabled | defaultFlags;
 }
 
+/// Get mime data string for this set of songs.
+QString KwSongdbVersionNode::mimeData() const
+{
+  return QString("songdb %1").arg(m_id);
+}
+

@@ -62,6 +62,7 @@ KwSongdbTree::KwSongdbTree(QWidget* parent)
   // setup tree view
   setModel(m_model);
   setDragEnabled(true);
+  setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 /// Destructor.

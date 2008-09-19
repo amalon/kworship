@@ -41,6 +41,11 @@ class KwPlaylistModel : public QAbstractItemModel
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
+    // Drag and drop
+    QStringList mimeTypes() const;
+    Qt::DropActions supportedDropActions() const;
+    Qt::ItemFlags flags(const QModelIndex& index) const;
+    bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent);
 
   private:
 

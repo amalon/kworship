@@ -7,6 +7,9 @@
 #include "KwPlaylistModel.h"
 #include "KwPlaylistNode.h"
 
+#include <QMimeData>
+#include <QStringList>
+
 #include <cassert>
 
 /*
@@ -117,5 +120,70 @@ QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, i
     }
   }
   return QVariant();
+}
+
+QStringList KwPlaylistModel::mimeTypes() const
+{
+  QStringList mimes;
+  mimes << "application/x.kworship.song.list";
+  mimes << "text/uri-list";
+  return mimes;
+}
+
+Qt::DropActions KwPlaylistModel::supportedDropActions() const
+{
+  return Qt::CopyAction | Qt::MoveAction;
+}
+
+Qt::ItemFlags KwPlaylistModel::flags(const QModelIndex& index) const
+{
+  Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
+
+  /// @todo Fix: For now, always allow dropping
+  return Qt::ItemIsDropEnabled | defaultFlags;
+}
+
+bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
+{
+  if (action == Qt::IgnoreAction)
+    return true;
+
+  if (data->hasFormat("application/x.kworship.song.list"))
+  {
+    QByteArray encodedData = data->data("application/x.kworship.song.list");
+    QDataStream stream(&encodedData, QIODevice::ReadOnly);
+    QStringList newItems;
+    int rows = 0;
+
+    while (!stream.atEnd())
+    {
+      QString text;
+      stream >> text;
+      newItems << text;
+      ++rows;
+    }
+    //insertRows(beginRow, rows, QModelIndex());
+    foreach (QString text, newItems)
+    {
+      QStringList words = text.split(" ");
+      if (words[0] == "songdb")
+      {
+        if (words.size() > 1)
+        {
+          bool ok;
+          int versionId = words[1].toInt(&ok, 0);
+          if (ok)
+          {
+            /// @todo Insert a song version playlist item.
+            assert(0);
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  return false;
 }
 

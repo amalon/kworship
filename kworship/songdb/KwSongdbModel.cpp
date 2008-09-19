@@ -7,6 +7,8 @@
 #include "KwSongdbModel.h"
 #include "KwSongdbNode.h"
 
+#include <QMimeData>
+
 #include <cassert>
 
 /*
@@ -125,4 +127,28 @@ Qt::ItemFlags KwSongdbModel::flags(const QModelIndex& index) const
     return defaultFlags;
   }
 }
+
+QMimeData* KwSongdbModel::mimeData(const QModelIndexList& indexes) const
+{
+  QMimeData *mimeData = new QMimeData();
+  QByteArray encodedData;
+
+  QDataStream stream(&encodedData, QIODevice::WriteOnly);
+
+  foreach (QModelIndex index, indexes)
+  {
+    if (index.isValid())
+    {
+      KwSongdbNode* item = itemFromIndex(index);
+      if (0 != item)
+      {
+        stream << item->mimeData();
+      }
+    }
+  }
+
+  mimeData->setData("application/x.kworship.song.list", encodedData);
+  return mimeData;
+}
+
 

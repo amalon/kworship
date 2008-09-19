@@ -34,6 +34,9 @@ class KwSongdbVersionNode : public KwSongdbNode
     /// Get flags for this item.
     virtual Qt::ItemFlags getFlags(Qt::ItemFlags defaultFlags) const;
 
+    /// Get mime data string for this set of songs.
+    virtual QString mimeData() const;
+
   private:
 
     /*
