@@ -5,6 +5,10 @@
       http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
   <kcfgfile name="KApp4rc"/>
   <group name="Display">
+    <entry name="displayShowStartup" type="Int">
+      <label>show on startup</label>
+      <default>1</default>
+    </entry>
     <entry name="displayScreenAuto" type="Int">
       <label>screen mode automatic</label>
       <default>1</default>

@@ -192,6 +192,13 @@ kworship::kworship()
   KwSongdbTree* treeView = new KwSongdbTree(m_view);
   m_view->layoutSongsTree->addWidget(treeView);
   groupByMenu->addActions(treeView->groupByActions()->actions());
+
+  // Show the display on startup?
+  if (Settings::displayShowStartup())
+  {
+    toggleMainDisplay(true);
+    m_mainDisplayAction->setChecked(true);
+  }
 }
 
 kworship::~kworship()
@@ -248,7 +255,15 @@ int kworship::getCorrectDisplayScreen()
   }
   if (-1 == displayScreen)
   {
-    int currentScreen = desktop->screenNumber(m_view);
+    int currentScreen;
+    if (m_view->isVisible())
+    {
+      currentScreen = desktop->screenNumber(m_view);
+    }
+    else
+    {
+      currentScreen = desktop->primaryScreen();
+    }
     displayScreen = 0;
     if (displayScreen == currentScreen && displayScreen < screens-1)
     {

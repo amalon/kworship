@@ -10,30 +10,37 @@
    </rect>
   </property>
   <layout class="QGridLayout" >
-   <item row="2" column="0" >
+   <item row="3" column="0" >
     <layout class="QVBoxLayout" name="layoutScreens" />
    </item>
-   <item row="3" column="0" >
+   <item row="4" column="0" >
     <widget class="QLabel" name="labelStatus" >
      <property name="text" >
       <string/>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" >
+   <item row="1" column="0" >
     <widget class="QRadioButton" name="kcfg_displayScreenAuto" >
      <property name="text" >
       <string>Choose the display screen automatically.</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0" >
+   <item row="2" column="0" >
     <widget class="QRadioButton" name="kcfg_displayScreenChoose" >
      <property name="text" >
       <string>Let me choose the display screen.</string>
      </property>
      <property name="checked" >
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QCheckBox" name="kcfg_displayShowStartup" >
+     <property name="text" >
+      <string>Show display on startup.</string>
      </property>
     </widget>
    </item>
