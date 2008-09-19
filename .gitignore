@@ -11,6 +11,7 @@ CMakeTmp
 DartTestfile.txt
 cmake_install.cmake
 cmake_uninstall.cmake
+*.cmake
 
 # Qt MOC
 moc_*.cpp
