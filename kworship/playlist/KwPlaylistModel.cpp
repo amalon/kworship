@@ -96,7 +96,7 @@ int KwPlaylistModel::rowCount(const QModelIndex& parent) const
 int KwPlaylistModel::columnCount(const QModelIndex& parent) const
 {
   Q_UNUSED(parent)
-  return 2;
+  return 1;
 }
 
 QVariant KwPlaylistModel::data(const QModelIndex& index, int role) const
@@ -116,10 +116,6 @@ QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, i
     if (section == 0)
     {
       return tr("Node");
-    }
-    else if (section == 1)
-    {
-      return tr("Value");
     }
   }
   return QVariant();
@@ -142,8 +138,13 @@ Qt::ItemFlags KwPlaylistModel::flags(const QModelIndex& index) const
 {
   Qt::ItemFlags defaultFlags = QAbstractItemModel::flags(index);
 
-  /// @todo Fix: For now, always allow dropping
-  return Qt::ItemIsDropEnabled | defaultFlags;
+  KwPlaylistNode* item = itemFromIndex(index);
+  if (item != 0)
+  {
+    defaultFlags = item->getFlags(defaultFlags);
+  }
+
+  return defaultFlags;
 }
 
 bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)

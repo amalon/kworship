@@ -40,6 +40,8 @@ class KwPlaylistListNode : public KwPlaylistNode
 
     virtual int getChildCount() const;
 
+    virtual Qt::ItemFlags getFlags(Qt::ItemFlags& defaultFlags) const;
+
   protected:
 
     virtual KwPlaylistNode* _getChild(int index);

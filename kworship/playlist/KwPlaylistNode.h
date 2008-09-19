@@ -52,6 +52,9 @@ class KwPlaylistNode
     /// Get the number of children.
     virtual int getChildCount() const;
 
+    /// Get the flags for this node.
+    virtual Qt::ItemFlags getFlags(Qt::ItemFlags& defaultFlags) const;
+
     /// Activate the node using a display manager.
     virtual void activate(KwDisplayManager* manager);
 

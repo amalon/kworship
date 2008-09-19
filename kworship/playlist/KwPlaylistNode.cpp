@@ -87,6 +87,12 @@ int KwPlaylistNode::getChildIndex(KwPlaylistNode* node) const
   return -1;
 }
 
+/// Get the flags for this node.
+Qt::ItemFlags KwPlaylistNode::getFlags(Qt::ItemFlags& defaultFlags) const
+{
+  return defaultFlags;
+}
+
 /// Activate the node using a display manager.
 void KwPlaylistNode::activate(KwDisplayManager*)
 {
