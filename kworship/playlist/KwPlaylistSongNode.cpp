@@ -5,6 +5,7 @@
  */
 
 #include "KwPlaylistSongNode.h"
+#include "KwPlaylistSongNodeVerse.h"
 #include "KwPlaylistSong.h"
 #include "KwSongdbVersion.h"
 #include "KwSongdbSong.h"
@@ -48,5 +49,15 @@ QVariant KwPlaylistSongNode::getData(int role, int column)
     }
   }
   return QVariant();
+}
+
+int KwPlaylistSongNode::getChildCount() const
+{
+  return m_item->getSongVersion()->getNumLyricsOrders();
+}
+
+KwPlaylistNode* KwPlaylistSongNode::_getChild(int index)
+{
+  return new KwPlaylistSongNodeVerse(this, m_item, index);
 }
 

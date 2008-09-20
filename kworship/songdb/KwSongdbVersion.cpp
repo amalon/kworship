@@ -99,6 +99,13 @@ KwSongdbLyrics* KwSongdbVersion::getLyricsByOrder(int order)
   }
 }
 
+/// Get number of lyric verses.
+int KwSongdbVersion::getNumLyricsOrders()
+{
+  loadLyrics();
+  return m_lyricsOrdersByOrder.size();
+}
+
 /// Get a lyrics order object.
 KwSongdbLyricsOrder* KwSongdbVersion::getLyricsOrderByOrder(int order)
 {
@@ -157,10 +164,10 @@ void KwSongdbVersion::loadLyrics()
 
     {
       // Get the lyrics order data
-      query.prepare("SELECT order, lyrics_id, start_time, duration "
+      query.prepare("SELECT `order`, lyrics_id, start_time, duration "
                     "FROM SongLyricsOrder "
                     "WHERE version_id = ? "
-                    "ORDER BY order ASC");
+                    "ORDER BY `order` ASC");
       query.addBindValue(QVariant(m_id));
       bool worked = query.exec();
       assert(worked);

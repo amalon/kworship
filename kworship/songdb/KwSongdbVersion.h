@@ -42,6 +42,9 @@ class KwSongdbVersion
     /// Get lyrics by order.
     KwSongdbLyrics* getLyricsByOrder(int order);
 
+    /// Get number of lyric verses.
+    int getNumLyricsOrders();
+
     /// Get a lyrics order object.
     KwSongdbLyricsOrder* getLyricsOrderByOrder(int order);
 

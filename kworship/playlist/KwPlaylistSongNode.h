@@ -32,6 +32,12 @@ class KwPlaylistSongNode : public KwPlaylistNode
 
     virtual QVariant getData(int role, int column);
 
+    virtual int getChildCount() const;
+
+  protected:
+
+    virtual KwPlaylistNode* _getChild(int index);
+
   private:
 
     /*

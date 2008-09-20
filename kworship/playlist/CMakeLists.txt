@@ -25,6 +25,7 @@ set(kworshipplaylist_SRCS
     KwPlaylistReading.cpp
     KwPlaylistSong.cpp
     KwPlaylistSongNode.cpp
+    KwPlaylistSongNodeVerse.cpp
     KwPlaylistText.cpp
     KwPlaylistTextNode.cpp
     ${kworshipplaylist_MOC_SRCS}
