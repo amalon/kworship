@@ -1,4 +1,15 @@
 In order of priority
+[ ] playlist actions
+    [ ] insert file
+    [ ] move up
+    [ ] move down
+    [ ] delete
+    [ ] drag to rearrange
+[O] song database
+    [ ] preferences
+    [ ] initialisation
+[ ] preview unknown files with a kpart
+[ ] playlist save/load
 [X] local display window
 [ ] change backgrond colours
 [X] very simple playlist
@@ -11,7 +22,6 @@ In order of priority
 [X] preview
 [X] nested playlists
 [ ] playlist icons for timed, music, video etc
-[ ] song database
 [ ] playing of audio file
 [ ] audio file play information
 [ ] autotiming with audio file
@@ -24,7 +34,7 @@ In order of priority
 [ ] kpresenter control
 [ ] oo impress control
 [ ] video looping in background
-[ ] video playing
+[X] video playing
 [ ] video playing in background
 [ ] themes
 [ ] live video feed in background

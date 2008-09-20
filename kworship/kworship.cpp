@@ -167,6 +167,14 @@ kworship::kworship()
   KActionMenu* groupByAction = new KActionMenu(KIcon("ogg"), "Group By", songToolBar);
   groupByAction->setDelayed(false);
   songToolBar->addAction(groupByAction);
+  KAction* addSongAction = new KAction(KIcon("add"), "Add Song", songToolBar);
+  songToolBar->addAction(addSongAction);
+  KAction* editSongAction = new KAction(KIcon("edit"), "Edit Song", songToolBar);
+  songToolBar->addAction(editSongAction);
+  KAction* addSongVersionAction = new KAction(KIcon("add"), "Add Song Version", songToolBar);
+  songToolBar->addAction(addSongVersionAction);
+  KAction* insertIntoPlaylistAction = new KAction(KIcon("add"), "Insert Into Playlist", songToolBar);
+  songToolBar->addAction(insertIntoPlaylistAction);
 
   KMenu* groupByMenu = new KMenu(songToolBar);
   groupByAction->setMenu(groupByMenu);

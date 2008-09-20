@@ -1,0 +1,19 @@
+Saving playlists
+[ ] compact or exhaustive - can include necessary resources
+[ ] options
+    [ ] include song data (default = yes)
+    [ ] include media/file/presentation resources (default = no)
+
+File format
+This can be a compressed tar file with a directory structure:
+$playlist.kw - tar.gz or tar.bz2 file
+  playlist.kwp - playlist XML
+  resources/ - any necessary resources
+    $abc.$xyz
+  songdb/ - any song data used
+    $songname/ - for a particular song
+      common.kws - for general song information XML
+      $versionname.kwsv - for a particular version of the song XML
+  css/ - css stylesheets
+    $name.kwcss
+
