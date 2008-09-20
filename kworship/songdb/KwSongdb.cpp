@@ -39,6 +39,25 @@ KwSongdb::KwSongdb(QSqlDatabase& db)
 KwSongdb::~KwSongdb()
 {
   s_singleton = 0;
+
+  // Delete song versions
+  {
+    VersionHash::iterator it;
+    for (it = m_versionsById.begin(); it != m_versionsById.end(); ++it)
+    {
+      delete *it;
+    }
+  }
+
+  // Delete songs
+  {
+    SongHash::iterator it;
+    for (it = m_songsById.begin(); it != m_songsById.end(); ++it)
+    {
+      delete *it;
+    }
+  }
+
 }
 
 /*
