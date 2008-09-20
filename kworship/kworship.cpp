@@ -178,8 +178,14 @@ kworship::kworship()
   // Show the display on startup?
   if (Settings::displayShowStartup())
   {
-    toggleMainDisplay(true);
-    m_mainDisplayAction->setChecked(true);
+    // If there's only one screen, don't bother showing display.
+    QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
+    assert(0 != desktop);
+    if (desktop->numScreens() > 1)
+    {
+      toggleMainDisplay(true);
+      m_mainDisplayAction->setChecked(true);
+    }
   }
 }
 
