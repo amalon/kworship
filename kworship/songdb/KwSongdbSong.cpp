@@ -23,9 +23,9 @@ KwSongdbSong::KwSongdbSong(int id)
 {
   // Get the song version data
   QSqlQuery query(KwSongdb::self()->getDatabase());
-  query.prepare("SELECT name, css_style_sheet_id "
-                "FROM Song "
-                "WHERE id = ?");
+  query.prepare("SELECT `name`, `css_style_sheet_id` "
+                "FROM `Song` "
+                "WHERE `id` = ?");
   query.addBindValue(QVariant(id));
   bool worked = query.exec();
   assert(worked);

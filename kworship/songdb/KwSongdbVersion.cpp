@@ -146,9 +146,9 @@ void KwSongdbVersion::loadLyrics()
 
     {
       // Get the lyrics data
-      query.prepare("SELECT id, lyrics "
-                    "FROM SongLyrics "
-                    "WHERE version_id = ?");
+      query.prepare("SELECT `id`, `lyrics` "
+                    "FROM `SongLyrics` "
+                    "WHERE `version_id` = ?");
       query.addBindValue(QVariant(m_id));
       bool worked = query.exec();
       assert(worked);
@@ -164,9 +164,9 @@ void KwSongdbVersion::loadLyrics()
 
     {
       // Get the lyrics order data
-      query.prepare("SELECT `order`, lyrics_id, start_time, duration "
-                    "FROM SongLyricsOrder "
-                    "WHERE version_id = ? "
+      query.prepare("SELECT `order`, `lyrics_id`, `start_time`, `duration` "
+                    "FROM `SongLyricsOrder` "
+                    "WHERE `version_id` = ? "
                     "ORDER BY `order` ASC");
       query.addBindValue(QVariant(m_id));
       bool worked = query.exec();
