@@ -51,7 +51,7 @@ Qt::ItemFlags KwSongdbVersionNode::getFlags(Qt::ItemFlags defaultFlags) const
 }
 
 /// Get mime data string for this set of songs.
-QString KwSongdbVersionNode::mimeData() const
+QString KwSongdbVersionNode::mimeData()
 {
   return QString("songdb %1").arg(m_id);
 }

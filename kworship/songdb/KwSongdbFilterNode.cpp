@@ -109,11 +109,20 @@ Qt::ItemFlags KwSongdbFilterNode::getFlags(Qt::ItemFlags defaultFlags) const
 {
   Qt::ItemFlags flags = defaultFlags;
   // Only allow dragging if only one final song version within
+  /// @todo improve so it works at 3 levels
   if (m_currentFilter == m_filterLevels->size()-1 && m_query->size() == 1)
   {
     flags |= Qt::ItemIsDragEnabled;
   }
   return flags;
+}
+
+/// Get mime data string for this set of songs.
+QString KwSongdbFilterNode::mimeData()
+{
+  // If a single child node, ask that
+  assert(m_currentFilter == m_filterLevels->size()-1 && m_query->size() == 1);
+  return _getChild(0)->mimeData();
 }
 
 /// Get a new node of this type.

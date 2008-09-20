@@ -53,7 +53,7 @@ class KwSongdbNode
     virtual Qt::ItemFlags getFlags(Qt::ItemFlags defaultFlags) const;
 
     /// Get mime data string for this set of songs.
-    virtual QString mimeData() const;
+    virtual QString mimeData();
 
   protected:
 

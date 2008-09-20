@@ -88,7 +88,7 @@ Qt::ItemFlags KwSongdbNode::getFlags(Qt::ItemFlags defaultFlags) const
 }
 
 /// Get mime data string for this set of songs.
-QString KwSongdbNode::mimeData() const
+QString KwSongdbNode::mimeData()
 {
   return QString();
 }
