@@ -8,6 +8,7 @@
  */
 
 #include "KwPlaylistPaged.h"
+#include "KwSongdbVersion.h"
 
 /// A plain text playlist item.
 class KwPlaylistSong : public KwPlaylistPaged
@@ -30,8 +31,8 @@ class KwPlaylistSong : public KwPlaylistPaged
      * Variables
      */
 
-    /// Label.
-    QString m_label;
+    /// Song version.
+    KwSongdbVersion* m_version;
 };
 
 #endif // _KwPlaylistSong_h_

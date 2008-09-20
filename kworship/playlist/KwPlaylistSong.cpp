@@ -5,6 +5,7 @@
  */
 
 #include "KwPlaylistSong.h"
+#include "KwSongdb.h"
 
 /*
  * Constructors + destructor.
@@ -13,6 +14,7 @@
 /// Primary constructor.
 KwPlaylistSong::KwPlaylistSong(int versionId)
 : KwPlaylistPaged()
+, m_version(KwSongdb::self()->getSongVersionById(versionId))
 {
 }
 

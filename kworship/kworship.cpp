@@ -42,6 +42,7 @@
 #include "KwMediaManager.h"
 #include "KwMediaControlWidget.h"
 
+#include "KwSongdb.h"
 #include "KwSongdbModel.h"
 #include "KwSongdbFilterNode.h"
 #include "KwSongdbTree.h"
@@ -118,6 +119,15 @@ kworship::kworship()
 #undef TREE_ITEM
 #endif
 
+  // Setup song db
+  QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+  db.setHostName("localhost");
+  db.setDatabaseName("kworship");
+  db.setUserName("root");
+  bool ok = db.open();
+  assert(ok);
+  KwSongdb* songdb = new KwSongdb(db);
+
   // Playlist
   m_primaryPlaylist = new KwPlaylistList();
   m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #1a#"));
@@ -181,14 +191,6 @@ kworship::kworship()
   KMenu* groupByMenu = new KMenu(songToolBar);
   groupByAction->setMenu(groupByMenu);
 
-  // Setup song db
-  QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-  db.setHostName("localhost");
-  db.setDatabaseName("kworship");
-  db.setUserName("root");
-  bool ok = db.open();
-  assert(ok);
-
   KwSongdbTree* treeView = new KwSongdbTree(m_view);
   m_view->layoutSongsTree->addWidget(treeView);
   groupByMenu->addActions(treeView->groupByActions()->actions());
@@ -203,6 +205,7 @@ kworship::kworship()
 
 kworship::~kworship()
 {
+  delete KwSongdb::self();
 }
 
 void kworship::setupActions()

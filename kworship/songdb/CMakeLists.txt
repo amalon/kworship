@@ -7,6 +7,8 @@ set(kworshipsongdb_MOC_SRCS
 )
 set(kworshipsongdb_SRCS
     KwSongdb.cpp
+    KwSongdbSong.cpp
+    KwSongdbVersion.cpp
     KwSongdbTree.cpp
     KwSongdbTreeGroupAction.cpp
     KwSongdbModel.cpp
