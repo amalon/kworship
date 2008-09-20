@@ -32,6 +32,8 @@ class KwPlaylistSongNodeVerse : public KwPlaylistNode
 
     virtual QVariant getData(int role, int column);
 
+    virtual void activate(KwDisplayManager* manager);
+
   private:
 
     /*

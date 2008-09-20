@@ -130,9 +130,7 @@ kworship::kworship()
 
   // Playlist
   m_primaryPlaylist = new KwPlaylistList();
-  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #1a#"));
-  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #2a#"));
-  m_primaryPlaylist->addItem(new KwPlaylistNote("This is a note #3a#"));
+  m_primaryPlaylist->addClass("beachy");
 
   KwCssStyleSheet* styleRules = new KwCssStyleSheet;
 
@@ -143,24 +141,6 @@ kworship::kworship()
   styleRules->addRule(beachyTheme);
 
   m_primaryPlaylist->addStyleSheet(styleRules);
-
-  KwPlaylistItem* song;
-  m_primaryPlaylist->addItem(song = new KwPlaylistText("Our God is a great big God", QStringList()
-    << "Our God is a great big God,\nOur God is a great big God,\nOur God is a great big God,\nAnd He holds us in his hands."
-    << "He's higher than a skyscraper\nAnd he's deeper than a submarine.\nHe's wider than the universe\nAnd beyond my wildest dreams."
-    << "And He's known me and He's loved me\nSince before the world began.\nHow wonderful\nto be a part\nof God's amazing plan"
-  ));
-  song->addClass("beachy");
-
-  KwPlaylistList* list1 = new KwPlaylistList();
-  m_primaryPlaylist->addItem(list1);
-  list1->addItem(new KwPlaylistNote("This is a note #1b"));
-  list1->addItem(new KwPlaylistNote("This is a note #2b"));
-  list1->addItem(new KwPlaylistNote("This is a note #3b"));
-
-  m_primaryPlaylist->addItem(new KwPlaylistImage("/home/james/media/images/projector/misc/love-god-light.jpg"));
-  m_primaryPlaylist->addItem(new KwPlaylistVideo("/home/james/YouTube/songs/great_big_god.flv"));
-  m_primaryPlaylist->addItem(new KwPlaylistVideo("/home/james/YouTube/songs/Hillsong_Kidz_Rainbow.flv"));
 
   m_playlistModel = new KwPlaylistModel;
   m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));

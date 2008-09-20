@@ -8,6 +8,7 @@
 #include "KwPlaylistSong.h"
 #include "KwSongdbVersion.h"
 #include "KwSongdbLyrics.h"
+#include "KwDisplayManager.h"
 
 #include <KIcon>
 
@@ -51,4 +52,10 @@ QVariant KwPlaylistSongNodeVerse::getData(int role, int column)
   return QVariant();
 }
 
+void KwPlaylistSongNodeVerse::activate(KwDisplayManager* manager)
+{
+  manager->applyStyles(m_item);
+  // Set text
+  manager->text.setText(m_item->getSongVersion()->getLyricsByOrder(m_verse)->getLyrics());
+}
 
