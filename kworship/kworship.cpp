@@ -296,6 +296,7 @@ void kworship::toggleMainDisplay(bool checked)
     {
       m_mainDisplay = new KwLocalDisplay;
       m_mainDisplay->setPrimary(true);
+      m_mainDisplay->setWindowTitle("kworship display");
       m_displayController.attachChild(m_mainDisplay);
       connect(m_mainDisplay, SIGNAL(closed()), this, SLOT(mainDisplayClosed()));
     }
