@@ -9,6 +9,8 @@ set(kworshipsongdb_SRCS
     KwSongdb.cpp
     KwSongdbSong.cpp
     KwSongdbVersion.cpp
+    KwSongdbLyrics.cpp
+    KwSongdbLyricsOrder.cpp
     KwSongdbTree.cpp
     KwSongdbTreeGroupAction.cpp
     KwSongdbModel.cpp

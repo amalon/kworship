@@ -47,5 +47,5 @@ class KwSongdbSong
     QString m_name;
 };
 
-#endif // _KwSongdbNode_h_
+#endif // _KwSongdbSong_h_
 
