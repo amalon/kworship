@@ -8,12 +8,14 @@
 
 #include "KwDisplayManager.h"
 
+#include <cassert>
+
 /*
  * Constructors + destructor.
  */
 
 /// Default constructor.
-KwPlaylistImage::KwPlaylistImage(QString url)
+KwPlaylistImage::KwPlaylistImage(const QUrl& url)
 : KwPlaylistFile(url)
 {
 }
@@ -30,6 +32,6 @@ KwPlaylistImage::~KwPlaylistImage()
 void KwPlaylistImage::activate(KwDisplayManager* manager)
 {
   manager->text.clear();
-  manager->background.setImage(QPixmap(getUrl()));
+  manager->background.setImage(QPixmap(getUrl().path()));
 }
 

@@ -7,7 +7,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QString>
+#include <QUrl>
 
 class KwMediaManager;
 class KwMediaPreferencesSequence;
@@ -24,7 +24,7 @@ class KwMediaItem
      */
 
     /// Default constructor.
-    KwMediaItem(QString url);
+    KwMediaItem(const QUrl& url);
 
     /// Destructor.
     virtual ~KwMediaItem();
@@ -50,7 +50,7 @@ class KwMediaItem
      */
 
     /// Get the url of the file.
-    QString getUrl() const;
+    QUrl getUrl() const;
 
   private:
 
@@ -59,7 +59,7 @@ class KwMediaItem
      */
 
     /// Url.
-    QString m_url;
+    QUrl m_url;
 
     /// Sequence preferences.
     KwMediaPreferencesSequence* m_sequencePreferences;

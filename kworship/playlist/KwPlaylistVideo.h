@@ -21,7 +21,7 @@ class KwPlaylistVideo : public KwPlaylistFile
      */
 
     /// Primary constructor.
-    KwPlaylistVideo(QString url);
+    KwPlaylistVideo(const QUrl& url);
 
     /// Destructor.
     virtual ~KwPlaylistVideo();

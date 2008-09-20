@@ -9,7 +9,7 @@
 
 #include "KwPlaylistItem.h"
 
-#include <QString>
+#include <QUrl>
 
 class KwDisplayManager;
 
@@ -23,7 +23,7 @@ class KwPlaylistFile : public KwPlaylistItem
      */
 
     /// Primary constructor.
-    KwPlaylistFile(QString url);
+    KwPlaylistFile(const QUrl& url);
 
     /// Destructor.
     virtual ~KwPlaylistFile();
@@ -42,7 +42,7 @@ class KwPlaylistFile : public KwPlaylistItem
      */
 
     /// Get the image url.
-    QString getUrl() const;
+    QUrl getUrl() const;
 
   private:
     
@@ -51,7 +51,7 @@ class KwPlaylistFile : public KwPlaylistItem
      */
 
     /// File url.
-    QString m_url;
+    QUrl m_url;
 };
 
 #endif // _KwPlaylistFile_h_

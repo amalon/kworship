@@ -17,7 +17,7 @@
  */
 
 /// Default constructor.
-KwMediaItem::KwMediaItem(QString url)
+KwMediaItem::KwMediaItem(const QUrl& url)
 : m_url(url)
 , m_sequencePreferences(0)
 , m_audioPreferences(0)
@@ -114,7 +114,7 @@ void KwMediaItem::setVideo(bool enabled)
  */
 
 /// Get the url of the file.
-QString KwMediaItem::getUrl() const
+QUrl KwMediaItem::getUrl() const
 {
   return m_url;
 }

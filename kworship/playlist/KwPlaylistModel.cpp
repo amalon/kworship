@@ -9,9 +9,14 @@
 #include "KwPlaylistList.h"
 #include "KwPlaylistListNode.h"
 #include "KwPlaylistSong.h"
+#include "KwPlaylistVideo.h"
+#include "KwPlaylistImage.h"
 #include "KwSongdb.h"
 
+#include "kmimetype.h"
+
 #include <QMimeData>
+#include <QUrl>
 #include <QStringList>
 
 #include <cassert>
@@ -151,7 +156,16 @@ Qt::ItemFlags KwPlaylistModel::flags(const QModelIndex& index) const
 bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
   if (action == Qt::IgnoreAction)
+  {
     return true;
+  }
+
+  KwPlaylistNode* item = itemFromIndex(parent);
+  KwPlaylistListNode* list = dynamic_cast<KwPlaylistListNode*>(item);
+  if (0 == list)
+  {
+    return true;
+  }
 
   if (data->hasFormat("application/x.kworship.song.list"))
   {
@@ -164,12 +178,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
     {
       QString text;
       stream >> text;
-      newItems << text;
-      ++rows;
-    }
-    //insertRows(beginRow, rows, QModelIndex());
-    foreach (QString text, newItems)
-    {
+
       QStringList words = text.split(" ");
       if (words[0] == "songdb")
       {
@@ -179,20 +188,58 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
           int versionId = words[1].toInt(&ok, 0);
           if (ok)
           {
-            KwPlaylistNode* item = itemFromIndex(parent);
-            KwPlaylistListNode* list = dynamic_cast<KwPlaylistListNode*>(item);
-            if (0 != list)
-            {
-              KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->getSongVersionById(versionId));
-              list->getItem()->addItem(newSong, row);
-              item->clearChildCache();
-            }
+            KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->getSongVersionById(versionId));
+            list->getItem()->addItem(newSong, row);
+            ++row;
+            item->clearChildCache();
           }
         }
       }
     }
 
     reset();
+
+    return true;
+  }
+  else if (data->hasUrls())
+  {
+    bool needReset = false;
+    QList<QUrl> files = data->urls();
+    foreach (QUrl file, files)
+    {
+      // Get the file's mime type
+      KMimeType::Ptr result = KMimeType::findByUrl(KUrl(file));
+      bool success = false;
+      if (!result->isDefault())
+      {
+        if (result->name().startsWith("audio/"))
+        {
+          //list->getItem()->addItem(new KwPlaylistAudio(file));
+          //success = true;
+        }
+        else if (result->name().startsWith("image/"))
+        {
+          list->getItem()->addItem(new KwPlaylistImage(file));
+          success = true;
+        }
+        else if (result->name().startsWith("video/"))
+        {
+          list->getItem()->addItem(new KwPlaylistVideo(file));
+          success = true;
+        }
+      }
+      if (!success)
+      {
+        list->getItem()->addItem(new KwPlaylistFile(file));
+        success = true;
+      }
+      needReset = needReset || success;
+    }
+
+    if (needReset)
+    {
+      reset();
+    }
 
     return true;
   }

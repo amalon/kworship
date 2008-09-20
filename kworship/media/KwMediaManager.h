@@ -12,7 +12,7 @@
 #include <phonon/phononnamespace.h>
 
 #include <QObject>
-#include <QString>
+#include <QUrl>
 #include <QSet>
 
 namespace Phonon
@@ -78,7 +78,7 @@ class KwMediaManager : public QObject
      * The preferences can be altered while playing and will update live where possible.
      * @return The media object which needs attaching to the apropriate outputs.
      */
-    KwMediaObject* setupAudio(QString url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesAudio* prefsAudio);
+    KwMediaObject* setupAudio(const QUrl& url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesAudio* prefsAudio);
 
     /// Set up some video.
     /**
@@ -86,7 +86,7 @@ class KwMediaManager : public QObject
      * The preferences can be altered while playing and will update live where possible.
      * @return The media object which needs attaching to the apropriate outputs.
      */
-    KwMediaObject* setupVideo(QString url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesVisual* prefsVideo, KwMediaPreferencesAudio* prefsAudio = 0);
+    KwMediaObject* setupVideo(const QUrl& url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesVisual* prefsVideo, KwMediaPreferencesAudio* prefsAudio = 0);
 
     /*
      * Stopper methods

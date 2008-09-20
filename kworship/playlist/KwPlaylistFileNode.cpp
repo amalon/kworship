@@ -36,14 +36,14 @@ QVariant KwPlaylistFileNode::getData(int role, int column)
   {
     if (column == 0)
     {
-      return m_item->getUrl();
+      return m_item->getUrl().toString();
     }
   }
   else if (role == Qt::DecorationRole)
   {
     if (column == 0)
     {
-      KSharedPtr<KMimeType> mimeType = KMimeType::findByUrl(m_item->getUrl());
+      KMimeType::Ptr mimeType = KMimeType::findByUrl(m_item->getUrl());
       return KIcon(mimeType->iconName());
     }
   }

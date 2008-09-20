@@ -93,7 +93,7 @@ void KwMediaManager::unlinkVideo(KwVideoWidget* videoOut)
  */
 
 /// Set up some audio.
-KwMediaObject* KwMediaManager::setupAudio(QString url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesAudio* prefsAudio)
+KwMediaObject* KwMediaManager::setupAudio(const QUrl& url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesAudio* prefsAudio)
 {
   assert(prefsSequence != 0);
   assert(prefsAudio != 0);
@@ -126,7 +126,7 @@ KwMediaObject* KwMediaManager::setupAudio(QString url, KwMediaPreferencesSequenc
 }
 
 /// Set up some video.
-KwMediaObject* KwMediaManager::setupVideo(QString url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesVisual* prefsVideo, KwMediaPreferencesAudio* prefsAudio)
+KwMediaObject* KwMediaManager::setupVideo(const QUrl& url, KwMediaPreferencesSequence* prefsSequence, KwMediaPreferencesVisual* prefsVideo, KwMediaPreferencesAudio* prefsAudio)
 {
   assert(prefsSequence != 0);
   assert(prefsVideo != 0);

@@ -12,7 +12,7 @@
  */
 
 /// Primary constructor.
-KwPlaylistFile::KwPlaylistFile(QString url)
+KwPlaylistFile::KwPlaylistFile(const QUrl& url)
 : KwPlaylistItem()
 , m_url(url)
 {
@@ -42,7 +42,7 @@ void KwPlaylistFile::activate(KwDisplayManager*)
  */
 
 /// Get the image url.
-QString KwPlaylistFile::getUrl() const
+QUrl KwPlaylistFile::getUrl() const
 {
   return m_url;
 }

@@ -13,7 +13,7 @@
  */
 
 /// Default constructor.
-KwPlaylistVideo::KwPlaylistVideo(QString url)
+KwPlaylistVideo::KwPlaylistVideo(const QUrl& url)
 : KwPlaylistFile(url)
 , m_mediaItem(url)
 {
