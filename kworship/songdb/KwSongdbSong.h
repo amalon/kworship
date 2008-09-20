@@ -7,6 +7,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <QString>
+
 /// A song from the database.
 class KwSongdbSong
 {
@@ -22,6 +24,16 @@ class KwSongdbSong
     /// Destructor.
     virtual ~KwSongdbSong();
 
+    /*
+     * Accessors
+     */
+
+    /// Get the id.
+    int getId() const;
+
+    /// Get the name of the song.
+    QString getName() const;
+
   private:
 
     /*
@@ -30,6 +42,9 @@ class KwSongdbSong
 
     /// Song id.
     int m_id;
+
+    /// Name.
+    QString m_name;
 };
 
 #endif // _KwSongdbNode_h_

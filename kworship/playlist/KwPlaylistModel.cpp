@@ -9,6 +9,7 @@
 #include "KwPlaylistList.h"
 #include "KwPlaylistListNode.h"
 #include "KwPlaylistSong.h"
+#include "KwSongdb.h"
 
 #include <QMimeData>
 #include <QStringList>
@@ -182,7 +183,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
             KwPlaylistListNode* list = dynamic_cast<KwPlaylistListNode*>(item);
             if (0 != list)
             {
-              KwPlaylistSong* newSong = new KwPlaylistSong(versionId);
+              KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->getSongVersionById(versionId));
               list->getItem()->addItem(newSong, row);
               item->clearChildCache();
             }

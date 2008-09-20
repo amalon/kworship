@@ -5,6 +5,7 @@
  */
 
 #include "KwPlaylistSong.h"
+#include "KwPlaylistSongNode.h"
 #include "KwSongdb.h"
 
 /*
@@ -12,14 +13,33 @@
  */
 
 /// Primary constructor.
-KwPlaylistSong::KwPlaylistSong(int versionId)
-: KwPlaylistPaged()
-, m_version(KwSongdb::self()->getSongVersionById(versionId))
+KwPlaylistSong::KwPlaylistSong(KwSongdbVersion* version)
+: KwPlaylistItem()
+, m_version(version)
 {
 }
 
 /// Destructor.
 KwPlaylistSong::~KwPlaylistSong()
 {
+}
+
+/*
+ * Accessors
+ */
+
+/// Get the song version object.
+KwSongdbVersion* KwPlaylistSong::getSongVersion()
+{
+  return m_version;
+}
+
+/*
+ * Main interface
+ */
+
+KwPlaylistNode* KwPlaylistSong::getNode(KwPlaylistNode* parent)
+{
+  return new KwPlaylistSongNode(parent, this);
 }
 

@@ -7,6 +7,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+class KwSongdbSong;
+
 /// A song version from the database.
 class KwSongdbVersion
 {
@@ -22,6 +24,13 @@ class KwSongdbVersion
     /// Destructor.
     virtual ~KwSongdbVersion();
 
+    /*
+     * Accessors
+     */
+
+    /// Get the song this is a version of.
+    KwSongdbSong* getSong();
+
   private:
 
     /*
@@ -30,6 +39,9 @@ class KwSongdbVersion
 
     /// Version id.
     int m_id;
+
+    /// Song object.
+    KwSongdbSong* m_song;
 };
 
 #endif // _KwSongdbNode_h_

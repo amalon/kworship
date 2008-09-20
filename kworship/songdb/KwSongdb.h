@@ -39,6 +39,9 @@ class KwSongdb
      * Accessors
      */
 
+    /// Get the database.
+    QSqlDatabase getDatabase();
+
     /// Get a song by id.
     KwSongdbSong* getSongById(int id);
 

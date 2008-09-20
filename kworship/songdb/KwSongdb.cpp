@@ -45,6 +45,12 @@ KwSongdb::~KwSongdb()
  * Accessors
  */
 
+/// Get the database.
+QSqlDatabase KwSongdb::getDatabase()
+{
+  return m_database;
+}
+
 /// Get a song by id.
 KwSongdbSong* KwSongdb::getSongById(int id)
 {

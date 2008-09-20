@@ -3,15 +3,16 @@
 
 /**
  * @file KwPlaylistSong.h
- * @brief A plain text playlist item.
+ * @brief A song playlist item.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlaylistPaged.h"
-#include "KwSongdbVersion.h"
+#include "KwPlaylistItem.h"
 
-/// A plain text playlist item.
-class KwPlaylistSong : public KwPlaylistPaged
+class KwSongdbVersion;
+
+/// A song playlist item.
+class KwPlaylistSong : public KwPlaylistItem
 {
   public:
     
@@ -20,10 +21,23 @@ class KwPlaylistSong : public KwPlaylistPaged
      */
 
     /// Primary constructor.
-    KwPlaylistSong(int versionId);
+    KwPlaylistSong(KwSongdbVersion* version);
 
     /// Destructor.
     virtual ~KwPlaylistSong();
+
+    /*
+     * Accessors
+     */
+
+    /// Get the song version object.
+    KwSongdbVersion* getSongVersion();
+
+    /*
+     * Main interface
+     */
+
+    virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:
     
