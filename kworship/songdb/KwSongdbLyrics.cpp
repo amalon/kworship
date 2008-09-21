@@ -1,7 +1,6 @@
 /***************************************************************************
- *   Copyright 2008 James Hogan <james@albanarts.com>                      *
- *                                                                         *
  *   This file is part of KWorship.                                        *
+ *   Copyright 2008 James Hogan <james@albanarts.com>                      *
  *                                                                         *
  *   KWorship is free software: you can redistribute it and/or modify      *
  *   it under the terms of the GNU General Public License as published by  *
