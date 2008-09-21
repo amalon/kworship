@@ -3,8 +3,6 @@ project(kworshipplaylist)
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
 
-set(kworshipplaylist_MOC_SRCS
-)
 set(kworshipplaylist_SRCS
     KwPlaylistNode.cpp
     KwPlaylistModel.cpp
@@ -28,10 +26,7 @@ set(kworshipplaylist_SRCS
     KwPlaylistSongNodeVerse.cpp
     KwPlaylistText.cpp
     KwPlaylistTextNode.cpp
-    ${kworshipplaylist_MOC_SRCS}
 )
-
-kde4_add_ui_files(kworshipplaylist_MOC_SRCS)
 
 kde4_add_library(kworshipplaylist ${kworshipplaylist_SRCS})
 
