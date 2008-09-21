@@ -43,6 +43,7 @@ target_link_libraries(kworship
                       kworshipsongdb
                       kworshipdisplay
                       kworshipmedia
+                      unipresent
 )
 
 install(TARGETS kworship DESTINATION ${BIN_INSTALL_DIR} )
