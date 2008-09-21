@@ -97,5 +97,5 @@ class KwSongdb
     VersionHash m_versionsById;
 };
 
-#endif // _KwSongdbNode_h_
+#endif // _KwSongdb_h_
 
