@@ -1,15 +1,73 @@
-== Main components ==
-kworship is divided into a number of key components.
 
-=== kworship ===
-Main kworship application.
+    .-.     _  _____        __
+ .--' '--. | |/ ,-. \  /\  / /__   ___    _____   ________  ___
+ '--. .--' |   <   \ \/  \/ //  \ |    \ / __. |_| .__   _]|    \
+    | |    | |\ \   \  /\  /| () || () <_\ \ |  _  | _] [__| ()_/
+    | |    |_| \_]   \/  \/  \__/ |_|\_____/ |_| |_|[________|
+    '-'
 
-=== unipresent ===
+Free/Open source church worship & presentation software
+
+http://kworship.org
+
+=================
+ About
+=================
+
+KWorship is meant to be fully featured and to integrate well into KDE.
+It is not currently fit for purpose.
+
+James Hogan
+Original developer
+
+=================
+ Main components
+=================
+
+KWorship is divided into a number of key components.
+
+-----------------
+ kworship
+-----------------
+Main kworship application, which is split further into:
+ * css
+ * display
+ * media
+ * playlist
+ * songdb
+
+-----------------
+ unipresent
+-----------------
 Abstraction of control for different presentation software.
-Used by kworship and kworshipserver.
+This isn't written yet.
+
 Backends include:
-* MS Powerpoint
-* OO.org Impress
-* kpresenter
-* kworship's display
+ * MS Powerpoint
+ * OO.org Impress
+ * kpresenter
+ * kworship's display
+
+=================
+ Contact
+=================
+
+Contact James Hogan <james@albanarts.com>
+
+=================
+ License
+=================
+
+KWorship is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+KWorship is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with KWorship.  If not, see <http://www.gnu.org/licenses/>.
 

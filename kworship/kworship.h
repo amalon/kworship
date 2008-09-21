@@ -1,33 +1,30 @@
 /***************************************************************************
- *   Copyright (C) 2008 by James Hogan   *
- *   james@albanarts.com   *
+ *   Copyright 2008 James Hogan <james@albanarts.com>                      *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
+ *   This file is part of KWorship.                                        *
+ *                                                                         *
+ *   KWorship is free software: you can redistribute it and/or modify      *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
+ *   the Free Software Foundation, either version 3 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
+ *   KWorship is distributed in the hope that it will be useful,           *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef PROTOTYPE2_H
-#define PROTOTYPE2_H
-
-#include "KwLocalDisplayController.h"
-
-#include <kxmlguiwindow.h>
+#ifndef _kworship_h_
+#define _kworship_h_
 
 #include "ui_prefsDisplay_base.h"
 #include "ui_prefs_base.h"
+#include "KwLocalDisplayController.h"
 
+#include <kxmlguiwindow.h>
 
 #include <QModelIndex>
 
@@ -106,4 +103,4 @@ private:
     KToggleAction *m_statusbarAction;
 };
 
-#endif // _kworship_H_
+#endif // _kworship_h_
