@@ -6,7 +6,7 @@ set(QT_USE_QTSQL 1)
 include(${QT_USE_FILE})
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
-                    ../include
+                    include
                     media
                     display
                     css
