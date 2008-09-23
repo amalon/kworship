@@ -4,5 +4,6 @@ set(unipresentooimpress_SRCS
     UpOoimpBackend.cpp
 )
 
-add_library(unipresentooimpress SHARED ${unipresentooimpress_SRCS})
+set(unipresentooimpress_TYPE STATIC)
+add_library(unipresentooimpress ${unipresentooimpress_TYPE} ${unipresentooimpress_SRCS})
 

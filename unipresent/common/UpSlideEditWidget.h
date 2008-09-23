@@ -33,7 +33,6 @@
  */
 class UpSlideEditWidget : public QWidget
 {
-  Q_OBJECT
   public:
 
     /*

@@ -37,7 +37,6 @@ class UpPresentation;
  */
 class UpBackend : public QObject
 {
-  Q_OBJECT
   public:
 
     /*

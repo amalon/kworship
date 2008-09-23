@@ -30,7 +30,6 @@
 /// OpenOffice.org Impress presentation manager.
 class UpOoimpBackend : public UpBackend
 {
-  Q_OBJECT
   public:
 
     /*

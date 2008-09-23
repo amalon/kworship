@@ -44,6 +44,7 @@ target_link_libraries(kworship
                       kworshipdisplay
                       kworshipmedia
                       unipresent
+                      unipresentooimpress
 )
 
 install(TARGETS kworship DESTINATION ${BIN_INSTALL_DIR} )
