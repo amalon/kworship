@@ -16,62 +16,64 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
+#ifndef _UpBackend_h_
+#define _UpBackend_h_
+
 /**
- * @file UpOoimpManager.cpp
- * @brief OpenOffice.org Impress presentation manager.
+ * @file UpBackend.h
+ * @brief An abstract presentation manager.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpOoimpManager.h"
+#include <QObject>
+#include <QString>
+#include <QStringList>
+#include <QUrl>
 
-/*
- * Constructors + destructor
+class UpPresentation;
+
+/** An abstract presentation manager.
+ * Inherit from this class to implement each backend.
  */
-
-/// Primary constructor.
-UpOoimpManager::UpOoimpManager(QObject* parent)
-: UpManager(parent)
+class UpBackend : public QObject
 {
-}
+  Q_OBJECT
+  public:
 
-/// Destructor.
-UpOoimpManager::~UpOoimpManager()
-{
-}
+    /*
+     * Constructors + destructor
+     */
 
-/*
- * General meta information
- */
+    /// Primary constructor.
+    UpBackend(QObject* parent = 0);
 
-QString UpOoimpManager::name() const
-{
-  return "OpenOffice.org Impress";
-}
+    /// Destructor.
+    virtual ~UpBackend();
 
-QString UpOoimpManager::description() const
-{
-  return "Controls a running Impress";
-}
+    /*
+     * General meta information
+     */
 
-QStringList UpOoimpManager::mimeTypes() const
-{
-  /// @todo Find mime types from open office if possible
-  return QStringList()
-    << "application/vnd.oasis.opendocument.presentation"
-    ;
-}
+    /// Get the name of the backend.
+    virtual QString name() const = 0;
 
-/*
- * Presentation management
- */
+    /// Get a description of the backend.
+    virtual QString description() const = 0;
 
-QList<UpPresentation*> UpOoimpManager::presentations()
-{
-  return QList<UpPresentation*>();
-}
+    /// Get a list of supported mime types.
+    virtual QStringList mimeTypes() const = 0;
 
-UpPresentation* UpOoimpManager::openPresentation(const QUrl& url)
-{
-  return 0;
-}
+    /*
+     * Presentation management
+     */
+
+    /// Get a list of presentations.
+    virtual QList<UpPresentation*> presentations() = 0;
+
+    /// Open a new presentation.
+    virtual UpPresentation* openPresentation(const QUrl& url) = 0;
+
+};
+
+#endif // _UpBackend_h_
 

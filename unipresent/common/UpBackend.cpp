@@ -16,52 +16,26 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpOoimpManager_h_
-#define _UpOoimpManager_h_
-
 /**
- * @file UpOoimpManager.h
- * @brief OpenOffice.org Impress presentation manager.
+ * @file UpBackend.cpp
+ * @brief An abstract presentation manager.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpManager.h"
+#include "UpBackend.h"
 
-/// OpenOffice.org Impress presentation manager.
-class UpOoimpManager : public UpManager
+/*
+ * Constructors + destructor
+ */
+
+/// Primary constructor.
+UpBackend::UpBackend(QObject* parent)
+: QObject(parent)
 {
-  Q_OBJECT
-  public:
+}
 
-    /*
-     * Constructors + destructor
-     */
-
-    /// Primary constructor.
-    UpOoimpManager(QObject* parent = 0);
-
-    /// Destructor.
-    virtual ~UpOoimpManager();
-
-    /*
-     * General meta information
-     */
-
-    virtual QString name() const;
-
-    virtual QString description() const;
-
-    virtual QStringList mimeTypes() const;
-
-    /*
-     * Presentation management
-     */
-
-    virtual QList<UpPresentation*> presentations();
-
-    virtual UpPresentation* openPresentation(const QUrl& url);
-
-};
-
-#endif // _UpOoimpManager_h_
+/// Destructor.
+UpBackend::~UpBackend()
+{
+}
 

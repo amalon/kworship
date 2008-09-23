@@ -3,6 +3,12 @@
 lib
 temp
 
+# Object files
+*.o
+*.a
+*.la
+*.so
+
 # CMake
 Makefile
 CMakeFiles
