@@ -1,0 +1,48 @@
+Generic presentation software control
+
+backends
+  openoffice.org impress
+    UNO API
+  kpresenter
+    kpart
+    qt
+    dcop/dbus
+  apple keynote
+  microsoft powerpoint
+    using api or whatever other people have used
+
+features of unipresent
+  dynamic loading of backends
+    backends can be compiled separately into shared libraries
+    found automatically by kworship
+    settings allows enabling/disabling of backends
+  associate mime types with backends
+    based on the kde mime type apps
+  unification of backend presentation lists
+    a single list of open presentations (with icons of course)
+
+features of API
+  get backend icon
+  presentation control
+    start
+    stop
+    next
+    previous
+  live preview
+  slide navigator
+    thumbnails of slides
+    show slide notes
+  slide editor (integrated or otherwise)
+    otherwise could be live editing in open program
+      this is usually a side effect of IPC technique
+
+methods
+  control a separate process
+    this really is the preferred method
+    dcop/dbus/uno control
+    how to get previews? (may have to modify kpresenter for example)
+  kparts
+    may be able to get a decent control thing going
+    previews of same document?
+    read/write kpart perhaps
+
