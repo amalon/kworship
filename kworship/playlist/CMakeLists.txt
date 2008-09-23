@@ -16,7 +16,6 @@ set(kworshipplaylist_SRCS
     KwPlaylistPagedNodePage.cpp
     KwPlaylistList.cpp
     KwPlaylistListNode.cpp
-    KwPlaylistSong.cpp
     KwPlaylistNote.cpp
     KwPlaylistNoteNode.cpp
     KwPlaylistPresentation.cpp
