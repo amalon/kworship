@@ -6,6 +6,7 @@ include_directories(${QT_INCLUDES}
 )
 
 set(unipresent_SRCS
+    UpManager.cpp
     UpBackend.cpp
     UpPresentation.cpp
     UpSlide.cpp
