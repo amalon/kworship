@@ -6,6 +6,7 @@ In order of priority
     [ ] delete
     [ ] drag to rearrange
 [O] song database
+    [ ] initial setup wizard
     [ ] preferences
     [ ] initialisation
 [ ] preview unknown files with a kpart
