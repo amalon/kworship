@@ -1,0 +1,108 @@
+# need to find out:
+# OO_SDK_HOME (e.g. /usr/lib64/openoffice.org/sdk
+# oo.org program dir
+
+SET(UNO_OO_HOME "/usr/lib64/openoffice.org")
+SET(UNO_OO_SDK_HOME "${UNO_OO_HOME}/sdk")
+SET(UNO_OO_PROGRAM "${UNO_OO_HOME}/program")
+SET(UNO_OO_TYPES_RDB "${UNO_OO_PROGRAM}/types.rdb")
+SET(UNO_IDL_PATH "${UNO_OO_SDK_HOME}/idl")
+SET(UNO_IDLC "${UNO_OO_SDK_HOME}/linux/bin/idlc")
+SET(UNO_REGMERGE "${UNO_OO_SDK_HOME}/linux/bin/regmerge")
+SET(UNO_REGCOMP "${UNO_OO_SDK_HOME}/linux/bin/regcomp")
+SET(UNO_CPPUMAKER "${UNO_OO_SDK_HOME}/linux/bin/cppumaker")
+SET(UNO_TEMP_DIR "${PROJECT_BINARY_DIR}/CMakeFiles")
+SET(UNO_MAIN_INCLUDES "${UNO_OO_SDK_HOME}/include")
+SET(UNO_INCLUDES ${UNO_MAIN_INCLUDES})
+
+
+# Preprocessor definitions
+IF (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+  SET(UNO_CPPU_ENV gcc3)
+  SET(UNO_SHLIB_EXT so)
+  ADD_DEFINITIONS(-DUNX -DGCC -DLINUX)
+  SET(UNO_CPPUMAKER_ENV "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${UNO_OO_PROGRAM}:${UNO_OO_SDK_HOME}/linux/lib")
+ELSE (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+  MESSAGE("warning: unrecognised system ${CMAKE_SYSTEM_NAME} - you may need to add UNO preprocessor definitions to ${CMAKE_CURRENT_LIST_FILE}")
+ENDIF (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+ADD_DEFINITIONS(-DCPPU_ENV=${UNO_CPPU_ENV})
+
+FIND_PATH(UNO_INCLUDE_DIR uno.h /usr/include/uno /usr/local/include/uno)
+
+FIND_LIBRARY(UNO_SAL_LIB NAMES uno_sal PATHS ${UNO_OO_PROGRAM}) 
+FIND_LIBRARY(UNO_CPPU_LIB NAMES uno_cppu PATHS ${UNO_OO_PROGRAM}) 
+FIND_LIBRARY(UNO_CPPUHELPER_LIB NAMES uno_cppuhelper${UNO_CPPU_ENV} PATHS ${UNO_OO_PROGRAM}) 
+FIND_LIBRARY(UNO_SALHELPER_LIB NAMES uno_salhelper${UNO_CPPU_ENV} PATHS ${UNO_OO_PROGRAM}) 
+FIND_LIBRARY(UNO_REG_LIB NAMES reg PATHS ${UNO_OO_PROGRAM}) 
+FIND_LIBRARY(UNO_STORE_LIB NAMES store PATHS ${UNO_OO_PROGRAM}) 
+SET(UNO_LIBS
+    ${UNO_CPPUHELPER_LIB}
+    ${UNO_CPPU_LIB}
+    ${UNO_SALHELPER_LIB}
+    ${UNO_SAL_LIB}
+)
+
+# from makefile
+#ifeq "$(STLPORT_VER)" "500"
+#STLPORTLIB=-lstlport
+#else
+#STLPORTLIB=-lstlport_gcc$(STLDEBUG)
+#endif
+
+#IF (UNO_INCLUDES AND UNO_LIBRARY)
+#  SET(UNO_FOUND TRUE)
+#ENDIF (UNO_INCLUDE_DIR AND UNO_LIBRARY)
+
+
+#IF (UNO_FOUND)
+#  IF (NOT UNO_FIND_QUIETLY)
+#    MESSAGE(STATUS "Found UNO: ${UNO_LIBRARY}")
+#  ENDIF (NOT UNO_FIND_QUIETLY)
+#ELSE (UNO_FOUND)
+#  IF (UNO_FIND_REQUIRED)
+#    MESSAGE(FATAL_ERROR "Could not find UNO")
+#  ENDIF (UNO_FIND_REQUIRED)
+#ENDIF (UNO_FOUND)
+
+# Macros
+
+# UNO_ADD_TYPES(types ... )
+MACRO (UNO_ADD_TYPES component types)
+  SET(UNO_COMPONENT_INC "${UNO_TEMP_DIR}/${component}/inc")
+  SET(UNO_RDB "${UNO_TEMP_DIR}/${component}.rdb")
+  # Add include directory
+  SET(UNO_INCLUDES ${UNO_INCLUDES} ${UNO_COMPONENT_INC})
+
+  # rdb -> [cppumaker] -> hxx
+  SET(UNO_HPPFILES )
+  SET(UNO_TYPELIST )
+  # prefix each type with -T
+  FOREACH(type ${ARGN})
+    SET(UNO_TYPELIST ${UNO_TYPELIST} -T${type})
+    STRING(REPLACE "." "/" UNO_HPPFILE "${type}")
+    SET(UNO_HPPFILE "${UNO_TEMP_DIR}/${UNO_HPPFILE}.hxx")
+    SET(UNO_HPPFILES ${UNO_HPPFILES} ${UNO_HPPFILE})
+  ENDFOREACH(type)
+  ADD_CUSTOM_COMMAND(
+    OUTPUT ${UNO_RDB}
+    COMMAND ${UNO_REGMERGE} ${UNO_RDB} / ${UNO_OO_TYPES_RDB}
+    MAIN_DEPENDENCY ${UNO_OO_TYPES_RDB}
+  )
+  ADD_CUSTOM_COMMAND(
+    OUTPUT ${UNO_HPPFILES}
+    COMMAND ${UNO_CPPUMAKER} -Gc -BUCR -O${UNO_COMPONENT_INC} ${UNO_TYPELIST} ${UNO_RDB}
+    COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c connector.uno.${UNO_SHLIB_EXT}
+    COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c remotebridge.uno.${UNO_SHLIB_EXT}
+    COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c bridgefac.uno.${UNO_SHLIB_EXT}
+    COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c uuresolver.uno.${UNO_SHLIB_EXT}
+    MAIN_DEPENDENCY ${UNO_RDB}
+  )
+
+  # force generation of header files
+  SET(UNO_TARGET "UNO_${component}")
+  ADD_CUSTOM_TARGET(
+    ${UNO_TARGET}
+    DEPENDS ${UNO_HPPFILES}
+  )
+ENDMACRO (UNO_ADD_TYPES)
+

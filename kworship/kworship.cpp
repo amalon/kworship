@@ -27,6 +27,7 @@
 #include "KwPlaylistText.h"
 #include "KwPlaylistImage.h"
 #include "KwPlaylistVideo.h"
+#include "KwPlaylistPresentation.h"
 #include "KwPlaylistModel.h"
 
 #include "KwCssStyleSheet.h"
@@ -43,6 +44,9 @@
 #include "KwSongdbModel.h"
 #include "KwSongdbFilterNode.h"
 #include "KwSongdbTree.h"
+
+#include "UpManager.h"
+#include "UpOoimpBackend.h"
 
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
@@ -68,8 +72,11 @@ kworship::kworship()
 : KXmlGuiWindow()
 , m_view(new kworshipView(this))
 , m_displayManager(0)
+, m_presentationManager(new UpManager(this))
 , m_printer(0)
 {
+  // set up presentation backends
+  m_presentationManager->registerBackend<UpOoimpBackend>();
   
   m_mainDisplay = 0;
   m_previewDisplay = 0;
@@ -138,6 +145,7 @@ kworship::kworship()
   styleRules->addRule(beachyTheme);
 
   m_primaryPlaylist->addStyleSheet(styleRules);
+  m_primaryPlaylist->addItem(new KwPlaylistPresentation(QUrl("file:///home/james/Documents/test.odp")));
 
   m_playlistModel = new KwPlaylistModel;
   m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
@@ -196,6 +204,7 @@ kworship::kworship()
 
 kworship::~kworship()
 {
+  delete m_presentationManager;
   delete KwSongdb::self();
 }
 

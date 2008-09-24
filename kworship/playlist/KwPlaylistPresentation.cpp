@@ -16,4 +16,40 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
+/**
+ * @file KwPlaylistPresentation.h
+ * @brief An image playlist item.
+ * @author James Hogan <james@albanarts.com>
+ */
+
+#include "KwPlaylistPresentation.h"
+#include "KwDisplayManager.h"
+
+#include "UpManager.h"
+
+/*
+ * Constructors + destructor.
+ */
+
+/// Default constructor.
+KwPlaylistPresentation::KwPlaylistPresentation(const QUrl& url)
+: KwPlaylistFile(url)
+{
+}
+
+/// Destructor.
+KwPlaylistPresentation::~KwPlaylistPresentation()
+{
+}
+
+/*
+ * Main interface.
+ */
+
+void KwPlaylistPresentation::activate(KwDisplayManager* manager)
+{
+  manager->text.clear();
+  // Just load the presentation file for the minute
+  UpManager::self()->openPresentation(getUrl());
+}
 

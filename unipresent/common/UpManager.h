@@ -37,6 +37,13 @@ class UpManager : public QObject
   public:
 
     /*
+     * Singleton access.
+     */
+
+    /// Get the singleton object.
+    static UpManager* self();
+
+    /*
      * Constructors + destructor
      */
 
@@ -63,7 +70,26 @@ class UpManager : public QObject
     /// Get a list of backends.
     QList<UpBackend*> backends();
 
+    /// Add a backend object.
+    void addBackend(UpBackend* backend);
+
+    /** Register a new backend.
+     * @param T The type of the backend.
+     */
+    template <class T>
+    void registerBackend()
+    {
+      addBackend(new T(this));
+    }
+
   private:
+
+    /*
+     * Static variables
+     */
+
+    /// Singleton object.
+    static UpManager* s_singleton;
 
     /*
      * Variables

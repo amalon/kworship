@@ -25,6 +25,21 @@
 #include "UpManager.h"
 #include "UpBackend.h"
 
+#include <cassert>
+
+/// Singleton object.
+UpManager* UpManager::s_singleton = 0;
+
+/*
+ * Singleton access.
+ */
+
+/// Get the singleton object.
+UpManager* UpManager::self()
+{
+  return s_singleton;
+}
+
 /*
  * Constructors + destructor
  */
@@ -34,6 +49,8 @@ UpManager::UpManager(QObject* parent)
 : QObject(parent)
 , m_backends()
 {
+  assert(s_singleton == 0);
+  s_singleton = this;
 }
 
 /// Destructor.
@@ -43,6 +60,7 @@ UpManager::~UpManager()
   {
     delete backend;
   }
+  s_singleton = 0;
 }
 
 /*
@@ -63,7 +81,15 @@ QList<UpPresentation*> UpManager::presentations()
 /// Open a new presentation.
 UpPresentation* UpManager::openPresentation(const QUrl& url)
 {
-  /// Implement me
+  /// @todo Implement me properly
+  foreach(UpBackend* backend, m_backends)
+  {
+    UpPresentation* pres = backend->openPresentation(url);
+    if (0 != pres)
+    {
+      return pres;
+    }
+  }
   return 0;
 }
 
@@ -75,5 +101,11 @@ UpPresentation* UpManager::openPresentation(const QUrl& url)
 QList<UpBackend*> UpManager::backends()
 {
   return m_backends;
+}
+
+/// Add a backend object.
+void UpManager::addBackend(UpBackend* backend)
+{
+  m_backends.push_back(backend);
 }
 

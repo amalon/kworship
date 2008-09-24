@@ -26,8 +26,6 @@
 
 #include "KwDisplayManager.h"
 
-#include <cassert>
-
 /*
  * Constructors + destructor.
  */

@@ -1,5 +1,6 @@
 project(kworship)
 
+find_package(UNO REQUIRED)
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
 set(QT_USE_QTSQL 1)
@@ -7,6 +8,8 @@ include(${QT_USE_FILE})
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
                     include
+                    ../unipresent/common
+                    ../unipresent/ooimpress
                     media
                     display
                     css
@@ -38,6 +41,7 @@ target_link_libraries(kworship
                       ${KDE4_KDEUI_LIBS}
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
+                      ${UNO_LIBS}
                       kworshipplaylist
                       kworshipcss
                       kworshipsongdb

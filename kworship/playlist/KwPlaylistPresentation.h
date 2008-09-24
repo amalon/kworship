@@ -16,4 +16,38 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
+#ifndef _KwPlaylistPresentation_h_
+#define _KwPlaylistPresentation_h_
+
+/**
+ * @file KwPlaylistPresentation.h
+ * @brief A presentation document playlist item.
+ * @author James Hogan <james@albanarts.com>
+ */
+
+#include "KwPlaylistFile.h"
+
+/// A presentation document playlist item.
+class KwPlaylistPresentation : public KwPlaylistFile
+{
+  public:
+    
+    /*
+     * Constructors + destructor.
+     */
+
+    /// Primary constructor.
+    KwPlaylistPresentation(const QUrl& url);
+
+    /// Destructor.
+    virtual ~KwPlaylistPresentation();
+
+    /*
+     * Main interface.
+     */
+
+    virtual void activate(KwDisplayManager* manager);
+};
+
+#endif // _KwPlaylistPresentation_h_
 
