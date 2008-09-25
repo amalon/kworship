@@ -39,3 +39,5 @@ UpSlide::~UpSlide()
 {
 }
 
+#include "UpSlide.moc"
+

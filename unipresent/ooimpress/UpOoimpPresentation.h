@@ -16,22 +16,26 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpSlide_h_
-#define _UpSlide_h_
+#ifndef _UpOoimpPresentation_h_
+#define _UpOoimpPresentation_h_
 
 /**
- * @file UpSlide.h
- * @brief An abstract presentation slide.
+ * @file UpOoimpPresentation.h
+ * @brief OpenOffice.org Impress presentation.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QObject>
-#include <QPixmap>
+#include "UpPresentation.h"
 
-/** An abstract presentation slide.
- * Inherit from this class to implement each backend's presentation slide.
- */
-class UpSlide : public QObject
+#include <com/sun/star/uno/Reference.h>
+#include <com/sun/star/uno/XInterface.hpp>
+
+#include <QUrl>
+
+using namespace com::sun::star;
+
+/// OpenOffice.org Impress presentation.
+class UpOoimpPresentation : public UpPresentation
 {
   Q_OBJECT
   public:
@@ -41,20 +45,37 @@ class UpSlide : public QObject
      */
 
     /// Primary constructor.
-    UpSlide(QObject* parent = 0);
+    UpOoimpPresentation(uno::XInterface* interface, QObject* parent = 0);
 
     /// Destructor.
-    virtual ~UpSlide();
+    virtual ~UpOoimpPresentation();
 
     /*
      * Main interface
      */
 
-    // get notes and handouts
-    // get outline
-    // get preview
-    virtual QPixmap getPreview();
+    virtual void close();
+
+    /*
+     * Slides
+     */
+
+    virtual int numSlides();
+
+    virtual UpSlide* getSlide(int);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// An interface to the document.
+    uno::Reference<uno::XInterface> m_interface;
+
+    /// The file's URL.
+    QUrl m_url;
 };
 
-#endif // _UpSlide_h_
+#endif // _UpOoimpPresentation_h_
 

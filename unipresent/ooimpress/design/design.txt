@@ -1,0 +1,12 @@
+OpenOffice.org UniPresent integration
+
+Integration will work by interprocess communication with the office process
+(UNO). When required, openoffice will be started with the command line options
+to make it listen to localhost.
+
+classes
+  UpOoimpBridge - Office connection manager
+  UpOoimpBackend - Derived backend
+  UpOoimpPresentation - Derived presentation
+  UpOoimpSlide - Derived presentation slide
+

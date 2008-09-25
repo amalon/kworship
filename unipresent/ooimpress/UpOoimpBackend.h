@@ -27,6 +27,8 @@
 
 #include "UpBackend.h"
 
+class UpOoimpBridge;
+
 /// OpenOffice.org Impress presentation manager.
 class UpOoimpBackend : public UpBackend
 {
@@ -53,12 +55,32 @@ class UpOoimpBackend : public UpBackend
     virtual QStringList mimeTypes() const;
 
     /*
+     * Activation
+     */
+
+    virtual bool activate();
+
+    virtual void deactivate();
+
+    /*
      * Presentation management
      */
 
     virtual QList<UpPresentation*> presentations();
 
     virtual UpPresentation* openPresentation(const QUrl& url);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Office bridge.
+    UpOoimpBridge* m_bridge;
+
+    /// List of presentations.
+    QList<UpPresentation*> m_presentations;
 
 };
 

@@ -16,24 +16,23 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpSlide_h_
-#define _UpSlide_h_
+#ifndef _UpOoimpBridge_h_
+#define _UpOoimpBridge_h_
 
 /**
- * @file UpSlide.h
- * @brief An abstract presentation slide.
+ * @file UpOoimpBridge.h
+ * @brief Bridge to OpenOffice.org.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QObject>
-#include <QPixmap>
+#include <com/sun/star/uno/XInterface.hpp>
 
-/** An abstract presentation slide.
- * Inherit from this class to implement each backend's presentation slide.
- */
-class UpSlide : public QObject
+// lets make it a little easier for us without cluttering namespace
+using namespace com::sun::star;
+
+/// OpenOffice.org Impress presentation manager.
+class UpOoimpBridge
 {
-  Q_OBJECT
   public:
 
     /*
@@ -41,20 +40,33 @@ class UpSlide : public QObject
      */
 
     /// Primary constructor.
-    UpSlide(QObject* parent = 0);
+    UpOoimpBridge();
 
     /// Destructor.
-    virtual ~UpSlide();
+    virtual ~UpOoimpBridge();
 
     /*
      * Main interface
      */
 
-    // get notes and handouts
-    // get outline
-    // get preview
-    virtual QPixmap getPreview();
+    /// Find whether the bridge is valid.
+    bool isValid() const;
+
+    /// Get the service manager.
+    uno::XInterface* serviceManager();
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Whether the bridge is valid.
+    bool m_valid;
+
+    /// Service manager interface.
+    uno::Reference<uno::XInterface> m_serviceManager;
 };
 
-#endif // _UpSlide_h_
+#endif // _UpOoimpBridge_h_
 

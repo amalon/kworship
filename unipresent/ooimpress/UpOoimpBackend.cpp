@@ -23,53 +23,47 @@
  */
 
 #include "UpOoimpBackend.h"
+#include "UpOoimpBridge.h"
+#include "UpOoimpPresentation.h"
 
-////////////
-// BSD... //
-#include <stdio.h>
-#include <wchar.h>
+#include "compiler.h"
 
-#include <cppuhelper/bootstrap.hxx>
-
-#include <osl/file.hxx>
-#include <osl/process.h>
-
-#include <com/sun/star/bridge/XUnoUrlResolver.hpp>
-#include <com/sun/star/frame/XComponentLoader.hpp>
+#include <osl/file.hxx> 
+#include <osl/process.h> 
 #include <com/sun/star/beans/XPropertySet.hpp>
-#include <com/sun/star/registry/XSimpleRegistry.hpp>
+#include <com/sun/star/container/XEnumeration.hpp>
+#include <com/sun/star/container/XEnumerationAccess.hpp>
+#include <com/sun/star/frame/XComponentLoader.hpp>
+#include <com/sun/star/frame/XDesktop.hpp>
 #include <com/sun/star/lang/XMultiComponentFactory.hpp>
+#include <com/sun/star/presentation/XPresentationSupplier.hpp>
+#include <com/sun/star/uno/XComponentContext.hpp>
 
-#include <string.h>
-
-using namespace rtl;
-using namespace com::sun::star::uno;
-using namespace com::sun::star::lang;
 using namespace com::sun::star::beans;
-using namespace com::sun::star::bridge;
+using namespace com::sun::star::container;
 using namespace com::sun::star::frame;
-using namespace com::sun::star::registry;
-
-// BSD... //
-////////////
+using namespace com::sun::star::lang;
+using namespace com::sun::star::presentation;
+using namespace com::sun::star::uno;
+using namespace rtl;
 
 /*
  * Constructors + destructor
  */
 
-#include <QtDebug>
-#include <iostream>
 /// Primary constructor.
 UpOoimpBackend::UpOoimpBackend(QObject* parent)
 : UpBackend(parent)
+, m_bridge(0)
+, m_presentations()
 {
-  qDebug() << __PRETTY_FUNCTION__;
+  activate();
 }
 
 /// Destructor.
 UpOoimpBackend::~UpOoimpBackend()
 {
-  qDebug() << __PRETTY_FUNCTION__;
+  delete m_bridge;
 }
 
 /*
@@ -95,106 +89,83 @@ QStringList UpOoimpBackend::mimeTypes() const
 }
 
 /*
+ * Activation
+ */
+
+bool UpOoimpBackend::activate()
+{
+  if (0 == m_bridge)
+  {
+    m_bridge = new UpOoimpBridge();
+    if (likely(m_bridge->isValid()))
+    {
+      activated();
+
+      // Find open documents.
+      Reference<XPropertySet> propertySet(m_bridge->serviceManager(), UNO_QUERY);
+      Reference<XComponentContext> componentContext;
+      propertySet->getPropertyValue(OUString::createFromAscii("DefaultContext")) >>= componentContext;
+      Reference<XMultiComponentFactory> componentFactoryServer = componentContext->getServiceManager();
+
+      Reference<XDesktop> desktop(componentFactoryServer->createInstanceWithContext(OUString::createFromAscii("com.sun.star.frame.Desktop"), componentContext), UNO_QUERY);
+      Reference<XEnumeration> documents = desktop->getComponents()->createEnumeration();
+
+      while (documents->hasMoreElements())
+      {
+        Reference<XPresentationSupplier> presentationSupplier;
+        documents->nextElement() >>= presentationSupplier;
+        if (0 != presentationSupplier.get())
+        {
+          m_presentations.push_back(new UpOoimpPresentation(presentationSupplier.get(), this));
+        }
+      }
+    }
+    else
+    {
+      m_bridge = 0;
+      return false;
+    }
+  }
+  return true;
+}
+
+void UpOoimpBackend::deactivate()
+{
+  if (0 != m_bridge)
+  {
+    delete m_bridge;
+    m_bridge = 0;
+    deactivated();
+  }
+}
+
+/*
  * Presentation management
  */
 
 QList<UpPresentation*> UpOoimpBackend::presentations()
 {
-  return QList<UpPresentation*>();
+  return m_presentations;
 }
 
 UpPresentation* UpOoimpBackend::openPresentation(const QUrl& url)
 {
-  QByteArray path = url.toLocalFile().toAscii();
-  qDebug() << __PRETTY_FUNCTION__ << path;
+  OUString urlString = OUString::createFromAscii(url.toString().toAscii());
 
-  ////////////
-  // BSD... //
-  OUString sConnectionString(RTL_CONSTASCII_USTRINGPARAM("uno:socket,host=localhost,port=2083;urp;StarOffice.ServiceManager"));
-
-  // Creates a simple registry service instance.
-  Reference< XSimpleRegistry > xSimpleRegistry(
-      ::cppu::createSimpleRegistry() );
-
-  // Connects the registry to a persistent data source represented by an URL.
-  xSimpleRegistry->open( OUString( RTL_CONSTASCII_USTRINGPARAM(
-          "/home/james/src/kworship/master/unipresent/ooimpress/CMakeFiles/unipresentooimpress.rdb") ), sal_True, sal_False );
-
-  /* Bootstraps an initial component context with service manager upon a given
-     registry. This includes insertion of initial services:
-     - (registry) service manager, shared lib loader,
-     - simple registry, nested registry,
-     - implementation registration
-     - registry typedescription provider, typedescription manager (also
-     installs it into cppu core)
-     */
-  Reference< XComponentContext > xComponentContext(
-      ::cppu::bootstrap_InitialComponentContext( xSimpleRegistry ) );
-
-  /* Gets the service manager instance to be used (or null). This method has
-     been added for convenience, because the service manager is a often used
-     object.
-     */
-  Reference< XMultiComponentFactory > xMultiComponentFactoryClient(
-      xComponentContext->getServiceManager() );
-
-  /* Creates an instance of a component which supports the services specified
-     by the factory.
-     */
-  Reference< XInterface > xInterface =
-    xMultiComponentFactoryClient->createInstanceWithContext( 
-        OUString::createFromAscii( "com.sun.star.bridge.UnoUrlResolver" ),
-        xComponentContext );
-
-  Reference< XUnoUrlResolver > resolver( xInterface, UNO_QUERY );
-
-  // Resolves the component context from the office, on the uno URL given by parameter.
-  try
-  {    
-    xInterface = Reference< XInterface >( resolver->resolve(sConnectionString) );
-  }
-  catch ( Exception& e )
+  if (activate())
   {
-    printf("Error: cannot establish a connection using '%s':\n       %s\n",
-        OUStringToOString(sConnectionString, RTL_TEXTENCODING_ASCII_US).getStr(),
-        OUStringToOString(e.Message, RTL_TEXTENCODING_ASCII_US).getStr());
+    Reference<XPropertySet> propertySet(m_bridge->serviceManager(), UNO_QUERY);
+    Reference<XComponentContext> componentContext;
+    propertySet->getPropertyValue(OUString::createFromAscii("DefaultContext")) >>= componentContext;
+    Reference<XMultiComponentFactory> componentFactoryServer = componentContext->getServiceManager();
+
+    Reference<XComponentLoader> componentLoader(componentFactoryServer->createInstanceWithContext(OUString::createFromAscii("com.sun.star.frame.Desktop"), componentContext), UNO_QUERY);
+
+    Reference<XComponent> newComponent = componentLoader->loadComponentFromURL(urlString, OUString::createFromAscii("_blank"), 0, Sequence< ::com::sun::star::beans::PropertyValue>() );
+  }
+  else
+  {
     return 0;
   }
-
-  // gets the server component context as property of the office component factory
-  Reference< XPropertySet > xPropSet( xInterface, UNO_QUERY );
-  xPropSet->getPropertyValue( OUString::createFromAscii("DefaultContext") ) >>= xComponentContext;
-
-  // gets the service manager from the office
-  Reference< XMultiComponentFactory > xMultiComponentFactoryServer(
-      xComponentContext->getServiceManager() );
-
-  /* Creates an instance of a component which supports the services specified
-     by the factory. Important: using the office component context.
-     */
-  Reference < XComponentLoader > xComponentLoader(
-      xMultiComponentFactoryServer->createInstanceWithContext( 
-        OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.frame.Desktop" ) ),
-        xComponentContext ), UNO_QUERY );
-
-  /* Loads a component specified by an URL into the specified new or existing
-     frame.
-     */
-  OUString sAbsoluteDocUrl, sWorkingDir, sDocPathUrl;
-  osl_getProcessWorkingDir(&sWorkingDir.pData);
-  osl::FileBase::getFileURLFromSystemPath( OUString::createFromAscii(path), sDocPathUrl);
-  osl::FileBase::getAbsoluteFileURL( sWorkingDir, sDocPathUrl, sAbsoluteDocUrl);
-
-  Reference< XComponent > xComponent = xComponentLoader->loadComponentFromURL(
-      sAbsoluteDocUrl, OUString( RTL_CONSTASCII_USTRINGPARAM("_blank") ), 0,
-      Sequence < ::com::sun::star::beans::PropertyValue >() );
-
-  // dispose the local service manager
-  Reference< XComponent >::query( xMultiComponentFactoryClient )->dispose();
-
-  // BSD... //
-  ////////////
-
-  return 0;
 }
 

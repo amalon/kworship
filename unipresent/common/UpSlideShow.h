@@ -16,22 +16,23 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpSlide_h_
-#define _UpSlide_h_
+#ifndef _UpSlideShow_h_
+#define _UpSlideShow_h_
 
 /**
- * @file UpSlide.h
- * @brief An abstract presentation slide.
+ * @file UpSlideShow.h
+ * @brief An abstract slideshow controller.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include <QObject>
-#include <QPixmap>
 
-/** An abstract presentation slide.
- * Inherit from this class to implement each backend's presentation slide.
+class UpSlide;
+
+/** An abstract slideshow controller.
+ * Inherit from this class to implement each backend's slideshow controller.
  */
-class UpSlide : public QObject
+class UpSlideShow : public QObject
 {
   Q_OBJECT
   public:
@@ -41,20 +42,45 @@ class UpSlide : public QObject
      */
 
     /// Primary constructor.
-    UpSlide(QObject* parent = 0);
+    UpSlideShow(QObject* parent = 0);
 
     /// Destructor.
-    virtual ~UpSlide();
+    virtual ~UpSlideShow();
 
     /*
      * Main interface
      */
 
-    // get notes and handouts
-    // get outline
-    // get preview
-    virtual QPixmap getPreview();
+    /// Start the slideshow.
+    virtual void start() = 0;
+
+    /// Stop the slideshow.
+    virtual void stop() = 0;
+
+    /// Pause the slideshow.
+    virtual void pause() = 0;
+
+    /// Resume the slideshow.
+    virtual void resume() = 0;
+
+    /// Go to the next part of the slideshow.
+    virtual void next() = 0;
+
+    /// Go to the previous part of the slideshow.
+    virtual void previous() = 0;
+
+  signals:
+
+    /*
+     * Signals
+     */
+
+    /// The slideshow has changed slide.
+    void changedSlide(UpSlide* previousSlide, UpSlide* currentSlide);
+
+    /// The current slide has been updated.
+    void updatedSlide(UpSlide* slide);
 };
 
-#endif // _UpSlide_h_
+#endif // _UpSlideShow_h_
 

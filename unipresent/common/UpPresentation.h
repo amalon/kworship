@@ -34,6 +34,7 @@ class UpSlide;
  */
 class UpPresentation : public QObject
 {
+  Q_OBJECT
   public:
 
     /*

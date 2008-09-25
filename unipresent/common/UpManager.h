@@ -34,6 +34,7 @@ class UpPresentation;
 /// Overall unipresent manager.
 class UpManager : public QObject
 {
+  Q_OBJECT
   public:
 
     /*

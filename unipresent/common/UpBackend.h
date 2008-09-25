@@ -37,6 +37,7 @@ class UpPresentation;
  */
 class UpBackend : public QObject
 {
+  Q_OBJECT
   public:
 
     /*
@@ -63,6 +64,18 @@ class UpBackend : public QObject
     virtual QStringList mimeTypes() const = 0;
 
     /*
+     * Activation
+     */
+
+    /** Ensure that the backend is active and ready.
+     * @return Whether the activation worked.
+     */
+    virtual bool activate() = 0;
+
+    /// Deactivate the backend.
+    virtual void deactivate() = 0;
+
+    /*
      * Presentation management
      */
 
@@ -72,6 +85,26 @@ class UpBackend : public QObject
     /// Open a new presentation.
     virtual UpPresentation* openPresentation(const QUrl& url) = 0;
 
+  signals:
+
+    /*
+     * Signals
+     */
+
+    /// Fired when the backend is activated.
+    void activated();
+
+    /// Fired when the backend is deactivated.
+    void deactivated();
+
+    /// Fired when a new presentation is created or loaded.
+    void loadedPresentation(UpPresentation*);
+
+    /// Fired when a presentation is saved under a new name.
+    void savedAsPresentation(UpPresentation*);
+
+    /// Fired when a presentation is about to be closed.
+    void unloadedPresentation(UpPresentation*);
 };
 
 #endif // _UpBackend_h_

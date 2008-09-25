@@ -16,45 +16,63 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpSlide_h_
-#define _UpSlide_h_
-
 /**
- * @file UpSlide.h
- * @brief An abstract presentation slide.
+ * @file UpOoimpPresentation.cpp
+ * @brief OpenOffice.org Impress presentation.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QObject>
-#include <QPixmap>
+#include "UpOoimpPresentation.h"
 
-/** An abstract presentation slide.
- * Inherit from this class to implement each backend's presentation slide.
+#include <com/sun/star/frame/XModel.hpp>
+
+#include <cassert>
+
+using namespace com::sun::star::frame;
+using namespace com::sun::star::uno;
+
+/*
+ * Constructors + destructor
  */
-class UpSlide : public QObject
+
+/// Primary constructor.
+UpOoimpPresentation::UpOoimpPresentation(uno::XInterface* interface, QObject* parent)
+: UpPresentation(parent)
+, m_interface(interface)
+, m_url()
 {
-  Q_OBJECT
-  public:
+  /// Get the url
+  Reference<XModel> model(interface, UNO_QUERY);
+  assert(0 != model.get());
+  m_url = QString::fromUtf16((const sal_Unicode*)model->getURL());
+}
 
-    /*
-     * Constructors + destructor
-     */
+/// Destructor.
+UpOoimpPresentation::~UpOoimpPresentation()
+{
+}
 
-    /// Primary constructor.
-    UpSlide(QObject* parent = 0);
+/*
+ * Main interface
+ */
 
-    /// Destructor.
-    virtual ~UpSlide();
+void UpOoimpPresentation::close()
+{
+}
 
-    /*
-     * Main interface
-     */
+/*
+ * Slides
+ */
 
-    // get notes and handouts
-    // get outline
-    // get preview
-    virtual QPixmap getPreview();
-};
+int UpOoimpPresentation::numSlides()
+{
+  return 0;
+}
 
-#endif // _UpSlide_h_
+UpSlide* UpOoimpPresentation::getSlide(int)
+{
+  return 0;
+}
+
+#include "UpOoimpPresentation.moc"
 

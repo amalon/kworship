@@ -109,3 +109,5 @@ void UpManager::addBackend(UpBackend* backend)
   m_backends.push_back(backend);
 }
 
+#include "UpManager.moc"
+
