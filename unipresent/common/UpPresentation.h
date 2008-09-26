@@ -66,7 +66,7 @@ class UpPresentation : public QObject
     virtual int numSlides() = 0;
 
     /// Get a specific slide.
-    virtual UpSlide* getSlide(int) = 0;
+    virtual UpSlide* slide(int) = 0;
 };
 
 #endif // _UpPresentation_h_

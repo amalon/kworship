@@ -24,6 +24,7 @@
 
 #include "UpPresentationNode.h"
 #include "UpPresentation.h"
+#include "UpSlideNode.h"
 
 #include <KMimeType>
 #include <KIcon>
@@ -88,5 +89,17 @@ QVariant UpPresentationNode::getData(int role, int column)
     }
   }
   return QVariant();
+}
+
+int UpPresentationNode::getChildCount() const
+{
+  return m_item->numSlides();
+}
+
+DefaultModelNode* UpPresentationNode::_getChild(int index)
+{
+  UpSlide* slide = m_item->slide(index);
+  assert(0 != slide);
+  return new UpSlideNode(this, slide);
 }
 

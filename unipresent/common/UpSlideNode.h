@@ -16,21 +16,21 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpPresentationNode_h_
-#define _UpPresentationNode_h_
+#ifndef _UpSlideNode_h_
+#define _UpSlideNode_h_
 
 /**
- * @file UpPresentationNode.h
- * @brief A presentations node for a presentation.
+ * @file UpSlideNode.h
+ * @brief A presentations node for a slide.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include "NodeBasedModel.h"
 
-class UpPresentation;
+class UpSlide;
 
-/// A presentations node for a presentation.
-class UpPresentationNode : public DefaultModelNode
+/// A presentations node for a slide.
+class UpSlideNode : public DefaultModelNode
 {
   public:
     
@@ -39,28 +39,22 @@ class UpPresentationNode : public DefaultModelNode
      */
 
     /// Primary constructor.
-    UpPresentationNode(DefaultModelNode* parent, UpPresentation* item);
+    UpSlideNode(DefaultModelNode* parent, UpSlide* item);
 
     /// Destructor.
-    virtual ~UpPresentationNode();
+    virtual ~UpSlideNode();
 
     /*
      * Accessors
      */
 
-    UpPresentation* getItem();
+    UpSlide* getItem();
 
     /*
      * Main interface
      */
 
     virtual QVariant getData(int role, int column);
-
-    virtual int getChildCount() const;
-
-  protected:
-
-    virtual DefaultModelNode* _getChild(int index);
 
   private:
 
@@ -69,8 +63,8 @@ class UpPresentationNode : public DefaultModelNode
      */
 
     /// Playlist item.
-    UpPresentation* m_item;
+    UpSlide* m_item;
 };
 
-#endif // _UpPresentationNode_h_
+#endif // _UpSlideNode_h_
 

@@ -15,6 +15,7 @@ set(unipresent_SRCS
     UpPresentation.cpp
     UpPresentationNode.cpp
     UpSlide.cpp
+    UpSlideNode.cpp
     UpSlidePreviewWidget.cpp
     UpSlideEditWidget.cpp
 )

@@ -16,61 +16,60 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpPresentationNode_h_
-#define _UpPresentationNode_h_
-
 /**
- * @file UpPresentationNode.h
- * @brief A presentations node for a presentation.
+ * @file UpSlideNode.cpp
+ * @brief A presentations node for a slide.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "NodeBasedModel.h"
+#include "UpSlideNode.h"
+#include "UpSlide.h"
 
-class UpPresentation;
+#include <KMimeType>
+#include <KIcon>
 
-/// A presentations node for a presentation.
-class UpPresentationNode : public DefaultModelNode
+#include <QFileInfo>
+
+#include <cassert>
+
+/*
+ * Constructors + destructor.
+ */
+
+/// Primary constructor.
+UpSlideNode::UpSlideNode(DefaultModelNode* parent, UpSlide* item)
+: DefaultModelNode(parent)
+, m_item(item)
 {
-  public:
-    
-    /*
-     * Constructors + destructor.
-     */
+}
 
-    /// Primary constructor.
-    UpPresentationNode(DefaultModelNode* parent, UpPresentation* item);
+/// Destructor.
+UpSlideNode::~UpSlideNode()
+{
+}
 
-    /// Destructor.
-    virtual ~UpPresentationNode();
+/*
+ * Accessors
+ */
 
-    /*
-     * Accessors
-     */
+UpSlide* UpSlideNode::getItem()
+{
+  return m_item;
+}
 
-    UpPresentation* getItem();
+/*
+ * Main interface
+ */
 
-    /*
-     * Main interface
-     */
-
-    virtual QVariant getData(int role, int column);
-
-    virtual int getChildCount() const;
-
-  protected:
-
-    virtual DefaultModelNode* _getChild(int index);
-
-  private:
-
-    /*
-     * Variables
-     */
-
-    /// Playlist item.
-    UpPresentation* m_item;
-};
-
-#endif // _UpPresentationNode_h_
+QVariant UpSlideNode::getData(int role, int column)
+{
+  if (role == Qt::DisplayRole)
+  {
+    if (column == 0)
+    {
+      return QString("slide %d").arg(column);
+    }
+  }
+  return QVariant();
+}
 

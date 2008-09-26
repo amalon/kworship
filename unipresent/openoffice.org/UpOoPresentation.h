@@ -62,7 +62,7 @@ class UpOoPresentation : public UpPresentation
 
     virtual int numSlides();
 
-    virtual UpSlide* getSlide(int);
+    virtual UpSlide* slide(int);
 
   private:
 

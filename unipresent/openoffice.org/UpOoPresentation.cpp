@@ -74,7 +74,7 @@ int UpOoPresentation::numSlides()
   return 0;
 }
 
-UpSlide* UpOoPresentation::getSlide(int)
+UpSlide* UpOoPresentation::slide(int)
 {
   return 0;
 }
