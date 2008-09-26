@@ -17,16 +17,18 @@
  ***************************************************************************/
 
 /**
- * @file UpBackendNode.cpp
+ * @file UpPresentationNode.cpp
  * @brief A presentations node for a backend.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpBackendNode.h"
-#include "UpBackend.h"
 #include "UpPresentationNode.h"
+#include "UpPresentation.h"
 
+#include <KMimeType>
 #include <KIcon>
+
+#include <QFileInfo>
 
 #include <cassert>
 
@@ -35,14 +37,14 @@
  */
 
 /// Primary constructor.
-UpBackendNode::UpBackendNode(DefaultModelNode* parent, UpBackend* item)
+UpPresentationNode::UpPresentationNode(DefaultModelNode* parent, UpPresentation* item)
 : DefaultModelNode(parent)
 , m_item(item)
 {
 }
 
 /// Destructor.
-UpBackendNode::~UpBackendNode()
+UpPresentationNode::~UpPresentationNode()
 {
 }
 
@@ -50,7 +52,7 @@ UpBackendNode::~UpBackendNode()
  * Accessors
  */
 
-UpBackend* UpBackendNode::getItem()
+UpPresentation* UpPresentationNode::getItem()
 {
   return m_item;
 }
@@ -59,34 +61,32 @@ UpBackend* UpBackendNode::getItem()
  * Main interface
  */
 
-QVariant UpBackendNode::getData(int role, int column)
+QVariant UpPresentationNode::getData(int role, int column)
 {
   if (role == Qt::DisplayRole)
   {
     if (column == 0)
     {
-      return m_item->name();
+      QUrl url = m_item->url();
+      if (url.isValid())
+      {
+        QFileInfo pathInfo(url.path());
+        return pathInfo.fileName();
+      }
+      else
+      {
+        return "unnamed";
+      }
     }
   }
   else if (role == Qt::DecorationRole)
   {
     if (column == 0)
     {
-      return m_item->icon();
+      KMimeType::Ptr mimeType = KMimeType::findByUrl(m_item->url());
+      return KIcon(mimeType->iconName());
     }
   }
   return QVariant();
-}
-
-int UpBackendNode::getChildCount() const
-{
-  return m_item->presentations().size();
-}
-
-DefaultModelNode* UpBackendNode::_getChild(int index)
-{
-  QList<UpPresentation*> presentations = m_item->presentations();
-  UpPresentation* presentation = presentations.at(index);
-  return new UpPresentationNode(this, presentation);
 }
 

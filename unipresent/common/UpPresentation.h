@@ -26,6 +26,7 @@
  */
 
 #include <QObject>
+#include <QUrl>
 
 class UpSlide;
 
@@ -53,6 +54,9 @@ class UpPresentation : public QObject
 
     /// Close this presentation.
     virtual void close() = 0;
+
+    /// Get the url.
+    virtual QUrl url() const = 0;
 
     /*
      * Slides

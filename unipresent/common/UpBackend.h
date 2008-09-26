@@ -29,6 +29,7 @@
 #include <QString>
 #include <QStringList>
 #include <QUrl>
+#include <QIcon>
 
 class UpPresentation;
 
@@ -62,6 +63,9 @@ class UpBackend : public QObject
 
     /// Get a list of supported mime types.
     virtual QStringList mimeTypes() const = 0;
+
+    /// Get an icon for this backend.
+    virtual QIcon icon() const = 0;
 
     /*
      * Activation

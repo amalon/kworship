@@ -88,6 +88,11 @@ QStringList UpOoBackend::mimeTypes() const
     ;
 }
 
+QIcon UpOoBackend::icon() const
+{
+  return QIcon();
+}
+
 /*
  * Activation
  */

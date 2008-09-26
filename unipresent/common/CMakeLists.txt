@@ -13,6 +13,7 @@ set(unipresent_SRCS
     UpBackend.cpp
     UpBackendNode.cpp
     UpPresentation.cpp
+    UpPresentationNode.cpp
     UpSlide.cpp
     UpSlidePreviewWidget.cpp
     UpSlideEditWidget.cpp

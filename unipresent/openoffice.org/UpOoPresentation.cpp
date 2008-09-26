@@ -60,6 +60,11 @@ void UpOoPresentation::close()
 {
 }
 
+QUrl UpOoPresentation::url() const
+{
+  return m_url;
+}
+
 /*
  * Slides
  */

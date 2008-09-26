@@ -16,77 +16,55 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
+#ifndef _UpPresentationNode_h_
+#define _UpPresentationNode_h_
+
 /**
- * @file UpBackendNode.cpp
- * @brief A presentations node for a backend.
+ * @file UpPresentationNode.h
+ * @brief A presentations node for a presentation.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpBackendNode.h"
-#include "UpBackend.h"
-#include "UpPresentationNode.h"
+#include "NodeBasedModel.h"
 
-#include <KIcon>
+class UpPresentation;
 
-#include <cassert>
-
-/*
- * Constructors + destructor.
- */
-
-/// Primary constructor.
-UpBackendNode::UpBackendNode(DefaultModelNode* parent, UpBackend* item)
-: DefaultModelNode(parent)
-, m_item(item)
+/// A presentations node for a presentation.
+class UpPresentationNode : public DefaultModelNode
 {
-}
+  public:
+    
+    /*
+     * Constructors + destructor.
+     */
 
-/// Destructor.
-UpBackendNode::~UpBackendNode()
-{
-}
+    /// Primary constructor.
+    UpPresentationNode(DefaultModelNode* parent, UpPresentation* item);
 
-/*
- * Accessors
- */
+    /// Destructor.
+    virtual ~UpPresentationNode();
 
-UpBackend* UpBackendNode::getItem()
-{
-  return m_item;
-}
+    /*
+     * Accessors
+     */
 
-/*
- * Main interface
- */
+    UpPresentation* getItem();
 
-QVariant UpBackendNode::getData(int role, int column)
-{
-  if (role == Qt::DisplayRole)
-  {
-    if (column == 0)
-    {
-      return m_item->name();
-    }
-  }
-  else if (role == Qt::DecorationRole)
-  {
-    if (column == 0)
-    {
-      return m_item->icon();
-    }
-  }
-  return QVariant();
-}
+    /*
+     * Main interface
+     */
 
-int UpBackendNode::getChildCount() const
-{
-  return m_item->presentations().size();
-}
+    virtual QVariant getData(int role, int column);
 
-DefaultModelNode* UpBackendNode::_getChild(int index)
-{
-  QList<UpPresentation*> presentations = m_item->presentations();
-  UpPresentation* presentation = presentations.at(index);
-  return new UpPresentationNode(this, presentation);
-}
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Playlist item.
+    UpPresentation* m_item;
+};
+
+#endif // _UpPresentationNode_h_
 

@@ -54,6 +54,8 @@ class UpOoBackend : public UpBackend
 
     virtual QStringList mimeTypes() const;
 
+    virtual QIcon icon() const;
+
     /*
      * Activation
      */

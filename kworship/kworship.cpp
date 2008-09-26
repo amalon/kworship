@@ -69,6 +69,7 @@
 #include <QToolButton>
 #include <QComboBox>
 #include <QSqlDatabase>
+#include <QHeaderView>
 
 kworship::kworship()
 : KXmlGuiWindow()
@@ -204,7 +205,12 @@ kworship::kworship()
   presToolBar->addAction(openPresAction);
 
   QComboBox* selectPresCombo = new QComboBox(presToolBar);
+  QTreeView* selectPresTree = new QTreeView(selectPresCombo);
+  selectPresTree->header()->hide();
   selectPresCombo->setModel(m_presentationManager->presentationsModel());
+  selectPresCombo->setView(selectPresTree);
+  selectPresTree->expandAll();
+  selectPresTree->setItemsExpandable(false);
   KAction* selectPresAction = new KAction(KIcon("select"), "Select Presentation", presToolBar);
   selectPresAction->setDefaultWidget(selectPresCombo);
   presToolBar->addAction(selectPresAction);

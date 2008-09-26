@@ -30,8 +30,6 @@
 #include <com/sun/star/uno/Reference.h>
 #include <com/sun/star/uno/XInterface.hpp>
 
-#include <QUrl>
-
 using namespace com::sun::star;
 
 /// OpenOffice.org presentation.
@@ -55,6 +53,8 @@ class UpOoPresentation : public UpPresentation
      */
 
     virtual void close();
+
+    virtual QUrl url() const;
 
     /*
      * Slides
