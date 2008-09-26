@@ -39,5 +39,3 @@ UpPresentation::~UpPresentation()
 {
 }
 
-#include "UpPresentation.moc"
-

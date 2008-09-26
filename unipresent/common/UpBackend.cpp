@@ -39,5 +39,3 @@ UpBackend::~UpBackend()
 {
 }
 
-#include "UpBackend.moc"
-

@@ -17,29 +17,76 @@
  ***************************************************************************/
 
 /**
- * @file UpSlide.cpp
- * @brief An abstract presentation slide.
+ * @file UpManagerNode.cpp
+ * @brief A presentations node for the manager.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpSlide.h"
+#include "UpManagerNode.h"
+#include "UpManager.h"
+#include "UpBackendNode.h"
+
+#include <KIcon>
+
+#include <cassert>
 
 /*
- * Constructors + destructor
+ * Constructors + destructor.
  */
 
 /// Primary constructor.
-UpSlide::UpSlide(QObject* parent)
-: QObject(parent)
+UpManagerNode::UpManagerNode(DefaultModelNode* parent, UpManager* item)
+: DefaultModelNode(parent)
+, m_item(item)
 {
 }
 
 /// Destructor.
-UpSlide::~UpSlide()
+UpManagerNode::~UpManagerNode()
 {
 }
 
-QPixmap UpSlide::getPreview()
+/*
+ * Accessors
+ */
+
+UpManager* UpManagerNode::getItem()
 {
-  return QPixmap();
+  return m_item;
 }
+
+/*
+ * Main interface
+ */
+
+QVariant UpManagerNode::getData(int role, int column)
+{
+  if (role == Qt::DisplayRole)
+  {
+    if (column == 0)
+    {
+      return "List";
+    }
+  }
+  else if (role == Qt::DecorationRole)
+  {
+    if (column == 0)
+    {
+      return KIcon("playlist");
+    }
+  }
+  return QVariant();
+}
+
+int UpManagerNode::getChildCount() const
+{
+  return m_item->numBackends();
+}
+
+DefaultModelNode* UpManagerNode::_getChild(int index)
+{
+  UpBackend* backend = m_item->backend(index);
+  assert(backend != 0);
+  return new UpBackendNode(this, backend);
+}
+

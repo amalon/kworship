@@ -23,7 +23,9 @@
  */
 
 #include "UpManager.h"
+#include "UpManagerNode.h"
 #include "UpBackend.h"
+#include "UpPresentationsModel.h"
 
 #include <cassert>
 
@@ -48,9 +50,12 @@ UpManager* UpManager::self()
 UpManager::UpManager(QObject* parent)
 : QObject(parent)
 , m_backends()
+, m_presentationsModel(new UpPresentationsModel(this))
 {
   assert(s_singleton == 0);
   s_singleton = this;
+
+  m_presentationsModel->setRootNode(new UpManagerNode(0, this));
 }
 
 /// Destructor.
@@ -78,6 +83,12 @@ QList<UpPresentation*> UpManager::presentations()
   return presentations;
 }
 
+/// Get a presentations model.
+UpPresentationsModel* UpManager::presentationsModel()
+{
+  return m_presentationsModel;
+}
+
 /// Open a new presentation.
 UpPresentation* UpManager::openPresentation(const QUrl& url)
 {
@@ -97,6 +108,18 @@ UpPresentation* UpManager::openPresentation(const QUrl& url)
  * Backend management
  */
 
+/// Get the number of backends.
+int UpManager::numBackends() const
+{
+  return m_backends.size();
+}
+
+/// Get a specific backend.
+UpBackend* UpManager::backend(int index)
+{
+  return m_backends.at(index);
+}
+
 /// Get a list of backends.
 QList<UpBackend*> UpManager::backends()
 {
@@ -108,6 +131,4 @@ void UpManager::addBackend(UpBackend* backend)
 {
   m_backends.push_back(backend);
 }
-
-#include "UpManager.moc"
 

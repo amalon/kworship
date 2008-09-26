@@ -30,10 +30,10 @@ set(unipresentopenoffice_SRCS
 
 QT4_AUTOMOC(${unipresentopenoffice_SRCS})
 
-set(unipresentopenoffice_TYPE SHARED)
-add_library(unipresentopenoffice ${unipresentopenoffice_TYPE}
-            ${unipresentopenoffice_SRCS}
-            ${UNO_LIBS}
+add_library(unipresentopenoffice STATIC ${unipresentopenoffice_SRCS})
+
+target_link_libraries(unipresentopenoffice
+                      ${UNO_LIBS}
 )
 
 add_dependencies(unipresentopenoffice ${UNO_TARGET})

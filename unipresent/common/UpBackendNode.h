@@ -16,103 +16,61 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpManager_h_
-#define _UpManager_h_
+#ifndef _UpBackendNode_h_
+#define _UpBackendNode_h_
 
 /**
- * @file UpManager.h
- * @brief Overall unipresent manager.
+ * @file UpBackendNode.h
+ * @brief A presentations node for a backend.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QObject>
-#include <QUrl>
+#include "NodeBasedModel.h"
 
 class UpBackend;
-class UpPresentation;
-class UpPresentationsModel;
 
-/// Overall unipresent manager.
-class UpManager : public QObject
+/// A presentations node for a backend.
+class UpBackendNode : public DefaultModelNode
 {
-  Q_OBJECT
   public:
-
+    
     /*
-     * Singleton access.
-     */
-
-    /// Get the singleton object.
-    static UpManager* self();
-
-    /*
-     * Constructors + destructor
+     * Constructors + destructor.
      */
 
     /// Primary constructor.
-    UpManager(QObject* parent = 0);
+    UpBackendNode(DefaultModelNode* parent, UpBackend* item);
 
     /// Destructor.
-    virtual ~UpManager();
+    virtual ~UpBackendNode();
 
     /*
-     * Presentation management
+     * Accessors
      */
 
-    /// Get a list of presentations.
-    QList<UpPresentation*> presentations();
-
-    /// Get a presentations model.
-    UpPresentationsModel* presentationsModel();
-
-    /// Open a new presentation.
-    UpPresentation* openPresentation(const QUrl& url);
+    UpBackend* getItem();
 
     /*
-     * Backend management
+     * Main interface
      */
 
-    /// Get the number of backends.
-    int numBackends() const;
+    virtual QVariant getData(int role, int column);
 
-    /// Get a specific backend.
-    UpBackend* backend(int index);
+    virtual int getChildCount() const;
 
-    /// Get a list of backends.
-    QList<UpBackend*> backends();
+  protected:
 
-    /// Add a backend object.
-    void addBackend(UpBackend* backend);
-
-    /** Register a new backend.
-     * @param T The type of the backend.
-     */
-    template <class T>
-    void registerBackend()
-    {
-      addBackend(new T(this));
-    }
+    virtual DefaultModelNode* _getChild(int index);
 
   private:
-
-    /*
-     * Static variables
-     */
-
-    /// Singleton object.
-    static UpManager* s_singleton;
 
     /*
      * Variables
      */
 
-    /// Backends.
-    QList<UpBackend*> m_backends;
-
-    /// Presentations model.
-    UpPresentationsModel* m_presentationsModel;
-
+    /// Playlist item.
+    UpBackend* m_item;
 };
 
-#endif // _UpManager_h_
+#endif // _UpBackendNode_h_
 

@@ -17,29 +17,74 @@
  ***************************************************************************/
 
 /**
- * @file UpSlide.cpp
- * @brief An abstract presentation slide.
+ * @file UpBackendNode.cpp
+ * @brief A presentations node for a backend.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpSlide.h"
+#include "UpBackendNode.h"
+#include "UpBackend.h"
+
+#include <KIcon>
+
+#include <cassert>
 
 /*
- * Constructors + destructor
+ * Constructors + destructor.
  */
 
 /// Primary constructor.
-UpSlide::UpSlide(QObject* parent)
-: QObject(parent)
+UpBackendNode::UpBackendNode(DefaultModelNode* parent, UpBackend* item)
+: DefaultModelNode(parent)
+, m_item(item)
 {
 }
 
 /// Destructor.
-UpSlide::~UpSlide()
+UpBackendNode::~UpBackendNode()
 {
 }
 
-QPixmap UpSlide::getPreview()
+/*
+ * Accessors
+ */
+
+UpBackend* UpBackendNode::getItem()
 {
-  return QPixmap();
+  return m_item;
 }
+
+/*
+ * Main interface
+ */
+
+QVariant UpBackendNode::getData(int role, int column)
+{
+  if (role == Qt::DisplayRole)
+  {
+    if (column == 0)
+    {
+      return m_item->name();
+    }
+  }
+  else if (role == Qt::DecorationRole)
+  {
+    if (column == 0)
+    {
+      return KIcon("playlist");
+    }
+  }
+  return QVariant();
+}
+
+int UpBackendNode::getChildCount() const
+{
+  return 0;
+}
+
+DefaultModelNode* UpBackendNode::_getChild(int index)
+{
+  Q_UNUSED(index)
+  return 0;
+}
+

@@ -40,14 +40,13 @@ target_link_libraries(kworship
                       ${KDE4_KDEUI_LIBS}
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
-                      ${UNO_LIBS}
+                      unipresent
+                      unipresentopenoffice
                       kworshipplaylist
                       kworshipcss
                       kworshipsongdb
                       kworshipdisplay
                       kworshipmedia
-                      unipresent
-                      unipresentopenoffice
 )
 
 install(TARGETS kworship DESTINATION ${BIN_INSTALL_DIR} )

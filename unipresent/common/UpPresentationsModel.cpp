@@ -17,29 +17,25 @@
  ***************************************************************************/
 
 /**
- * @file UpSlide.cpp
- * @brief An abstract presentation slide.
+ * @file UpPresentationsModel.cpp
+ * @brief A Qt model for presentation items.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpSlide.h"
+#include "UpPresentationsModel.h"
 
 /*
  * Constructors + destructor
  */
 
-/// Primary constructor.
-UpSlide::UpSlide(QObject* parent)
-: QObject(parent)
+/// Default constructor.
+UpPresentationsModel::UpPresentationsModel(QObject* parent)
+: NodeBasedModel<>(parent)
 {
 }
 
 /// Destructor.
-UpSlide::~UpSlide()
+UpPresentationsModel::~UpPresentationsModel()
 {
 }
 
-QPixmap UpSlide::getPreview()
-{
-  return QPixmap();
-}

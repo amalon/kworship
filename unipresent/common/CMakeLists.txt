@@ -1,18 +1,22 @@
 project(unipresent)
 
-find_package(Qt4 REQUIRED)
-include_directories(${QT_INCLUDES})
+find_package(KDE4 REQUIRED)
+include (KDE4Defaults)
+include_directories(${KDE4_INCLUDES}
+                    ${QT_INCLUDES}
+)
 
 set(unipresent_SRCS
+    UpPresentationsModel.cpp
     UpManager.cpp
+    UpManagerNode.cpp
     UpBackend.cpp
+    UpBackendNode.cpp
     UpPresentation.cpp
     UpSlide.cpp
     UpSlidePreviewWidget.cpp
     UpSlideEditWidget.cpp
 )
 
-QT4_AUTOMOC(${unipresent_SRCS})
-
-add_library(unipresent ${unipresent_SRCS})
+kde4_add_library(unipresent ${unipresent_SRCS})
 

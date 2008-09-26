@@ -46,6 +46,7 @@
 #include "KwSongdbTree.h"
 
 #include "UpManager.h"
+#include "UpPresentationsModel.h"
 #include "UpOoBackend.h"
 
 #include <kconfigdialog.h>
@@ -66,6 +67,7 @@
 #include <QDesktopWidget>
 #include <QToolBar>
 #include <QToolButton>
+#include <QComboBox>
 #include <QSqlDatabase>
 
 kworship::kworship()
@@ -131,6 +133,7 @@ kworship::kworship()
   bool ok = db.open();
   assert(ok);
   KwSongdb* songdb = new KwSongdb(db);
+  Q_UNUSED(songdb)
 
   // Playlist
   m_primaryPlaylist = new KwPlaylistList();
@@ -187,6 +190,53 @@ kworship::kworship()
   KwSongdbTree* treeView = new KwSongdbTree(m_view);
   m_view->layoutSongsTree->addWidget(treeView);
   groupByMenu->addActions(treeView->groupByActions()->actions());
+
+
+  /*
+   * Presentation
+   */
+
+  QToolBar* presToolBar = new QToolBar("Presentations");
+  m_view->layoutPresentationsToolbar->layout()->addWidget(presToolBar);
+
+  KActionMenu* openPresAction = new KActionMenu(KIcon("open"), "Open Presentation", presToolBar);
+  openPresAction->setDelayed(true);
+  presToolBar->addAction(openPresAction);
+
+  QComboBox* selectPresCombo = new QComboBox(presToolBar);
+  selectPresCombo->setModel(m_presentationManager->presentationsModel());
+  KAction* selectPresAction = new KAction(KIcon("select"), "Select Presentation", presToolBar);
+  selectPresAction->setDefaultWidget(selectPresCombo);
+  presToolBar->addAction(selectPresAction);
+
+  KAction* closePresAction = new KAction(KIcon("close"), "Close Presentation", presToolBar);
+  presToolBar->addAction(closePresAction);
+
+  KToggleAction* fullscreenPresAction = new KToggleAction(KIcon("fullscreen"), "Fullscreen Presentation Mode", presToolBar);
+  presToolBar->addAction(fullscreenPresAction);
+
+
+  QToolBar* slidesToolBar = new QToolBar("Slides");
+  m_view->layoutSlidesToolbar->layout()->addWidget(slidesToolBar);
+
+  KAction* previousSlideAction = new KAction(KIcon("previous"), "Previous Slide", slidesToolBar);
+  slidesToolBar->addAction(previousSlideAction);
+
+  KAction* reverseSlideAction = new KAction(KIcon("backwards"), "Reverse", slidesToolBar);
+  slidesToolBar->addAction(reverseSlideAction);
+
+  KAction* forwardSlideAction = new KAction(KIcon("forwards"), "Forward", slidesToolBar);
+  slidesToolBar->addAction(forwardSlideAction);
+
+  KAction* nextSlideAction = new KAction(KIcon("next"), "Next Slide", slidesToolBar);
+  slidesToolBar->addAction(nextSlideAction);
+
+  KToggleAction* displaySlideAction = new KToggleAction(KIcon("display"), "Display Slides", slidesToolBar);
+  slidesToolBar->addAction(displaySlideAction);
+
+  /*
+   * Display startup
+   */
 
   // Show the display on startup?
   if (Settings::displayShowStartup())
@@ -304,7 +354,6 @@ void kworship::toggleMainDisplay(bool checked)
     QDesktopWidget* desktop = qobject_cast<QApplication*>(QCoreApplication::instance())->desktop();
     assert(0 != desktop);
 
-    int previousScreen = getCurrentDisplayScreen();
     int screens = desktop->numScreens();
     int displayScreen = getCorrectDisplayScreen();
 

@@ -16,30 +16,34 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
+#ifndef _UpPresentationsModel_h_
+#define _UpPresentationsModel_h_
+
 /**
- * @file UpSlide.cpp
- * @brief An abstract presentation slide.
+ * @file UpPresentationsModel.h
+ * @brief A Qt model for presentation items.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpSlide.h"
+#include "NodeBasedModel.h"
 
-/*
- * Constructors + destructor
- */
+class QObject;
 
-/// Primary constructor.
-UpSlide::UpSlide(QObject* parent)
-: QObject(parent)
+/// A Qt model for presentation items.
+class UpPresentationsModel : public NodeBasedModel<>
 {
-}
+  public:
+    
+    /*
+     * Constructors + destructor
+     */
 
-/// Destructor.
-UpSlide::~UpSlide()
-{
-}
+    /// Default constructor.
+    UpPresentationsModel(QObject* parent = 0);
 
-QPixmap UpSlide::getPreview()
-{
-  return QPixmap();
-}
+    /// Destructor.
+    ~UpPresentationsModel();
+};
+
+#endif // _UpPresentationsModel_h_
+
