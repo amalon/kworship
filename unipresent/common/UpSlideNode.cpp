@@ -67,7 +67,7 @@ QVariant UpSlideNode::getData(int role, int column)
   {
     if (column == 0)
     {
-      return QString("slide %d").arg(column);
+      return m_item->preview();
     }
   }
   return QVariant();

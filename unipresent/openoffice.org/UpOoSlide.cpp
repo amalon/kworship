@@ -16,45 +16,40 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpSlide_h_
-#define _UpSlide_h_
-
 /**
- * @file UpSlide.h
- * @brief An abstract presentation slide.
+ * @file UpOoSlide.cpp
+ * @brief OpenOffice.org presentation slide.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QObject>
-#include <QPixmap>
+#include "UpOoSlide.h"
 
-/** An abstract presentation slide.
- * Inherit from this class to implement each backend's presentation slide.
+#include <cassert>
+
+/*
+ * Constructors + destructor
  */
-class UpSlide : public QObject
+
+/// Primary constructor.
+UpOoSlide::UpOoSlide(uno::XInterface* interface, QObject* parent)
+: UpSlide(parent)
+, m_interface(interface)
 {
-  Q_OBJECT
-  public:
+}
 
-    /*
-     * Constructors + destructor
-     */
+/// Destructor.
+UpOoSlide::~UpOoSlide()
+{
+}
 
-    /// Primary constructor.
-    UpSlide(QObject* parent = 0);
+/*
+ * Main interface
+ */
 
-    /// Destructor.
-    virtual ~UpSlide();
+QPixmap UpOoSlide::preview()
+{
+  return QPixmap();
+}
 
-    /*
-     * Main interface
-     */
-
-    // get notes and handouts
-    // get outline
-    // get preview
-    virtual QPixmap preview();
-};
-
-#endif // _UpSlide_h_
+#include "UpOoSlide.moc"
 

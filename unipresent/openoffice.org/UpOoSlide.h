@@ -16,22 +16,24 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpSlide_h_
-#define _UpSlide_h_
+#ifndef _UpOoSlide_h_
+#define _UpOoSlide_h_
 
 /**
- * @file UpSlide.h
- * @brief An abstract presentation slide.
+ * @file UpOoSlide.h
+ * @brief OpenOffice.org presentation slide.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QObject>
-#include <QPixmap>
+#include "UpSlide.h"
 
-/** An abstract presentation slide.
- * Inherit from this class to implement each backend's presentation slide.
- */
-class UpSlide : public QObject
+#include <com/sun/star/uno/Reference.h>
+#include <com/sun/star/uno/XInterface.hpp>
+
+using namespace com::sun::star;
+
+/// OpenOffice.org presentation slide.
+class UpOoSlide : public UpSlide
 {
   Q_OBJECT
   public:
@@ -41,20 +43,27 @@ class UpSlide : public QObject
      */
 
     /// Primary constructor.
-    UpSlide(QObject* parent = 0);
+    UpOoSlide(uno::XInterface* interface, QObject* parent = 0);
 
     /// Destructor.
-    virtual ~UpSlide();
+    virtual ~UpOoSlide();
 
     /*
      * Main interface
      */
 
-    // get notes and handouts
-    // get outline
-    // get preview
     virtual QPixmap preview();
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// An interface to the document.
+    uno::Reference<uno::XInterface> m_interface;
+
 };
 
-#endif // _UpSlide_h_
+#endif // _UpOoSlide_h_
 

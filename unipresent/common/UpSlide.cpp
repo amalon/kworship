@@ -39,7 +39,7 @@ UpSlide::~UpSlide()
 {
 }
 
-QPixmap UpSlide::getPreview()
+QPixmap UpSlide::preview()
 {
   return QPixmap();
 }
