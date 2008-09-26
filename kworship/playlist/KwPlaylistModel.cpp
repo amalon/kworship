@@ -172,7 +172,6 @@ Qt::ItemFlags KwPlaylistModel::flags(const QModelIndex& index) const
   return defaultFlags;
 }
 
-#include <QtDebug>
 bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
   if (action == Qt::IgnoreAction)
@@ -253,9 +252,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
         {
           list->getItem()->addItem(new KwPlaylistPresentation(file));
           success = true;
-          qDebug() << "Matched presentation";
         }
-        qDebug() << result->name();
       }
       if (!success)
       {
