@@ -8,7 +8,7 @@ include(${QT_USE_FILE})
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
                     ../unipresent/common
-                    ../unipresent/ooimpress
+                    ../unipresent/openoffice.org
                     media
                     display
                     css
@@ -47,7 +47,7 @@ target_link_libraries(kworship
                       kworshipdisplay
                       kworshipmedia
                       unipresent
-                      unipresentooimpress
+                      unipresentopenoffice
 )
 
 install(TARGETS kworship DESTINATION ${BIN_INSTALL_DIR} )

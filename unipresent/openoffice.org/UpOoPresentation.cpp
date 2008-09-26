@@ -16,73 +16,63 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpOoimpBackend_h_
-#define _UpOoimpBackend_h_
-
 /**
- * @file UpOoimpBackend.h
- * @brief OpenOffice.org Impress presentation manager.
+ * @file UpOoPresentation.cpp
+ * @brief OpenOffice.org presentation.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpBackend.h"
+#include "UpOoPresentation.h"
 
-class UpOoimpBridge;
+#include <com/sun/star/frame/XModel.hpp>
 
-/// OpenOffice.org Impress presentation manager.
-class UpOoimpBackend : public UpBackend
+#include <cassert>
+
+using namespace com::sun::star::frame;
+using namespace com::sun::star::uno;
+
+/*
+ * Constructors + destructor
+ */
+
+/// Primary constructor.
+UpOoPresentation::UpOoPresentation(uno::XInterface* interface, QObject* parent)
+: UpPresentation(parent)
+, m_interface(interface)
+, m_url()
 {
-  public:
+  /// Get the url
+  Reference<XModel> model(interface, UNO_QUERY);
+  assert(0 != model.get());
+  m_url = QString::fromUtf16((const sal_Unicode*)model->getURL());
+}
 
-    /*
-     * Constructors + destructor
-     */
+/// Destructor.
+UpOoPresentation::~UpOoPresentation()
+{
+}
 
-    /// Primary constructor.
-    UpOoimpBackend(QObject* parent = 0);
+/*
+ * Main interface
+ */
 
-    /// Destructor.
-    virtual ~UpOoimpBackend();
+void UpOoPresentation::close()
+{
+}
 
-    /*
-     * General meta information
-     */
+/*
+ * Slides
+ */
 
-    virtual QString name() const;
+int UpOoPresentation::numSlides()
+{
+  return 0;
+}
 
-    virtual QString description() const;
+UpSlide* UpOoPresentation::getSlide(int)
+{
+  return 0;
+}
 
-    virtual QStringList mimeTypes() const;
-
-    /*
-     * Activation
-     */
-
-    virtual bool activate();
-
-    virtual void deactivate();
-
-    /*
-     * Presentation management
-     */
-
-    virtual QList<UpPresentation*> presentations();
-
-    virtual UpPresentation* openPresentation(const QUrl& url);
-
-  private:
-
-    /*
-     * Variables
-     */
-
-    /// Office bridge.
-    UpOoimpBridge* m_bridge;
-
-    /// List of presentations.
-    QList<UpPresentation*> m_presentations;
-
-};
-
-#endif // _UpOoimpBackend_h_
+#include "UpOoPresentation.moc"
 

@@ -1,5 +1,0 @@
-Code specific to the OpenOffice.org Impress backend.
-
-The OpenOffice.org Impress backend uses UNO to communicate with
-open presentations.
-

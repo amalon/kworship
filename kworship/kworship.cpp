@@ -46,7 +46,7 @@
 #include "KwSongdbTree.h"
 
 #include "UpManager.h"
-#include "UpOoimpBackend.h"
+#include "UpOoBackend.h"
 
 #include <kconfigdialog.h>
 #include <kstatusbar.h>
@@ -76,7 +76,7 @@ kworship::kworship()
 , m_printer(0)
 {
   // set up presentation backends
-  m_presentationManager->registerBackend<UpOoimpBackend>();
+  m_presentationManager->registerBackend<UpOoBackend>();
   
   m_mainDisplay = 0;
   m_previewDisplay = 0;

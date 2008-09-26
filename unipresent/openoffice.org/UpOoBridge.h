@@ -16,63 +16,57 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
+#ifndef _UpOoBridge_h_
+#define _UpOoBridge_h_
+
 /**
- * @file UpOoimpPresentation.cpp
- * @brief OpenOffice.org Impress presentation.
+ * @file UpOoBridge.h
+ * @brief Bridge to OpenOffice.org.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpOoimpPresentation.h"
+#include <com/sun/star/uno/XInterface.hpp>
 
-#include <com/sun/star/frame/XModel.hpp>
+// lets make it a little easier for us without cluttering namespace
+using namespace com::sun::star;
 
-#include <cassert>
-
-using namespace com::sun::star::frame;
-using namespace com::sun::star::uno;
-
-/*
- * Constructors + destructor
- */
-
-/// Primary constructor.
-UpOoimpPresentation::UpOoimpPresentation(uno::XInterface* interface, QObject* parent)
-: UpPresentation(parent)
-, m_interface(interface)
-, m_url()
+/// Bridge to OpenOffice.org.
+class UpOoBridge
 {
-  /// Get the url
-  Reference<XModel> model(interface, UNO_QUERY);
-  assert(0 != model.get());
-  m_url = QString::fromUtf16((const sal_Unicode*)model->getURL());
-}
+  public:
 
-/// Destructor.
-UpOoimpPresentation::~UpOoimpPresentation()
-{
-}
+    /*
+     * Constructors + destructor
+     */
 
-/*
- * Main interface
- */
+    /// Primary constructor.
+    UpOoBridge();
 
-void UpOoimpPresentation::close()
-{
-}
+    /// Destructor.
+    virtual ~UpOoBridge();
 
-/*
- * Slides
- */
+    /*
+     * Main interface
+     */
 
-int UpOoimpPresentation::numSlides()
-{
-  return 0;
-}
+    /// Find whether the bridge is valid.
+    bool isValid() const;
 
-UpSlide* UpOoimpPresentation::getSlide(int)
-{
-  return 0;
-}
+    /// Get the service manager.
+    uno::XInterface* serviceManager();
 
-#include "UpOoimpPresentation.moc"
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Whether the bridge is valid.
+    bool m_valid;
+
+    /// Service manager interface.
+    uno::Reference<uno::XInterface> m_serviceManager;
+};
+
+#endif // _UpOoBridge_h_
 

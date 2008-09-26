@@ -16,23 +16,28 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpOoimpBridge_h_
-#define _UpOoimpBridge_h_
+#ifndef _UpOoPresentation_h_
+#define _UpOoPresentation_h_
 
 /**
- * @file UpOoimpBridge.h
- * @brief Bridge to OpenOffice.org.
+ * @file UpOoPresentation.h
+ * @brief OpenOffice.org presentation.
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "UpPresentation.h"
+
+#include <com/sun/star/uno/Reference.h>
 #include <com/sun/star/uno/XInterface.hpp>
 
-// lets make it a little easier for us without cluttering namespace
+#include <QUrl>
+
 using namespace com::sun::star;
 
-/// OpenOffice.org Impress presentation manager.
-class UpOoimpBridge
+/// OpenOffice.org presentation.
+class UpOoPresentation : public UpPresentation
 {
+  Q_OBJECT
   public:
 
     /*
@@ -40,20 +45,24 @@ class UpOoimpBridge
      */
 
     /// Primary constructor.
-    UpOoimpBridge();
+    UpOoPresentation(uno::XInterface* interface, QObject* parent = 0);
 
     /// Destructor.
-    virtual ~UpOoimpBridge();
+    virtual ~UpOoPresentation();
 
     /*
      * Main interface
      */
 
-    /// Find whether the bridge is valid.
-    bool isValid() const;
+    virtual void close();
 
-    /// Get the service manager.
-    uno::XInterface* serviceManager();
+    /*
+     * Slides
+     */
+
+    virtual int numSlides();
+
+    virtual UpSlide* getSlide(int);
 
   private:
 
@@ -61,12 +70,12 @@ class UpOoimpBridge
      * Variables
      */
 
-    /// Whether the bridge is valid.
-    bool m_valid;
+    /// An interface to the document.
+    uno::Reference<uno::XInterface> m_interface;
 
-    /// Service manager interface.
-    uno::Reference<uno::XInterface> m_serviceManager;
+    /// The file's URL.
+    QUrl m_url;
 };
 
-#endif // _UpOoimpBridge_h_
+#endif // _UpOoPresentation_h_
 

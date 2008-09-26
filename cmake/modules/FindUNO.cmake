@@ -66,8 +66,8 @@ SET(UNO_LIBS
 
 # Macros
 
-# UNO_ADD_TYPES(types ... )
-MACRO (UNO_ADD_TYPES component types)
+# UNO_ADD_TYPES(component {types} )
+MACRO (UNO_ADD_TYPES component)
   SET(UNO_COMPONENT_INC "${UNO_TEMP_DIR}/${component}/inc")
   SET(UNO_RDB "${UNO_TEMP_DIR}/${component}.rdb")
   # Add include directory

@@ -17,12 +17,12 @@
  ***************************************************************************/
 
 /**
- * @file UpOoimpBridge.cpp
+ * @file UpOoBridge.cpp
  * @brief Bridge to OpenOffice.org.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpOoimpBridge.h"
+#include "UpOoBridge.h"
 #include "compiler.h"
 
 #include <QByteArray>
@@ -49,11 +49,11 @@ using namespace rtl;
  */
 
 /// Primary constructor.
-UpOoimpBridge::UpOoimpBridge()
+UpOoBridge::UpOoBridge()
 : m_valid(false)
 {
   QByteArray connectionBa = "uno:socket,host=localhost,port=2083;urp;StarOffice.ServiceManager";
-  QByteArray rdbFileBa = "/home/james/src/kworship/master/unipresent/ooimpress/CMakeFiles/unipresentooimpress.rdb";
+  QByteArray rdbFileBa = "/home/james/src/kworship/master/unipresent/openoffice.org/CMakeFiles/unipresentopenoffice.rdb";
 
   OUString connectionString(OUString::createFromAscii(connectionBa));
   OUString rdbFile(OUString::createFromAscii(rdbFileBa));
@@ -94,7 +94,7 @@ UpOoimpBridge::UpOoimpBridge()
 }
 
 /// Destructor.
-UpOoimpBridge::~UpOoimpBridge()
+UpOoBridge::~UpOoBridge()
 {
 }
 
@@ -103,13 +103,13 @@ UpOoimpBridge::~UpOoimpBridge()
  */
 
 /// Find whether the bridge is valid.
-bool UpOoimpBridge::isValid() const
+bool UpOoBridge::isValid() const
 {
   return m_valid;
 }
 
 /// Get the service manager.
-XInterface* UpOoimpBridge::serviceManager()
+XInterface* UpOoBridge::serviceManager()
 {
   return m_serviceManager.get();
 }

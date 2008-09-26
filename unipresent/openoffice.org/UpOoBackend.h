@@ -16,28 +16,22 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpOoimpPresentation_h_
-#define _UpOoimpPresentation_h_
+#ifndef _UpOoBackend_h_
+#define _UpOoBackend_h_
 
 /**
- * @file UpOoimpPresentation.h
- * @brief OpenOffice.org Impress presentation.
+ * @file UpOoBackend.h
+ * @brief OpenOffice.org presentation manager.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpPresentation.h"
+#include "UpBackend.h"
 
-#include <com/sun/star/uno/Reference.h>
-#include <com/sun/star/uno/XInterface.hpp>
+class UpOoBridge;
 
-#include <QUrl>
-
-using namespace com::sun::star;
-
-/// OpenOffice.org Impress presentation.
-class UpOoimpPresentation : public UpPresentation
+/// OpenOffice.org presentation manager.
+class UpOoBackend : public UpBackend
 {
-  Q_OBJECT
   public:
 
     /*
@@ -45,24 +39,36 @@ class UpOoimpPresentation : public UpPresentation
      */
 
     /// Primary constructor.
-    UpOoimpPresentation(uno::XInterface* interface, QObject* parent = 0);
+    UpOoBackend(QObject* parent = 0);
 
     /// Destructor.
-    virtual ~UpOoimpPresentation();
+    virtual ~UpOoBackend();
 
     /*
-     * Main interface
+     * General meta information
      */
 
-    virtual void close();
+    virtual QString name() const;
+
+    virtual QString description() const;
+
+    virtual QStringList mimeTypes() const;
 
     /*
-     * Slides
+     * Activation
      */
 
-    virtual int numSlides();
+    virtual bool activate();
 
-    virtual UpSlide* getSlide(int);
+    virtual void deactivate();
+
+    /*
+     * Presentation management
+     */
+
+    virtual QList<UpPresentation*> presentations();
+
+    virtual UpPresentation* openPresentation(const QUrl& url);
 
   private:
 
@@ -70,12 +76,13 @@ class UpOoimpPresentation : public UpPresentation
      * Variables
      */
 
-    /// An interface to the document.
-    uno::Reference<uno::XInterface> m_interface;
+    /// Office bridge.
+    UpOoBridge* m_bridge;
 
-    /// The file's URL.
-    QUrl m_url;
+    /// List of presentations.
+    QList<UpPresentation*> m_presentations;
+
 };
 
-#endif // _UpOoimpPresentation_h_
+#endif // _UpOoBackend_h_
 

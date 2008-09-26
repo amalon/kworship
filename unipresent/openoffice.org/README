@@ -1,0 +1,5 @@
+Code specific to the OpenOffice.org backend.
+
+The OpenOffice.org backend uses UNO to communicate with
+open presentations.
+

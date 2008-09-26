@@ -5,8 +5,8 @@ Integration will work by interprocess communication with the office process
 to make it listen to localhost.
 
 classes
-  UpOoimpBridge - Office connection manager
-  UpOoimpBackend - Derived backend
-  UpOoimpPresentation - Derived presentation
-  UpOoimpSlide - Derived presentation slide
+  UpOoBridge - Office connection manager
+  UpOoBackend - Derived backend
+  UpOoPresentation - Derived presentation
+  UpOoSlide - Derived presentation slide
 

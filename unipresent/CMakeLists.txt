@@ -3,5 +3,5 @@ include_directories(${QT_INCLUDES}
                     common)
 
 add_subdirectory (common)
-add_subdirectory (ooimpress)
+add_subdirectory (openoffice.org)
 

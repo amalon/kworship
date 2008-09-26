@@ -17,14 +17,14 @@
  ***************************************************************************/
 
 /**
- * @file UpOoimpBackend.cpp
- * @brief OpenOffice.org Impress presentation manager.
+ * @file UpOoBackend.cpp
+ * @brief OpenOffice.org presentation manager.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpOoimpBackend.h"
-#include "UpOoimpBridge.h"
-#include "UpOoimpPresentation.h"
+#include "UpOoBackend.h"
+#include "UpOoBridge.h"
+#include "UpOoPresentation.h"
 
 #include "compiler.h"
 
@@ -52,7 +52,7 @@ using namespace rtl;
  */
 
 /// Primary constructor.
-UpOoimpBackend::UpOoimpBackend(QObject* parent)
+UpOoBackend::UpOoBackend(QObject* parent)
 : UpBackend(parent)
 , m_bridge(0)
 , m_presentations()
@@ -61,7 +61,7 @@ UpOoimpBackend::UpOoimpBackend(QObject* parent)
 }
 
 /// Destructor.
-UpOoimpBackend::~UpOoimpBackend()
+UpOoBackend::~UpOoBackend()
 {
   delete m_bridge;
 }
@@ -70,17 +70,17 @@ UpOoimpBackend::~UpOoimpBackend()
  * General meta information
  */
 
-QString UpOoimpBackend::name() const
+QString UpOoBackend::name() const
 {
-  return "OpenOffice.org Impress";
+  return "OpenOffice.org";
 }
 
-QString UpOoimpBackend::description() const
+QString UpOoBackend::description() const
 {
-  return "Controls a running Impress";
+  return "Controls a running OpenOffice.org presentation";
 }
 
-QStringList UpOoimpBackend::mimeTypes() const
+QStringList UpOoBackend::mimeTypes() const
 {
   /// @todo Find mime types from open office if possible
   return QStringList()
@@ -92,11 +92,11 @@ QStringList UpOoimpBackend::mimeTypes() const
  * Activation
  */
 
-bool UpOoimpBackend::activate()
+bool UpOoBackend::activate()
 {
   if (0 == m_bridge)
   {
-    m_bridge = new UpOoimpBridge();
+    m_bridge = new UpOoBridge();
     if (likely(m_bridge->isValid()))
     {
       activated();
@@ -116,7 +116,7 @@ bool UpOoimpBackend::activate()
         documents->nextElement() >>= presentationSupplier;
         if (0 != presentationSupplier.get())
         {
-          m_presentations.push_back(new UpOoimpPresentation(presentationSupplier.get(), this));
+          m_presentations.push_back(new UpOoPresentation(presentationSupplier.get(), this));
         }
       }
     }
@@ -129,7 +129,7 @@ bool UpOoimpBackend::activate()
   return true;
 }
 
-void UpOoimpBackend::deactivate()
+void UpOoBackend::deactivate()
 {
   if (0 != m_bridge)
   {
@@ -143,12 +143,12 @@ void UpOoimpBackend::deactivate()
  * Presentation management
  */
 
-QList<UpPresentation*> UpOoimpBackend::presentations()
+QList<UpPresentation*> UpOoBackend::presentations()
 {
   return m_presentations;
 }
 
-UpPresentation* UpOoimpBackend::openPresentation(const QUrl& url)
+UpPresentation* UpOoBackend::openPresentation(const QUrl& url)
 {
   OUString urlString = OUString::createFromAscii(url.toString().toAscii());
 
