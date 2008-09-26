@@ -1,0 +1,26 @@
+presentation docker
+  toolbar
+    open presentation (open with if hold down)
+    presentation list combobox
+    close presentation
+    fullscreen presentation mode
+    toggle slide notes display
+  slide list
+    thumbnails
+  slide list control
+    previous slide
+    next slide
+    display slide
+    hide slide
+
+fullscreen presentation controller
+  slide list along top
+  large preview of current and next slide
+  preview of notes below each
+  clicking etc is equiv of clicking in slideshow
+    works with slideshow controller
+  controls for next, previous etc
+
+notes display screen
+  can have another screen for displaying notes
+  either fullscreen notes or a simple notes + slide display
