@@ -209,7 +209,7 @@ kworship::kworship()
   selectPresTree->header()->hide();
   selectPresCombo->setModel(m_presentationManager->presentationsModel());
   selectPresCombo->setView(selectPresTree);
-  selectPresTree->expandAll();
+  selectPresTree->expandToDepth(0);
   selectPresTree->setItemsExpandable(false);
   KAction* selectPresAction = new KAction(KIcon("select"), "Select Presentation", presToolBar);
   selectPresAction->setDefaultWidget(selectPresCombo);

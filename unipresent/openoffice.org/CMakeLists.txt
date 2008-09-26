@@ -10,7 +10,11 @@ UNO_ADD_TYPES(unipresentopenoffice
     com.sun.star.bridge.XUnoUrlResolver
     com.sun.star.container.XEnumeration
     com.sun.star.container.XEnumerationAccess
+    com.sun.star.container.XIndexAccess
     com.sun.star.container.XHierarchicalNameAccess
+    com.sun.star.drawing.XDrawPagesSupplier
+    com.sun.star.drawing.XDrawPages
+    com.sun.star.drawing.XDrawPage
     com.sun.star.frame.XComponentLoader
     com.sun.star.frame.XDesktop
     com.sun.star.lang.XComponent
@@ -26,6 +30,7 @@ set(unipresentopenoffice_SRCS
     UpOoBackend.cpp
     UpOoBridge.cpp
     UpOoPresentation.cpp
+    UpOoSlide.cpp
 )
 
 QT4_AUTOMOC(${unipresentopenoffice_SRCS})

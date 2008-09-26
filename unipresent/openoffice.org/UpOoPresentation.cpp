@@ -23,11 +23,17 @@
  */
 
 #include "UpOoPresentation.h"
+#include "UpOoSlide.h"
 
+#include <com/sun/star/container/XIndexAccess.hpp>
+#include <com/sun/star/drawing/XDrawPagesSupplier.hpp>
+#include <com/sun/star/drawing/XDrawPages.hpp>
+#include <com/sun/star/drawing/XDrawPage.hpp>
 #include <com/sun/star/frame/XModel.hpp>
 
 #include <cassert>
 
+using namespace com::sun::star::drawing;
 using namespace com::sun::star::frame;
 using namespace com::sun::star::uno;
 
@@ -41,7 +47,7 @@ UpOoPresentation::UpOoPresentation(uno::XInterface* interface, QObject* parent)
 , m_interface(interface)
 , m_url()
 {
-  /// Get the url
+  // Get the url
   Reference<XModel> model(interface, UNO_QUERY);
   assert(0 != model.get());
   m_url = QString::fromUtf16((const sal_Unicode*)model->getURL());
@@ -71,12 +77,20 @@ QUrl UpOoPresentation::url() const
 
 int UpOoPresentation::numSlides()
 {
-  return 0;
+  Reference<XDrawPagesSupplier> drawPagesSupplier(m_interface, UNO_QUERY);
+  assert(0 != drawPagesSupplier.get());
+  Reference<XDrawPages> drawPages = drawPagesSupplier->getDrawPages();
+  return drawPages->getCount();
 }
 
-UpSlide* UpOoPresentation::slide(int)
+UpSlide* UpOoPresentation::slide(int index)
 {
-  return 0;
+  Reference<XDrawPagesSupplier> drawPagesSupplier(m_interface, UNO_QUERY);
+  assert(0 != drawPagesSupplier.get());
+  Reference<XDrawPages> drawPages = drawPagesSupplier->getDrawPages();
+  Reference<XDrawPage> drawPage;
+  drawPages->getByIndex(index) >>= drawPage;
+  return new UpOoSlide(drawPage.get(), this);
 }
 
 #include "UpOoPresentation.moc"
