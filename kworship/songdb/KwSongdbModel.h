@@ -25,12 +25,12 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QAbstractItemModel>
+#include "KwSongdbNode.h"
 
-class KwSongdbNode;
+#include "NodeBasedModel.h"
 
 /// A Qt model for playlist items.
-class KwSongdbModel : public QAbstractItemModel
+class KwSongdbModel : public NodeBasedModel<KwSongdbNode>
 {
   public:
     
@@ -45,32 +45,10 @@ class KwSongdbModel : public QAbstractItemModel
     virtual ~KwSongdbModel();
 
     /*
-     * Main interface
+     * Drag and drop
      */
-
-    /// Set the root node.
-    void setRootNode(KwSongdbNode* root);
-    KwSongdbNode* itemFromIndex(const QModelIndex &index) const;
-
-    QModelIndex index(int row, int column, const QModelIndex& parent) const;
-    QModelIndex parent(const QModelIndex &child) const;
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-
-    // Drag and drop
     Qt::ItemFlags flags(const QModelIndex& index) const;
     QMimeData* mimeData(const QModelIndexList& indexes) const;
-
-  private:
-
-    /*
-     * Variables
-     */
-
-    /// Root item.
-    KwSongdbNode* m_root;
 };
 
 #endif // _KwSongdbModel_h_

@@ -1,2 +1,0 @@
-[ ] merge playlist/KwPlaylistModel and songdb/KwSongDatabaseModel into a template
-    merge playlist/KwPlaylistNode and songdb/KwSongDatabaseNode into a template
