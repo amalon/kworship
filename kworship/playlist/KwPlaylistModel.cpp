@@ -38,113 +38,24 @@
 #include <QUrl>
 #include <QStringList>
 
-#include <cassert>
-
 /*
  * Constructors + destructor.
  */
 
 /// Default constructor.
 KwPlaylistModel::KwPlaylistModel(QObject* parent)
-: QAbstractItemModel(parent)
-, m_root(0)
+: NodeBasedModel<KwPlaylistNode>(parent)
 {
 }
 
 /// Destructor.
 KwPlaylistModel::~KwPlaylistModel()
 {
-  delete m_root;
 }
 
 /*
- * Main interface
+ * Drag and drop
  */
-
-/// Set the root node.
-void KwPlaylistModel::setRootNode(KwPlaylistNode* root)
-{
-  delete m_root;
-  m_root = root;
-  reset();
-}
-
-KwPlaylistNode* KwPlaylistModel::itemFromIndex(const QModelIndex& index) const
-{
-  if (index.isValid()) {
-    return reinterpret_cast<KwPlaylistNode*>(index.internalPointer());
-  } else {
-    return m_root;
-  }
-}
-
-QModelIndex KwPlaylistModel::index(int row, int column, const QModelIndex& parent) const
-{
-  if (0 == m_root)
-  {
-    return QModelIndex();
-  }
-  KwPlaylistNode* parentNode = itemFromIndex(parent);
-  assert(0 != parentNode);
-  return createIndex(row, column, parentNode->getChild(row));
-}
-
-QModelIndex KwPlaylistModel::parent(const QModelIndex& child) const
-{
-  KwPlaylistNode* node = itemFromIndex(child);
-  assert(0 != node);
-  KwPlaylistNode* parentNode = node->getParent();
-  if (0 == parentNode)
-  {
-    return QModelIndex();
-  }
-  KwPlaylistNode* grandParentNode = parentNode->getParent();
-  if (0 == grandParentNode)
-  {
-    return QModelIndex();
-  }
-  int row = grandParentNode->getChildIndex(parentNode);
-  assert(row != -1);
-  return createIndex(row, child.column(), parentNode);
-}
-
-int KwPlaylistModel::rowCount(const QModelIndex& parent) const
-{
-  KwPlaylistNode* parentNode = itemFromIndex(parent);
-  if (0 == parentNode)
-  {
-    return 0;
-  }
-  return parentNode->getChildCount();
-}
-
-int KwPlaylistModel::columnCount(const QModelIndex& parent) const
-{
-  Q_UNUSED(parent)
-  return 1;
-}
-
-QVariant KwPlaylistModel::data(const QModelIndex& index, int role) const
-{
-  KwPlaylistNode* item = itemFromIndex(index);
-  if (0 == item)
-  {
-    return QVariant();
-  }
-  return item->getData(role, index.column());
-}
-
-QVariant KwPlaylistModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-  if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-  {
-    if (section == 0)
-    {
-      return tr("Node");
-    }
-  }
-  return QVariant();
-}
 
 QStringList KwPlaylistModel::mimeTypes() const
 {
@@ -174,13 +85,14 @@ Qt::ItemFlags KwPlaylistModel::flags(const QModelIndex& index) const
 
 bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
+  Q_UNUSED(column)
+
   if (action == Qt::IgnoreAction)
   {
     return true;
   }
 
-  KwPlaylistNode* item = itemFromIndex(parent);
-  KwPlaylistListNode* list = dynamic_cast<KwPlaylistListNode*>(item);
+  KwPlaylistListNode* list = dynamic_cast<KwPlaylistListNode*>(itemFromIndex(parent));
   if (0 == list)
   {
     return true;
@@ -191,7 +103,6 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
     QByteArray encodedData = data->data("application/x.kworship.song.list");
     QDataStream stream(&encodedData, QIODevice::ReadOnly);
     QStringList newItems;
-    int rows = 0;
 
     while (!stream.atEnd())
     {
@@ -210,7 +121,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
             KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->getSongVersionById(versionId));
             list->getItem()->addItem(newSong, row);
             ++row;
-            item->clearChildCache();
+            list->clearChildCache();
           }
         }
       }
