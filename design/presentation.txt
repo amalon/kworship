@@ -24,3 +24,9 @@ fullscreen presentation controller
 notes display screen
   can have another screen for displaying notes
   either fullscreen notes or a simple notes + slide display
+
+features
+  [ ] select multiple slides and drag into playlist
+      adds a custom slideshow
+  [ ] drag presentation from playlist into slides list to load it
+
