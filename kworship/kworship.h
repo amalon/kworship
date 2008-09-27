@@ -79,6 +79,7 @@ private slots:
     void optionsPreferences();
     void playlist_doubleClicked(QModelIndex);
     void presentationSelected(int);
+    void presentationToggled(bool);
 
 private:
     void setupActions();

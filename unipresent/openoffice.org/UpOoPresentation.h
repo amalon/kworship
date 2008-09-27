@@ -64,6 +64,14 @@ class UpOoPresentation : public UpPresentation
 
     virtual UpSlide* slide(int);
 
+    /*
+     * Slideshow control
+     */
+
+    virtual void startSlideshow();
+
+    virtual void stopSlideshow();
+
   private:
 
     /*

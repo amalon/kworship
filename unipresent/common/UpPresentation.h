@@ -67,6 +67,16 @@ class UpPresentation : public QObject
 
     /// Get a specific slide.
     virtual UpSlide* slide(int) = 0;
+
+    /*
+     * Slideshow control
+     */
+
+    /// Start the slideshow.
+    virtual void startSlideshow() = 0;
+
+    /// Stop the slideshow.
+    virtual void stopSlideshow() = 0;
 };
 
 #endif // _UpPresentation_h_

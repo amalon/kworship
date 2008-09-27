@@ -73,14 +73,14 @@ MACRO (UNO_ADD_TYPES component)
   # Add include directory
   SET(UNO_INCLUDES ${UNO_INCLUDES} ${UNO_COMPONENT_INC})
 
-  # rdb -> [cppumaker] -> hxx
+  # rdb -> [cppumaker] -> hpp
   SET(UNO_HPPFILES )
   SET(UNO_TYPELIST )
   # prefix each type with -T
   FOREACH(type ${ARGN})
     SET(UNO_TYPELIST ${UNO_TYPELIST} -T${type})
     STRING(REPLACE "." "/" UNO_HPPFILE "${type}")
-    SET(UNO_HPPFILE "${UNO_TEMP_DIR}/${UNO_HPPFILE}.hxx")
+    SET(UNO_HPPFILE "${UNO_TEMP_DIR}/${UNO_HPPFILE}.hpp")
     SET(UNO_HPPFILES ${UNO_HPPFILES} ${UNO_HPPFILE})
   ENDFOREACH(type)
   ADD_CUSTOM_COMMAND(

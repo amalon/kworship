@@ -23,6 +23,7 @@ UNO_ADD_TYPES(unipresentopenoffice
     com.sun.star.lang.XMultiComponentFactory
     com.sun.star.lang.XMultiServiceFactory
     com.sun.star.presentation.XPresentationSupplier
+    com.sun.star.presentation.XPresentation
     com.sun.star.registry.XSimpleRegistry
 )
 

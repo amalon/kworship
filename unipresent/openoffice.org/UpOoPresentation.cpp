@@ -30,11 +30,14 @@
 #include <com/sun/star/drawing/XDrawPages.hpp>
 #include <com/sun/star/drawing/XDrawPage.hpp>
 #include <com/sun/star/frame/XModel.hpp>
+#include <com/sun/star/presentation/XPresentationSupplier.hpp>
+#include <com/sun/star/presentation/XPresentation.hpp>
 
 #include <cassert>
 
 using namespace com::sun::star::drawing;
 using namespace com::sun::star::frame;
+using namespace com::sun::star::presentation;
 using namespace com::sun::star::uno;
 
 /*
@@ -91,6 +94,24 @@ UpSlide* UpOoPresentation::slide(int index)
   Reference<XDrawPage> drawPage;
   drawPages->getByIndex(index) >>= drawPage;
   return new UpOoSlide(drawPage.get(), this);
+}
+
+/*
+ * Slideshow control
+ */
+
+void UpOoPresentation::startSlideshow()
+{
+  Reference<XPresentationSupplier> presentationSupplier(m_interface, UNO_QUERY);
+  Reference<XPresentation> presentation = presentationSupplier->getPresentation();
+  presentation->start();
+}
+
+void UpOoPresentation::stopSlideshow()
+{
+  Reference<XPresentationSupplier> presentationSupplier(m_interface, UNO_QUERY);
+  Reference<XPresentation> presentation = presentationSupplier->getPresentation();
+  presentation->end();
 }
 
 #include "UpOoPresentation.moc"

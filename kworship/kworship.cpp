@@ -47,6 +47,7 @@
 
 #include "UpManager.h"
 #include "UpPresentationsModel.h"
+#include "UpPresentation.h"
 #include "UpPresentationNode.h"
 #include "UpOoBackend.h"
 
@@ -240,6 +241,7 @@ kworship::kworship()
   slidesToolBar->addAction(nextSlideAction);
 
   KToggleAction* displaySlideAction = new KToggleAction(KIcon("display"), "Display Slides", slidesToolBar);
+  connect(displaySlideAction, SIGNAL(toggled(bool)), this, SLOT(presentationToggled(bool)));
   slidesToolBar->addAction(displaySlideAction);
 
   /*
@@ -471,6 +473,25 @@ void kworship::presentationSelected(int)
   else
   {
     m_view->listSlides->setModel(0);
+  }
+}
+
+void kworship::presentationToggled(bool checked)
+{
+  // Find the treeviews current index
+  QModelIndex index = m_selectPresTree->currentIndex();
+  UpPresentationsModel* model = m_presentationManager->presentationsModel();
+  UpPresentationNode* presNode = dynamic_cast<UpPresentationNode*>(model->itemFromIndex(index));
+  if (0 != presNode)
+  {
+    if (checked)
+    {
+      presNode->getItem()->startSlideshow();
+    }
+    else
+    {
+      presNode->getItem()->stopSlideshow();
+    }
   }
 }
 
