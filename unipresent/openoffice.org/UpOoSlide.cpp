@@ -24,7 +24,14 @@
 
 #include "UpOoSlide.h"
 
+#include <com/sun/star/drawing/XShapes.hpp>
+#include <com/sun/star/text/XText.hpp>
+
 #include <cassert>
+
+using namespace com::sun::star::drawing;
+using namespace com::sun::star::text;
+using namespace com::sun::star::uno;
 
 /*
  * Constructors + destructor
@@ -45,6 +52,30 @@ UpOoSlide::~UpOoSlide()
 /*
  * Main interface
  */
+
+QString UpOoSlide::outline()
+{
+  QStringList result;
+  // Go through the shapes
+  Reference<XShapes> shapes(m_interface, UNO_QUERY);
+  int numShapes = shapes->getCount();
+  for (int i = 0; i < numShapes; ++i)
+  {
+    Reference<XText> shape;
+    shapes->getByIndex(i) >>= shape;
+    if (0 != shape.get())
+    {
+      QString text = QString::fromUtf16((const sal_Unicode*)shape->getString());
+      result << text;
+    }
+  }
+  return result.join("\n");
+}
+
+QString UpOoSlide::notes()
+{
+  return QString();
+}
 
 QPixmap UpOoSlide::preview()
 {

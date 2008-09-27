@@ -67,7 +67,15 @@ QVariant UpSlideNode::getData(int role, int column)
   {
     if (column == 0)
     {
-      return m_item->preview();
+      QPixmap pixmap = m_item->preview();
+      if (!pixmap.isNull())
+      {
+        return pixmap;
+      }
+      else
+      {
+        return m_item->outline();
+      }
     }
   }
   return QVariant();

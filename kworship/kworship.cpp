@@ -47,6 +47,7 @@
 
 #include "UpManager.h"
 #include "UpPresentationsModel.h"
+#include "UpPresentationNode.h"
 #include "UpOoBackend.h"
 
 #include <kconfigdialog.h>
@@ -205,12 +206,13 @@ kworship::kworship()
   presToolBar->addAction(openPresAction);
 
   QComboBox* selectPresCombo = new QComboBox(presToolBar);
-  QTreeView* selectPresTree = new QTreeView(selectPresCombo);
-  selectPresTree->header()->hide();
+  m_selectPresTree = new QTreeView(this);
+  m_selectPresTree->header()->hide();
   selectPresCombo->setModel(m_presentationManager->presentationsModel());
-  selectPresCombo->setView(selectPresTree);
-  selectPresTree->expandToDepth(0);
-  selectPresTree->setItemsExpandable(false);
+  selectPresCombo->setView(m_selectPresTree);
+  m_selectPresTree->expandToDepth(0);
+  m_selectPresTree->setItemsExpandable(false);
+  connect(selectPresCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(presentationSelected(int)));
   KAction* selectPresAction = new KAction(KIcon("select"), "Select Presentation", presToolBar);
   selectPresAction->setDefaultWidget(selectPresCombo);
   presToolBar->addAction(selectPresAction);
@@ -453,6 +455,23 @@ void kworship::playlist_doubleClicked(QModelIndex index)
 {
   KwPlaylistNode* node = m_playlistModel->itemFromIndex(index);
   node->activate(m_displayManager);
+}
+
+void kworship::presentationSelected(int)
+{
+  // Find the treeviews current index
+  QModelIndex index = m_selectPresTree->currentIndex();
+  UpPresentationsModel* model = m_presentationManager->presentationsModel();
+  UpPresentationNode* presNode = dynamic_cast<UpPresentationNode*>(model->itemFromIndex(index));
+  if (0 != presNode)
+  {
+    m_view->listSlides->setModel(model);
+    m_view->listSlides->setRootIndex(index);
+  }
+  else
+  {
+    m_view->listSlides->setModel(0);
+  }
 }
 
 #include "kworship.moc"

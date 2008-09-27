@@ -52,6 +52,8 @@ class UpOoSlide : public UpSlide
      * Main interface
      */
 
+    virtual QString outline();
+    virtual QString notes();
     virtual QPixmap preview();
 
   private:

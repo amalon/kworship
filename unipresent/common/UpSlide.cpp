@@ -39,6 +39,16 @@ UpSlide::~UpSlide()
 {
 }
 
+QString UpSlide::outline()
+{
+  return QString();
+}
+
+QString UpSlide::notes()
+{
+  return QString();
+}
+
 QPixmap UpSlide::preview()
 {
   return QPixmap();

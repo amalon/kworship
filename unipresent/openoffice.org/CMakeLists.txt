@@ -15,6 +15,8 @@ UNO_ADD_TYPES(unipresentopenoffice
     com.sun.star.drawing.XDrawPagesSupplier
     com.sun.star.drawing.XDrawPages
     com.sun.star.drawing.XDrawPage
+    com.sun.star.drawing.XShapes
+    com.sun.star.text.XText
     com.sun.star.frame.XComponentLoader
     com.sun.star.frame.XDesktop
     com.sun.star.lang.XComponent

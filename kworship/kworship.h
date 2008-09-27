@@ -42,6 +42,8 @@ class KPrinter;
 class KToggleAction;
 class KUrl;
 
+class QTreeView;
+
 /**
  * This class serves as the main window for kworship.  It handles the
  * menus, toolbars, and status bars.
@@ -76,6 +78,7 @@ private slots:
     void toggleFullscreen(bool checked);
     void optionsPreferences();
     void playlist_doubleClicked(QModelIndex);
+    void presentationSelected(int);
 
 private:
     void setupActions();
@@ -99,6 +102,7 @@ private:
     KwSongdbModel* m_songDbModel;
 
     UpManager* m_presentationManager;
+    QTreeView* m_selectPresTree;
 
     KPrinter   *m_printer;
     KToggleAction* m_mainDisplayAction;
