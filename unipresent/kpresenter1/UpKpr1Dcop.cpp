@@ -72,16 +72,20 @@ bool UpKpr1Dcop::isValid() const
  */
 
 /// Get the result of a dcop query on this interface.
-QStringList UpKpr1Dcop::eval(bool& error, QStringList tail) const
+QStringList UpKpr1Dcop::eval(bool* const error, QStringList tail) const
 {
   QStringList args = m_reference;
   args << tail;
 
   QProcess dcop;
   dcop.start("dcop", args);
-  error = !dcop.waitForFinished();
+  bool localError = !dcop.waitForFinished();
+  if (0 != error)
+  {
+    *error = localError;
+  }
 
-  if (!error)
+  if (!localError)
   {
     QString result = QString::fromAscii(dcop.readAll());
     return result.trimmed().split('\n');
@@ -112,3 +116,14 @@ UpKpr1Dcop UpKpr1Dcop::dcopRefFromString(QString input)
   }
 }
 
+/// Get a single dcop reference from a dcop query.
+UpKpr1Dcop UpKpr1Dcop::evalRef(QStringList tail) const
+{
+  bool error;
+  QStringList items = eval(&error, tail);
+  if (!error && items.size() == 1)
+  {
+    return dcopRefFromString(items.first());
+  }
+  return UpKpr1Dcop();
+}

@@ -32,6 +32,7 @@
 UpKpr1Slide::UpKpr1Slide(const UpKpr1SlideDcop& dcop, QObject* parent)
 : UpSlide(parent)
 , m_dcop(dcop)
+, m_outline()
 {
 }
 
@@ -46,12 +47,16 @@ UpKpr1Slide::~UpKpr1Slide()
 
 QString UpKpr1Slide::outline()
 {
-  return "outline";
+  if (m_outline.isNull())
+  {
+    m_outline = m_dcop.textObjectsContents().join("\n");
+  }
+  return m_outline;
 }
 
 QString UpKpr1Slide::notes()
 {
-  return "notes";
+  return QString();
 }
 
 QPixmap UpKpr1Slide::preview()

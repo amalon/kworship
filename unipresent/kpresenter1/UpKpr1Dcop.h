@@ -55,17 +55,45 @@ class UpKpr1Dcop
     /// Find whether its valid.
     bool isValid() const;
 
-  protected:
-
     /*
      * Helper methods
      */
 
     /// Get the result of a dcop query on this interface.
-    QStringList eval(bool& err, QStringList tail = QStringList()) const;
+    QStringList eval(bool* const err = 0, QStringList tail = QStringList()) const;
+
+    /// Get the result of a dcop query on this interface.
+    QStringList eval(QStringList tail) const
+    {
+      return eval(0, tail);
+    }
 
     /// Get a dcop reference from a string.
     static UpKpr1Dcop dcopRefFromString(QString input);
+
+    /// Get a single dcop reference from a dcop query.
+    UpKpr1Dcop evalRef(QStringList tail) const;
+
+    /// Get a list of dcop references from a dcop query.
+    template <typename INTERFACE>
+    QList<INTERFACE> evalRefs(QStringList tail) const
+    {
+      bool error;
+      QStringList items = eval(&error, tail);
+      QList<INTERFACE> results;
+      if (!error)
+      {
+        foreach (QString item, items)
+        {
+          UpKpr1Dcop ref = dcopRefFromString(item);
+          if (ref.isValid())
+          {
+            results << ref;
+          }
+        }
+      }
+      return results;
+    }
 
   private:
 

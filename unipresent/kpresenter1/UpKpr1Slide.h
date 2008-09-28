@@ -62,6 +62,9 @@ class UpKpr1Slide : public UpSlide
 
     /// DCOP interface.
     UpKpr1SlideDcop m_dcop;
+
+    /// Outline text.
+    QString m_outline;
 };
 
 #endif // _UpKpr1Slide_h_

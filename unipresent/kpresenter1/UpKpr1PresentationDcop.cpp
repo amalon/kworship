@@ -47,7 +47,7 @@ UpKpr1PresentationDcop::~UpKpr1PresentationDcop()
 QUrl UpKpr1PresentationDcop::url() const
 {
   bool error;
-  QStringList result = eval(error, QStringList() << "url()");
+  QStringList result = eval(&error, QStringList() << "url()");
   if (!error && result.size() == 1)
   {
     return QUrl(result.first());
@@ -62,7 +62,7 @@ QUrl UpKpr1PresentationDcop::url() const
 int UpKpr1PresentationDcop::numSlides() const
 {
   bool error;
-  QStringList result = eval(error, QStringList() << "numPages()");
+  QStringList result = eval(&error, QStringList() << "numPages()");
   if (!error && result.size() == 1)
   {
     bool ok;
@@ -78,17 +78,8 @@ int UpKpr1PresentationDcop::numSlides() const
 /// Get a particular slide by id.
 UpKpr1SlideDcop UpKpr1PresentationDcop::slide(int index)
 {
-  bool error;
   QString num;
   num.setNum(index);
-  QStringList result = eval(error, QStringList() << "page(int)" << num);
-  if (!error && result.size() == 1)
-  {
-    return UpKpr1SlideDcop(dcopRefFromString(result.first()));
-  }
-  else
-  {
-    return UpKpr1SlideDcop();
-  }
+  return evalRef(QStringList() << "page(int)" << num);
 }
 

@@ -46,21 +46,6 @@ UpKpr1KpresenterDcop::~UpKpr1KpresenterDcop()
 /// Get a list of documents.
 QList<UpKpr1PresentationDcop> UpKpr1KpresenterDcop::documents() const
 {
-  bool error;
-  QStringList docs = eval(error, QStringList() << "" << "getDocuments()");
-  QList<UpKpr1PresentationDcop> results;
-  if (!error)
-  {
-    foreach (QString doc, docs)
-    {
-      UpKpr1Dcop ref = dcopRefFromString(doc);
-      if (ref.isValid())
-      {
-        results << UpKpr1PresentationDcop(ref);
-      }
-    }
-  }
-
-  return results;
+  return evalRefs<UpKpr1PresentationDcop>(QStringList() << "" << "getDocuments()");
 }
 

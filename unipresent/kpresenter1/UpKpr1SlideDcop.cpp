@@ -49,3 +49,35 @@ UpKpr1SlideDcop::~UpKpr1SlideDcop()
  * Main interface
  */
 
+/// Get the contents of the text objects in this slide.
+QStringList UpKpr1SlideDcop::textObjectsContents() const
+{
+  QStringList results;
+
+  // Go through the text objects
+  bool cont = true;
+  for (int id = 0; cont; ++id)
+  {
+    QString num;
+    num.setNum(id);
+    UpKpr1Dcop object = evalRef(QStringList() << "textObject(int)" << num);
+    cont = object.isValid();
+    if (cont)
+    {
+      UpKpr1Dcop editing = object.evalRef(QStringList() << "startEditing()");
+      if (editing.isValid())
+      {
+        editing.eval(QStringList() << "selectAll()");
+        bool err;
+        QStringList text = object.eval(&err, QStringList() << "selectedText()");
+        if (!err)
+        {
+          results << text.join("\n");
+        }
+      }
+    }
+  }
+
+  return results;
+}
+
