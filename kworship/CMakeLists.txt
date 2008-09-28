@@ -27,11 +27,16 @@ set(kworship_SRCS
     main.cpp
     kworshipview.cpp
     prefsDisplay.cpp
+    prefsSongDB.cpp
     DesktopView.cpp
 )
 
-kde4_add_ui_files(kworship_SRCS kworshipview_base.ui prefs_base.ui
-                  prefsDisplay_base.ui)
+kde4_add_ui_files(kworship_SRCS
+                  kworshipview_base.ui
+                  prefs_base.ui
+                  prefsDisplay_base.ui
+                  prefsSongDB_base.ui
+)
 
 kde4_add_kcfg_files(kworship_SRCS settings.kcfgc )
 
@@ -39,6 +44,7 @@ kde4_add_executable(kworship ${kworship_SRCS})
 
 target_link_libraries(kworship
                       ${KDE4_KDEUI_LIBS}
+                      ${KDE4_KIO_LIBS}
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
                       unipresent

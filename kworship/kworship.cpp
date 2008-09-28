@@ -20,6 +20,7 @@
 #include "kworshipview.h"
 #include "settings.h"
 #include "prefsDisplay.h"
+#include "prefsSongDB.h"
 
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -429,10 +430,6 @@ void kworship::fileSaveAs()
 
 void kworship::optionsPreferences()
 {
-  // The preference dialog is derived from prefs_base.ui
-  //
-  // compare the names of the widgets in the .ui file
-  // to the names of the variables in the .kcfg file
   //avoid to have 2 dialogs shown
   if ( KConfigDialog::showDialog( "settings" ) )  {
     return;
@@ -446,8 +443,7 @@ void kworship::optionsPreferences()
   prefsDisplay *displaySettingsDlg = new prefsDisplay(dialog);
   dialog->addPage(displaySettingsDlg, i18n("Display"), "display_setting");
 
-  QWidget *songdbSettingsDlg = new QWidget;
-  //ui_prefsSongdb_base.setupUi(songdbSettingsDlg);
+  prefsSongDB *songdbSettingsDlg = new prefsSongDB(dialog);
   dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "songdb_setting");
 
   connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));

@@ -1,0 +1,199 @@
+<ui version="4.0" >
+ <class>prefsSongDB_base</class>
+ <widget class="QWidget" name="prefsSongDB_base" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>514</width>
+    <height>394</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <layout class="QFormLayout" name="formLayout" >
+     <item row="0" column="0" >
+      <widget class="QLabel" name="labelType" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Preferred" hsizetype="Maximum" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text" >
+        <string>Database Type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1" >
+      <widget class="QComboBox" name="kcfg_songdbType" >
+       <property name="currentIndex" >
+        <number>-1</number>
+       </property>
+       <item>
+        <property name="text" >
+         <string>SQLite</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>MySQL</string>
+        </property>
+       </item>
+       <item>
+        <property name="text" >
+         <string>PostgreSQL</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupConnection" >
+     <property name="title" >
+      <string>Database Connection</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2" >
+      <item>
+       <layout class="QFormLayout" name="formLayout_4" >
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label_2" >
+          <property name="text" >
+           <string>Host</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="QLineEdit" name="kcfg_songdbHost" />
+        </item>
+        <item row="1" column="0" >
+         <widget class="QLabel" name="label_3" >
+          <property name="text" >
+           <string>Database name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="QLineEdit" name="kcfg_songdbName" />
+        </item>
+        <item row="2" column="0" >
+         <widget class="QLabel" name="label_4" >
+          <property name="text" >
+           <string>Username</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" >
+         <widget class="QLineEdit" name="kcfg_songdbUsername" />
+        </item>
+        <item row="3" column="0" >
+         <widget class="QLabel" name="label_5" >
+          <property name="text" >
+           <string>Password</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" >
+         <widget class="QLineEdit" name="kcfg_songdbPassword" >
+          <property name="echoMode" >
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1" >
+         <widget class="QLabel" name="labelPasswordWarning" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Preferred" hsizetype="Minimum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="font" >
+           <font>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text" >
+           <string>Password stored as plain text.</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonTest" >
+        <property name="text" >
+         <string>&amp;Test connection settings</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupFile" >
+     <property name="enabled" >
+      <bool>true</bool>
+     </property>
+     <property name="title" >
+      <string>Database Location</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3" >
+      <item>
+       <layout class="QFormLayout" name="formLayout_5" >
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label_6" >
+          <property name="text" >
+           <string>Location</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="KUrlRequester" name="kcfg_songdbLocation" />
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer" >
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+  <zorder>kurllabel</zorder>
+  <zorder>formLayoutWidget</zorder>
+  <zorder>horizontalLayoutWidget</zorder>
+  <zorder>groupFile</zorder>
+  <zorder>label_6</zorder>
+  <zorder>formLayoutWidget</zorder>
+  <zorder>horizontalLayoutWidget</zorder>
+  <zorder>horizontalLayoutWidget_2</zorder>
+  <zorder>frame</zorder>
+  <zorder>kcombobox</zorder>
+  <zorder>labelPasswordWarning</zorder>
+  <zorder>formLayoutWidget</zorder>
+  <zorder>formLayoutWidget_2</zorder>
+  <zorder>groupConnection</zorder>
+  <zorder>verticalSpacer</zorder>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KUrlRequester</class>
+   <extends>QFrame</extends>
+   <header>kurlrequester.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

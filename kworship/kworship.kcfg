@@ -22,4 +22,35 @@
       <default>1</default>
     </entry>
   </group>
+  <group name="Song DB">
+    <entry name="songdbType" type="Enum">
+      <label>database type</label>
+      <choices>
+        <choice name="SQLite" />
+        <choice name="MySQL" />
+        <choice name="PostgreSQL" />
+      </choices>
+      <default>SQLite</default>
+    </entry>
+    <entry name="songdbLocation">
+      <label>database hostname</label>
+      <default>kworship.localhost</default>
+    </entry>
+    <entry name="songdbHost">
+      <label>database hostname</label>
+      <default>localhost</default>
+    </entry>
+    <entry name="songdbName">
+      <label>database name</label>
+      <default>kworship</default>
+    </entry>
+    <entry name="songdbUsername">
+      <label>database username</label>
+      <default>kworship</default>
+    </entry>
+    <entry name="songdbPassword">
+      <label>database password</label>
+      <default></default>
+    </entry>
+  </group>
 </kcfg>

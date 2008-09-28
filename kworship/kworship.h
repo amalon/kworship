@@ -19,8 +19,9 @@
 #ifndef _kworship_h_
 #define _kworship_h_
 
-#include "ui_prefsDisplay_base.h"
 #include "ui_prefs_base.h"
+#include "ui_prefsDisplay_base.h"
+#include "ui_prefsSongDB_base.h"
 #include "KwLocalDisplayController.h"
 
 #include <kxmlguiwindow.h>
@@ -89,7 +90,6 @@ private:
 
 private:
     Ui::prefs_base ui_prefs_base ;
-    Ui::prefsDisplay_base ui_prefsDisplay_base ;
     kworshipView *m_view;
 
     KwMediaManager* m_mediaManager;
