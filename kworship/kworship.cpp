@@ -226,6 +226,7 @@ kworship::kworship()
   KToggleAction* fullscreenPresAction = new KToggleAction(KIcon("fullscreen"), "Fullscreen Presentation Mode", presToolBar);
   presToolBar->addAction(fullscreenPresAction);
 
+  connect(m_view->listSlides, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slide_doubleClicked(QModelIndex)));
 
   QToolBar* slidesToolBar = new QToolBar("Slides");
   m_view->layoutSlidesToolbar->layout()->addWidget(slidesToolBar);
@@ -494,6 +495,18 @@ void kworship::presentationToggled(bool checked)
     {
       presNode->getItem()->stopSlideshow();
     }
+  }
+}
+
+void kworship::slide_doubleClicked(QModelIndex index)
+{
+  // Find the listviews current index
+  UpPresentationsModel* model = m_presentationManager->presentationsModel();
+  QModelIndex parentIndex = model->parent(index);
+  UpPresentationNode* presNode = dynamic_cast<UpPresentationNode*>(model->itemFromIndex(parentIndex));
+  if (0 != presNode)
+  {
+    presNode->getItem()->goToSlide(index.row());
   }
 }
 

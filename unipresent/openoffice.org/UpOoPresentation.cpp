@@ -114,5 +114,9 @@ void UpOoPresentation::stopSlideshow()
   presentation->end();
 }
 
+void UpOoPresentation::goToSlide(int index)
+{
+}
+
 #include "UpOoPresentation.moc"
 

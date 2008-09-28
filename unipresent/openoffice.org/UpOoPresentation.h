@@ -62,7 +62,7 @@ class UpOoPresentation : public UpPresentation
 
     virtual int numSlides();
 
-    virtual UpSlide* slide(int);
+    virtual UpSlide* slide(int index);
 
     /*
      * Slideshow control
@@ -71,6 +71,8 @@ class UpOoPresentation : public UpPresentation
     virtual void startSlideshow();
 
     virtual void stopSlideshow();
+
+    virtual void goToSlide(int index);
 
   private:
 

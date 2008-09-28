@@ -91,5 +91,9 @@ void UpKpr1Presentation::stopSlideshow()
   }
 }
 
+void UpKpr1Presentation::goToSlide(int index)
+{
+}
+
 #include "UpKpr1Presentation.moc"
 

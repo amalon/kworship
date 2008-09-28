@@ -66,7 +66,7 @@ class UpPresentation : public QObject
     virtual int numSlides() = 0;
 
     /// Get a specific slide.
-    virtual UpSlide* slide(int) = 0;
+    virtual UpSlide* slide(int index) = 0;
 
     /*
      * Slideshow control
@@ -77,6 +77,9 @@ class UpPresentation : public QObject
 
     /// Stop the slideshow.
     virtual void stopSlideshow() = 0;
+
+    /// Go to a specific slide.
+    virtual void goToSlide(int index) = 0;
 };
 
 #endif // _UpPresentation_h_

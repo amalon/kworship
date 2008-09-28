@@ -58,7 +58,7 @@ class UpKpr1Presentation : public UpPresentation
 
     virtual int numSlides();
 
-    virtual UpSlide* slide(int);
+    virtual UpSlide* slide(int index);
 
     /*
      * Slideshow control
@@ -67,6 +67,8 @@ class UpKpr1Presentation : public UpPresentation
     virtual void startSlideshow();
 
     virtual void stopSlideshow();
+
+    virtual void goToSlide(int index);
 
   private:
 
