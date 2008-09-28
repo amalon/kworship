@@ -1,5 +1,3 @@
-[ ] get slide previews using
-    $view exportPage $page $width $height $filename PNG $quality 0
 [ ] slide navigation
 [ ] handle changes and ensure items properly cached
 
