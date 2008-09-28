@@ -28,6 +28,8 @@
 #include "UpSlide.h"
 #include "UpKpr1SlideDcop.h"
 
+class UpKpr1Presentation;
+
 /// KPresenter 1 presentation slide.
 class UpKpr1Slide : public UpSlide
 {
@@ -39,7 +41,7 @@ class UpKpr1Slide : public UpSlide
      */
 
     /// Primary constructor.
-    UpKpr1Slide(const UpKpr1SlideDcop& dcop, QObject* parent = 0);
+    UpKpr1Slide(UpKpr1Presentation* presentation, const UpKpr1SlideDcop& dcop, int index);
 
     /// Destructor.
     virtual ~UpKpr1Slide();
@@ -48,10 +50,9 @@ class UpKpr1Slide : public UpSlide
      * Main interface
      */
 
+    virtual QString title();
     virtual QString outline();
-
     virtual QString notes();
-
     virtual QPixmap preview();
 
   private:
@@ -60,11 +61,23 @@ class UpKpr1Slide : public UpSlide
      * Variables
      */
 
+    /// Presentation.
+    UpKpr1Presentation* m_presentation; 
+
     /// DCOP interface.
     UpKpr1SlideDcop m_dcop;
 
+    /// Slide index.
+    int m_index;
+
+    /// Title text.
+    QString m_title;
+
     /// Outline text.
     QString m_outline;
+
+    /// Preview pixmap.
+    QPixmap m_preview;
 };
 
 #endif // _UpKpr1Slide_h_

@@ -70,6 +70,13 @@ class UpKpr1Presentation : public UpPresentation
 
     virtual void goToSlide(int index);
 
+    /*
+     * Backend specific interface.
+     */
+
+    /// Get the dcop interface.
+    UpKpr1PresentationDcop dcop() const;
+
   private:
 
     /*

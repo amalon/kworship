@@ -66,7 +66,7 @@ int UpKpr1Presentation::numSlides()
 
 UpSlide* UpKpr1Presentation::slide(int index)
 {
-  return new UpKpr1Slide(m_dcop.slide(index), this);
+  return new UpKpr1Slide(this, m_dcop.slide(index), index);
 }
 
 /*
@@ -101,6 +101,16 @@ void UpKpr1Presentation::goToSlide(int index)
     // Warning: An out of range argument kills kpresenter
     view.eval(QStringList() << "gotoPresPage(int)" << num);
   }
+}
+
+/*
+ * Backend specific interface.
+ */
+
+/// Get the dcop interface.
+UpKpr1PresentationDcop UpKpr1Presentation::dcop() const
+{
+  return m_dcop;
 }
 
 #include "UpKpr1Presentation.moc"

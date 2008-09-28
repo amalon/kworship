@@ -39,6 +39,16 @@ UpSlide::~UpSlide()
 {
 }
 
+/*
+ * Main interface
+ */
+
+/// Get the slide's title.
+QString UpSlide::title()
+{
+  return QString();
+}
+
 /// Get outline text.
 QString UpSlide::outline()
 {

@@ -50,6 +50,9 @@ class UpSlide : public QObject
      * Main interface
      */
 
+    /// Get the slide's title.
+    virtual QString title();
+
     /// Get outline text.
     virtual QString outline();
 

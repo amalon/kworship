@@ -49,6 +49,9 @@ class UpKpr1SlideDcop : public UpKpr1Dcop
      * Main interface
      */
 
+    /// Get the title.
+    QString title() const;
+
     /// Get the contents of the text objects in this slide.
     QStringList textObjectsContents() const;
 };

@@ -53,6 +53,11 @@ UpOoSlide::~UpOoSlide()
  * Main interface
  */
 
+QString UpOoSlide::title()
+{
+  return UpSlide::title();
+}
+
 QString UpOoSlide::outline()
 {
   QStringList result;

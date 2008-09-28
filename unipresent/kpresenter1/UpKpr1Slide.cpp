@@ -23,16 +23,23 @@
  */
 
 #include "UpKpr1Slide.h"
+#include "UpKpr1Presentation.h"
+
+#include <QTemporaryFile>
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-UpKpr1Slide::UpKpr1Slide(const UpKpr1SlideDcop& dcop, QObject* parent)
-: UpSlide(parent)
+UpKpr1Slide::UpKpr1Slide(UpKpr1Presentation* presentation, const UpKpr1SlideDcop& dcop, int index)
+: UpSlide(presentation)
+, m_presentation(presentation)
 , m_dcop(dcop)
+, m_index(index)
+, m_title()
 , m_outline()
+, m_preview()
 {
 }
 
@@ -44,6 +51,15 @@ UpKpr1Slide::~UpKpr1Slide()
 /*
  * Main interface
  */
+
+QString UpKpr1Slide::title()
+{
+  if (m_title.isNull())
+  {
+    m_title = m_dcop.title();
+  }
+  return m_title;
+}
 
 QString UpKpr1Slide::outline()
 {
@@ -61,7 +77,35 @@ QString UpKpr1Slide::notes()
 
 QPixmap UpKpr1Slide::preview()
 {
-  return QPixmap();
+  if (m_preview.isNull())
+  {
+    UpKpr1Dcop view = m_presentation->dcop().view();
+    if (view.isValid())
+    {
+      QTemporaryFile previewFile;
+      previewFile.open();
+
+      bool error;
+      QString page;
+      page.setNum(m_index+1);
+      view.eval(&error, QStringList() << "exportPage(int,int,int,QString,QString,int,int)"
+                                      << page                      // Page number
+                                      << "1024"                     // Width
+                                      << "768"                     // Height
+                                      << previewFile.fileName() // Filename
+                                      << "PPM"                     // Format
+                                      << "50"                      // Quality
+                                      << "0"                       // Verbose
+                                      );
+
+      if (!error)
+      {
+        m_preview.load(previewFile.fileName());
+        m_preview = m_preview.scaledToHeight(125, Qt::SmoothTransformation);
+      }
+    }
+  }
+  return m_preview;
 }
 
 #include "UpKpr1Slide.moc"

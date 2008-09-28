@@ -26,6 +26,7 @@
 #include "compiler.h"
 
 #include <QByteArray>
+#include <QtDebug>
 
 #include <cppuhelper/bootstrap.hxx>
 #include <osl/file.hxx>
@@ -79,6 +80,8 @@ UpOoBridge::UpOoBridge()
       if (unlikely(tryAgain))
       {
         // not valid
+        OUString message = exception.Message;
+        qDebug() << __PRETTY_FUNCTION__ << ":" << QString::fromUtf16((const sal_Unicode*)message, message.getLength());
         return;
       }
       else
