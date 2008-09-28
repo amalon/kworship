@@ -1,0 +1,4 @@
+Code specific to the koffice kpresenter 1 backend.
+
+This uses the DCOP command line utlity to interface with KPresenter.
+

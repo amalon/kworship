@@ -8,6 +8,7 @@ include(${QT_USE_FILE})
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
                     ../unipresent/common
+                    ../unipresent/kpresenter1
                     ../unipresent/openoffice.org
                     media
                     display
@@ -41,6 +42,7 @@ target_link_libraries(kworship
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
                       unipresent
+                      unipresentkpresenter1
                       unipresentopenoffice
                       kworshipplaylist
                       kworshipcss
