@@ -10,8 +10,8 @@ set(unipresentkpresenter1_SRCS
     UpKpr1Backend.cpp
     UpKpr1Presentation.cpp
     UpKpr1PresentationDcop.cpp
-#    UpKpr1Slide.cpp
-#    UpKpr1SlideDcop.cpp
+    UpKpr1Slide.cpp
+    UpKpr1SlideDcop.cpp
 )
 
 QT4_AUTOMOC(${unipresentkpresenter1_SRCS})

@@ -23,6 +23,7 @@
  */
 
 #include "UpKpr1Presentation.h"
+#include "UpKpr1Slide.h"
 
 /*
  * Constructors + destructor
@@ -60,12 +61,12 @@ QUrl UpKpr1Presentation::url() const
 
 int UpKpr1Presentation::numSlides()
 {
-  return 0;
+  return m_dcop.numSlides();
 }
 
-UpSlide* UpKpr1Presentation::slide(int)
+UpSlide* UpKpr1Presentation::slide(int index)
 {
-  return 0;
+  return new UpKpr1Slide(m_dcop.slide(index), this);
 }
 
 /*

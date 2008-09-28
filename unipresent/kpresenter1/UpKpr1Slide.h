@@ -16,79 +16,53 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
+#ifndef _UpKpr1Slide_h_
+#define _UpKpr1Slide_h_
+
 /**
- * @file UpKpr1PresentationDcop.cpp
- * @brief DCOP interface for a kpresenter document.
+ * @file UpKpr1Slide.h
+ * @brief KPresenter 1 presentation slide.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpKpr1PresentationDcop.h"
+#include "UpSlide.h"
+#include "UpKpr1SlideDcop.h"
 
-/*
- * Constructors + destructor
- */
-
-/// Primary constructor.
-UpKpr1PresentationDcop::UpKpr1PresentationDcop(const UpKpr1Dcop& interface)
-: UpKpr1Dcop(interface)
+/// KPresenter 1 presentation slide.
+class UpKpr1Slide : public UpSlide
 {
-}
+  Q_OBJECT
+  public:
 
-/// Destructor.
-UpKpr1PresentationDcop::~UpKpr1PresentationDcop()
-{
-}
+    /*
+     * Constructors + destructor
+     */
 
-/*
- * Main interface
- */
+    /// Primary constructor.
+    UpKpr1Slide(const UpKpr1SlideDcop& dcop, QObject* parent = 0);
 
-/// Get the document url.
-QUrl UpKpr1PresentationDcop::url() const
-{
-  bool error;
-  QStringList result = eval(error, QStringList() << "url()");
-  if (!error && result.size() == 1)
-  {
-    return QUrl(result.first());
-  }
-  else
-  {
-    return QUrl();
-  }
-}
+    /// Destructor.
+    virtual ~UpKpr1Slide();
 
-/// Get the number of slides.
-int UpKpr1PresentationDcop::numSlides() const
-{
-  bool error;
-  QStringList result = eval(error, QStringList() << "numPages()");
-  if (!error && result.size() == 1)
-  {
-    bool ok;
-    int numericResult = result.first().toInt(&ok);
-    if (ok)
-    {
-      return numericResult;
-    }
-  }
-  return 0;
-}
+    /*
+     * Main interface
+     */
 
-/// Get a particular slide by id.
-UpKpr1SlideDcop UpKpr1PresentationDcop::slide(int index)
-{
-  bool error;
-  QString num;
-  num.setNum(index);
-  QStringList result = eval(error, QStringList() << "page(int)" << num);
-  if (!error && result.size() == 1)
-  {
-    return UpKpr1SlideDcop(dcopRefFromString(result.first()));
-  }
-  else
-  {
-    return UpKpr1SlideDcop();
-  }
-}
+    virtual QString outline();
+
+    virtual QString notes();
+
+    virtual QPixmap preview();
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// DCOP interface.
+    UpKpr1SlideDcop m_dcop;
+};
+
+#endif // _UpKpr1Slide_h_
 

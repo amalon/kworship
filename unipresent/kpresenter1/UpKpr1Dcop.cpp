@@ -97,7 +97,10 @@ UpKpr1Dcop UpKpr1Dcop::dcopRefFromString(QString input)
 {
 #define DCOPREF_START "DCOPRef("
 #define DCOPREF_END ")"
-  if (input.startsWith(DCOPREF_START) && input.endsWith(DCOPREF_END))
+#define DCOPREF_NULL DCOPREF_START "," DCOPREF_END
+  if (input.startsWith(DCOPREF_START) &&
+      input.endsWith(DCOPREF_END) &&
+      input != DCOPREF_NULL)
   {
     return UpKpr1Dcop(input.mid(sizeof(DCOPREF_START)-1,
                                 input.size() - (sizeof(DCOPREF_START)-1)

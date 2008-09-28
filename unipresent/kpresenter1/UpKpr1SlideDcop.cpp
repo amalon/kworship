@@ -17,78 +17,35 @@
  ***************************************************************************/
 
 /**
- * @file UpKpr1PresentationDcop.cpp
- * @brief DCOP interface for a kpresenter document.
+ * @file UpKpr1SlideDcop.cpp
+ * @brief DCOP interface for a kpresenter slide.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpKpr1PresentationDcop.h"
+#include "UpKpr1SlideDcop.h"
 
 /*
  * Constructors + destructor
  */
 
+/// Default constructor.
+UpKpr1SlideDcop::UpKpr1SlideDcop()
+: UpKpr1Dcop()
+{
+}
+
 /// Primary constructor.
-UpKpr1PresentationDcop::UpKpr1PresentationDcop(const UpKpr1Dcop& interface)
+UpKpr1SlideDcop::UpKpr1SlideDcop(const UpKpr1Dcop& interface)
 : UpKpr1Dcop(interface)
 {
 }
 
 /// Destructor.
-UpKpr1PresentationDcop::~UpKpr1PresentationDcop()
+UpKpr1SlideDcop::~UpKpr1SlideDcop()
 {
 }
 
 /*
  * Main interface
  */
-
-/// Get the document url.
-QUrl UpKpr1PresentationDcop::url() const
-{
-  bool error;
-  QStringList result = eval(error, QStringList() << "url()");
-  if (!error && result.size() == 1)
-  {
-    return QUrl(result.first());
-  }
-  else
-  {
-    return QUrl();
-  }
-}
-
-/// Get the number of slides.
-int UpKpr1PresentationDcop::numSlides() const
-{
-  bool error;
-  QStringList result = eval(error, QStringList() << "numPages()");
-  if (!error && result.size() == 1)
-  {
-    bool ok;
-    int numericResult = result.first().toInt(&ok);
-    if (ok)
-    {
-      return numericResult;
-    }
-  }
-  return 0;
-}
-
-/// Get a particular slide by id.
-UpKpr1SlideDcop UpKpr1PresentationDcop::slide(int index)
-{
-  bool error;
-  QString num;
-  num.setNum(index);
-  QStringList result = eval(error, QStringList() << "page(int)" << num);
-  if (!error && result.size() == 1)
-  {
-    return UpKpr1SlideDcop(dcopRefFromString(result.first()));
-  }
-  else
-  {
-    return UpKpr1SlideDcop();
-  }
-}
 

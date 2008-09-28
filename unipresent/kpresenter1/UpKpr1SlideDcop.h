@@ -36,8 +36,11 @@ class UpKpr1SlideDcop : public UpKpr1Dcop
      * Constructors + destructor
      */
 
+    /// Default constructor.
+    UpKpr1SlideDcop();
+
     /// Primary constructor.
-    UpKpr1SlideDcop(const QStringList& reference);
+    UpKpr1SlideDcop(const UpKpr1Dcop& interface);
 
     /// Destructor.
     virtual ~UpKpr1SlideDcop();
