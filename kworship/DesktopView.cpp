@@ -112,6 +112,7 @@ void DesktopView::setSelectedScreen(int selectedScreen)
 
 void DesktopView::resizeEvent(QResizeEvent*)
 {
+  resetMatrix();
   fitInView(m_desktopRect, Qt::KeepAspectRatio);
 }
 
