@@ -58,6 +58,9 @@ class UpKpr1PresentationDcop : public UpKpr1Dcop
     /// Get a particular slide by id.
     UpKpr1SlideDcop slide(int index);
 
+    /// Get the view for this presentation.
+    UpKpr1Dcop view(int index = 0);
+
   private:
 
     /*

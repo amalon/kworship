@@ -75,10 +75,20 @@ UpSlide* UpKpr1Presentation::slide(int index)
 
 void UpKpr1Presentation::startSlideshow()
 {
+  UpKpr1Dcop view = m_dcop.view();
+  if (view.isValid())
+  {
+    view.eval(QStringList() << "screenStart()");
+  }
 }
 
 void UpKpr1Presentation::stopSlideshow()
 {
+  UpKpr1Dcop view = m_dcop.view();
+  if (view.isValid())
+  {
+    view.eval(QStringList() << "screenStop()");
+  }
 }
 
 #include "UpKpr1Presentation.moc"

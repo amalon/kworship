@@ -83,3 +83,11 @@ UpKpr1SlideDcop UpKpr1PresentationDcop::slide(int index)
   return evalRef(QStringList() << "page(int)" << num);
 }
 
+/// Get the view for this presentation.
+UpKpr1Dcop UpKpr1PresentationDcop::view(int index)
+{
+  QString num;
+  num.setNum(index);
+  return evalRef(QStringList() << "view(int)" << num);
+}
+
