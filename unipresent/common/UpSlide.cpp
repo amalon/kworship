@@ -39,16 +39,19 @@ UpSlide::~UpSlide()
 {
 }
 
+/// Get outline text.
 QString UpSlide::outline()
 {
   return QString();
 }
 
+/// Get notes text.
 QString UpSlide::notes()
 {
   return QString();
 }
 
+/// Get preview pixmap.
 QPixmap UpSlide::preview()
 {
   return QPixmap();

@@ -50,13 +50,13 @@ class UpSlide : public QObject
      * Main interface
      */
 
-    // get outline
+    /// Get outline text.
     virtual QString outline();
 
-    // get notes outline
+    /// Get notes text.
     virtual QString notes();
 
-    // get preview
+    /// Get preview pixmap.
     virtual QPixmap preview();
 };
 
