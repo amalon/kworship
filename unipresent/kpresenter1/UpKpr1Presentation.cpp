@@ -93,6 +93,14 @@ void UpKpr1Presentation::stopSlideshow()
 
 void UpKpr1Presentation::goToSlide(int index)
 {
+  UpKpr1Dcop view = m_dcop.view();
+  if (view.isValid())
+  {
+    QString num;
+    num.setNum(index + 1);
+    // Warning: An out of range argument kills kpresenter
+    view.eval(QStringList() << "gotoPresPage(int)" << num);
+  }
 }
 
 #include "UpKpr1Presentation.moc"
