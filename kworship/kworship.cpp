@@ -181,13 +181,13 @@ kworship::kworship()
   KActionMenu* groupByAction = new KActionMenu(KIcon("ogg"), "Group By", songToolBar);
   groupByAction->setDelayed(false);
   songToolBar->addAction(groupByAction);
-  KAction* addSongAction = new KAction(KIcon("add"), "Add Song", songToolBar);
+  KAction* addSongAction = new KAction(KIcon("list-add"), "Add Song", songToolBar);
   songToolBar->addAction(addSongAction);
-  KAction* editSongAction = new KAction(KIcon("edit"), "Edit Song", songToolBar);
+  KAction* editSongAction = new KAction(KIcon("view-media-lyrics"), "Edit Song", songToolBar);
   songToolBar->addAction(editSongAction);
-  KAction* addSongVersionAction = new KAction(KIcon("add"), "Add Song Version", songToolBar);
+  KAction* addSongVersionAction = new KAction(KIcon("format-list-ordered"), "Add Song Version", songToolBar);
   songToolBar->addAction(addSongVersionAction);
-  KAction* insertIntoPlaylistAction = new KAction(KIcon("add"), "Insert Into Playlist", songToolBar);
+  KAction* insertIntoPlaylistAction = new KAction(KIcon("player_playlist"), "Insert Into Playlist", songToolBar);
   songToolBar->addAction(insertIntoPlaylistAction);
 
   KMenu* groupByMenu = new KMenu(songToolBar);
@@ -208,7 +208,7 @@ kworship::kworship()
   QToolBar* presToolBar = new QToolBar("Presentations");
   m_view->layoutPresentationsToolbar->layout()->addWidget(presToolBar);
 
-  KActionMenu* openPresAction = new KActionMenu(KIcon("open"), "Open Presentation", presToolBar);
+  KActionMenu* openPresAction = new KActionMenu(KIcon("document-open"), "Open Presentation", presToolBar);
   openPresAction->setDelayed(true);
   presToolBar->addAction(openPresAction);
 
@@ -220,34 +220,36 @@ kworship::kworship()
   m_selectPresTree->expandToDepth(0);
   m_selectPresTree->setItemsExpandable(false);
   connect(selectPresCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(presentationSelected(int)));
-  KAction* selectPresAction = new KAction(KIcon("select"), "Select Presentation", presToolBar);
+  KAction* selectPresAction = new KAction(KIcon("view-presentation"), "Select Presentation", presToolBar);
   selectPresAction->setDefaultWidget(selectPresCombo);
   presToolBar->addAction(selectPresAction);
 
-  KAction* closePresAction = new KAction(KIcon("close"), "Close Presentation", presToolBar);
+  KAction* closePresAction = new KAction(KIcon("fileclose"), "Close Presentation", presToolBar);
   presToolBar->addAction(closePresAction);
 
-  KToggleAction* fullscreenPresAction = new KToggleAction(KIcon("fullscreen"), "Fullscreen Presentation Mode", presToolBar);
+  KToggleAction* fullscreenPresAction = new KToggleAction(KIcon("view-fullscreen"), "Fullscreen Presentation Mode", presToolBar);
   presToolBar->addAction(fullscreenPresAction);
 
   connect(m_view->listSlides, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slide_doubleClicked(QModelIndex)));
 
   QToolBar* slidesToolBar = new QToolBar("Slides");
+  slidesToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+  slidesToolBar->setIconSize(QSize(32,32));
   m_view->layoutSlidesToolbar->layout()->addWidget(slidesToolBar);
 
-  KAction* previousSlideAction = new KAction(KIcon("previous"), "Previous Slide", slidesToolBar);
+  KAction* previousSlideAction = new KAction(KIcon("media-skip-backward"), "Previous Slide", slidesToolBar);
   slidesToolBar->addAction(previousSlideAction);
 
-  KAction* reverseSlideAction = new KAction(KIcon("backwards"), "Reverse", slidesToolBar);
+  KAction* reverseSlideAction = new KAction(KIcon("media-seek-backward"), "Reverse", slidesToolBar);
   slidesToolBar->addAction(reverseSlideAction);
 
-  KAction* forwardSlideAction = new KAction(KIcon("forwards"), "Forward", slidesToolBar);
+  KAction* forwardSlideAction = new KAction(KIcon("media-seek-forward"), "Forward", slidesToolBar);
   slidesToolBar->addAction(forwardSlideAction);
 
-  KAction* nextSlideAction = new KAction(KIcon("next"), "Next Slide", slidesToolBar);
+  KAction* nextSlideAction = new KAction(KIcon("media-skip-forward"), "Next Slide", slidesToolBar);
   slidesToolBar->addAction(nextSlideAction);
 
-  KToggleAction* displaySlideAction = new KToggleAction(KIcon("display"), "Display Slides", slidesToolBar);
+  KToggleAction* displaySlideAction = new KToggleAction(KIcon("view-presentation"), "Display Slides", slidesToolBar);
   connect(displaySlideAction, SIGNAL(toggled(bool)), this, SLOT(presentationToggled(bool)));
   slidesToolBar->addAction(displaySlideAction);
 
@@ -290,7 +292,7 @@ void kworship::setupActions()
   // Display
   KStandardAction::fullScreen(this, SLOT(toggleFullscreen(bool)), this, actionCollection());
   {
-    m_mainDisplayAction = new KToggleAction(KIcon("colorize"), i18n("Show Main Display"), this);
+    m_mainDisplayAction = new KToggleAction(KIcon("video-projector"), i18n("Show Main Display"), this);
     actionCollection()->addAction( QLatin1String("show_main_display"), m_mainDisplayAction );
     connect(m_mainDisplayAction, SIGNAL(triggered(bool)), this, SLOT(toggleMainDisplay(bool)));
   }
@@ -441,17 +443,17 @@ void kworship::optionsPreferences()
 
   QWidget *generalSettingsDlg = new QWidget(dialog);
   ui_prefs_base.setupUi(generalSettingsDlg);
-  dialog->addPage(generalSettingsDlg, i18n("General"), "package_setting");
+  dialog->addPage(generalSettingsDlg, i18n("General"), "preferences-other", i18n("General"));
 
   prefsDisplay *displaySettingsDlg = new prefsDisplay(dialog);
-  dialog->addPage(displaySettingsDlg, i18n("Display"), "display_setting");
+  dialog->addPage(displaySettingsDlg, i18n("Display"), "video-projector", i18n("Diaplay and Screen"));
 
   prefsSongDB *songdbSettingsDlg = new prefsSongDB(dialog);
-  dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "songdb_setting");
+  dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "applications-multimedia", i18n("Song Database"));
 
   QWidget *presentationSettingsDlg = new QWidget(dialog);
   ui_prefsPresentations_base.setupUi(presentationSettingsDlg);
-  dialog->addPage(presentationSettingsDlg, i18n("Presentations"), "presentation_setting");
+  dialog->addPage(presentationSettingsDlg, i18n("Presentations"), "view-presentation", i18n("Presentations and Slideshows"));
 
   connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
   connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
