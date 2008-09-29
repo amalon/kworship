@@ -7,3 +7,19 @@ Song database treeview
         lists song books and numbered songs within each
       Label / Song name / Song version
 
+features
+  [ ] group by shown with text
+  [ ] search bar work (using the kde one?)
+  [ ] icons for nodes:
+      [ ] songs
+      [ ] versions
+      [ ] songbooks
+      [ ] songbook items
+      [ ] label
+  [ ] insert into playlist button
+  [ ] add song form
+      [ ] allow duplication from another version
+  [ ] edit song form
+  [ ] disable context toolbar icons when not selected
+  [ ] add main actions to menu
+

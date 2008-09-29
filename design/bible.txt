@@ -1,0 +1,10 @@
+features
+  [ ] passage entry bar
+  [ ] drag verses into playlist
+  [ ] drop verses from bibletime
+  [ ] select works and commentaries
+  [ ] book/chaper/verse selecter
+  [ ] next/previous chapter
+  [ ] extend passage
+  [ ] quick access to bibletime bookmarks
+

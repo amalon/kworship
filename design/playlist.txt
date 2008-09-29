@@ -61,3 +61,15 @@ SongVerses
 SongVerse
   *SongVerseSettings
 
+Features
+  [ ] drag songs into lyrics box
+  [ ] drop songs directly from songdb into lyrics box
+  [ ] actions for inserting various items
+      [ ] sub-playlist
+      [ ] file -> {image, video, presentation, text}
+          (just sets up different filters)
+      [ ] bible verse
+      [ ] notes
+  [ ] actions for moving up and down
+  [ ] drag and drop rearrange
+

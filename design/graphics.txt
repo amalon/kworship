@@ -1,0 +1,62 @@
+[ ] : Not done
+[t] : Temporary graphic in place
+[p] : In progress
+[X] : Completed
+
+Icon todo list
+[ ] kworship logos
+[ ] general
+    [ ] clear display
+    [t] show main display (video-projector)
+    [ ] tiggle playlist docker
+    [ ] toggle presentation docker
+    [ ] toggle bible docker
+    [ ] toggle song db docker
+    [ ] toggle themes docker
+    [ ] toggle lyrics docker
+    [ ] toggle now playing docker
+    [ ] toggle live preview
+[t] configure icons
+    [t] general
+    [t] display (video-projector)
+    [t] song db
+    [t] presentations (view-presentation)
+[ ] presentations
+    [t] open presentation (document-open)
+    [t] refresh presentations
+    [ ] close presentation
+    [t] toggle fullscreen presentation controller
+    [t] slide navigation
+        [t] previous slide
+        [t] reverse
+        [t] forwards
+        [t] next slide
+    [t] toggle slideshow (view-presentation)
+[ ] bible
+    [ ] select works (bibletime)
+    [ ] select commentaries (bibletime)
+    [ ] book/chapter/verse selector
+    [ ] next/previous chapter
+    [ ] bibletime bookmarks (bibletime)
+[ ] song db
+    [ ] "group by"
+    [t] add song
+    [t] edit song
+    [t] add song version
+    [ ] insert song into playlist
+    [ ] delete song
+    [ ] delete song version
+[ ] playlist
+    [ ] add playlist
+    [ ] add note
+    [ ] add bible passage
+    [ ] add file
+        [ ] image file (from kde icons)
+        [ ] video file (from kde icons)
+        [ ] presentation file (from kde icons)
+    [ ] move up/down
+    [ ] display now
+[ ] lyrics
+    [ ] forwards
+    [ ] backwards
+

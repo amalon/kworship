@@ -1,17 +1,19 @@
 presentation docker
   toolbar
     open presentation (open with if hold down)
-    presentation list combobox
+    refresh all presentation data
     close presentation
     fullscreen presentation mode
     toggle slide notes display
+  presentation list combobox
   slide list
     thumbnails
   slide list control
     previous slide
+    reverse
+    forward
     next slide
-    display slide
-    hide slide
+    toggle slideshow running
 
 fullscreen presentation controller
   slide list along top
@@ -26,7 +28,25 @@ notes display screen
   either fullscreen notes or a simple notes + slide display
 
 features
+  [ ] initialise slideshow running correctly
+  [ ] disable nav buttons when slideshow not running
+  [ ] disable nav buttons which don't apply
+  [ ] add main actions to menu
+  [ ] start slideshow on clicked slide if not already
+  [ ] connect up nav buttons
+  [ ] hide main display during slideshow
+  [ ] set background to preview when changing slide
+      and clear when stopping slideshow
+  [ ] disable slideshow when activating another playlist item
+  [ ] highlight selected slide
+  [ ] somewhere for slideshow settings
+      [ ] loop
+      [ ] automatic transitions
   [ ] select multiple slides and drag into playlist
       adds a custom slideshow
   [ ] drag presentation from playlist into slides list to load it
+  [ ] open slideshow menu action and auto mime types
+  [ ] refresh action
+  [ ] close presentation action
+  [ ] add presentation to playlist action
 
