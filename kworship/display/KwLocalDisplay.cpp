@@ -58,6 +58,14 @@ void KwLocalDisplay::setPrimary(bool newIsPrimary)
 {
   m_isPrimary = newIsPrimary;
   resizeEvent(0);
+  if (newIsPrimary)
+  {
+    setCursor(Qt::BlankCursor);
+  }
+  else
+  {
+    setCursor(Qt::ArrowCursor);
+  }
 }
 
 /*
