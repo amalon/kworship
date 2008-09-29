@@ -21,6 +21,7 @@
 #include "settings.h"
 #include "prefsDisplay.h"
 #include "prefsSongDB.h"
+#include "KwDatabaseSetup.h"
 
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -132,14 +133,13 @@ kworship::kworship()
 #endif
 
   // Setup song db
-  QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-  db.setHostName("localhost");
-  db.setDatabaseName("kworship");
-  db.setUserName("root");
-  bool ok = db.open();
-  assert(ok);
-  KwSongdb* songdb = new KwSongdb(db);
-  Q_UNUSED(songdb)
+
+  KwDatabaseSetup dbSetup;
+  bool databaseOk = dbSetup.initialiseFromConfig();
+  if (databaseOk)
+  {
+    new KwSongdb(dbSetup.database());
+  }
 
   // Playlist
   m_primaryPlaylist = new KwPlaylistList();
@@ -193,9 +193,12 @@ kworship::kworship()
   KMenu* groupByMenu = new KMenu(songToolBar);
   groupByAction->setMenu(groupByMenu);
 
-  KwSongdbTree* treeView = new KwSongdbTree(m_view);
-  m_view->layoutSongsTree->addWidget(treeView);
-  groupByMenu->addActions(treeView->groupByActions()->actions());
+  if (databaseOk)
+  {
+    KwSongdbTree* treeView = new KwSongdbTree(m_view);
+    m_view->layoutSongsTree->addWidget(treeView);
+    groupByMenu->addActions(treeView->groupByActions()->actions());
+  }
 
 
   /*

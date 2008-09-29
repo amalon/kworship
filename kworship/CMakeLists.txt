@@ -29,6 +29,7 @@ set(kworship_SRCS
     prefsDisplay.cpp
     prefsSongDB.cpp
     DesktopView.cpp
+    KwDatabaseSetup.cpp
 )
 
 kde4_add_ui_files(kworship_SRCS

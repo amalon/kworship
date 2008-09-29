@@ -23,6 +23,9 @@
  */
 
 #include "prefsSongDB.h"
+#include "KwDatabaseSetup.h"
+
+#include <QMessageBox>
 
 /*
  * Constructors + destructor
@@ -65,10 +68,32 @@ void prefsSongDB::changeDatabaseType(QString newType)
 }
 
 /// Test connection settings.
-#include <QtDebug>
 void prefsSongDB::testConnectionSettings()
 {
-  qDebug() << __PRETTY_FUNCTION__;
+  KwDatabaseSetup setup(true);
+  QString type = kcfg_songdbType->currentText();
+  if (type == "MySQL")
+  {
+    type = "QMYSQL";
+  }
+  else if (type == "PostgreSQL")
+  {
+    type = "QPSQL";
+  }
+  QString host = kcfg_songdbHost->text();
+  QString name = kcfg_songdbName->text();
+  QString username = kcfg_songdbUsername->text();
+  QString password = kcfg_songdbPassword->text();
+  bool worked = setup.initialiseConnection(type, host, name, username, password);
+
+  if (worked)
+  {
+    QMessageBox::information(this, i18n("Success"), i18n("Successfully connected to the database using the provided settings."), QMessageBox::Ok);
+  }
+  else
+  {
+    QMessageBox::warning(this, i18n("Failure"), i18n("Could not connect to the database using the provided settings. Please check the settings and try again."), QMessageBox::Ok);
+  }
 }
 
 
