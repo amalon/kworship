@@ -37,6 +37,7 @@ prefsSongDB::prefsSongDB(QWidget *parent)
 
   connect(kcfg_songdbType, SIGNAL(currentIndexChanged(QString)), this, SLOT(changeDatabaseType(QString)));
   connect(buttonTest, SIGNAL(clicked()), this, SLOT(testConnectionSettings()));
+  connect(kcfg_songdbLocationCustom, SIGNAL(toggled(bool)), frameLocationCustom, SLOT(setEnabled(bool)));
 }
 
 /// Destructor.
@@ -54,6 +55,13 @@ void prefsSongDB::changeDatabaseType(QString newType)
   bool serverless = (newType == "SQLite");
   groupConnection->setVisible(!serverless);
   groupFile->setVisible(serverless);
+  if (serverless)
+  {
+    if (newType == "SQLite")
+    {
+      kcfg_songdbLocation->setFilter("*.db|SQLite Databases (*.db)");
+    }
+  }
 }
 
 /// Test connection settings.

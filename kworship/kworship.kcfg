@@ -32,9 +32,16 @@
       </choices>
       <default>SQLite</default>
     </entry>
-    <entry name="songdbLocation">
+    <entry name="songdbLocationAuto" type="Int">
+      <label>auto database location</label>
+      <default>1</default>
+    </entry>
+    <entry name="songdbLocationCustom" type="Int">
+      <label>cusotm database location</label>
+      <default>0</default>
+    </entry>
+    <entry name="songdbLocation" type="Url">
       <label>database hostname</label>
-      <default>kworship.localhost</default>
     </entry>
     <entry name="songdbHost">
       <label>database hostname</label>
