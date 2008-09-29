@@ -449,6 +449,10 @@ void kworship::optionsPreferences()
   prefsSongDB *songdbSettingsDlg = new prefsSongDB(dialog);
   dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "songdb_setting");
 
+  QWidget *presentationSettingsDlg = new QWidget(dialog);
+  ui_prefsPresentations_base.setupUi(presentationSettingsDlg);
+  dialog->addPage(presentationSettingsDlg, i18n("Presentations"), "presentation_setting");
+
   connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
   connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
   dialog->setAttribute( Qt::WA_DeleteOnClose );

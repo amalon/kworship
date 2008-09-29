@@ -22,6 +22,7 @@
 #include "ui_prefs_base.h"
 #include "ui_prefsDisplay_base.h"
 #include "ui_prefsSongDB_base.h"
+#include "ui_prefsPresentations_base.h"
 #include "KwLocalDisplayController.h"
 
 #include <kxmlguiwindow.h>
@@ -90,6 +91,7 @@ private:
 
 private:
     Ui::prefs_base ui_prefs_base ;
+    Ui::prefsPresentations_base ui_prefsPresentations_base ;
     kworshipView *m_view;
 
     KwMediaManager* m_mediaManager;

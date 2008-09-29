@@ -37,6 +37,7 @@ kde4_add_ui_files(kworship_SRCS
                   prefs_base.ui
                   prefsDisplay_base.ui
                   prefsSongDB_base.ui
+                  prefsPresentations_base.ui
 )
 
 kde4_add_kcfg_files(kworship_SRCS settings.kcfgc )

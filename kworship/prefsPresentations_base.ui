@@ -1,0 +1,46 @@
+<ui version="4.0" >
+ <class>prefsPresentations_base</class>
+ <widget class="QWidget" name="prefsPresentations_base" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <widget class="QTabWidget" name="tabs" >
+     <widget class="QWidget" name="tabGeneral" >
+      <attribute name="title" >
+       <string>General</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="tabBackends" >
+      <attribute name="title" >
+       <string>Backends</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout" >
+       <item>
+        <widget class="QListWidget" name="listBackends" />
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBackend" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="title" >
+          <string>Information</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
