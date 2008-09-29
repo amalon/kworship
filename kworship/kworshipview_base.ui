@@ -30,7 +30,17 @@
         <layout class="QHBoxLayout" name="layoutPresentationsToolbar" />
        </item>
        <item>
-        <widget class="QListView" name="listSlides" />
+        <widget class="QComboBox" name="comboPresentations" />
+       </item>
+       <item>
+        <widget class="QListView" name="listSlides" >
+         <property name="viewMode" >
+          <enum>QListView::IconMode</enum>
+         </property>
+         <property name="uniformItemSizes" >
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <layout class="QHBoxLayout" name="layoutSlidesToolbar" />

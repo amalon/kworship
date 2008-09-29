@@ -205,14 +205,8 @@ kworship::kworship()
    * Presentation
    */
 
-  QToolBar* presToolBar = new QToolBar("Presentations");
-  m_view->layoutPresentationsToolbar->layout()->addWidget(presToolBar);
-
-  KActionMenu* openPresAction = new KActionMenu(KIcon("document-open"), "Open Presentation", presToolBar);
-  openPresAction->setDelayed(true);
-  presToolBar->addAction(openPresAction);
-
-  QComboBox* selectPresCombo = new QComboBox(presToolBar);
+  // Drop down list of presentations
+  QComboBox* selectPresCombo = m_view->comboPresentations;
   m_selectPresTree = new QTreeView(this);
   m_selectPresTree->header()->hide();
   selectPresCombo->setModel(m_presentationManager->presentationsModel());
@@ -220,9 +214,17 @@ kworship::kworship()
   m_selectPresTree->expandToDepth(0);
   m_selectPresTree->setItemsExpandable(false);
   connect(selectPresCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(presentationSelected(int)));
-  KAction* selectPresAction = new KAction(KIcon("view-presentation"), "Select Presentation", presToolBar);
-  selectPresAction->setDefaultWidget(selectPresCombo);
-  presToolBar->addAction(selectPresAction);
+
+  // Presentations toolbar
+  QToolBar* presToolBar = new QToolBar("Presentations");
+  m_view->layoutPresentationsToolbar->layout()->addWidget(presToolBar);
+
+  KActionMenu* openPresAction = new KActionMenu(KIcon("document-open"), "Open Presentation", presToolBar);
+  openPresAction->setDelayed(true);
+  presToolBar->addAction(openPresAction);
+
+  KAction* refreshPresAction = new KAction(KIcon("view-refresh"), "Refresh Presentation List", presToolBar);
+  presToolBar->addAction(refreshPresAction);
 
   KAction* closePresAction = new KAction(KIcon("fileclose"), "Close Presentation", presToolBar);
   presToolBar->addAction(closePresAction);
@@ -230,8 +232,10 @@ kworship::kworship()
   KToggleAction* fullscreenPresAction = new KToggleAction(KIcon("view-fullscreen"), "Fullscreen Presentation Mode", presToolBar);
   presToolBar->addAction(fullscreenPresAction);
 
+  // Slide list
   connect(m_view->listSlides, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slide_doubleClicked(QModelIndex)));
 
+  // Slides toolbar
   QToolBar* slidesToolBar = new QToolBar("Slides");
   slidesToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
   slidesToolBar->setIconSize(QSize(32,32));
