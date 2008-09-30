@@ -46,6 +46,12 @@ Icon todo list
     [ ] insert song into playlist
     [ ] delete song
     [ ] delete song version
+    [ ] tree
+        [t] song
+        [t] song version
+        [t] songbook
+        [t] songbook item
+        [ ] label
 [ ] playlist
     [ ] add playlist
     [ ] add note

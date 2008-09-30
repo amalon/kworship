@@ -63,7 +63,7 @@ QVariant KwPlaylistSongNode::getData(int role, int column)
   {
     if (column == 0)
     {
-      return KIcon("song");
+      return KIcon("view-media-lyrics");
     }
   }
   return QVariant();

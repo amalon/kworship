@@ -72,7 +72,7 @@ class KwSongdbFilterNode : public KwSongdbNode
     KwSongdbFilterNode* _newNode(QString label, QString idExpression, int idValue);
 
     /// Get a new final node.
-    KwSongdbNode* _newFinalNode(QString label, int id);
+    KwSongdbNode* _newFinalNode(QString label, int id, const QIcon& icon);
 
   private:
 

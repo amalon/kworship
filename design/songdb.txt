@@ -9,12 +9,6 @@ Song database treeview
 
 features
   [ ] search bar work (using the kde one?)
-  [ ] icons for nodes:
-      [ ] songs
-      [ ] versions
-      [ ] songbooks
-      [ ] songbook items
-      [ ] label
   [ ] insert into playlist button
   [ ] add song form
       [ ] allow duplication from another version

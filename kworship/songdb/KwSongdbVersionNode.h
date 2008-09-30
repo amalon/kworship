@@ -27,6 +27,8 @@
 
 #include "KwSongdbNode.h"
 
+#include <QIcon>
+
 /// A node for filtering songs.
 class KwSongdbVersionNode : public KwSongdbNode
 {
@@ -55,6 +57,9 @@ class KwSongdbVersionNode : public KwSongdbNode
     /// Get mime data string for this set of songs.
     virtual QString mimeData();
 
+    /// Override the icon to display.
+    void setIcon(const QIcon& icon);
+
   private:
 
     /*
@@ -66,6 +71,9 @@ class KwSongdbVersionNode : public KwSongdbNode
 
     /// Version id.
     int m_id;
+
+    /// Icon.
+    QIcon m_icon;
 };
 
 #endif // _KwSongdbNode_h_

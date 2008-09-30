@@ -87,6 +87,14 @@ QVariant KwSongdbFilterNode::getData(int role, int column)
       return m_label;
     }
   }
+  else if (role == Qt::DecorationRole)
+  {
+    // Use icon of previous filter
+    if (column == 0 && m_currentFilter > 0)
+    {
+      return (*m_filterLevels)[m_currentFilter - 1].icon;
+    }
+  }
   return QVariant();
 }
 
@@ -113,7 +121,9 @@ KwSongdbNode* KwSongdbFilterNode::_getChild(int index)
     }
     else
     {
-      return _newFinalNode(m_query->value(1).toString(), m_query->value(0).toInt());
+      assert(m_currentFilter == m_filterLevels->size() - 1);
+      return _newFinalNode(m_query->value(1).toString(), m_query->value(0).toInt(),
+                           (*m_filterLevels)[m_currentFilter].icon);
     }
   }
   else
@@ -150,9 +160,11 @@ KwSongdbFilterNode* KwSongdbFilterNode::_newNode(QString label, QString idExpres
 }
 
 /// Get a new final node.
-KwSongdbNode* KwSongdbFilterNode::_newFinalNode(QString label, int id)
+KwSongdbNode* KwSongdbFilterNode::_newFinalNode(QString label, int id, const QIcon& icon)
 {
-  return new KwSongdbVersionNode(this, label, id);
+  KwSongdbVersionNode* node = new KwSongdbVersionNode(this, label, id);
+  node->setIcon(icon);
+  return node;
 }
 
 /*

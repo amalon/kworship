@@ -27,6 +27,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QIcon>
 
 /// A level in the filter stack.
 struct KwSongdbFilterLevel
@@ -37,6 +38,7 @@ struct KwSongdbFilterLevel
   QStringList innerJoinClauses;
   QStringList whereClauses;
   QStringList orderBy;
+  QIcon icon;
 };
 
 /// A stack of filters.

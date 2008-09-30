@@ -24,6 +24,8 @@
 
 #include "KwSongdbVersionNode.h"
 
+#include <KIcon>
+
 /*
  * Constructors + destructor
  */
@@ -33,6 +35,7 @@ KwSongdbVersionNode::KwSongdbVersionNode(KwSongdbNode* parent, QString label, in
 : KwSongdbNode(parent)
 , m_label(label)
 , m_id(id)
+, m_icon()
 {
   if (m_label == "")
   {
@@ -59,6 +62,13 @@ QVariant KwSongdbVersionNode::getData(int role, int column)
       return m_label;
     }
   }
+  else if (role == Qt::DecorationRole)
+  {
+    if (column == 0)
+    {
+      return m_icon;
+    }
+  }
   return QVariant();
 }
 
@@ -72,5 +82,11 @@ Qt::ItemFlags KwSongdbVersionNode::getFlags(Qt::ItemFlags defaultFlags) const
 QString KwSongdbVersionNode::mimeData()
 {
   return QString("songdb %1").arg(m_id);
+}
+
+/// Override the icon to display.
+void KwSongdbVersionNode::setIcon(const QIcon& icon)
+{
+  m_icon = icon;
 }
 
