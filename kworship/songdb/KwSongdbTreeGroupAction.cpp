@@ -34,6 +34,7 @@ KwSongdbTreeGroupAction::KwSongdbTreeGroupAction(QString label, KwSongdbFilterLe
 : QAction(label, parent)
 , m_filters(filters)
 {
+  setCheckable(true);
   connect(this, SIGNAL(triggered()), this, SLOT(trigger()));
 }
 
@@ -51,6 +52,7 @@ KwSongdbTreeGroupAction::~KwSongdbTreeGroupAction()
 void KwSongdbTreeGroupAction::trigger()
 {
   // Trigger signal
+  setChecked(true);
   triggered(m_filters);
 }
 

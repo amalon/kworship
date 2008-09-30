@@ -254,7 +254,7 @@
      <widget class="QWidget" name="dockWidgetContents_3" >
       <layout class="QVBoxLayout" name="verticalLayout_5" >
        <item>
-        <layout class="QVBoxLayout" name="layoutSongsToolbar" />
+        <layout class="QHBoxLayout" name="layoutSongsToolbar" />
        </item>
        <item>
         <widget class="QLineEdit" name="searchSongs" />

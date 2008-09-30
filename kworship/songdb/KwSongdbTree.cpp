@@ -73,6 +73,8 @@ KwSongdbTree::KwSongdbTree(QWidget* parent)
 
   filters = new KwSongdbFilterLevelList;
   KwSongdbTreeGroupAction* actionLabelNameVersion = new KwSongdbTreeGroupAction("Label / Song name / Version", filters, m_groupByActions);
+  /// @todo implement label filtering
+  actionLabelNameVersion->setEnabled(false);
   //connect(actionLabelNameVersion, SIGNAL(triggered(const KwSongdbFilterLevelList*)), this, SLOT(groupBy(const KwSongdbFilterLevelList*)));
 
   actionNameVersion->trigger();

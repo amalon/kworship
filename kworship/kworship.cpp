@@ -175,19 +175,28 @@ kworship::kworship()
   KwMediaControlWidget* mediaWidget = new KwMediaControlWidget(m_mediaManager, m_view->dockNowPlaying);
   m_view->layoutNowPlaying->addWidget(mediaWidget);
 
+  // Small toolbar for group by action
+  QToolBar* songTextToolBar = new QToolBar("Songs");
+  songTextToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  songTextToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
+  m_view->layoutSongsToolbar->layout()->addWidget(songTextToolBar);
+
+  KActionMenu* groupByAction = new KActionMenu(KIcon("view-filter"), i18n("Group By"), songTextToolBar);
+  groupByAction->setDelayed(false);
+  songTextToolBar->addAction(groupByAction);
+
+  // Rest of the toolbar
   QToolBar* songToolBar = new QToolBar("Songs");
+  songToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
   m_view->layoutSongsToolbar->layout()->addWidget(songToolBar);
 
-  KActionMenu* groupByAction = new KActionMenu(KIcon("ogg"), "Group By", songToolBar);
-  groupByAction->setDelayed(false);
-  songToolBar->addAction(groupByAction);
-  KAction* addSongAction = new KAction(KIcon("list-add"), "Add Song", songToolBar);
+  KAction* addSongAction = new KAction(KIcon("list-add"), i18n("Add Song"), songToolBar);
   songToolBar->addAction(addSongAction);
-  KAction* editSongAction = new KAction(KIcon("view-media-lyrics"), "Edit Song", songToolBar);
+  KAction* editSongAction = new KAction(KIcon("view-media-lyrics"), i18n("Edit Song"), songToolBar);
   songToolBar->addAction(editSongAction);
-  KAction* addSongVersionAction = new KAction(KIcon("format-list-ordered"), "Add Song Version", songToolBar);
+  KAction* addSongVersionAction = new KAction(KIcon("format-list-ordered"), i18n("Add Song Version"), songToolBar);
   songToolBar->addAction(addSongVersionAction);
-  KAction* insertIntoPlaylistAction = new KAction(KIcon("player_playlist"), "Insert Into Playlist", songToolBar);
+  KAction* insertIntoPlaylistAction = new KAction(KIcon("player_playlist"), i18n("Insert Into Playlist"), songToolBar);
   songToolBar->addAction(insertIntoPlaylistAction);
 
   KMenu* groupByMenu = new KMenu(songToolBar);

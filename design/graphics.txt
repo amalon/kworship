@@ -39,7 +39,7 @@ Icon todo list
     [ ] next/previous chapter
     [ ] bibletime bookmarks (bibletime)
 [ ] song db
-    [ ] "group by"
+    [t] "group by" (view-filter)
     [t] add song
     [t] edit song
     [t] add song version
