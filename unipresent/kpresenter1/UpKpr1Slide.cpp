@@ -79,30 +79,27 @@ QPixmap UpKpr1Slide::preview()
 {
   if (m_preview.isNull())
   {
-    UpKpr1Dcop view = m_presentation->dcop().view();
-    if (view.isValid())
+    UpKpr1ViewDcop view = m_presentation->dcopView();
+    QTemporaryFile previewFile;
+    previewFile.open();
+
+    bool error;
+    QString page;
+    page.setNum(m_index+1);
+    view.eval(&error, QStringList() << "exportPage(int,int,int,QString,QString,int,int)"
+                                    << page                      // Page number
+                                    << "1024"                    // Width
+                                    << "768"                     // Height
+                                    << previewFile.fileName()    // Filename
+                                    << "PPM"                     // Format
+                                    << "50"                      // Quality
+                                    << "0"                       // Verbose
+                                    );
+
+    if (!error)
     {
-      QTemporaryFile previewFile;
-      previewFile.open();
-
-      bool error;
-      QString page;
-      page.setNum(m_index+1);
-      view.eval(&error, QStringList() << "exportPage(int,int,int,QString,QString,int,int)"
-                                      << page                      // Page number
-                                      << "1024"                     // Width
-                                      << "768"                     // Height
-                                      << previewFile.fileName() // Filename
-                                      << "PPM"                     // Format
-                                      << "50"                      // Quality
-                                      << "0"                       // Verbose
-                                      );
-
-      if (!error)
-      {
-        m_preview.load(previewFile.fileName());
-        m_preview = m_preview.scaledToHeight(125, Qt::SmoothTransformation);
-      }
+      m_preview.load(previewFile.fileName());
+      m_preview = m_preview.scaledToHeight(125, Qt::SmoothTransformation);
     }
   }
   return m_preview;

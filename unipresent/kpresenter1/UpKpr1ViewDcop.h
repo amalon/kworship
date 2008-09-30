@@ -16,23 +16,20 @@
  *   along with KWorship.  If not, see <http://www.gnu.org/licenses/>.     *
  ***************************************************************************/
 
-#ifndef _UpKpr1Presentation_h_
-#define _UpKpr1Presentation_h_
+#ifndef _UpKpr1ViewDcop_h_
+#define _UpKpr1ViewDcop_h_
 
 /**
- * @file UpKpr1Presentation.h
- * @brief KPresenter 1 presentation.
+ * @file UpKpr1ViewDcop.h
+ * @brief DCOP interface for a kpresenter document view.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpKpr1PresentationDcop.h"
-#include "UpKpr1ViewDcop.h"
-#include "UpPresentation.h"
+#include "UpKpr1Dcop.h"
 
-/// KPresenter 1 presentation.
-class UpKpr1Presentation : public UpPresentation
+/// DCOP interface for a kpresenter document view.
+class UpKpr1ViewDcop : public UpKpr1Dcop
 {
-  Q_OBJECT
   public:
 
     /*
@@ -40,70 +37,30 @@ class UpKpr1Presentation : public UpPresentation
      */
 
     /// Primary constructor.
-    UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, QObject* parent = 0);
+    UpKpr1ViewDcop(const UpKpr1Dcop& interface);
 
     /// Destructor.
-    virtual ~UpKpr1Presentation();
+    virtual ~UpKpr1ViewDcop();
 
     /*
      * Main interface
      */
 
-    virtual void close();
-
-    virtual QUrl url() const;
-
-    /*
-     * Slides
-     */
-
-    virtual int numSlides();
-
-    virtual UpSlide* slide(int index);
-
-    /*
-     * Slideshow control
-     */
-
-    virtual void startSlideshow();
-
-    virtual void stopSlideshow();
-
-    virtual void goToSlide(int index);
-
-    virtual void previousSlide();
-
-    virtual void nextSlide();
-
-    virtual void previousStep();
-
-    virtual void nextStep();
-
-    /*
-     * Backend specific interface.
-     */
-
-    /// Get the dcop interface.
-    UpKpr1PresentationDcop dcop() const;
-
-    /// Get the dcop view interface.
-    UpKpr1ViewDcop dcopView() const;
-
-  private:
-
-    /*
-     * Variables
-     */
-
-    /// DCOP interface.
-    UpKpr1PresentationDcop m_dcop;
-
-    /// DCOP view interface.
-    UpKpr1ViewDcop m_dcopView;
-
-    /// Url.
-    QUrl m_url;
+    void screenStart() const;
+    void screenStartFromFirst() const;
+    void screenStop() const;
+    void screenPause() const;
+    void screenFirst() const;
+    void screenPrev() const;
+    void screenNext() const;
+    void screenLast() const;
+    void screenSkip() const;
+    int getCurrentPresPage() const;
+    int getCurrentPresStep() const;
+    int getPresStepsOfPage() const;
+    int getNumPresPages() const;
+    void gotoPresPage(int pg) const;
 };
 
-#endif // _UpKpr1Presentation_h_
+#endif // _UpKpr1ViewDcop_h_
 

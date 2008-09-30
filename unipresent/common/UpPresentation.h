@@ -80,6 +80,18 @@ class UpPresentation : public QObject
 
     /// Go to a specific slide.
     virtual void goToSlide(int index) = 0;
+
+    /// Go back to the previous slide.
+    virtual void previousSlide() = 0;
+
+    /// Go on to the next slide.
+    virtual void nextSlide() = 0;
+
+    /// Go back to the previous step.
+    virtual void previousStep() = 0;
+
+    /// Trigger the next step.
+    virtual void nextStep() = 0;
 };
 
 #endif // _UpPresentation_h_

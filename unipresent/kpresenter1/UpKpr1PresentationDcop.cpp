@@ -47,10 +47,10 @@ UpKpr1PresentationDcop::~UpKpr1PresentationDcop()
 QUrl UpKpr1PresentationDcop::url() const
 {
   bool error;
-  QStringList result = eval(&error, QStringList() << "url()");
-  if (!error && result.size() == 1)
+  QString result = eval(&error, QStringList() << "url()");
+  if (!error)
   {
-    return QUrl(result.first());
+    return QUrl(result);
   }
   else
   {
@@ -59,24 +59,13 @@ QUrl UpKpr1PresentationDcop::url() const
 }
 
 /// Get the number of slides.
-int UpKpr1PresentationDcop::numSlides() const
+int UpKpr1PresentationDcop::numPages() const
 {
-  bool error;
-  QStringList result = eval(&error, QStringList() << "numPages()");
-  if (!error && result.size() == 1)
-  {
-    bool ok;
-    int numericResult = result.first().toInt(&ok);
-    if (ok)
-    {
-      return numericResult;
-    }
-  }
-  return 0;
+  return evalInt(QStringList() << "numPages()", 0);
 }
 
 /// Get a particular slide by id.
-UpKpr1SlideDcop UpKpr1PresentationDcop::slide(int index)
+UpKpr1SlideDcop UpKpr1PresentationDcop::slide(int index) const
 {
   QString num;
   num.setNum(index);
@@ -84,7 +73,7 @@ UpKpr1SlideDcop UpKpr1PresentationDcop::slide(int index)
 }
 
 /// Get the view for this presentation.
-UpKpr1Dcop UpKpr1PresentationDcop::view(int index)
+UpKpr1ViewDcop UpKpr1PresentationDcop::view(int index) const
 {
   QString num;
   num.setNum(index);

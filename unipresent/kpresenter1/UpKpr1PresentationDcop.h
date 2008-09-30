@@ -27,6 +27,7 @@
 
 #include "UpKpr1Dcop.h"
 #include "UpKpr1SlideDcop.h"
+#include "UpKpr1ViewDcop.h"
 
 #include <QUrl>
 
@@ -53,13 +54,13 @@ class UpKpr1PresentationDcop : public UpKpr1Dcop
     QUrl url() const;
 
     /// Get the number of slides.
-    int numSlides() const;
+    int numPages() const;
 
     /// Get a particular slide by id.
-    UpKpr1SlideDcop slide(int index);
+    UpKpr1SlideDcop slide(int index) const;
 
     /// Get the view for this presentation.
-    UpKpr1Dcop view(int index = 0);
+    UpKpr1ViewDcop view(int index = 0) const;
 
   private:
 

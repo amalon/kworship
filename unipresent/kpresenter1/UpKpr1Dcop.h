@@ -60,12 +60,26 @@ class UpKpr1Dcop
      */
 
     /// Get the result of a dcop query on this interface.
-    QStringList eval(bool* const err = 0, QStringList tail = QStringList()) const;
+    QString eval(bool* const err = 0, QStringList tail = QStringList()) const;
 
-    /// Get the result of a dcop query on this interface.
-    QStringList eval(QStringList tail) const
+    /// Perform a dcop query on this interface.
+    QString eval(QStringList tail) const
     {
       return eval(0, tail);
+    }
+
+    /// Get the resulting list of strings from a dcop query
+    QStringList evalList(bool* const err = 0, QStringList tail = QStringList()) const;
+
+    /// Get the resulting integer from a dcop query
+    int evalInt(bool* const err, QStringList tail) const;
+
+    /// Get the resulting integer from a dcop query
+    int evalInt(QStringList tail, int defaultValue) const
+    {
+      bool err;
+      int result = evalInt(&err, tail);
+      return (err ? defaultValue : result);
     }
 
     /// Get a dcop reference from a string.
@@ -79,7 +93,7 @@ class UpKpr1Dcop
     QList<INTERFACE> evalRefs(QStringList tail) const
     {
       bool error;
-      QStringList items = eval(&error, tail);
+      QStringList items = evalList(&error, tail);
       QList<INTERFACE> results;
       if (!error)
       {

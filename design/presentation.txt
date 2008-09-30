@@ -33,7 +33,6 @@ features
   [ ] disable nav buttons which don't apply
   [ ] add main actions to menu
   [ ] start slideshow on clicked slide if not already
-  [ ] connect up nav buttons
   [ ] hide main display during slideshow
   [ ] set background to preview when changing slide
       and clear when stopping slideshow
@@ -44,6 +43,8 @@ features
       [ ] automatic transitions
   [ ] select multiple slides and drag into playlist
       adds a custom slideshow
+  [ ] sort out that the slides box displays all slides, but changing
+      slides uses custom slide numbers which may not map linearly
   [ ] drag presentation from playlist into slides list to load it
   [ ] open slideshow menu action and auto mime types
   [ ] refresh action

@@ -10,6 +10,7 @@ set(unipresentkpresenter1_SRCS
     UpKpr1Backend.cpp
     UpKpr1Presentation.cpp
     UpKpr1PresentationDcop.cpp
+    UpKpr1ViewDcop.cpp
     UpKpr1Slide.cpp
     UpKpr1SlideDcop.cpp
 )

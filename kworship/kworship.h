@@ -82,6 +82,10 @@ private slots:
     void playlist_doubleClicked(QModelIndex);
     void presentationSelected(int);
     void presentationToggled(bool);
+    void presentationPreviousSlide();
+    void presentationNextSlide();
+    void presentationPreviousStep();
+    void presentationNextStep();
     void slide_doubleClicked(QModelIndex);
 
 private:

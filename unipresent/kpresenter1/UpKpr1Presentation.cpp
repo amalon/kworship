@@ -25,6 +25,8 @@
 #include "UpKpr1Presentation.h"
 #include "UpKpr1Slide.h"
 
+#include <cassert>
+
 /*
  * Constructors + destructor
  */
@@ -33,8 +35,10 @@
 UpKpr1Presentation::UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, QObject* parent)
 : UpPresentation(parent)
 , m_dcop(dcop)
+, m_dcopView(dcop.view())
 , m_url(dcop.url())
 {
+  assert(m_dcopView.isValid());
 }
 
 /// Destructor.
@@ -61,7 +65,7 @@ QUrl UpKpr1Presentation::url() const
 
 int UpKpr1Presentation::numSlides()
 {
-  return m_dcop.numSlides();
+  return m_dcop.numPages();
 }
 
 UpSlide* UpKpr1Presentation::slide(int index)
@@ -75,31 +79,61 @@ UpSlide* UpKpr1Presentation::slide(int index)
 
 void UpKpr1Presentation::startSlideshow()
 {
-  UpKpr1Dcop view = m_dcop.view();
-  if (view.isValid())
-  {
-    view.eval(QStringList() << "screenStart()");
-  }
+  m_dcopView.screenStartFromFirst();
 }
 
 void UpKpr1Presentation::stopSlideshow()
 {
-  UpKpr1Dcop view = m_dcop.view();
-  if (view.isValid())
-  {
-    view.eval(QStringList() << "screenStop()");
-  }
+  m_dcopView.screenStop();
 }
 
 void UpKpr1Presentation::goToSlide(int index)
 {
-  UpKpr1Dcop view = m_dcop.view();
-  if (view.isValid())
+  m_dcopView.gotoPresPage(index+1);
+}
+
+void UpKpr1Presentation::previousSlide()
+{
+  int newPage = m_dcopView.getCurrentPresPage() - 1;
+  if (newPage > 0)
   {
-    QString num;
-    num.setNum(index + 1);
-    // Warning: An out of range argument kills kpresenter
-    view.eval(QStringList() << "gotoPresPage(int)" << num);
+    m_dcopView.gotoPresPage(newPage);
+  }
+}
+
+void UpKpr1Presentation::nextSlide()
+{
+  int presPages = m_dcopView.getNumPresPages();
+  int newPage = m_dcopView.getCurrentPresPage() + 1;
+  if (newPage <= presPages)
+  {
+    m_dcopView.gotoPresPage(newPage);
+  }
+}
+
+void UpKpr1Presentation::previousStep()
+{
+  m_dcopView.screenPrev();
+}
+
+void UpKpr1Presentation::nextStep()
+{
+  // don't go past the end of the slideshow
+  bool operate = true;
+  int steps = m_dcopView.getPresStepsOfPage();
+  int step = m_dcopView.getCurrentPresStep();
+  if (step == steps - 1)
+  {
+    int pages = m_dcopView.getNumPresPages();
+    int page = m_dcopView.getCurrentPresPage();
+    if (page == pages)
+    {
+      operate = false;
+    }
+  }
+  if (operate)
+  {
+    m_dcopView.screenNext();
   }
 }
 
@@ -111,6 +145,12 @@ void UpKpr1Presentation::goToSlide(int index)
 UpKpr1PresentationDcop UpKpr1Presentation::dcop() const
 {
   return m_dcop;
+}
+
+/// Get the dcop view interface.
+UpKpr1ViewDcop UpKpr1Presentation::dcopView() const
+{
+  return m_dcopView;
 }
 
 #include "UpKpr1Presentation.moc"

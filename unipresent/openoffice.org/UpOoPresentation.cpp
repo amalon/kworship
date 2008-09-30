@@ -118,5 +118,21 @@ void UpOoPresentation::goToSlide(int index)
 {
 }
 
+void UpOoPresentation::previousSlide()
+{
+}
+
+void UpOoPresentation::nextSlide()
+{
+}
+
+void UpOoPresentation::previousStep()
+{
+}
+
+void UpOoPresentation::nextStep()
+{
+}
+
 #include "UpOoPresentation.moc"
 

@@ -242,15 +242,19 @@ kworship::kworship()
   m_view->layoutSlidesToolbar->layout()->addWidget(slidesToolBar);
 
   KAction* previousSlideAction = new KAction(KIcon("media-skip-backward"), "Previous Slide", slidesToolBar);
+  connect(previousSlideAction, SIGNAL(triggered(bool)), this, SLOT(presentationPreviousSlide()));
   slidesToolBar->addAction(previousSlideAction);
 
-  KAction* reverseSlideAction = new KAction(KIcon("media-seek-backward"), "Reverse", slidesToolBar);
-  slidesToolBar->addAction(reverseSlideAction);
+  KAction* previousStepAction = new KAction(KIcon("media-seek-backward"), "Reverse", slidesToolBar);
+  connect(previousStepAction, SIGNAL(triggered(bool)), this, SLOT(presentationPreviousStep()));
+  slidesToolBar->addAction(previousStepAction);
 
-  KAction* forwardSlideAction = new KAction(KIcon("media-seek-forward"), "Forward", slidesToolBar);
-  slidesToolBar->addAction(forwardSlideAction);
+  KAction* nextStepAction = new KAction(KIcon("media-seek-forward"), "Forward", slidesToolBar);
+  connect(nextStepAction, SIGNAL(triggered(bool)), this, SLOT(presentationNextStep()));
+  slidesToolBar->addAction(nextStepAction);
 
   KAction* nextSlideAction = new KAction(KIcon("media-skip-forward"), "Next Slide", slidesToolBar);
+  connect(nextSlideAction, SIGNAL(triggered(bool)), this, SLOT(presentationNextSlide()));
   slidesToolBar->addAction(nextSlideAction);
 
   KToggleAction* displaySlideAction = new KToggleAction(KIcon("view-presentation"), "Display Slides", slidesToolBar);
@@ -504,6 +508,54 @@ void kworship::presentationToggled(bool checked)
     {
       presNode->getItem()->stopSlideshow();
     }
+  }
+}
+
+void kworship::presentationPreviousSlide()
+{
+  // Find the treeviews current index
+  QModelIndex index = m_selectPresTree->currentIndex();
+  UpPresentationsModel* model = m_presentationManager->presentationsModel();
+  UpPresentationNode* presNode = dynamic_cast<UpPresentationNode*>(model->itemFromIndex(index));
+  if (0 != presNode)
+  {
+    presNode->getItem()->previousSlide();
+  }
+}
+
+void kworship::presentationNextSlide()
+{
+  // Find the treeviews current index
+  QModelIndex index = m_selectPresTree->currentIndex();
+  UpPresentationsModel* model = m_presentationManager->presentationsModel();
+  UpPresentationNode* presNode = dynamic_cast<UpPresentationNode*>(model->itemFromIndex(index));
+  if (0 != presNode)
+  {
+    presNode->getItem()->nextSlide();
+  }
+}
+
+void kworship::presentationPreviousStep()
+{
+  // Find the treeviews current index
+  QModelIndex index = m_selectPresTree->currentIndex();
+  UpPresentationsModel* model = m_presentationManager->presentationsModel();
+  UpPresentationNode* presNode = dynamic_cast<UpPresentationNode*>(model->itemFromIndex(index));
+  if (0 != presNode)
+  {
+    presNode->getItem()->previousStep();
+  }
+}
+
+void kworship::presentationNextStep()
+{
+  // Find the treeviews current index
+  QModelIndex index = m_selectPresTree->currentIndex();
+  UpPresentationsModel* model = m_presentationManager->presentationsModel();
+  UpPresentationNode* presNode = dynamic_cast<UpPresentationNode*>(model->itemFromIndex(index));
+  if (0 != presNode)
+  {
+    presNode->getItem()->nextStep();
   }
 }
 

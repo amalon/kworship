@@ -74,6 +74,14 @@ class UpOoPresentation : public UpPresentation
 
     virtual void goToSlide(int index);
 
+    virtual void previousSlide();
+
+    virtual void nextSlide();
+
+    virtual void previousStep();
+
+    virtual void nextStep();
+
   private:
 
     /*

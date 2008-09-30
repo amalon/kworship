@@ -48,7 +48,7 @@ UpKpr1AppsDcop::~UpKpr1AppsDcop()
 QList<UpKpr1KpresenterDcop> UpKpr1AppsDcop::kpresenters()
 {
   bool error;
-  QStringList apps = eval(&error);
+  QStringList apps = evalList(&error);
   QList<UpKpr1KpresenterDcop> results;
   if (!error)
   {

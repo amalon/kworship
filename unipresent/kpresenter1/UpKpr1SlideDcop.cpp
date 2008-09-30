@@ -52,7 +52,7 @@ UpKpr1SlideDcop::~UpKpr1SlideDcop()
 /// Get the title.
 QString UpKpr1SlideDcop::title() const
 {
-  return eval(QStringList() << "pageTitle(QString)" << "").join("\n");
+  return eval(QStringList() << "pageTitle(QString)" << "");
 }
 
 /// Get the contents of the text objects in this slide.
@@ -75,10 +75,10 @@ QStringList UpKpr1SlideDcop::textObjectsContents() const
       {
         editing.eval(QStringList() << "selectAll()");
         bool err;
-        QStringList text = object.eval(&err, QStringList() << "selectedText()");
+        QString text = object.eval(&err, QStringList() << "selectedText()");
         if (!err)
         {
-          results << text.join("\n");
+          results << text;
         }
       }
     }
