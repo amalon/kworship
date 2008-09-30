@@ -29,7 +29,10 @@
 #include "UpKpr1ViewDcop.h"
 #include "UpPresentation.h"
 
-/// KPresenter 1 presentation.
+/** KPresenter 1 presentation.
+ * @todo We could do a lot more caching in this class to avoid repeated dcop
+ *       terminal commands.
+ */
 class UpKpr1Presentation : public UpPresentation
 {
   Q_OBJECT
@@ -60,6 +63,20 @@ class UpKpr1Presentation : public UpPresentation
     virtual int numSlides();
 
     virtual UpSlide* slide(int index);
+
+    /*
+     * Slideshow accessors
+     */
+
+    virtual bool isSlideshowRunning();
+
+    virtual int numSlidesInSlideshow();
+
+    virtual int currentSlideshowSlide();
+
+    virtual int stepsInCurrentSlideshowSlide();
+
+    virtual int currentSlideshowStep();
 
     /*
      * Slideshow control
@@ -103,6 +120,16 @@ class UpKpr1Presentation : public UpPresentation
 
     /// Url.
     QUrl m_url;
+
+    /*
+     * Helpers
+     */
+
+    /// Signal that the slide has changed.
+    void signalChangedSlide(int slide = -1, int step = -1);
+
+    /// Signal that the step has changed.
+    void signalChangedStep(int step = -1);
 };
 
 #endif // _UpKpr1Presentation_h_

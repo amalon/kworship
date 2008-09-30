@@ -69,6 +69,25 @@ class UpPresentation : public QObject
     virtual UpSlide* slide(int index) = 0;
 
     /*
+     * Slideshow accessors
+     */
+
+    /// Find whether the slideshow is running.
+    virtual bool isSlideshowRunning() = 0;
+
+    /// Find the number of slides in the slideshow.
+    virtual int numSlidesInSlideshow() = 0;
+
+    /// Find the current slide number.
+    virtual int currentSlideshowSlide() = 0;
+
+    /// Find the number of steps in the current slide.
+    virtual int stepsInCurrentSlideshowSlide() = 0;
+
+    /// Find the current step within the slide.
+    virtual int currentSlideshowStep() = 0;
+
+    /*
      * Slideshow control
      */
 
@@ -92,6 +111,24 @@ class UpPresentation : public QObject
 
     /// Trigger the next step.
     virtual void nextStep() = 0;
+
+  signals:
+
+    /*
+     * Signals
+     */
+
+    /// Fired when the slideshow starts.
+    void slideshowStarted(int numSlides);
+
+    /// Fired when the slideshow stops.
+    void slideshowStopped();
+
+    /// Fired when the current slide changes.
+    void slideshowSlideChanged(int slide, int numSteps);
+
+    /// Fired when the current step changes.
+    void slideshowStepChanged(int step);
 };
 
 #endif // _UpPresentation_h_

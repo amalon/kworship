@@ -97,6 +97,35 @@ UpSlide* UpOoPresentation::slide(int index)
 }
 
 /*
+ * Slideshow accessors
+ */
+
+bool UpOoPresentation::isSlideshowRunning()
+{
+  return false;
+}
+
+int UpOoPresentation::numSlidesInSlideshow()
+{
+  return 0;
+}
+
+int UpOoPresentation::currentSlideshowSlide()
+{
+  return 0;
+}
+
+int UpOoPresentation::stepsInCurrentSlideshowSlide()
+{
+  return 1;
+}
+
+int UpOoPresentation::currentSlideshowStep()
+{
+  return 0;
+}
+
+/*
  * Slideshow control
  */
 

@@ -74,22 +74,55 @@ UpSlide* UpKpr1Presentation::slide(int index)
 }
 
 /*
+ * Slideshow accessors
+ */
+
+bool UpKpr1Presentation::isSlideshowRunning()
+{
+  return m_dcopView.getCurrentPresPage() != -1;
+}
+
+int UpKpr1Presentation::numSlidesInSlideshow()
+{
+  return m_dcopView.getNumPresPages();
+}
+
+int UpKpr1Presentation::currentSlideshowSlide()
+{
+  return m_dcopView.getCurrentPresPage();
+}
+
+int UpKpr1Presentation::stepsInCurrentSlideshowSlide()
+{
+  return m_dcopView.getPresStepsOfPage();
+}
+
+int UpKpr1Presentation::currentSlideshowStep()
+{
+  return m_dcopView.getCurrentPresStep();
+}
+
+/*
  * Slideshow control
  */
 
 void UpKpr1Presentation::startSlideshow()
 {
   m_dcopView.screenStartFromFirst();
+  slideshowStarted(m_dcopView.getNumPresPages());
+  signalChangedSlide();
 }
 
 void UpKpr1Presentation::stopSlideshow()
 {
   m_dcopView.screenStop();
+  slideshowStopped();
 }
 
 void UpKpr1Presentation::goToSlide(int index)
 {
   m_dcopView.gotoPresPage(index+1);
+  signalChangedSlide();
 }
 
 void UpKpr1Presentation::previousSlide()
@@ -98,6 +131,7 @@ void UpKpr1Presentation::previousSlide()
   if (newPage > 0)
   {
     m_dcopView.gotoPresPage(newPage);
+    signalChangedSlide();
   }
 }
 
@@ -108,12 +142,23 @@ void UpKpr1Presentation::nextSlide()
   if (newPage <= presPages)
   {
     m_dcopView.gotoPresPage(newPage);
+    signalChangedSlide(newPage);
   }
 }
 
 void UpKpr1Presentation::previousStep()
 {
+  int slide = m_dcopView.getCurrentPresPage();
   m_dcopView.screenPrev();
+  int newSlide = m_dcopView.getCurrentPresPage();
+  if (slide != newSlide)
+  {
+    signalChangedSlide(newSlide);
+  }
+  else
+  {
+    signalChangedStep();
+  }
 }
 
 void UpKpr1Presentation::nextStep()
@@ -122,10 +167,11 @@ void UpKpr1Presentation::nextStep()
   bool operate = true;
   int steps = m_dcopView.getPresStepsOfPage();
   int step = m_dcopView.getCurrentPresStep();
+  int page = -1;
   if (step == steps - 1)
   {
     int pages = m_dcopView.getNumPresPages();
-    int page = m_dcopView.getCurrentPresPage();
+    page = m_dcopView.getCurrentPresPage();
     if (page == pages)
     {
       operate = false;
@@ -134,6 +180,15 @@ void UpKpr1Presentation::nextStep()
   if (operate)
   {
     m_dcopView.screenNext();
+    int newSlide = m_dcopView.getCurrentPresPage();
+    if (page != newSlide)
+    {
+      signalChangedSlide(newSlide);
+    }
+    else
+    {
+      signalChangedStep();
+    }
   }
 }
 
@@ -152,6 +207,32 @@ UpKpr1ViewDcop UpKpr1Presentation::dcopView() const
 {
   return m_dcopView;
 }
+
+/*
+ * Helpers
+ */
+
+/// Signal that the slide has changed.
+void UpKpr1Presentation::signalChangedSlide(int slide, int step)
+{
+  if (slide < 0)
+  {
+    slide = m_dcopView.getCurrentPresPage();
+  }
+  slideshowSlideChanged(slide, m_dcopView.getPresStepsOfPage());
+  signalChangedStep(step);
+}
+
+/// Signal that the step has changed.
+void UpKpr1Presentation::signalChangedStep(int step)
+{
+  if (step < 0)
+  {
+    step = m_dcopView.getCurrentPresStep();
+  }
+  slideshowStepChanged(step);
+}
+
 
 #include "UpKpr1Presentation.moc"
 

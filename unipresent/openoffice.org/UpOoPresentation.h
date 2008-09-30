@@ -65,6 +65,20 @@ class UpOoPresentation : public UpPresentation
     virtual UpSlide* slide(int index);
 
     /*
+     * Slideshow accessors
+     */
+
+    virtual bool isSlideshowRunning();
+
+    virtual int numSlidesInSlideshow();
+
+    virtual int currentSlideshowSlide();
+
+    virtual int stepsInCurrentSlideshowSlide();
+
+    virtual int currentSlideshowStep();
+
+    /*
      * Slideshow control
      */
 
