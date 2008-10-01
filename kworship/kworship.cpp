@@ -81,6 +81,7 @@ kworship::kworship()
 , m_view(new kworshipView(this))
 , m_displayManager(0)
 , m_presentationManager(new UpManager(this))
+, m_currentPresentation(0)
 , m_printer(0)
 {
   // set up presentation backends
@@ -250,25 +251,29 @@ kworship::kworship()
   slidesToolBar->setIconSize(QSize(32,32));
   m_view->layoutSlidesToolbar->layout()->addWidget(slidesToolBar);
 
-  KAction* previousSlideAction = new KAction(KIcon("media-skip-backward"), "Previous Slide", slidesToolBar);
-  connect(previousSlideAction, SIGNAL(triggered(bool)), this, SLOT(presentationPreviousSlide()));
-  slidesToolBar->addAction(previousSlideAction);
+  m_slideshowPrevSlideAction = new KAction(KIcon("media-skip-backward"), i18n("Previous Slide"), slidesToolBar);
+  connect(m_slideshowPrevSlideAction, SIGNAL(triggered(bool)), this, SLOT(presentationPreviousSlide()));
+  slidesToolBar->addAction(m_slideshowPrevSlideAction);
 
-  KAction* previousStepAction = new KAction(KIcon("media-seek-backward"), "Reverse", slidesToolBar);
-  connect(previousStepAction, SIGNAL(triggered(bool)), this, SLOT(presentationPreviousStep()));
-  slidesToolBar->addAction(previousStepAction);
+  m_slideshowPrevStepAction = new KAction(KIcon("media-seek-backward"), i18n("Previous Step"), slidesToolBar);
+  connect(m_slideshowPrevStepAction, SIGNAL(triggered(bool)), this, SLOT(presentationPreviousStep()));
+  slidesToolBar->addAction(m_slideshowPrevStepAction);
 
-  KAction* nextStepAction = new KAction(KIcon("media-seek-forward"), "Forward", slidesToolBar);
-  connect(nextStepAction, SIGNAL(triggered(bool)), this, SLOT(presentationNextStep()));
-  slidesToolBar->addAction(nextStepAction);
+  m_slideshowNextStepAction = new KAction(KIcon("media-seek-forward"), i18n("Next Step"), slidesToolBar);
+  connect(m_slideshowNextStepAction, SIGNAL(triggered(bool)), this, SLOT(presentationNextStep()));
+  slidesToolBar->addAction(m_slideshowNextStepAction);
 
-  KAction* nextSlideAction = new KAction(KIcon("media-skip-forward"), "Next Slide", slidesToolBar);
-  connect(nextSlideAction, SIGNAL(triggered(bool)), this, SLOT(presentationNextSlide()));
-  slidesToolBar->addAction(nextSlideAction);
+  m_slideshowNextSlideAction = new KAction(KIcon("media-skip-forward"), i18n("Next Slide"), slidesToolBar);
+  connect(m_slideshowNextSlideAction, SIGNAL(triggered(bool)), this, SLOT(presentationNextSlide()));
+  slidesToolBar->addAction(m_slideshowNextSlideAction);
 
-  KToggleAction* displaySlideAction = new KToggleAction(KIcon("view-presentation"), "Display Slides", slidesToolBar);
-  connect(displaySlideAction, SIGNAL(toggled(bool)), this, SLOT(presentationToggled(bool)));
-  slidesToolBar->addAction(displaySlideAction);
+  m_slideshowAction = new KToggleAction(KIcon("view-presentation"), i18n("Start/Stop Slideshow"), slidesToolBar);
+  connect(m_slideshowAction, SIGNAL(toggled(bool)), this, SLOT(presentationToggled(bool)));
+  slidesToolBar->addAction(m_slideshowAction);
+
+  // Ensure the controls are as when slideshow is stopped
+  m_slideshowAction->setEnabled(false);
+  slideshowStopped();
 
   /*
    * Display startup
@@ -494,10 +499,12 @@ void kworship::presentationSelected(int)
   {
     m_view->listSlides->setModel(model);
     m_view->listSlides->setRootIndex(index);
+    setPresentation(presNode->getItem());
   }
   else
   {
     m_view->listSlides->setModel(0);
+    setPresentation(0);
   }
 }
 
@@ -578,6 +585,70 @@ void kworship::slide_doubleClicked(QModelIndex index)
   {
     presNode->getItem()->goToSlide(index.row());
   }
+}
+
+// Presentations
+void kworship::setPresentation(UpPresentation* presentation)
+{
+  if (0 != m_currentPresentation)
+  {
+    // Stop the slideshow if its running
+    m_currentPresentation->stopSlideshow();
+    disconnect(m_currentPresentation, SIGNAL(slideshowStarted(int)), this, SLOT(slideshowStarted(int)));
+    disconnect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
+    disconnect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
+    disconnect(m_currentPresentation, SIGNAL(slideshowStepChanged(int)), this, SLOT(slideshowStepChanged(int)));
+  }
+  m_currentPresentation = presentation;
+  if (0 != m_currentPresentation)
+  {
+    connect(m_currentPresentation, SIGNAL(slideshowStarted(int)), this, SLOT(slideshowStarted(int)));
+    connect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
+    connect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
+    connect(m_currentPresentation, SIGNAL(slideshowStepChanged(int)), this, SLOT(slideshowStepChanged(int)));
+    if (m_currentPresentation->isSlideshowRunning())
+    {
+      slideshowStarted(m_currentPresentation->numSlidesInSlideshow());
+      slideshowSlideChanged(m_currentPresentation->currentSlideshowSlide(), m_currentPresentation->stepsInCurrentSlideshowSlide());
+      slideshowStepChanged(m_currentPresentation->currentSlideshowStep());
+    }
+  }
+  m_slideshowAction->setEnabled(0 != m_currentPresentation);
+}
+
+// From current presentation
+void kworship::slideshowStarted(int numSlides)
+{
+  m_view->progressPresSlides->setMaximum(numSlides);
+  m_view->progressPresSlides->setVisible(true);
+  m_slideshowAction->setChecked(true);
+  m_slideshowPrevSlideAction->setEnabled(true);
+  m_slideshowPrevStepAction->setEnabled(true);
+  m_slideshowNextStepAction->setEnabled(true);
+  m_slideshowNextSlideAction->setEnabled(true);
+}
+
+void kworship::slideshowStopped()
+{
+  m_view->progressPresSlides->setVisible(false);
+  m_view->progressPresSteps->setVisible(false);
+  m_slideshowAction->setChecked(false);
+  m_slideshowPrevSlideAction->setEnabled(false);
+  m_slideshowPrevStepAction->setEnabled(false);
+  m_slideshowNextStepAction->setEnabled(false);
+  m_slideshowNextSlideAction->setEnabled(false);
+}
+
+void kworship::slideshowSlideChanged(int slide, int numSteps)
+{
+  m_view->progressPresSlides->setValue(slide + 1);
+  m_view->progressPresSteps->setMaximum(numSteps);
+  m_view->progressPresSteps->setVisible(numSteps > 1);
+}
+
+void kworship::slideshowStepChanged(int step)
+{
+  m_view->progressPresSteps->setValue(step + 1);
 }
 
 #include "kworship.moc"

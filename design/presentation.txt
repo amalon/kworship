@@ -28,8 +28,6 @@ notes display screen
   either fullscreen notes or a simple notes + slide display
 
 features
-  [ ] initialise slideshow running correctly
-  [ ] disable nav buttons when slideshow not running
   [ ] disable nav buttons which don't apply
   [ ] add main actions to menu
   [ ] start slideshow on clicked slide if not already

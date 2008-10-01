@@ -89,7 +89,7 @@ int UpKpr1Presentation::numSlidesInSlideshow()
 
 int UpKpr1Presentation::currentSlideshowSlide()
 {
-  return m_dcopView.getCurrentPresPage();
+  return m_dcopView.getCurrentPresPage() - 1;
 }
 
 int UpKpr1Presentation::stepsInCurrentSlideshowSlide()
@@ -219,7 +219,7 @@ void UpKpr1Presentation::signalChangedSlide(int slide, int step)
   {
     slide = m_dcopView.getCurrentPresPage();
   }
-  slideshowSlideChanged(slide, m_dcopView.getPresStepsOfPage());
+  slideshowSlideChanged(slide - 1, m_dcopView.getPresStepsOfPage());
   signalChangedStep(step);
 }
 

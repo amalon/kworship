@@ -39,10 +39,13 @@ class KwMediaManager;
 class KwSongdbModel;
 
 class UpManager;
+class UpPresentation;
 
 class KPrinter;
 class KToggleAction;
 class KUrl;
+class KAction;
+class KToggleAction;
 
 class QTreeView;
 
@@ -88,10 +91,19 @@ private slots:
     void presentationNextStep();
     void slide_doubleClicked(QModelIndex);
 
+    // From current presentation
+    void slideshowStarted(int numSlides);
+    void slideshowStopped();
+    void slideshowSlideChanged(int slide, int numSteps);
+    void slideshowStepChanged(int step);
+
 private:
     void setupActions();
     int getCorrectDisplayScreen();
     int getCurrentDisplayScreen();
+
+    // Presentations
+    void setPresentation(UpPresentation* presentation);
 
 private:
     Ui::prefs_base ui_prefs_base ;
@@ -111,6 +123,12 @@ private:
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;
+    KAction* m_slideshowPrevSlideAction;
+    KAction* m_slideshowPrevStepAction;
+    KAction* m_slideshowNextStepAction;
+    KAction* m_slideshowNextSlideAction;
+    KToggleAction* m_slideshowAction;
+    UpPresentation* m_currentPresentation;
 
     KPrinter   *m_printer;
     KToggleAction* m_mainDisplayAction;

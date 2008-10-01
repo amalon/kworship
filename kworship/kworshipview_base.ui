@@ -16,39 +16,6 @@
    <bool>true</bool>
   </property>
   <layout class="QGridLayout" name="gridLayout" >
-   <item row="0" column="0" >
-    <widget class="QDockWidget" name="dockPresentation" >
-     <property name="floating" >
-      <bool>false</bool>
-     </property>
-     <property name="windowTitle" >
-      <string>Presentation</string>
-     </property>
-     <widget class="QWidget" name="dockWidgetContents" >
-      <layout class="QVBoxLayout" name="verticalLayout" >
-       <item>
-        <layout class="QHBoxLayout" name="layoutPresentationsToolbar" />
-       </item>
-       <item>
-        <widget class="QComboBox" name="comboPresentations" />
-       </item>
-       <item>
-        <widget class="QListView" name="listSlides" >
-         <property name="viewMode" >
-          <enum>QListView::IconMode</enum>
-         </property>
-         <property name="uniformItemSizes" >
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="layoutSlidesToolbar" />
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </item>
    <item row="3" column="1" >
     <widget class="QDockWidget" name="dockThemes" >
      <property name="windowTitle" >
@@ -208,6 +175,9 @@
         <widget class="QListView" name="listBible" />
        </item>
       </layout>
+      <zorder>searchBible</zorder>
+      <zorder>listBible</zorder>
+      <zorder>dockPresentation</zorder>
      </widget>
     </widget>
    </item>
@@ -266,6 +236,76 @@
         <layout class="QHBoxLayout" name="horizontalLayout_6" />
        </item>
       </layout>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QDockWidget" name="dockPresentation" >
+     <property name="floating" >
+      <bool>false</bool>
+     </property>
+     <property name="windowTitle" >
+      <string>Presentation</string>
+     </property>
+     <widget class="QWidget" name="dockWidgetContents" >
+      <layout class="QVBoxLayout" name="verticalLayout" >
+       <item>
+        <layout class="QHBoxLayout" name="layoutPresentationsToolbar" />
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboPresentations" />
+       </item>
+       <item>
+        <widget class="QListView" name="listSlides" >
+         <property name="viewMode" >
+          <enum>QListView::IconMode</enum>
+         </property>
+         <property name="uniformItemSizes" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="layoutPresentationProgress" >
+         <item>
+          <widget class="QProgressBar" name="progressPresSlides" >
+           <property name="maximum" >
+            <number>2</number>
+           </property>
+           <property name="value" >
+            <number>1</number>
+           </property>
+           <property name="format" >
+            <string>Slide %v of %m</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="progressPresSteps" >
+           <property name="maximum" >
+            <number>3</number>
+           </property>
+           <property name="value" >
+            <number>1</number>
+           </property>
+           <property name="format" >
+            <string>Step %v of %m</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="layoutSlidesToolbar" />
+       </item>
+      </layout>
+      <zorder>comboPresentations</zorder>
+      <zorder>listSlides</zorder>
+      <zorder>horizontalLayoutWidget</zorder>
+      <zorder>progressPresSteps</zorder>
+      <zorder>labelPresentationStatus</zorder>
+      <zorder>progressPresSlides</zorder>
+      <zorder>horizontalLayoutWidget</zorder>
      </widget>
     </widget>
    </item>
