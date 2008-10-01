@@ -30,8 +30,6 @@ notes display screen
 features
   [ ] add main actions to menu
   [ ] start slideshow on clicked slide if not already
-  [ ] set background to preview when changing slide
-      and clear when stopping slideshow
   [ ] disable slideshow when activating another playlist item
   [ ] highlight selected slide
   [ ] somewhere for slideshow settings

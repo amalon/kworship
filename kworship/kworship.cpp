@@ -51,6 +51,7 @@
 #include "UpPresentationsModel.h"
 #include "UpPresentation.h"
 #include "UpPresentationNode.h"
+#include "UpSlide.h"
 #include "UpKpr1Backend.h"
 #include "UpOoBackend.h"
 
@@ -628,6 +629,10 @@ void kworship::slideshowStarted(int numSlides)
     m_mainDisplay->hide();
   }
 
+  // Clear the display
+  m_displayManager->background.clear();
+  m_displayManager->text.clear();
+
   m_view->progressPresSlides->setMaximum(numSlides);
   m_view->progressPresSlides->setVisible(true);
   m_slideshowAction->setChecked(true);
@@ -642,6 +647,9 @@ void kworship::slideshowStopped()
   m_slideshowPrevStepAction->setEnabled(false);
   m_slideshowNextStepAction->setEnabled(false);
   m_slideshowNextSlideAction->setEnabled(false);
+
+  // Clear any preview left from the slideshow
+  m_displayManager->background.clear();
 
   // Show the screen again
   if (0 != m_mainDisplay)
@@ -658,6 +666,18 @@ void kworship::slideshowSlideChanged(int slide, int numSteps)
 
   m_slideshowPrevSlideAction->setEnabled(slide > 0);
   m_slideshowNextSlideAction->setEnabled(slide < numSteps-1);
+
+  // Update live preview
+  assert(0 != m_currentPresentation);
+  UpSlide* currentSlide = m_currentPresentation->slide(slide);
+  if (0 != currentSlide)
+  {
+    m_displayManager->background.setImage(currentSlide->preview());
+  }
+  else
+  {
+    m_displayManager->background.clear();
+  }
 }
 
 void kworship::slideshowStepChanged(int step)
