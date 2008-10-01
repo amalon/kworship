@@ -403,7 +403,10 @@ void kworship::toggleMainDisplay(bool checked)
       m_mainDisplay->move(desktop->screenGeometry(displayScreen).topLeft());
     }
 
-    m_mainDisplay->showFullScreen();
+    if (!m_slideshowAction->isChecked())
+    {
+      m_mainDisplay->showFullScreen();
+    }
   }
   else
   {
@@ -619,6 +622,12 @@ void kworship::setPresentation(UpPresentation* presentation)
 // From current presentation
 void kworship::slideshowStarted(int numSlides)
 {
+  // Hide the screen
+  if (0 != m_mainDisplay)
+  {
+    m_mainDisplay->hide();
+  }
+
   m_view->progressPresSlides->setMaximum(numSlides);
   m_view->progressPresSlides->setVisible(true);
   m_slideshowAction->setChecked(true);
@@ -633,6 +642,12 @@ void kworship::slideshowStopped()
   m_slideshowPrevStepAction->setEnabled(false);
   m_slideshowNextStepAction->setEnabled(false);
   m_slideshowNextSlideAction->setEnabled(false);
+
+  // Show the screen again
+  if (0 != m_mainDisplay)
+  {
+    m_mainDisplay->showFullScreen();
+  }
 }
 
 void kworship::slideshowSlideChanged(int slide, int numSteps)
