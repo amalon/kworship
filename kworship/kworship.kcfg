@@ -37,7 +37,7 @@
       <default>1</default>
     </entry>
     <entry name="songdbLocationCustom" type="Int">
-      <label>cusotm database location</label>
+      <label>custom database location</label>
       <default>0</default>
     </entry>
     <entry name="songdbLocation" type="Url">
@@ -58,6 +58,12 @@
     <entry name="songdbPassword">
       <label>database password</label>
       <default></default>
+    </entry>
+  </group>
+  <group name="Presentations">
+    <entry name="presLivePreview" type="Int">
+      <label>live preview during presentations</label>
+      <default>1</default>
     </entry>
   </group>
 </kcfg>

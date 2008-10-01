@@ -16,6 +16,15 @@
       <attribute name="title" >
        <string>General</string>
       </attribute>
+      <layout class="QFormLayout" name="formLayout" >
+       <item row="0" column="1" >
+        <widget class="QCheckBox" name="kcfg_presLivePreview" >
+         <property name="text" >
+          <string>Enable live preview during presentations</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="tabBackends" >
       <attribute name="title" >
