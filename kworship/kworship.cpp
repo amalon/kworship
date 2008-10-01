@@ -622,10 +622,6 @@ void kworship::slideshowStarted(int numSlides)
   m_view->progressPresSlides->setMaximum(numSlides);
   m_view->progressPresSlides->setVisible(true);
   m_slideshowAction->setChecked(true);
-  m_slideshowPrevSlideAction->setEnabled(true);
-  m_slideshowPrevStepAction->setEnabled(true);
-  m_slideshowNextStepAction->setEnabled(true);
-  m_slideshowNextSlideAction->setEnabled(true);
 }
 
 void kworship::slideshowStopped()
@@ -644,11 +640,21 @@ void kworship::slideshowSlideChanged(int slide, int numSteps)
   m_view->progressPresSlides->setValue(slide + 1);
   m_view->progressPresSteps->setMaximum(numSteps);
   m_view->progressPresSteps->setVisible(numSteps > 1);
+
+  m_slideshowPrevSlideAction->setEnabled(slide > 0);
+  m_slideshowNextSlideAction->setEnabled(slide < numSteps-1);
 }
 
 void kworship::slideshowStepChanged(int step)
 {
   m_view->progressPresSteps->setValue(step + 1);
+
+  bool firstSlide = (m_view->progressPresSlides->value() <= 1);
+  bool lastSlide = (m_view->progressPresSlides->value() >= m_view->progressPresSlides->maximum());
+  bool firstStep = firstSlide && (step <= 0);
+  bool lastStep = lastSlide && (step >= m_view->progressPresSteps->maximum() - 1);
+  m_slideshowPrevStepAction->setEnabled(!firstStep);
+  m_slideshowNextStepAction->setEnabled(!lastStep);
 }
 
 #include "kworship.moc"
