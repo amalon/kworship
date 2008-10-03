@@ -68,8 +68,9 @@ SET(UNO_LIBS
 
 # UNO_ADD_TYPES(component {types} )
 MACRO (UNO_ADD_TYPES component)
-  SET(UNO_COMPONENT_INC "${UNO_TEMP_DIR}/${component}/inc")
-  SET(UNO_RDB "${UNO_TEMP_DIR}/${component}.rdb")
+  SET(UNO_TARGET "UNO_${component}")
+  SET(UNO_COMPONENT_INC "${UNO_TEMP_DIR}/${UNO_TARGET}.dir/inc")
+  SET(UNO_RDB "${UNO_TEMP_DIR}/${UNO_TARGET}.dir/types.rdb")
   # Add include directory
   SET(UNO_INCLUDES ${UNO_INCLUDES} ${UNO_COMPONENT_INC})
 
@@ -83,6 +84,7 @@ MACRO (UNO_ADD_TYPES component)
     SET(UNO_HPPFILE "${UNO_TEMP_DIR}/${UNO_HPPFILE}.hpp")
     SET(UNO_HPPFILES ${UNO_HPPFILES} ${UNO_HPPFILE})
   ENDFOREACH(type)
+
   ADD_CUSTOM_COMMAND(
     OUTPUT ${UNO_RDB}
     COMMAND ${UNO_REGMERGE} ${UNO_RDB} / ${UNO_OO_TYPES_RDB}
@@ -99,7 +101,6 @@ MACRO (UNO_ADD_TYPES component)
   )
 
   # force generation of header files
-  SET(UNO_TARGET "UNO_${component}")
   ADD_CUSTOM_TARGET(
     ${UNO_TARGET}
     DEPENDS ${UNO_HPPFILES}

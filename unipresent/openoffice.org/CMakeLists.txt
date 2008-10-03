@@ -60,3 +60,9 @@ target_link_libraries(unipresentopenoffice
 )
 
 add_dependencies(unipresentopenoffice ${UNO_TARGET})
+
+########### install files ###############
+
+install( FILES ${UNO_RDB}
+         DESTINATION  ${DATA_INSTALL_DIR}/unipresent/openoffice.org
+         RENAME "types.rdb" )

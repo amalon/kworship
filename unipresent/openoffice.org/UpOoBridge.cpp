@@ -26,6 +26,9 @@
 #include "UpOoBridge.h"
 #include "compiler.h"
 
+#include <KStandardDirs>
+#include <KLocale>
+
 #include <QByteArray>
 #include <QtDebug>
 
@@ -54,11 +57,19 @@ using namespace rtl;
 UpOoBridge::UpOoBridge()
 : m_valid(false)
 {
-  QByteArray connectionBa = "uno:socket,host=localhost,port=2083;urp;StarOffice.ServiceManager";
-  QByteArray rdbFileBa = "/home/james/src/kworship/master/unipresent/openoffice.org/CMakeFiles/unipresentopenoffice.rdb";
+  QByteArray connectionBaCore = "socket,host=localhost,port=2083;urp;StarOffice.ServiceManager";
+  QByteArray connectionBa = "uno:" + connectionBaCore;
+#define TYPESDB "unipresent/openoffice.org/types.rdb"
+#define BACKEND_NAME i18n("OpenOffice.org backend:")
+  QString rdbFileBa = KStandardDirs::locate("data", TYPESDB);
+  if (rdbFileBa.isNull())
+  {
+    qDebug() << BACKEND_NAME << i18n("couldn't find data %1").arg(TYPESDB);
+    return;
+  }
 
   OUString connectionString(OUString::createFromAscii(connectionBa));
-  OUString rdbFile(OUString::createFromAscii(rdbFileBa));
+  OUString rdbFile(OUString::createFromAscii(rdbFileBa.toAscii()));
   bool tryAgain = false;
   do
   {
@@ -82,7 +93,7 @@ UpOoBridge::UpOoBridge()
       {
         // not valid
         OUString message = exception.Message;
-        qDebug() << __PRETTY_FUNCTION__ << ":" << QString::fromUtf16((const sal_Unicode*)message, message.getLength());
+        qDebug() << BACKEND_NAME << QString::fromUtf16((const sal_Unicode*)message, message.getLength()) << i18n("(start OpenOffice.org with %1)").arg(QString()+"soffice \"-accept=" + connectionBaCore + "\"");
         return;
       }
       else
