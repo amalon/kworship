@@ -88,5 +88,3 @@ QPixmap UpOoSlide::preview()
   return QPixmap();
 }
 
-#include "UpOoSlide.moc"
-

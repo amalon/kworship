@@ -1,7 +1,24 @@
 project(unipresentopenoffice)
 
-find_package(Qt4 REQUIRED)
-include_directories(${QT_INCLUDES})
+find_package(KDE4 REQUIRED)
+
+# Remove flags from CMAKE_CXX_FLAGS
+MACRO (REMOVE_CXX_FLAGS)
+  FOREACH(FLAG ${ARGN})
+    STRING(REPLACE "${FLAG}" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+  ENDFOREACH(FLAG)
+ENDMACRO (REMOVE_CXX_FLAGS)
+
+# KDE adds a bunch of flags, several of which UNO doesn't like
+# UNO throws exceptions
+REMOVE_CXX_FLAGS(-fno-exceptions)
+# -fvisibility=hidden prevents us from catching UNO exceptions
+REMOVE_CXX_FLAGS(-fvisibility=hidden)
+# These flags cause lots of warnings with UNO
+REMOVE_CXX_FLAGS(-Wnon-virtual-dtor -Wundef -Wall -Wformat-security)
+
+include_directories(${KDE4_INCLUDES}
+                    ${QT_INCLUDES})
 
 find_package(UNO REQUIRED)
 
@@ -36,9 +53,7 @@ set(unipresentopenoffice_SRCS
     UpOoSlide.cpp
 )
 
-QT4_AUTOMOC(${unipresentopenoffice_SRCS})
-
-add_library(unipresentopenoffice STATIC ${unipresentopenoffice_SRCS})
+kde4_add_library(unipresentopenoffice STATIC ${unipresentopenoffice_SRCS})
 
 target_link_libraries(unipresentopenoffice
                       ${UNO_LIBS}

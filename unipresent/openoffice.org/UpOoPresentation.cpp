@@ -164,5 +164,3 @@ void UpOoPresentation::nextStep()
 {
 }
 
-#include "UpOoPresentation.moc"
-
