@@ -1,0 +1,4 @@
+Code specific to the koffice kpresenter 2 backend.
+
+This uses DBus to interface with KPresenter.
+

@@ -54,6 +54,7 @@
 #include "UpPresentationNode.h"
 #include "UpSlide.h"
 #include "UpKpr1Backend.h"
+#include "UpKpr2Backend.h"
 #include "UpOoBackend.h"
 
 #include <kconfigdialog.h>
@@ -88,6 +89,7 @@ kworship::kworship()
 {
   // set up presentation backends
   m_presentationManager->registerBackend<UpKpr1Backend>();
+  m_presentationManager->registerBackend<UpKpr2Backend>();
   m_presentationManager->registerBackend<UpOoBackend>();
   
   m_mainDisplay = 0;
