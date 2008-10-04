@@ -70,8 +70,22 @@ QUrl UpKpr2Presentation::url() const
 }
 
 /*
- * Slides
+ * Custom slideshows
  */
+
+QString UpKpr2Presentation::currentSlideshow()
+{
+  return "All slides";
+}
+
+QStringList UpKpr2Presentation::slideshows()
+{
+  return QStringList() << "All slides";
+}
+
+void UpKpr2Presentation::setSlideshow(QString slideshow)
+{
+}
 
 int UpKpr2Presentation::numSlides()
 {

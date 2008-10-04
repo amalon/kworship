@@ -54,15 +54,16 @@ class UpOoPresentation : public UpPresentation
      */
 
     virtual void close();
-
     virtual QUrl url() const;
 
     /*
-     * Slides
+     * Custom slideshows
      */
 
+    virtual QString currentSlideshow();
+    virtual QStringList slideshows();
+    virtual void setSlideshow(QString slideshow);
     virtual int numSlides();
-
     virtual UpSlide* slide(int index);
 
     /*
@@ -70,13 +71,9 @@ class UpOoPresentation : public UpPresentation
      */
 
     virtual bool isSlideshowRunning();
-
     virtual int numSlidesInSlideshow();
-
     virtual int currentSlideshowSlide();
-
     virtual int stepsInCurrentSlideshowSlide();
-
     virtual int currentSlideshowStep();
 
     /*
@@ -84,17 +81,11 @@ class UpOoPresentation : public UpPresentation
      */
 
     virtual void startSlideshow();
-
     virtual void stopSlideshow();
-
     virtual void goToSlide(int index);
-
     virtual void previousSlide();
-
     virtual void nextSlide();
-
     virtual void previousStep();
-
     virtual void nextStep();
 
   private:

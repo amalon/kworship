@@ -76,8 +76,22 @@ QUrl UpOoPresentation::url() const
 }
 
 /*
- * Slides
+ * Custom slideshows
  */
+
+QString UpOoPresentation::currentSlideshow()
+{
+  return "All slides";
+}
+
+QStringList UpOoPresentation::slideshows()
+{
+  return QStringList() << "All slides";
+}
+
+void UpOoPresentation::setSlideshow(QString slideshow)
+{
+}
 
 int UpOoPresentation::numSlides()
 {

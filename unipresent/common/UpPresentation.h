@@ -60,13 +60,22 @@ class UpPresentation : public QObject
     virtual QUrl url() const = 0;
 
     /*
-     * Slides
+     * Custom slideshows
      */
 
-    /// Get the number of slides in this presentation.
+    /// Get the current slideshow name.
+    virtual QString currentSlideshow() = 0;
+
+    /// Get a list of slideshow names.
+    virtual QStringList slideshows() = 0;
+
+    /// Set the current slideshow.
+    virtual void setSlideshow(QString slideshow) = 0;
+
+    /// Get the number of slides in the current slideshow.
     virtual int numSlides() = 0;
 
-    /// Get a specific slide.
+    /// Get a specific slide from the current slideshow.
     virtual UpSlide* slide(int index) = 0;
 
     /*
@@ -118,6 +127,19 @@ class UpPresentation : public QObject
     /*
      * Signals
      */
+
+    /// Fired when the current slideshow is changed.
+    void currentSlideshowChanged(QString slideshow);
+
+    /// Fired when a slideshow is edited.
+    void customSlideshowEdited(QString slideshow);
+
+    /// Fired when a slideshow is added.
+    void customSlideshowAdded(QString slideshow);
+
+    /// Fired when a slideshow is removed.
+    void customSlideshowRemoved(QString slideshow);
+
 
     /// Fired when the slideshow starts.
     void slideshowStarted(int numSlides);
