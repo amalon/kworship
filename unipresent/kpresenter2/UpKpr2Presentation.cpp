@@ -75,16 +75,46 @@ QUrl UpKpr2Presentation::url() const
 
 QString UpKpr2Presentation::currentSlideshow()
 {
-  return "All slides";
+  if (m_dbusView)
+  {
+    QDBusMessage result = m_dbusView->call("activeCustomSlideShow");
+    if (QDBusMessage::ReplyMessage == result.type())
+    {
+      QString slideshow = result.arguments().first().toString();
+      if (slideshow != "")
+      {
+        return slideshow;
+      }
+    }
+  }
+  return tr("All slides");
 }
 
 QStringList UpKpr2Presentation::slideshows()
 {
-  return QStringList() << "All slides";
+  QStringList results;
+  results << tr("All slides");
+  if (m_dbusView)
+  {
+    QDBusMessage reply = m_dbusView->call("customSlideShows");
+    if (QDBusMessage::ReplyMessage == reply.type())
+    {
+      results << reply.arguments().first().toStringList();
+    }
+  }
+  return results;
 }
 
 void UpKpr2Presentation::setSlideshow(QString slideshow)
 {
+  if (slideshow == tr("All slides"))
+  {
+    slideshow = QString();
+  }
+  if (m_dbusView)
+  {
+    m_dbusView->call("setActiveCustomSlideShow", slideshow);
+  }
 }
 
 int UpKpr2Presentation::numSlides()

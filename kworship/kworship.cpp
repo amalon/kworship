@@ -679,6 +679,7 @@ void kworship::slideshowStarted(int numSlides)
   m_displayManager->background.clear();
   m_displayManager->text.clear();
 
+  m_view->slideshows->setEnabled(false);
   m_view->progressPresSlides->setMaximum(numSlides);
   m_view->progressPresSlides->setVisible(true);
   m_slideshowAction->setChecked(true);
@@ -686,6 +687,7 @@ void kworship::slideshowStarted(int numSlides)
 
 void kworship::slideshowStopped()
 {
+  m_view->slideshows->setEnabled(true);
   m_view->progressPresSlides->setVisible(false);
   m_view->progressPresSteps->setVisible(false);
   m_slideshowAction->setChecked(false);
