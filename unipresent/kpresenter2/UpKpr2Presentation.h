@@ -28,6 +28,8 @@
 
 #include "UpPresentation.h"
 
+#include <QDBusInterface>
+
 /// KPresenter 2 presentation.
 class UpKpr2Presentation : public UpPresentation
 {
@@ -39,7 +41,7 @@ class UpKpr2Presentation : public UpPresentation
      */
 
     /// Primary constructor.
-    UpKpr2Presentation(QObject* parent = 0);
+    UpKpr2Presentation(QString service, QString path, QObject* parent = 0);
 
     /// Destructor.
     virtual ~UpKpr2Presentation();
@@ -97,6 +99,12 @@ class UpKpr2Presentation : public UpPresentation
     /*
      * Variables
      */
+
+    /// DBus document interface.
+    QDBusInterface m_dbus;
+
+    /// DBus view interface.
+    QDBusInterface* m_dbusView;
 
     /// Url.
     QUrl m_url;

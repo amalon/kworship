@@ -24,6 +24,14 @@
  */
 
 #include "UpKpr2Backend.h"
+#include "UpKpr2Presentation.h"
+
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#include <QDBusInterface>
+#include <QStringList>
+
+#include <cassert>
 
 /*
  * Constructors + destructor
@@ -35,6 +43,25 @@ UpKpr2Backend::UpKpr2Backend(QObject* parent)
 , m_presentations()
 {
   activate();
+  QDBusConnectionInterface* interface = QDBusConnection::sessionBus().interface();
+  QDBusReply<QStringList> reply = interface->registeredServiceNames();
+  assert(reply.isValid());
+  QStringList serviceNames = reply;
+  foreach (QString serviceName, serviceNames)
+  {
+    if (serviceName.startsWith("org.koffice.kpresenter-"))
+    {
+      QDBusInterface application(serviceName, "/application", "org.kde.koffice.application");
+      if (application.isValid())
+      {
+        QStringList docs = application.call("getDocuments").arguments().first().toStringList();
+        foreach (QString doc, docs)
+        {
+          m_presentations << new UpKpr2Presentation(serviceName, doc, this);
+        }
+      }
+    }
+  }
 }
 
 /// Destructor.

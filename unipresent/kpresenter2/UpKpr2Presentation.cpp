@@ -26,6 +26,9 @@
 #include "UpKpr2Presentation.h"
 #include "UpKpr2Slide.h"
 
+#include <QList>
+#include <QVariant>
+
 #include <cassert>
 
 /*
@@ -33,15 +36,24 @@
  */
 
 /// Primary constructor.
-UpKpr2Presentation::UpKpr2Presentation(QObject* parent)
+UpKpr2Presentation::UpKpr2Presentation(QString service, QString path, QObject* parent)
 : UpPresentation(parent)
+, m_dbus(service, path, "org.kde.koffice.document")
+, m_dbusView(0)
 , m_url()
 {
+  if (m_dbus.isValid())
+  {
+    m_url = m_dbus.call("url").arguments().first().toString();
+    QString viewPath = "/" + m_dbus.call("view", 0).arguments().first().toString();
+    m_dbusView = new QDBusInterface(service, viewPath, "org.kde.koffice.kpresenter.view");
+  }
 }
 
 /// Destructor.
 UpKpr2Presentation::~UpKpr2Presentation()
 {
+  delete m_dbusView;
 }
 
 /*
@@ -106,6 +118,10 @@ int UpKpr2Presentation::currentSlideshowStep()
 
 void UpKpr2Presentation::startSlideshow()
 {
+  if (m_dbusView)
+  {
+    m_dbusView->call("screenStart");
+  }
 }
 
 void UpKpr2Presentation::stopSlideshow()
