@@ -94,21 +94,62 @@ bool UpKpr2Presentation::isSlideshowRunning()
 
 int UpKpr2Presentation::numSlidesInSlideshow()
 {
+  if (m_dbusView)
+  {
+    QDBusMessage result = m_dbusView->call("numPresPages");
+    if (QDBusMessage::ReplyMessage == result.type())
+    {
+      // There's also the finish slide
+      /// @todo the finish slide is optional, ensure this is correct
+      int slides = result.arguments().first().toInt() - 1;
+      return slides;
+    }
+  }
   return 0;
 }
 
 int UpKpr2Presentation::currentSlideshowSlide()
 {
+  if (m_dbusView)
+  {
+    QDBusMessage result = m_dbusView->call("currentPresPage");
+    if (QDBusMessage::ReplyMessage == result.type())
+    {
+      int slide = result.arguments().first().toInt();
+      return slide;
+    }
+  }
   return 0;
 }
 
 int UpKpr2Presentation::stepsInCurrentSlideshowSlide()
 {
+  if (m_dbusView)
+  {
+    QDBusMessage result = m_dbusView->call("numStepsInPresPage");
+    if (QDBusMessage::ReplyMessage == result.type())
+    {
+      int steps = result.arguments().first().toInt();
+      if (steps <= 0)
+      {
+        steps = 1;
+      }
+      return steps;
+    }
+  }
   return 1;
 }
 
 int UpKpr2Presentation::currentSlideshowStep()
 {
+  if (m_dbusView)
+  {
+    QDBusMessage result = m_dbusView->call("currentPresStep");
+    if (QDBusMessage::ReplyMessage == result.type())
+    {
+      return result.arguments().first().toInt();
+    }
+  }
   return 0;
 }
 
@@ -120,12 +161,20 @@ void UpKpr2Presentation::startSlideshow()
 {
   if (m_dbusView)
   {
-    m_dbusView->call("screenStart");
+    m_dbusView->call("screenStartFromFirst");
+    slideshowStarted(numSlidesInSlideshow());
+    slideshowSlideChanged(currentSlideshowSlide(), stepsInCurrentSlideshowSlide());
+    slideshowStepChanged(currentSlideshowStep());
   }
 }
 
 void UpKpr2Presentation::stopSlideshow()
 {
+  if (m_dbusView)
+  {
+    m_dbusView->call("screenStop");
+    slideshowStopped();
+  }
 }
 
 void UpKpr2Presentation::goToSlide(int index)
@@ -134,18 +183,42 @@ void UpKpr2Presentation::goToSlide(int index)
 
 void UpKpr2Presentation::previousSlide()
 {
+  if (m_dbusView)
+  {
+    m_dbusView->call("screenPrevSlide");
+    slideshowSlideChanged(currentSlideshowSlide(), stepsInCurrentSlideshowSlide());
+    slideshowStepChanged(currentSlideshowStep());
+  }
 }
 
 void UpKpr2Presentation::nextSlide()
 {
+  if (m_dbusView)
+  {
+    m_dbusView->call("screenNextSlide");
+    slideshowSlideChanged(currentSlideshowSlide(), stepsInCurrentSlideshowSlide());
+    slideshowStepChanged(currentSlideshowStep());
+  }
 }
 
 void UpKpr2Presentation::previousStep()
 {
+  if (m_dbusView)
+  {
+    m_dbusView->call("screenPrev");
+    slideshowSlideChanged(currentSlideshowSlide(), stepsInCurrentSlideshowSlide());
+    slideshowStepChanged(currentSlideshowStep());
+  }
 }
 
 void UpKpr2Presentation::nextStep()
 {
+  if (m_dbusView)
+  {
+    m_dbusView->call("screenNext");
+    slideshowSlideChanged(currentSlideshowSlide(), stepsInCurrentSlideshowSlide());
+    slideshowStepChanged(currentSlideshowStep());
+  }
 }
 
 #include "UpKpr2Presentation.moc"

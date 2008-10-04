@@ -668,7 +668,7 @@ void kworship::slideshowSlideChanged(int slide, int numSteps)
   m_view->progressPresSteps->setVisible(numSteps > 1);
 
   m_slideshowPrevSlideAction->setEnabled(slide > 0);
-  m_slideshowNextSlideAction->setEnabled(slide < numSteps-1);
+  m_slideshowNextSlideAction->setEnabled(slide < m_view->progressPresSlides->maximum()-1);
 
   // Update live preview
   if (Settings::presLivePreview())
