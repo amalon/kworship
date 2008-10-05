@@ -93,7 +93,7 @@ class UpKpr2Presentation : public UpPresentation
      */
 
     void dbusCurrentSlideshowChanged(QString slideshow);
-    void dbusCustomSlideshowsModified();
+    void dbusScreenStarted(int pages);
 
     /*
      * Callbacks
