@@ -47,16 +47,16 @@ UpKpr2Presentation::UpKpr2Presentation(QString service, QString path, QObject* p
   {
     m_url = m_dbus.call("url").arguments().first().toString();
     QString viewPath = "/" + m_dbus.call("view", 0).arguments().first().toString();
-    m_dbusView = new QDBusInterface(service, viewPath, "org.kde.koffice.kpresenter.view");
+    m_dbusView = new QDBusInterface(service, viewPath, "org.kde.koffice.presentation.view");
 
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "activeCustomSlideShowChanged", this, SLOT(dbusCurrentSlideshowChanged(QString)));
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "customSlideShowsModified", this, SIGNAL(customSlideshowsModified()));
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "activeCustomSlideShowChanged", this, SLOT(dbusCurrentSlideshowChanged(QString)));
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "customSlideShowsModified", this, SIGNAL(customSlideshowsModified()));
 
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "screenStarted", this, SLOT(dbusScreenStarted(int)));
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "screenStopped", this, SIGNAL(slideshowStopped()));
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStarted", this, SLOT(dbusScreenStarted(int)));
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStopped", this, SIGNAL(slideshowStopped()));
 
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "changedPresPage", this, SIGNAL(slideshowSlideChanged(int, int)));
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "changedPresStep", this, SIGNAL(slideshowStepChanged(int)));
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresPage", this, SIGNAL(slideshowSlideChanged(int, int)));
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresStep", this, SIGNAL(slideshowStepChanged(int)));
   }
 }
 
