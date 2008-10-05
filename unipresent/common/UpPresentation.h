@@ -72,6 +72,9 @@ class UpPresentation : public QObject
     /// Set the current slideshow.
     virtual void setSlideshow(QString slideshow) = 0;
 
+    /// Show edit custom slideshows dialog.
+    virtual void editCustomSlideshowsDialog() = 0;
+
     /// Get the number of slides in the current slideshow.
     virtual int numSlides() = 0;
 
@@ -131,14 +134,8 @@ class UpPresentation : public QObject
     /// Fired when the current slideshow is changed.
     void currentSlideshowChanged(QString slideshow);
 
-    /// Fired when a slideshow is edited.
-    void customSlideshowEdited(QString slideshow);
-
-    /// Fired when a slideshow is added.
-    void customSlideshowAdded(QString slideshow);
-
-    /// Fired when a slideshow is removed.
-    void customSlideshowRemoved(QString slideshow);
+    /// Fired when custom slideshows have been modified.
+    void customSlideshowsModified();
 
 
     /// Fired when the slideshow starts.

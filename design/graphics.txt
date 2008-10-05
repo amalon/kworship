@@ -26,6 +26,7 @@ Icon todo list
     [t] refresh presentations
     [ ] close presentation
     [t] toggle fullscreen presentation controller
+    [t] edit custom slideshows
     [t] slide navigation
         [t] previous slide
         [t] reverse

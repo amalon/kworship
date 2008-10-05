@@ -63,6 +63,7 @@ class UpKpr1Presentation : public UpPresentation
     virtual QString currentSlideshow();
     virtual QStringList slideshows();
     virtual void setSlideshow(QString slideshow);
+    virtual void editCustomSlideshowsDialog();
     virtual int numSlides();
     virtual UpSlide* slide(int index);
 

@@ -41,12 +41,15 @@ UpKpr2Presentation::UpKpr2Presentation(QString service, QString path, QObject* p
 , m_dbus(service, path, "org.kde.koffice.document")
 , m_dbusView(0)
 , m_url()
+, m_customSlideshowsDialog(false)
 {
   if (m_dbus.isValid())
   {
     m_url = m_dbus.call("url").arguments().first().toString();
     QString viewPath = "/" + m_dbus.call("view", 0).arguments().first().toString();
     m_dbusView = new QDBusInterface(service, viewPath, "org.kde.koffice.kpresenter.view");
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "activeCustomSlideShowChanged", this, SIGNAL(dbusCurrentSlideshowChanged(QString)));
+    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.kpresenter.view", "customSlideShowsModified", this, SIGNAL(dbusCustomSlideshowsModified()));
   }
 }
 
@@ -114,6 +117,15 @@ void UpKpr2Presentation::setSlideshow(QString slideshow)
   if (m_dbusView)
   {
     m_dbusView->call("setActiveCustomSlideShow", slideshow);
+  }
+}
+
+void UpKpr2Presentation::editCustomSlideshowsDialog()
+{
+  if (m_dbusView && !m_customSlideshowsDialog)
+  {
+    m_customSlideshowsDialog = true;
+    m_dbusView->callWithCallback("editCustomSlideShowsDialog", QList<QVariant>(), this, SLOT(callbackResult()), SLOT(callbackError()));
   }
 }
 
@@ -263,6 +275,38 @@ void UpKpr2Presentation::nextStep()
     slideshowSlideChanged(currentSlideshowSlide(), stepsInCurrentSlideshowSlide());
     slideshowStepChanged(currentSlideshowStep());
   }
+}
+
+/*
+ * DBus slots
+ */
+
+void UpKpr2Presentation::dbusCurrentSlideshowChanged(QString slideshow)
+{
+  if (slideshow == "")
+  {
+    slideshow = tr("All slides");
+  }
+  currentSlideshowChanged(slideshow);
+}
+
+void UpKpr2Presentation::dbusCustomSlideshowsModified()
+{
+  customSlideshowsModified();
+}
+
+/*
+ * Callbacks
+ */
+
+void UpKpr2Presentation::callbackResult()
+{
+  m_customSlideshowsDialog = false;
+}
+
+void UpKpr2Presentation::callbackError()
+{
+  m_customSlideshowsDialog = false;
 }
 
 #include "UpKpr2Presentation.moc"

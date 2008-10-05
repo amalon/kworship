@@ -93,9 +93,10 @@ private slots:
     void slide_doubleClicked(QModelIndex);
 
     // Custom slideshows
-    void changeSlideshow(QString name);
-    void refreshSlideshow(QString name);
+    void changeSlideshowCombo(QString name);
+    void changeSlideshowExternal(QString name);
     void refreshSlideshows();
+    void editCustomSlideshowsDialog();
 
     // From current presentation
     void slideshowStarted(int numSlides);

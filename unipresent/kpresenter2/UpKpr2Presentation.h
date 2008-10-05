@@ -60,6 +60,7 @@ class UpKpr2Presentation : public UpPresentation
     virtual QString currentSlideshow();
     virtual QStringList slideshows();
     virtual void setSlideshow(QString slideshow);
+    virtual void editCustomSlideshowsDialog();
     virtual int numSlides();
     virtual UpSlide* slide(int index);
 
@@ -85,6 +86,22 @@ class UpKpr2Presentation : public UpPresentation
     virtual void previousStep();
     virtual void nextStep();
 
+  private slots:
+
+    /*
+     * DBus slots
+     */
+
+    void dbusCurrentSlideshowChanged(QString slideshow);
+    void dbusCustomSlideshowsModified();
+
+    /*
+     * Callbacks
+     */
+
+    void callbackResult();
+    void callbackError();
+
   private:
 
     /*
@@ -99,6 +116,9 @@ class UpKpr2Presentation : public UpPresentation
 
     /// Url.
     QUrl m_url;
+
+    /// Whether the custom slideshows dialog is being opened.
+    bool m_customSlideshowsDialog;
 };
 
 #endif // _UpKpr2Presentation_h_

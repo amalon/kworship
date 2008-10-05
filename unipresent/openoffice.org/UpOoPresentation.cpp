@@ -93,6 +93,10 @@ void UpOoPresentation::setSlideshow(QString slideshow)
 {
 }
 
+void UpOoPresentation::editCustomSlideshowsDialog()
+{
+}
+
 int UpOoPresentation::numSlides()
 {
   Reference<XDrawPagesSupplier> drawPagesSupplier(m_interface, UNO_QUERY);

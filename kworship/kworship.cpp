@@ -229,8 +229,16 @@ kworship::kworship()
   m_selectPresTree->setItemsExpandable(false);
   connect(selectPresCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(presentationSelected(int)));
 
+  // Custom slideshow selector
   m_view->slideshows->setVisible(false);
-  connect(m_view->comboSlideshows, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(changeSlideshow(QString)));
+  connect(m_view->comboSlideshows, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(changeSlideshowCombo(QString)));
+
+  QToolBar* customSlideshowsToolBar = new QToolBar(i18n("Custom Slideshows"));
+  customSlideshowsToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+  m_view->slideshows->layout()->addWidget(customSlideshowsToolBar);
+  KAction* editCustomSlideshows = new KAction(KIcon("preferences-system"), i18n("Edit Custom Slideshows"), customSlideshowsToolBar);
+  connect(editCustomSlideshows, SIGNAL(triggered(bool)), this, SLOT(editCustomSlideshowsDialog()));
+  customSlideshowsToolBar->addAction(editCustomSlideshows);
 
   // Presentations toolbar
   QToolBar* presToolBar = new QToolBar("Presentations");
@@ -605,10 +613,8 @@ void kworship::setPresentation(UpPresentation* presentation)
     // Stop the slideshow if its running
     m_currentPresentation->stopSlideshow();
     m_view->slideshows->setVisible(false);
-    disconnect(m_currentPresentation, SIGNAL(currentSlideshowChanged(QString)), this, SLOT(changeSlideshow(QString)));
-    disconnect(m_currentPresentation, SIGNAL(customSlideshowEdited(QString)), this, SLOT(refreshSlideshow(QString)));
-    disconnect(m_currentPresentation, SIGNAL(customSlideshowAdded(QString)), this, SLOT(refreshSlideshows()));
-    disconnect(m_currentPresentation, SIGNAL(customSlideshowRemoved(QString)), this, SLOT(refreshSlideshows()));
+    disconnect(m_currentPresentation, SIGNAL(currentSlideshowChanged(QString)), this, SLOT(changeSlideshowExternal(QString)));
+    disconnect(m_currentPresentation, SIGNAL(customSlideshowsModified()), this, SLOT(refreshSlideshows()));
     disconnect(m_currentPresentation, SIGNAL(slideshowStarted(int)), this, SLOT(slideshowStarted(int)));
     disconnect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
     disconnect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
@@ -617,10 +623,8 @@ void kworship::setPresentation(UpPresentation* presentation)
   m_currentPresentation = presentation;
   if (0 != m_currentPresentation)
   {
-    connect(m_currentPresentation, SIGNAL(currentSlideshowChanged(QString)), this, SLOT(changeSlideshow(QString)));
-    connect(m_currentPresentation, SIGNAL(customSlideshowEdited(QString)), this, SLOT(refreshSlideshow(QString)));
-    connect(m_currentPresentation, SIGNAL(customSlideshowAdded(QString)), this, SLOT(refreshSlideshows()));
-    connect(m_currentPresentation, SIGNAL(customSlideshowRemoved(QString)), this, SLOT(refreshSlideshows()));
+    connect(m_currentPresentation, SIGNAL(currentSlideshowChanged(QString)), this, SLOT(changeSlideshowExternal(QString)));
+    connect(m_currentPresentation, SIGNAL(customSlideshowsModified()), this, SLOT(refreshSlideshows()));
     connect(m_currentPresentation, SIGNAL(slideshowStarted(int)), this, SLOT(slideshowStarted(int)));
     connect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
     connect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
@@ -641,18 +645,18 @@ void kworship::setPresentation(UpPresentation* presentation)
 
 // Custom slideshows
 
-void kworship::changeSlideshow(QString name)
+void kworship::changeSlideshowCombo(QString name)
 {
   Q_ASSERT(0 != m_currentPresentation);
-  m_view->comboSlideshows->setCurrentIndex(m_view->comboSlideshows->findText(name));
   m_currentPresentation->setSlideshow(name);
   /// @todo refresh the slides list
 }
 
-void kworship::refreshSlideshow(QString name)
+void kworship::changeSlideshowExternal(QString name)
 {
-  if (m_view->comboSlideshows->currentText() == name)
+  if (m_view->comboSlideshows->currentText() != name)
   {
+    m_view->comboSlideshows->setCurrentIndex(m_view->comboSlideshows->findText(name));
     /// @todo refresh the slides list
   }
 }
@@ -663,6 +667,12 @@ void kworship::refreshSlideshows()
   m_view->comboSlideshows->clear();
   m_view->comboSlideshows->insertItems(0, m_currentPresentation->slideshows());
   m_view->comboSlideshows->setCurrentIndex(m_view->comboSlideshows->findText(m_currentPresentation->currentSlideshow()));
+}
+
+void kworship::editCustomSlideshowsDialog()
+{
+  Q_ASSERT(0 != m_currentPresentation);
+  m_currentPresentation->editCustomSlideshowsDialog();
 }
 
 // From current presentation

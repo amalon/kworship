@@ -78,6 +78,10 @@ void UpKpr1Presentation::setSlideshow(QString slideshow)
 {
 }
 
+void UpKpr1Presentation::editCustomSlideshowsDialog()
+{
+}
+
 int UpKpr1Presentation::numSlides()
 {
   return m_dcop.numPages();
