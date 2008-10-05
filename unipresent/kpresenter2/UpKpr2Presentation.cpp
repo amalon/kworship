@@ -152,6 +152,14 @@ UpSlide* UpKpr2Presentation::slide(int index)
 
 bool UpKpr2Presentation::isSlideshowRunning()
 {
+  if (m_dbusView)
+  {
+    QDBusMessage result = m_dbusView->call("isPresRunning");
+    if (QDBusMessage::ReplyMessage == result.type())
+    {
+      return result.arguments().first().toBool();
+    }
+  }
   return false;
 }
 

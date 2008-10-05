@@ -619,6 +619,7 @@ void kworship::setPresentation(UpPresentation* presentation)
     disconnect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
     disconnect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
     disconnect(m_currentPresentation, SIGNAL(slideshowStepChanged(int)), this, SLOT(slideshowStepChanged(int)));
+    slideshowStopped();
   }
   m_currentPresentation = presentation;
   if (0 != m_currentPresentation)
