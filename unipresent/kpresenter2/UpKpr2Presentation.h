@@ -86,6 +86,16 @@ class UpKpr2Presentation : public UpPresentation
     virtual void previousStep();
     virtual void nextStep();
 
+    /*
+     * Backend specific interface.
+     */
+
+    /// Get the dbus interface.
+    QDBusInterface& dbus();
+
+    /// Get the dbus view interface.
+    QDBusInterface* dbusView();
+
   private slots:
 
     /*

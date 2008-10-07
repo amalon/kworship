@@ -26,6 +26,8 @@
 #include "UpKpr2Slide.h"
 #include "UpKpr2Presentation.h"
 
+#include <QTemporaryFile>
+
 /*
  * Constructors + destructor
  */
@@ -67,6 +69,31 @@ QString UpKpr2Slide::notes()
 
 QPixmap UpKpr2Slide::preview()
 {
+  if (m_preview.isNull())
+  {
+    QDBusInterface* view = m_presentation->dbusView();
+    if (view)
+    {
+      QTemporaryFile previewFile;
+      previewFile.open();
+
+      QDBusMessage result = view->call(
+          "exportPageThumbnail",
+          m_index,    // page
+          167, 125, // size
+          previewFile.fileName(), // filename
+          "PPM",    // format
+          -1        // quality
+      );
+      if (QDBusMessage::ReplyMessage == result.type())
+      {
+        if (result.arguments().first().toBool())
+        {
+          m_preview.load(previewFile.fileName());
+        }
+      }
+    }
+  }
   return m_preview;
 }
 

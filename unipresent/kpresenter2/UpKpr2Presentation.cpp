@@ -91,7 +91,7 @@ QString UpKpr2Presentation::currentSlideshow()
     if (QDBusMessage::ReplyMessage == result.type())
     {
       QString slideshow = result.arguments().first().toString();
-      if (slideshow != "")
+      if (!slideshow.isEmpty())
       {
         return slideshow;
       }
@@ -138,12 +138,20 @@ void UpKpr2Presentation::editCustomSlideshowsDialog()
 
 int UpKpr2Presentation::numSlides()
 {
+  if (m_dbusView)
+  {
+    QDBusMessage result = m_dbusView->call("numCustomSlideShowSlides");
+    if (QDBusMessage::ReplyMessage == result.type())
+    {
+      return result.arguments().first().toInt();
+    }
+  }
   return 0;
 }
 
 UpSlide* UpKpr2Presentation::slide(int index)
 {
-  return 0;
+  return new UpKpr2Slide(this, index);
 }
 
 /*
@@ -281,12 +289,28 @@ void UpKpr2Presentation::nextStep()
 }
 
 /*
+ * Backend specific interface.
+ */
+
+/// Get the dbus interface.
+QDBusInterface& UpKpr2Presentation::dbus()
+{
+  return m_dbus;
+}
+
+/// Get the dbus view interface.
+QDBusInterface* UpKpr2Presentation::dbusView()
+{
+  return m_dbusView;
+}
+
+/*
  * DBus slots
  */
 
 void UpKpr2Presentation::dbusCurrentSlideshowChanged(QString slideshow)
 {
-  if (slideshow == "")
+  if (slideshow.isEmpty())
   {
     slideshow = tr("All slides");
   }
