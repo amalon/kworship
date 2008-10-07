@@ -87,6 +87,10 @@ class DefaultModelNode
     /// Clear the cache of child nodes.
     void clearChildCache()
     {
+      foreach (DefaultModelNode* node, m_children)
+      {
+        delete node;
+      }
       m_children.clear();
     }
 

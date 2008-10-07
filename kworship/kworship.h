@@ -96,6 +96,7 @@ private slots:
     void changeSlideshowCombo(QString name);
     void changeSlideshowExternal(QString name);
     void refreshSlideshows();
+    void refreshSlides();
     void editCustomSlideshowsDialog();
 
     // From current presentation

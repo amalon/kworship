@@ -650,7 +650,7 @@ void kworship::changeSlideshowCombo(QString name)
 {
   Q_ASSERT(0 != m_currentPresentation);
   m_currentPresentation->setSlideshow(name);
-  /// @todo refresh the slides list
+  refreshSlides();
 }
 
 void kworship::changeSlideshowExternal(QString name)
@@ -658,7 +658,7 @@ void kworship::changeSlideshowExternal(QString name)
   if (m_view->comboSlideshows->currentText() != name)
   {
     m_view->comboSlideshows->setCurrentIndex(m_view->comboSlideshows->findText(name));
-    /// @todo refresh the slides list
+    refreshSlides();
   }
 }
 
@@ -668,6 +668,18 @@ void kworship::refreshSlideshows()
   m_view->comboSlideshows->clear();
   m_view->comboSlideshows->insertItems(0, m_currentPresentation->slideshows());
   m_view->comboSlideshows->setCurrentIndex(m_view->comboSlideshows->findText(m_currentPresentation->currentSlideshow()));
+}
+
+void kworship::refreshSlides()
+{
+  // Clear child cache
+  QModelIndex root = m_view->listSlides->rootIndex();
+  DefaultModelNode* node = m_presentationManager->presentationsModel()->itemFromIndex(root);
+  Q_ASSERT(0 != node);
+  node->clearChildCache();
+
+  // Force a refresh
+  m_view->listSlides->setRootIndex(root);
 }
 
 void kworship::editCustomSlideshowsDialog()
