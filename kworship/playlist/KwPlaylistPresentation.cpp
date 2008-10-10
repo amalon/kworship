@@ -28,6 +28,10 @@
 
 #include "UpManager.h"
 
+#include <KLocale>
+#include <KMimeType>
+#include <KMessageBox>
+
 /*
  * Constructors + destructor.
  */
@@ -51,6 +55,24 @@ void KwPlaylistPresentation::activate(KwDisplayManager* manager)
 {
   manager->text.clear();
   // Just load the presentation file for the minute
-  UpManager::self()->openPresentation(getUrl());
+  bool attemptFailed;
+  bool presentation = UpManager::self()->openPresentation(getUrl(), &attemptFailed);
+  if (!presentation)
+  {
+    if (attemptFailed)
+    {
+      KMessageBox::sorry(0,
+          i18n("The presentation could not be opened by any of the presentation backends."),
+          i18n("Presentation could not be opened")
+          );
+    }
+    else
+    {
+      KMessageBox::information(0,
+          i18n("No presentation backend is known to be able to open files of the MIME type \"%1\". Please install an appropriate presentation backend or associate this MIME type with an existing backend in the configuration.").arg(KMimeType::findByUrl(getUrl())->name()),
+          i18n("Presentation could not be opened")
+          );
+    }
+  }
 }
 

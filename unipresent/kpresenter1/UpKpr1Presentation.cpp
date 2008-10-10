@@ -25,6 +25,7 @@
 
 #include "UpKpr1Presentation.h"
 #include "UpKpr1Slide.h"
+#include "UpKpr1Backend.h"
 
 #include <cassert>
 
@@ -33,8 +34,8 @@
  */
 
 /// Primary constructor.
-UpKpr1Presentation::UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, QObject* parent)
-: UpPresentation(parent)
+UpKpr1Presentation::UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, UpKpr1Backend* parent)
+: UpPresentation(parent, parent)
 , m_dcop(dcop)
 , m_dcopView(dcop.view())
 , m_url(dcop.url())

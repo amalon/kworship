@@ -24,6 +24,10 @@
  */
 
 #include "UpPresentationsModel.h"
+#include "UpPresentation.h"
+#include "UpManagerNode.h"
+#include "UpBackendNode.h"
+#include "UpPresentationNode.h"
 
 /*
  * Constructors + destructor
@@ -38,5 +42,53 @@ UpPresentationsModel::UpPresentationsModel(QObject* parent)
 /// Destructor.
 UpPresentationsModel::~UpPresentationsModel()
 {
+}
+
+/*
+ * Public slots
+ */
+
+void UpPresentationsModel::loadedPresentation(UpPresentation* presentation)
+{
+  // First find the backend
+  UpManagerNode* root = dynamic_cast<UpManagerNode*>(getRootNode());
+  Q_ASSERT(0 != root);
+  UpBackendNode* backendNode = root->getBackendNode(presentation->backend());
+  if (0 != backendNode)
+  {
+    int backendRow = root->getChildIndex(backendNode);
+    Q_ASSERT(-1 != backendRow);
+    QModelIndex backendIndex = index(backendRow, 0, QModelIndex());
+    int row = backendNode->getChildCount() - 1;
+    beginInsertRows(backendIndex, row, row);
+    backendNode->childrenAdded(row, row);
+    endInsertRows();
+  }
+}
+
+void UpPresentationsModel::unloadedPresentation(UpPresentation* presentation)
+{
+  // First find the backend
+  UpManagerNode* root = dynamic_cast<UpManagerNode*>(getRootNode());
+  Q_ASSERT(0 != root);
+  UpBackendNode* backendNode = root->getBackendNode(presentation->backend());
+  if (0 != backendNode)
+  {
+    // Now find the presentation node
+    UpPresentationNode* presentationNode = backendNode->getPresentationNode(presentation);
+    if (0 != presentationNode)
+    {
+      int row = backendNode->getChildIndex(presentationNode);
+      if (row != -1)
+      {
+        int backendRow = root->getChildIndex(backendNode);
+        Q_ASSERT(-1 != backendRow);
+        QModelIndex backendIndex = index(backendRow, 0, QModelIndex());
+        beginRemoveRows(backendIndex, row, row);
+        backendNode->childrenRemoved(row, row);
+        endRemoveRows();
+      }
+    }
+  }
 }
 

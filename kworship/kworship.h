@@ -84,6 +84,7 @@ private slots:
     void toggleFullscreen(bool checked);
     void optionsPreferences();
     void playlist_doubleClicked(QModelIndex);
+    void presentationDelete();
     void presentationSelected(int);
     void presentationToggled(bool);
     void presentationPreviousSlide();
@@ -93,6 +94,7 @@ private slots:
     void slide_doubleClicked(QModelIndex);
 
     // Custom slideshows
+    void presentationComboReset();
     void changeSlideshowCombo(QString name);
     void changeSlideshowExternal(QString name);
     void refreshSlideshows();
@@ -111,7 +113,7 @@ private:
     int getCurrentDisplayScreen();
 
     // Presentations
-    void setPresentation(UpPresentation* presentation);
+    void setPresentation(UpPresentation* presentation, bool alreadyDestroyed = false);
 
 private:
     Ui::prefs_base ui_prefs_base ;

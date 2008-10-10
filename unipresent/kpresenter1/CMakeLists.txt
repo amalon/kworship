@@ -1,7 +1,10 @@
 project(unipresentkpresenter1)
 
-find_package(Qt4 REQUIRED)
-include_directories(${QT_INCLUDES})
+find_package(KDE4 REQUIRED)
+include (KDE4Defaults)
+include_directories(${KDE4_INCLUDES}
+                    ${QT_INCLUDES}
+)
 
 set(unipresentkpresenter1_SRCS
     UpKpr1Dcop.cpp
@@ -15,7 +18,5 @@ set(unipresentkpresenter1_SRCS
     UpKpr1SlideDcop.cpp
 )
 
-QT4_AUTOMOC(${unipresentkpresenter1_SRCS})
-
-add_library(unipresentkpresenter1 STATIC ${unipresentkpresenter1_SRCS})
+kde4_add_library(unipresentkpresenter1 STATIC ${unipresentkpresenter1_SRCS})
 

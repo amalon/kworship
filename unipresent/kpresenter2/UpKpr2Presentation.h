@@ -30,6 +30,8 @@
 
 #include <QDBusInterface>
 
+class UpKpr2Backend;
+
 /// KPresenter 2 presentation.
 class UpKpr2Presentation : public UpPresentation
 {
@@ -41,7 +43,7 @@ class UpKpr2Presentation : public UpPresentation
      */
 
     /// Primary constructor.
-    UpKpr2Presentation(QString service, QString path, QObject* parent = 0);
+    UpKpr2Presentation(QString service, QString path, UpKpr2Backend* backend, QObject* parent = 0);
 
     /// Destructor.
     virtual ~UpKpr2Presentation();

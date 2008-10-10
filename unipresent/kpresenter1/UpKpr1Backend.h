@@ -49,20 +49,18 @@ class UpKpr1Backend : public UpBackend
      * General meta information
      */
 
+    virtual QString id() const;
     virtual QString name() const;
-
     virtual QString description() const;
-
     virtual QStringList mimeTypes() const;
-
     virtual QIcon icon() const;
 
     /*
      * Activation
      */
 
+    virtual bool isActive();
     virtual bool activate();
-
     virtual void deactivate();
 
     /*
@@ -70,8 +68,7 @@ class UpKpr1Backend : public UpBackend
      */
 
     virtual QList<UpPresentation*> presentations();
-
-    virtual UpPresentation* openPresentation(const QUrl& url);
+    virtual bool openPresentation(const QUrl& url);
 
   private:
 

@@ -30,6 +30,8 @@
 #include "UpKpr1ViewDcop.h"
 #include "UpPresentation.h"
 
+class UpKpr1Backend;
+
 /** KPresenter 1 presentation.
  * @todo We could do a lot more caching in this class to avoid repeated dcop
  *       terminal commands.
@@ -44,7 +46,7 @@ class UpKpr1Presentation : public UpPresentation
      */
 
     /// Primary constructor.
-    UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, QObject* parent = 0);
+    UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, UpKpr1Backend* parent = 0);
 
     /// Destructor.
     virtual ~UpKpr1Presentation();

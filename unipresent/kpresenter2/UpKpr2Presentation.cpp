@@ -25,9 +25,13 @@
 
 #include "UpKpr2Presentation.h"
 #include "UpKpr2Slide.h"
+#include "UpKpr2Backend.h"
+
+#include <KLocale>
 
 #include <QList>
 #include <QVariant>
+#include <QDBusReply>
 
 #include <cassert>
 
@@ -36,8 +40,8 @@
  */
 
 /// Primary constructor.
-UpKpr2Presentation::UpKpr2Presentation(QString service, QString path, QObject* parent)
-: UpPresentation(parent)
+UpKpr2Presentation::UpKpr2Presentation(QString service, QString path, UpKpr2Backend* backend, QObject* parent)
+: UpPresentation(backend, parent)
 , m_dbus(service, path, "org.kde.koffice.document")
 , m_dbusView(0)
 , m_url()
@@ -46,17 +50,20 @@ UpKpr2Presentation::UpKpr2Presentation(QString service, QString path, QObject* p
   if (m_dbus.isValid())
   {
     m_url = m_dbus.call("url").arguments().first().toString();
-    QString viewPath = "/" + m_dbus.call("view", 0).arguments().first().toString();
-    m_dbusView = new QDBusInterface(service, viewPath, "org.kde.koffice.presentation.view");
+    if ((QDBusReply<int>)m_dbus.call("viewCount") > 0)
+    {
+      QString viewPath = "/" + (QDBusReply<QString>)m_dbus.call("view", 0);
+      m_dbusView = new QDBusInterface(service, viewPath, "org.kde.koffice.presentation.view");
 
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "activeCustomSlideShowChanged", this, SLOT(dbusCurrentSlideshowChanged(QString)));
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "customSlideShowsModified", this, SIGNAL(customSlideshowsModified()));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "activeCustomSlideShowChanged", this, SLOT(dbusCurrentSlideshowChanged(QString)));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "customSlideShowsModified", this, SIGNAL(customSlideshowsModified()));
 
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStarted", this, SLOT(dbusScreenStarted(int)));
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStopped", this, SIGNAL(slideshowStopped()));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStarted", this, SLOT(dbusScreenStarted(int)));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStopped", this, SIGNAL(slideshowStopped()));
 
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresPage", this, SIGNAL(slideshowSlideChanged(int, int)));
-    QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresStep", this, SIGNAL(slideshowStepChanged(int)));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresPage", this, SIGNAL(slideshowSlideChanged(int, int)));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresStep", this, SIGNAL(slideshowStepChanged(int)));
+    }
   }
 }
 
@@ -87,29 +94,29 @@ QString UpKpr2Presentation::currentSlideshow()
 {
   if (m_dbusView)
   {
-    QDBusMessage result = m_dbusView->call("activeCustomSlideShow");
-    if (QDBusMessage::ReplyMessage == result.type())
+    QDBusReply<QString> result = m_dbusView->call("activeCustomSlideShow");
+    if (result.isValid())
     {
-      QString slideshow = result.arguments().first().toString();
+      QString slideshow = result;
       if (!slideshow.isEmpty())
       {
         return slideshow;
       }
     }
   }
-  return tr("All slides");
+  return i18n("All slides");
 }
 
 QStringList UpKpr2Presentation::slideshows()
 {
   QStringList results;
-  results << tr("All slides");
+  results << i18n("All slides");
   if (m_dbusView)
   {
-    QDBusMessage reply = m_dbusView->call("customSlideShows");
-    if (QDBusMessage::ReplyMessage == reply.type())
+    QDBusReply<QStringList> reply = m_dbusView->call("customSlideShows");
+    if (reply.isValid())
     {
-      results << reply.arguments().first().toStringList();
+      results << reply;
     }
   }
   return results;
@@ -117,7 +124,7 @@ QStringList UpKpr2Presentation::slideshows()
 
 void UpKpr2Presentation::setSlideshow(QString slideshow)
 {
-  if (slideshow == tr("All slides"))
+  if (slideshow == i18n("All slides"))
   {
     slideshow = QString();
   }
@@ -140,10 +147,10 @@ int UpKpr2Presentation::numSlides()
 {
   if (m_dbusView)
   {
-    QDBusMessage result = m_dbusView->call("numCustomSlideShowSlides");
-    if (QDBusMessage::ReplyMessage == result.type())
+    QDBusReply<int> result = m_dbusView->call("numCustomSlideShowSlides");
+    if (result.isValid())
     {
-      return result.arguments().first().toInt();
+      return result;
     }
   }
   return 0;
@@ -162,10 +169,10 @@ bool UpKpr2Presentation::isSlideshowRunning()
 {
   if (m_dbusView)
   {
-    QDBusMessage result = m_dbusView->call("isPresRunning");
-    if (QDBusMessage::ReplyMessage == result.type())
+    QDBusReply<bool> result = m_dbusView->call("isPresRunning");
+    if (result.isValid())
     {
-      return result.arguments().first().toBool();
+      return result;
     }
   }
   return false;
@@ -175,13 +182,12 @@ int UpKpr2Presentation::numSlidesInSlideshow()
 {
   if (m_dbusView)
   {
-    QDBusMessage result = m_dbusView->call("numPresPages");
-    if (QDBusMessage::ReplyMessage == result.type())
+    QDBusReply<int> result = m_dbusView->call("numPresPages");
+    if (result.isValid())
     {
       // There's also the finish slide
       /// @todo the finish slide is optional, ensure this is correct
-      int slides = result.arguments().first().toInt() - 1;
-      return slides;
+      return result - 1;
     }
   }
   return 0;
@@ -191,11 +197,10 @@ int UpKpr2Presentation::currentSlideshowSlide()
 {
   if (m_dbusView)
   {
-    QDBusMessage result = m_dbusView->call("currentPresPage");
-    if (QDBusMessage::ReplyMessage == result.type())
+    QDBusReply<int> result = m_dbusView->call("currentPresPage");
+    if (result.isValid())
     {
-      int slide = result.arguments().first().toInt();
-      return slide;
+      return result;
     }
   }
   return 0;
@@ -205,10 +210,10 @@ int UpKpr2Presentation::stepsInCurrentSlideshowSlide()
 {
   if (m_dbusView)
   {
-    QDBusMessage result = m_dbusView->call("numStepsInPresPage");
-    if (QDBusMessage::ReplyMessage == result.type())
+    QDBusReply<int> result = m_dbusView->call("numStepsInPresPage");
+    if (result.isValid())
     {
-      int steps = result.arguments().first().toInt();
+      int steps = result;
       if (steps <= 0)
       {
         steps = 1;
@@ -223,10 +228,10 @@ int UpKpr2Presentation::currentSlideshowStep()
 {
   if (m_dbusView)
   {
-    QDBusMessage result = m_dbusView->call("currentPresStep");
-    if (QDBusMessage::ReplyMessage == result.type())
+    QDBusReply<int> result = m_dbusView->call("currentPresStep");
+    if (result.isValid())
     {
-      return result.arguments().first().toInt();
+      return result;
     }
   }
   return 0;
@@ -254,6 +259,10 @@ void UpKpr2Presentation::stopSlideshow()
 
 void UpKpr2Presentation::goToSlide(int index)
 {
+  if (m_dbusView)
+  {
+    m_dbusView->call("gotoPresPage", index);
+  }
 }
 
 void UpKpr2Presentation::previousSlide()
@@ -312,7 +321,7 @@ void UpKpr2Presentation::dbusCurrentSlideshowChanged(QString slideshow)
 {
   if (slideshow.isEmpty())
   {
-    slideshow = tr("All slides");
+    slideshow = i18n("All slides");
   }
   currentSlideshowChanged(slideshow);
 }

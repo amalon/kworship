@@ -90,6 +90,25 @@ class DefaultModelNode
       return m_children[index];
     }
 
+    /// Get the number of cached children.
+    int getNumCachedChildren() const
+    {
+      return m_children.size();
+    }
+
+    /// Get a cached child node by index (even if it is 0).
+    DefaultModelNode* getCachedChild(int index)
+    {
+      if (index >= 0 && index < m_children.size())
+      {
+        return m_children[index];
+      }
+      else
+      {
+        return 0;
+      }
+    }
+
     /// Notify that children have been added.
     void childrenAdded(int first, int last)
     {
@@ -213,6 +232,12 @@ class NodeBasedModel : public QAbstractItemModel
      * Main interface
      */
 
+    /// Get the root node.
+    Node* getRootNode()
+    {
+      return m_root;
+    }
+
     /// Set the root node.
     void setRootNode(Node* root)
     {
@@ -246,7 +271,10 @@ class NodeBasedModel : public QAbstractItemModel
     QModelIndex parent(const QModelIndex &child) const
     {
       Node* node = itemFromIndex(child);
-      assert(0 != node);
+      if (0 == node)
+      {
+        return QModelIndex();
+      }
       DefaultModelNode* parentNode = node->getParent();
       if (0 == parentNode)
       {

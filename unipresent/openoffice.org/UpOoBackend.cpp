@@ -29,6 +29,12 @@
 
 #include "compiler.h"
 
+#include <KRun>
+#include <KShell>
+#include <KLocale>
+
+#include <QThread>
+
 #include <osl/file.hxx> 
 #include <osl/process.h> 
 #include <com/sun/star/beans/XPropertySet.hpp>
@@ -58,7 +64,7 @@ UpOoBackend::UpOoBackend(QObject* parent)
 , m_bridge(0)
 , m_presentations()
 {
-  activate();
+  updatePresentations();
 }
 
 /// Destructor.
@@ -71,14 +77,19 @@ UpOoBackend::~UpOoBackend()
  * General meta information
  */
 
-QString UpOoBackend::name() const
+QString UpOoBackend::id() const
 {
   return "OpenOffice.org";
 }
 
+QString UpOoBackend::name() const
+{
+  return i18n("OpenOffice.org");
+}
+
 QString UpOoBackend::description() const
 {
-  return "Controls a running OpenOffice.org presentation";
+  return i18n("Controls a running OpenOffice.org presentation");
 }
 
 QStringList UpOoBackend::mimeTypes() const
@@ -98,41 +109,51 @@ QIcon UpOoBackend::icon() const
  * Activation
  */
 
+bool UpOoBackend::isActive()
+{
+  /// @todo Gently try again
+  return (0 != m_bridge);
+}
+
 bool UpOoBackend::activate()
 {
-  if (0 == m_bridge)
+  int tries = 0;
+  while (0 == m_bridge)
   {
     m_bridge = new UpOoBridge();
-    if (likely(m_bridge->isValid()))
+    if (m_bridge->isValid())
     {
       activated();
 
-      // Find open documents.
-      Reference<XPropertySet> propertySet(m_bridge->serviceManager(), UNO_QUERY);
-      Reference<XComponentContext> componentContext;
-      propertySet->getPropertyValue(OUString::createFromAscii("DefaultContext")) >>= componentContext;
-      Reference<XMultiComponentFactory> componentFactoryServer = componentContext->getServiceManager();
-
-      Reference<XDesktop> desktop(componentFactoryServer->createInstanceWithContext(OUString::createFromAscii("com.sun.star.frame.Desktop"), componentContext), UNO_QUERY);
-      Reference<XEnumeration> documents = desktop->getComponents()->createEnumeration();
-
-      while (documents->hasMoreElements())
-      {
-        Reference<XPresentationSupplier> presentationSupplier;
-        documents->nextElement() >>= presentationSupplier;
-        if (0 != presentationSupplier.get())
-        {
-          m_presentations.push_back(new UpOoPresentation(presentationSupplier.get(), this));
-        }
-      }
+      updatePresentations();
+      return true;
     }
     else
     {
+      delete m_bridge;
       m_bridge = 0;
-      return false;
+
+      ++tries;
+      if (tries == 1)
+      {
+        // First try : start OpenOffice.org
+        bool starting = KRun::runCommand("openoffice.org " + KShell::quoteArg("-accept=socket,host=localhost,port=2083;urp;StarOffice.ServiceManager"), 0);
+        if (!starting)
+        {
+          return false;
+        }
+      }
+      else if (tries > 10)
+      {
+        // Second try + : give up
+        return false;
+      }
+      /// @todo PORT
+      usleep(500000);
     }
   }
-  return true;
+
+  return (0 != m_bridge);
 }
 
 void UpOoBackend::deactivate()
@@ -154,7 +175,7 @@ QList<UpPresentation*> UpOoBackend::presentations()
   return m_presentations;
 }
 
-UpPresentation* UpOoBackend::openPresentation(const QUrl& url)
+bool UpOoBackend::openPresentation(const QUrl& url)
 {
   OUString urlString = OUString::createFromAscii(url.toString().toAscii());
 
@@ -168,10 +189,52 @@ UpPresentation* UpOoBackend::openPresentation(const QUrl& url)
     Reference<XComponentLoader> componentLoader(componentFactoryServer->createInstanceWithContext(OUString::createFromAscii("com.sun.star.frame.Desktop"), componentContext), UNO_QUERY);
 
     Reference<XComponent> newComponent = componentLoader->loadComponentFromURL(urlString, OUString::createFromAscii("_blank"), 0, Sequence< ::com::sun::star::beans::PropertyValue>() );
+
+    return true;
   }
   else
   {
-    return 0;
+    return false;
+  }
+}
+
+/*
+ * Other interfaces
+ */
+
+/// Update the list of presentations
+void UpOoBackend::updatePresentations()
+{
+  if (0 == m_bridge)
+  {
+    m_bridge = new UpOoBridge();
+    if (!m_bridge->isValid())
+    {
+      delete m_bridge;
+      m_bridge = 0;
+    }
+  }
+
+  if (0 != m_bridge && m_presentations.isEmpty())
+  {
+    // Find open documents.
+    Reference<XPropertySet> propertySet(m_bridge->serviceManager(), UNO_QUERY);
+    Reference<XComponentContext> componentContext;
+    propertySet->getPropertyValue(OUString::createFromAscii("DefaultContext")) >>= componentContext;
+    Reference<XMultiComponentFactory> componentFactoryServer = componentContext->getServiceManager();
+
+    Reference<XDesktop> desktop(componentFactoryServer->createInstanceWithContext(OUString::createFromAscii("com.sun.star.frame.Desktop"), componentContext), UNO_QUERY);
+    Reference<XEnumeration> documents = desktop->getComponents()->createEnumeration();
+
+    while (documents->hasMoreElements())
+    {
+      Reference<XPresentationSupplier> presentationSupplier;
+      documents->nextElement() >>= presentationSupplier;
+      if (0 != presentationSupplier.get())
+      {
+        m_presentations.push_back(new UpOoPresentation(presentationSupplier.get(), this));
+      }
+    }
   }
 }
 

@@ -30,6 +30,7 @@
 #include <QUrl>
 
 class UpSlide;
+class UpBackend;
 
 /** An abstract presentation document.
  * Inherit from this class to implement each backend's presentation.
@@ -44,10 +45,17 @@ class UpPresentation : public QObject
      */
 
     /// Primary constructor.
-    UpPresentation(QObject* parent = 0);
+    UpPresentation(UpBackend* backend, QObject* parent = 0);
 
     /// Destructor.
     virtual ~UpPresentation();
+
+    /*
+     * Accessors
+     */
+
+    /// Get the backend.
+    UpBackend* backend();
 
     /*
      * Main interface
@@ -149,6 +157,15 @@ class UpPresentation : public QObject
 
     /// Fired when the current step changes.
     void slideshowStepChanged(int step);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Backend this presentation is associated with.
+    UpBackend* m_backend;
 };
 
 #endif // _UpPresentation_h_

@@ -56,6 +56,9 @@ class UpBackend : public QObject
      * General meta information
      */
 
+    /// Get the internal name of the backend.
+    virtual QString id() const = 0;
+
     /// Get the name of the backend.
     virtual QString name() const = 0;
 
@@ -71,6 +74,11 @@ class UpBackend : public QObject
     /*
      * Activation
      */
+
+    /** Find whether the backend is active and ready.
+     * @return Whether activated.
+     */
+    virtual bool isActive() = 0;
 
     /** Ensure that the backend is active and ready.
      * @return Whether the activation worked.
@@ -88,7 +96,7 @@ class UpBackend : public QObject
     virtual QList<UpPresentation*> presentations() = 0;
 
     /// Open a new presentation.
-    virtual UpPresentation* openPresentation(const QUrl& url) = 0;
+    virtual bool openPresentation(const QUrl& url) = 0;
 
   signals:
 
@@ -96,19 +104,19 @@ class UpBackend : public QObject
      * Signals
      */
 
-    /// Fired when the backend is activated.
+    /// Emitted when the backend is activated.
     void activated();
 
-    /// Fired when the backend is deactivated.
+    /// Emitted when the backend is deactivated.
     void deactivated();
 
-    /// Fired when a new presentation is created or loaded.
+    /// Emitted when a new presentation is created or loaded.
     void loadedPresentation(UpPresentation*);
 
-    /// Fired when a presentation is saved under a new name.
-    void savedAsPresentation(UpPresentation*);
+    /// Emitted when a presentation is changed to a different url.
+    void movedPresentation(UpPresentation*);
 
-    /// Fired when a presentation is about to be closed.
+    /// Emitted when a presentation is about to be closed.
     void unloadedPresentation(UpPresentation*);
 };
 

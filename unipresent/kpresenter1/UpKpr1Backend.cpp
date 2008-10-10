@@ -29,6 +29,8 @@
 #include "UpKpr1PresentationDcop.h"
 #include "UpKpr1Presentation.h"
 
+#include <KLocale>
+
 /*
  * Constructors + destructor
  */
@@ -50,20 +52,27 @@ UpKpr1Backend::~UpKpr1Backend()
  * General meta information
  */
 
-QString UpKpr1Backend::name() const
+QString UpKpr1Backend::id() const
 {
-  return "KPresenter 1";
+  return "KOffice1/KPresenter";
+}
+
+QString UpKpr1Backend::UpKpr1Backend::name() const
+{
+  return i18n("KPresenter 1");
 }
 
 QString UpKpr1Backend::description() const
 {
-  return "Controls a running KPresenter 1 presentation";
+  return i18n("Controls a running KPresenter 1 presentation");
 }
 
 QStringList UpKpr1Backend::mimeTypes() const
 {
   /// @todo Find mime types from kpresenter if possible
   return QStringList()
+    << "application/x-kpresenter"
+    << "application/vnd.oasis.opendocument.presentation"
     ;
 }
 
@@ -75,6 +84,12 @@ QIcon UpKpr1Backend::icon() const
 /*
  * Activation
  */
+
+bool UpKpr1Backend::isActive()
+{
+  /// @todo Gently try again
+  return !m_presentations.empty();
+}
 
 bool UpKpr1Backend::activate()
 {
@@ -107,8 +122,8 @@ QList<UpPresentation*> UpKpr1Backend::presentations()
   return m_presentations;
 }
 
-UpPresentation* UpKpr1Backend::openPresentation(const QUrl& url)
+bool UpKpr1Backend::openPresentation(const QUrl& url)
 {
-  return 0;
+  return false;
 }
 

@@ -29,6 +29,8 @@
 #include "NodeBasedModel.h"
 
 class UpBackend;
+class UpPresentation;
+class UpPresentationNode;
 
 /// A presentations node for a backend.
 class UpBackendNode : public DefaultModelNode
@@ -50,6 +52,7 @@ class UpBackendNode : public DefaultModelNode
      */
 
     UpBackend* getItem();
+    UpPresentationNode* getPresentationNode(UpPresentation* presentation);
 
     /*
      * Main interface

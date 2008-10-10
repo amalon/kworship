@@ -56,6 +56,20 @@ UpBackend* UpBackendNode::getItem()
   return m_item;
 }
 
+UpPresentationNode* UpBackendNode::getPresentationNode(UpPresentation* presentation)
+{
+  int numPresentations = getNumCachedChildren();
+  for (int i = 0; i < numPresentations; ++i)
+  {
+    UpPresentationNode* node = dynamic_cast<UpPresentationNode*>(getCachedChild(i));
+    if (0 != node && node->getItem() == presentation)
+    {
+      return node;
+    }
+  }
+  return 0;
+}
+
 /*
  * Main interface
  */

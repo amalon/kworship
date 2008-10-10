@@ -28,11 +28,13 @@
 
 #include "NodeBasedModel.h"
 
-class QObject;
+class UpPresentation;
 
 /// A Qt model for presentation items.
 class UpPresentationsModel : public NodeBasedModel<>
 {
+    Q_OBJECT
+
   public:
     
     /*
@@ -44,6 +46,15 @@ class UpPresentationsModel : public NodeBasedModel<>
 
     /// Destructor.
     ~UpPresentationsModel();
+
+  public slots:
+
+    /*
+     * Public slots
+     */
+
+    void loadedPresentation(UpPresentation*);
+    void unloadedPresentation(UpPresentation*);
 };
 
 #endif // _UpPresentationsModel_h_

@@ -24,7 +24,11 @@
  */
 
 #include "UpKpr2Backend.h"
+#include "UpKpr2Process.h"
 #include "UpKpr2Presentation.h"
+
+#include <KRun>
+#include <KLocale>
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -40,10 +44,12 @@
 /// Primary constructor.
 UpKpr2Backend::UpKpr2Backend(QObject* parent)
 : UpBackend(parent)
+, m_processes()
 , m_presentations()
 {
-  activate();
   QDBusConnectionInterface* interface = QDBusConnection::sessionBus().interface();
+  connect(interface, SIGNAL(serviceOwnerChanged(const QString&, const QString&, const QString&)), this, SLOT(dbusServiceOwnerChange(const QString&, const QString&, const QString&)));
+
   QDBusReply<QStringList> reply = interface->registeredServiceNames();
   assert(reply.isValid());
   QStringList serviceNames = reply;
@@ -51,15 +57,7 @@ UpKpr2Backend::UpKpr2Backend(QObject* parent)
   {
     if (serviceName.startsWith("org.koffice.kpresenter-"))
     {
-      QDBusInterface application(serviceName, "/application", "org.kde.koffice.application");
-      if (application.isValid())
-      {
-        QStringList docs = application.call("getDocuments").arguments().first().toStringList();
-        foreach (QString doc, docs)
-        {
-          m_presentations << new UpKpr2Presentation(serviceName, doc, this);
-        }
-      }
+      dbusServiceOwnerChange(serviceName, QString(), "dummy"); // the new owner string isn't used
     }
   }
 }
@@ -67,26 +65,37 @@ UpKpr2Backend::UpKpr2Backend(QObject* parent)
 /// Destructor.
 UpKpr2Backend::~UpKpr2Backend()
 {
+  foreach (UpKpr2Process* process, m_processes)
+  {
+    delete process;
+  }
 }
 
 /*
  * General meta information
  */
 
+QString UpKpr2Backend::id() const
+{
+  return "KOffice2/KPresenter";
+}
+
 QString UpKpr2Backend::name() const
 {
-  return "KPresenter 2";
+  return i18n("KPresenter 2");
 }
 
 QString UpKpr2Backend::description() const
 {
-  return "Controls a running KPresenter 2 presentation";
+  return i18n("Controls a running KPresenter 2 presentation");
 }
 
 QStringList UpKpr2Backend::mimeTypes() const
 {
   /// @todo Find mime types from kpresenter if possible
   return QStringList()
+    << "application/x-kpresenter"
+    << "application/vnd.oasis.opendocument.presentation"
     ;
 }
 
@@ -99,12 +108,13 @@ QIcon UpKpr2Backend::icon() const
  * Activation
  */
 
+bool UpKpr2Backend::isActive()
+{
+  return !m_processes.isEmpty();
+}
+
 bool UpKpr2Backend::activate()
 {
-  if (m_presentations.empty())
-  {
-    
-  }
   return true;
 }
 
@@ -121,8 +131,85 @@ QList<UpPresentation*> UpKpr2Backend::presentations()
   return m_presentations;
 }
 
-UpPresentation* UpKpr2Backend::openPresentation(const QUrl& url)
+bool UpKpr2Backend::openPresentation(const QUrl& url)
 {
-  return 0;
+  // Ensure the program is up and running 
+  activate();
+
+  // Check if the presentation is already open
+  foreach (UpPresentation* presentation, m_presentations)
+  {
+    if (presentation->url() == url)
+    {
+      return true;
+    }
+  }
+
+  // Otherwise open it now
+  /// @todo Configurable kpresenter exec
+  bool started = KRun::run("kpresenter", KUrl::List() << url, 0);
+
+  return started;
+}
+
+/*
+ * Private slots
+ */
+
+/// DBus service ownership change.
+void UpKpr2Backend::dbusServiceOwnerChange(const QString& name, const QString& oldOwner, const QString& newOwner)
+{
+  // Is it an interesting service name?
+  if (name.startsWith("org.koffice.kpresenter-"))
+  {
+    // Oooh, perhaps there are new presentations available
+    if (oldOwner.isEmpty())
+    {
+      UpKpr2Process* process = new UpKpr2Process(name, this);
+      m_processes[name] = process;
+      // Link presentation event signals
+      connect(process, SIGNAL(loadedPresentation(UpKpr2Presentation*)),
+              this,    SLOT  (dbusLoadedPresentation(UpKpr2Presentation*)));
+      connect(process, SIGNAL(movedPresentation(UpKpr2Presentation*)),
+              this,    SLOT  (dbusMovedPresentation(UpKpr2Presentation*)));
+      connect(process, SIGNAL(unloadedPresentation(UpKpr2Presentation*)),
+              this,    SLOT  (dbusUnloadedPresentation(UpKpr2Presentation*)));
+      // Trigger adding of presentations that are already open
+      QList<UpKpr2Presentation*> presentations = process->presentations();
+      foreach (UpKpr2Presentation* pres, presentations)
+      {
+        dbusLoadedPresentation(pres);
+      }
+    }
+    // Or perhaps the presentations are no longer available
+    else if (newOwner.isEmpty())
+    {
+      QStringHashProcess::iterator it = m_processes.find(name);
+      if (it != m_processes.end())
+      {
+        delete *it;
+        m_processes.erase(it);
+      }
+    }
+  }
+}
+
+// Slots for UpKpr2Process signals
+
+void UpKpr2Backend::dbusLoadedPresentation(UpKpr2Presentation* presentation)
+{
+  m_presentations.push_back(presentation);
+  loadedPresentation(presentation);
+}
+
+void UpKpr2Backend::dbusMovedPresentation(UpKpr2Presentation* presentation)
+{
+  movedPresentation(presentation);
+}
+
+void UpKpr2Backend::dbusUnloadedPresentation(UpKpr2Presentation* presentation)
+{
+  m_presentations.removeOne(presentation);
+  unloadedPresentation(presentation);
 }
 

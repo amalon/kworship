@@ -17,26 +17,26 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _UpKpr2Backend_h_
-#define _UpKpr2Backend_h_
+#ifndef _UpKpr2Process_h_
+#define _UpKpr2Process_h_
 
 /**
- * @file UpKpr2Backend.h
- * @brief KPresenter 2 presentation manager.
+ * @file UpKpr2Process.h
+ * @brief KPresenter 2 process.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpBackend.h"
-
+#include <QObject>
 #include <QHash>
 
-class UpKpr2Process;
+class UpPresentation;
+class UpKpr2Backend;
 class UpKpr2Presentation;
 
-/** KPresenter 2 presentation manager.
- * This uses a nice dbus interface.
+/** KPresenter 2 process.
+ * This corresponds to a KPresenter dbus service.
  */
-class UpKpr2Backend : public UpBackend
+class UpKpr2Process : public QObject
 {
     Q_OBJECT
 
@@ -47,35 +47,35 @@ class UpKpr2Backend : public UpBackend
      */
 
     /// Primary constructor.
-    UpKpr2Backend(QObject* parent = 0);
+    UpKpr2Process(QString serviceName, UpKpr2Backend* parent = 0);
 
     /// Destructor.
-    virtual ~UpKpr2Backend();
+    virtual ~UpKpr2Process();
 
     /*
-     * General meta information
+     * Basic accessors
      */
 
-    virtual QString id() const;
-    virtual QString name() const;
-    virtual QString description() const;
-    virtual QStringList mimeTypes() const;
-    virtual QIcon icon() const;
+    /// Get the service name.
+    QString serviceName() const;
+
+    /// Get a list of presentations.
+    QList<UpKpr2Presentation*> presentations();
+
+  signals:
 
     /*
-     * Activation
+     * Signals
      */
 
-    virtual bool isActive();
-    virtual bool activate();
-    virtual void deactivate();
+    /// Emitted when a new presentation is created or loaded.
+    void loadedPresentation(UpKpr2Presentation*);
 
-    /*
-     * Presentation management
-     */
+    /// Emitted when a presentation is changed to a different url.
+    void movedPresentation(UpKpr2Presentation*);
 
-    virtual QList<UpPresentation*> presentations();
-    virtual bool openPresentation(const QUrl& url);
+    /// Emitted when a presentation is about to be closed.
+    void unloadedPresentation(UpKpr2Presentation*);
 
   private slots:
 
@@ -83,13 +83,11 @@ class UpKpr2Backend : public UpBackend
      * Private slots
      */
 
-    /// DBus service ownership change.
-    void dbusServiceOwnerChange(const QString& name, const QString& oldOwner, const QString& newOwner);
+    /// Indicates that a new presentation has been made available.
+    void dbusPresentationOpened(QString docName);
 
-    // Slots for UpKpr2Process signals
-    void dbusLoadedPresentation(UpKpr2Presentation*);
-    void dbusMovedPresentation(UpKpr2Presentation*);
-    void dbusUnloadedPresentation(UpKpr2Presentation*);
+    /// Indicates that an old presentation is no longer available.
+    void dbusPresentationClosed(QString docName);
 
   private:
 
@@ -97,14 +95,17 @@ class UpKpr2Backend : public UpBackend
      * Variables
      */
 
-    typedef QHash<QString,UpKpr2Process*> QStringHashProcess;
-    /// The kpresenter processes.
-    QStringHashProcess m_processes;
+    /// Backend object.
+    UpKpr2Backend* m_backend;
 
-    /// List of presentations.
-    QList<UpPresentation*> m_presentations;
+    /// DBus service name.
+    QString m_serviceName;
+
+    typedef QHash<QString, UpKpr2Presentation*> StringHashPresentation;
+    /// Presentations by name.
+    StringHashPresentation m_presentations;
 
 };
 
-#endif // _UpKpr2Backend_h_
+#endif // _UpKpr2Process_h_
 

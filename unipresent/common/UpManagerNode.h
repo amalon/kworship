@@ -29,6 +29,8 @@
 #include "NodeBasedModel.h"
 
 class UpManager;
+class UpBackend;
+class UpBackendNode;
 
 /// A presentations node for the manager.
 class UpManagerNode : public DefaultModelNode
@@ -50,6 +52,7 @@ class UpManagerNode : public DefaultModelNode
      */
 
     UpManager* getItem();
+    UpBackendNode* getBackendNode(UpBackend* backend);
 
     /*
      * Main interface

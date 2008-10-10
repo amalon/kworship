@@ -30,7 +30,6 @@
 #include "KwPlaylistText.h"
 #include "KwPlaylistImage.h"
 #include "KwPlaylistVideo.h"
-#include "KwPlaylistPresentation.h"
 #include "KwPlaylistModel.h"
 
 #include "KwCssStyleSheet.h"
@@ -88,9 +87,9 @@ kworship::kworship()
 , m_printer(0)
 {
   // set up presentation backends
-  m_presentationManager->registerBackend<UpKpr1Backend>();
-  m_presentationManager->registerBackend<UpKpr2Backend>();
   m_presentationManager->registerBackend<UpOoBackend>();
+  m_presentationManager->registerBackend<UpKpr2Backend>();
+  m_presentationManager->registerBackend<UpKpr1Backend>();
   
   m_mainDisplay = 0;
   m_previewDisplay = 0;
@@ -159,7 +158,6 @@ kworship::kworship()
   styleRules->addRule(beachyTheme);
 
   m_primaryPlaylist->addStyleSheet(styleRules);
-  m_primaryPlaylist->addItem(new KwPlaylistPresentation(QUrl("file:///home/james/Documents/test.odp")));
 
   m_playlistModel = new KwPlaylistModel;
   m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
@@ -225,8 +223,8 @@ kworship::kworship()
   m_selectPresTree->header()->hide();
   selectPresCombo->setModel(m_presentationManager->presentationsModel());
   selectPresCombo->setView(m_selectPresTree);
-  m_selectPresTree->expandToDepth(0);
-  m_selectPresTree->setItemsExpandable(false);
+  presentationComboReset();
+  connect(m_presentationManager->presentationsModel(), SIGNAL(modelReset()), this, SLOT(presentationComboReset()));
   connect(selectPresCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(presentationSelected(int)));
 
   // Custom slideshow selector
@@ -310,7 +308,6 @@ kworship::kworship()
 
 kworship::~kworship()
 {
-  delete m_presentationManager;
   delete KwSongdb::self();
 }
 
@@ -507,6 +504,12 @@ void kworship::playlist_doubleClicked(QModelIndex index)
   node->activate(m_displayManager);
 }
 
+void kworship::presentationDelete()
+{
+  setPresentation(0, true);
+  presentationSelected(0);
+}
+
 void kworship::presentationSelected(int)
 {
   // Find the treeviews current index
@@ -606,19 +609,23 @@ void kworship::slide_doubleClicked(QModelIndex index)
 }
 
 // Presentations
-void kworship::setPresentation(UpPresentation* presentation)
+void kworship::setPresentation(UpPresentation* presentation, bool alreadyDestroyed)
 {
   if (0 != m_currentPresentation)
   {
     // Stop the slideshow if its running
-    m_currentPresentation->stopSlideshow();
     m_view->slideshows->setVisible(false);
-    disconnect(m_currentPresentation, SIGNAL(currentSlideshowChanged(QString)), this, SLOT(changeSlideshowExternal(QString)));
-    disconnect(m_currentPresentation, SIGNAL(customSlideshowsModified()), this, SLOT(refreshSlideshows()));
-    disconnect(m_currentPresentation, SIGNAL(slideshowStarted(int)), this, SLOT(slideshowStarted(int)));
-    disconnect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
-    disconnect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
-    disconnect(m_currentPresentation, SIGNAL(slideshowStepChanged(int)), this, SLOT(slideshowStepChanged(int)));
+    if (!alreadyDestroyed)
+    {
+      m_currentPresentation->stopSlideshow();
+      disconnect(m_currentPresentation, SIGNAL(currentSlideshowChanged(QString)), this, SLOT(changeSlideshowExternal(QString)));
+      disconnect(m_currentPresentation, SIGNAL(customSlideshowsModified()), this, SLOT(refreshSlideshows()));
+      disconnect(m_currentPresentation, SIGNAL(slideshowStarted(int)), this, SLOT(slideshowStarted(int)));
+      disconnect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
+      disconnect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
+      disconnect(m_currentPresentation, SIGNAL(slideshowStepChanged(int)), this, SLOT(slideshowStepChanged(int)));
+      disconnect(m_currentPresentation, SIGNAL(destroyed(QObject*)), this, SLOT(presentationDelete()));
+    }
     slideshowStopped();
   }
   m_currentPresentation = presentation;
@@ -630,6 +637,7 @@ void kworship::setPresentation(UpPresentation* presentation)
     connect(m_currentPresentation, SIGNAL(slideshowStopped()), this, SLOT(slideshowStopped()));
     connect(m_currentPresentation, SIGNAL(slideshowSlideChanged(int, int)), this, SLOT(slideshowSlideChanged(int, int)));
     connect(m_currentPresentation, SIGNAL(slideshowStepChanged(int)), this, SLOT(slideshowStepChanged(int)));
+    connect(m_currentPresentation, SIGNAL(destroyed(QObject*)), this, SLOT(presentationDelete()));
     // update slideshows list
     refreshSlideshows();
     m_view->slideshows->setVisible(true);
@@ -645,6 +653,12 @@ void kworship::setPresentation(UpPresentation* presentation)
 }
 
 // Custom slideshows
+
+void kworship::presentationComboReset()
+{
+  m_selectPresTree->expandToDepth(0);
+  m_selectPresTree->setItemsExpandable(false);
+}
 
 void kworship::changeSlideshowCombo(QString name)
 {

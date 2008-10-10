@@ -28,6 +28,8 @@
 #include "UpBackend.h"
 #include "UpPresentationsModel.h"
 
+#include <KMimeType>
+
 #include <cassert>
 
 /// Singleton object.
@@ -52,6 +54,8 @@ UpManager::UpManager(QObject* parent)
 : QObject(parent)
 , m_backends()
 , m_presentationsModel(new UpPresentationsModel(this))
+, m_backendAssociations()
+, m_preferredBackends()
 {
   assert(s_singleton == 0);
   s_singleton = this;
@@ -64,6 +68,7 @@ UpManager::~UpManager()
 {
   foreach(UpBackend* backend, m_backends)
   {
+    backendRemoved(backend);
     delete backend;
   }
   s_singleton = 0;
@@ -91,18 +96,67 @@ UpPresentationsModel* UpManager::presentationsModel()
 }
 
 /// Open a new presentation.
-UpPresentation* UpManager::openPresentation(const QUrl& url)
+bool UpManager::openPresentation(const QUrl& url, bool* attemptFailed)
 {
-  /// @todo Implement me properly
-  foreach(UpBackend* backend, m_backends)
+  *attemptFailed = false;
+  // This macro tries to open the url with the given backend
+#define TRY_BACKEND_OPEN_PRESENTATION(BACKEND) \
+  do \
+  { \
+    if (0 != (BACKEND)) \
+    { \
+      bool loaded = (BACKEND)->openPresentation(url); \
+      if (loaded) \
+      { \
+        return true; \
+      } \
+      *attemptFailed = true; \
+    } \
+  } while (0)
+
+  KSharedPtr<KMimeType> mimeType = KMimeType::findByUrl(url);
+
+  // Check if this mime type has a specific association
+  QStringHashString::const_iterator it = m_backendAssociations.constFind(mimeType->name());
+  if (it != m_backendAssociations.constEnd())
   {
-    UpPresentation* pres = backend->openPresentation(url);
-    if (0 != pres)
+    UpBackend* backend = backendById(*it);
+    TRY_BACKEND_OPEN_PRESENTATION(backend);
+  }
+
+  // Check if each preferred backend supports mime type
+  foreach (QString backendId, m_preferredBackends)
+  {
+    UpBackend* backend = backendById(backendId);
+    if (0 != backend)
     {
-      return pres;
+      QStringList supportedMimes = backend->mimeTypes();
+      foreach (QString mime, supportedMimes)
+      {
+        if (mimeType->is(mime))
+        {
+          TRY_BACKEND_OPEN_PRESENTATION(backend);
+        }
+      }
     }
   }
-  return 0;
+
+  // Check all backends if they support mimetype
+  foreach (UpBackend* backend, m_backends)
+  {
+    QStringList supportedMimes = backend->mimeTypes();
+    foreach (QString mime, supportedMimes)
+    {
+      if (mimeType->is(mime))
+      {
+        TRY_BACKEND_OPEN_PRESENTATION(backend);
+      }
+    }
+  }
+
+  return false;
+
+#undef TRY_BACKEND_OPEN_PRESENTATION
 }
 
 /*
@@ -116,9 +170,23 @@ int UpManager::numBackends() const
 }
 
 /// Get a specific backend.
-UpBackend* UpManager::backend(int index)
+UpBackend* UpManager::backendByIndex(int index)
 {
   return m_backends.at(index);
+}
+
+/// Get a specific backend by name.
+UpBackend* UpManager::backendById(QString id)
+{
+  /// @todo This could be more efficient
+  foreach (UpBackend* backend, m_backends)
+  {
+    if (backend->id() == id)
+    {
+      return backend;
+    }
+  }
+  return 0;
 }
 
 /// Get a list of backends.
@@ -131,5 +199,8 @@ QList<UpBackend*> UpManager::backends()
 void UpManager::addBackend(UpBackend* backend)
 {
   m_backends.push_back(backend);
+  connect(backend, SIGNAL(loadedPresentation(UpPresentation*)), m_presentationsModel, SLOT(loadedPresentation(UpPresentation*)));
+  connect(backend, SIGNAL(unloadedPresentation(UpPresentation*)), m_presentationsModel, SLOT(unloadedPresentation(UpPresentation*)));
+  backendAdded(backend);
 }
 

@@ -24,19 +24,31 @@
  */
 
 #include "UpPresentation.h"
+#include "UpBackend.h"
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-UpPresentation::UpPresentation(QObject* parent)
+UpPresentation::UpPresentation(UpBackend* backend, QObject* parent)
 : QObject(parent)
+, m_backend(backend)
 {
 }
 
 /// Destructor.
 UpPresentation::~UpPresentation()
 {
+}
+
+/*
+ * Accessors
+ */
+
+/// Get the backend.
+UpBackend* UpPresentation::backend()
+{
+  return m_backend;
 }
 

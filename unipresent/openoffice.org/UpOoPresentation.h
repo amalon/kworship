@@ -31,6 +31,8 @@
 #include <com/sun/star/uno/Reference.h>
 #include <com/sun/star/uno/XInterface.hpp>
 
+class UpOoBackend;
+
 using namespace com::sun::star;
 
 /// OpenOffice.org presentation.
@@ -44,7 +46,7 @@ class UpOoPresentation : public UpPresentation
      */
 
     /// Primary constructor.
-    UpOoPresentation(uno::XInterface* interface, QObject* parent = 0);
+    UpOoPresentation(uno::XInterface* interface, UpOoBackend* parent = 0);
 
     /// Destructor.
     virtual ~UpOoPresentation();

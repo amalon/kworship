@@ -56,6 +56,20 @@ UpManager* UpManagerNode::getItem()
   return m_item;
 }
 
+UpBackendNode* UpManagerNode::getBackendNode(UpBackend* backend)
+{
+  int numBackends = getNumCachedChildren();
+  for (int i = 0; i < numBackends; ++i)
+  {
+    UpBackendNode* node = dynamic_cast<UpBackendNode*>(getCachedChild(i));
+    if (0 != node && node->getItem() == backend)
+    {
+      return node;
+    }
+  }
+  return 0;
+}
+
 /*
  * Main interface
  */
@@ -86,7 +100,7 @@ int UpManagerNode::getChildCount() const
 
 DefaultModelNode* UpManagerNode::_getChild(int index)
 {
-  UpBackend* backend = m_item->backend(index);
+  UpBackend* backend = m_item->backendByIndex(index);
   assert(backend != 0);
   return new UpBackendNode(this, backend);
 }

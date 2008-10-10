@@ -28,6 +28,9 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QHash>
+#include <QString>
+#include <QStringList>
 
 class UpBackend;
 class UpPresentation;
@@ -36,7 +39,8 @@ class UpPresentationsModel;
 /// Overall unipresent manager.
 class UpManager : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
+
   public:
 
     /*
@@ -67,7 +71,7 @@ class UpManager : public QObject
     UpPresentationsModel* presentationsModel();
 
     /// Open a new presentation.
-    UpPresentation* openPresentation(const QUrl& url);
+    bool openPresentation(const QUrl& url, bool* attemptFailed);
 
     /*
      * Backend management
@@ -77,7 +81,10 @@ class UpManager : public QObject
     int numBackends() const;
 
     /// Get a specific backend.
-    UpBackend* backend(int index);
+    UpBackend* backendByIndex(int index);
+
+    /// Get a specific backend by name.
+    UpBackend* backendById(QString id);
 
     /// Get a list of backends.
     QList<UpBackend*> backends();
@@ -93,6 +100,18 @@ class UpManager : public QObject
     {
       addBackend(new T(this));
     }
+
+  signals:
+
+    /*
+     * Signals
+     */
+
+    /// Emitted when a new backend is added.
+    void backendAdded(UpBackend*);
+
+    /// Emitted when an old backend is removed.
+    void backendRemoved(UpBackend*);
 
   private:
 
@@ -112,6 +131,17 @@ class UpManager : public QObject
 
     /// Presentations model.
     UpPresentationsModel* m_presentationsModel;
+
+    /*
+     * Backend preferences
+     */
+
+    typedef QHash<QString,QString> QStringHashString;
+    /// Explicit mime type associations.
+    QStringHashString m_backendAssociations;
+
+    /// Backend names in order of preference.
+    QStringList m_preferredBackends;
 
 };
 

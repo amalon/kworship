@@ -25,6 +25,7 @@
 
 #include "UpOoPresentation.h"
 #include "UpOoSlide.h"
+#include "UpOoBackend.h"
 
 #include <com/sun/star/container/XIndexAccess.hpp>
 #include <com/sun/star/drawing/XDrawPagesSupplier.hpp>
@@ -46,7 +47,7 @@ using namespace com::sun::star::uno;
  */
 
 /// Primary constructor.
-UpOoPresentation::UpOoPresentation(uno::XInterface* interface, QObject* parent)
+UpOoPresentation::UpOoPresentation(uno::XInterface* interface, UpOoBackend* parent)
 : UpPresentation(parent)
 , m_interface(interface)
 , m_url()
