@@ -88,7 +88,6 @@ class UpKpr2Backend : public UpBackend
 
     // Slots for UpKpr2Process signals
     void dbusLoadedPresentation(UpKpr2Presentation*);
-    void dbusMovedPresentation(UpKpr2Presentation*);
     void dbusUnloadedPresentation(UpKpr2Presentation*);
 
   private:

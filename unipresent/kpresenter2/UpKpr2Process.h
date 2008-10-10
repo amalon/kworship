@@ -71,9 +71,6 @@ class UpKpr2Process : public QObject
     /// Emitted when a new presentation is created or loaded.
     void loadedPresentation(UpKpr2Presentation*);
 
-    /// Emitted when a presentation is changed to a different url.
-    void movedPresentation(UpKpr2Presentation*);
-
     /// Emitted when a presentation is about to be closed.
     void unloadedPresentation(UpKpr2Presentation*);
 

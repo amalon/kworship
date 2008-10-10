@@ -113,9 +113,6 @@ class UpBackend : public QObject
     /// Emitted when a new presentation is created or loaded.
     void loadedPresentation(UpPresentation*);
 
-    /// Emitted when a presentation is changed to a different url.
-    void movedPresentation(UpPresentation*);
-
     /// Emitted when a presentation is about to be closed.
     void unloadedPresentation(UpPresentation*);
 };

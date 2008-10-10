@@ -170,8 +170,6 @@ void UpKpr2Backend::dbusServiceOwnerChange(const QString& name, const QString& o
       // Link presentation event signals
       connect(process, SIGNAL(loadedPresentation(UpKpr2Presentation*)),
               this,    SLOT  (dbusLoadedPresentation(UpKpr2Presentation*)));
-      connect(process, SIGNAL(movedPresentation(UpKpr2Presentation*)),
-              this,    SLOT  (dbusMovedPresentation(UpKpr2Presentation*)));
       connect(process, SIGNAL(unloadedPresentation(UpKpr2Presentation*)),
               this,    SLOT  (dbusUnloadedPresentation(UpKpr2Presentation*)));
       // Trigger adding of presentations that are already open
@@ -200,11 +198,6 @@ void UpKpr2Backend::dbusLoadedPresentation(UpKpr2Presentation* presentation)
 {
   m_presentations.push_back(presentation);
   loadedPresentation(presentation);
-}
-
-void UpKpr2Backend::dbusMovedPresentation(UpKpr2Presentation* presentation)
-{
-  movedPresentation(presentation);
 }
 
 void UpKpr2Backend::dbusUnloadedPresentation(UpKpr2Presentation* presentation)
