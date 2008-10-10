@@ -98,6 +98,11 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
   {
     return true;
   }
+  // Always just append if not given explicit row
+  if (row == -1)
+  {
+    row = list->getChildCount();
+  }
 
   if (data->hasFormat("application/x.kworship.song.list"))
   {
@@ -120,21 +125,20 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
           if (ok)
           {
             KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->getSongVersionById(versionId));
+            beginInsertRows(parent, row, row);
+            list->childrenAdded(row, row);
             list->getItem()->addItem(newSong, row);
+            endInsertRows();
             ++row;
-            list->clearChildCache();
           }
         }
       }
     }
 
-    reset();
-
     return true;
   }
   else if (data->hasUrls())
   {
-    bool needReset = false;
     QList<QUrl> files = data->urls();
     foreach (QUrl file, files)
     {
@@ -145,38 +149,48 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
       {
         if (result->name().startsWith("audio/"))
         {
-          //list->getItem()->addItem(new KwPlaylistAudio(file));
+          //beginInsertRows(parent, row, row);
+          //list->childrenAdded(row, row);
+          //list->getItem()->addItem(new KwPlaylistAudio(file), row);
+          //endInsertRows();
           //success = true;
         }
         else if (result->name().startsWith("image/"))
         {
-          list->getItem()->addItem(new KwPlaylistImage(file));
+          beginInsertRows(parent, row, row);
+          list->childrenAdded(row, row);
+          list->getItem()->addItem(new KwPlaylistImage(file), row);
+          endInsertRows();
           success = true;
         }
         else if (result->name().startsWith("video/"))
         {
-          list->getItem()->addItem(new KwPlaylistVideo(file));
+          beginInsertRows(parent, row, row);
+          list->childrenAdded(row, row);
+          list->getItem()->addItem(new KwPlaylistVideo(file), row);
+          endInsertRows();
           success = true;
         }
         // perhaps its a presentation
         /// @todo match against all known presentation mime types
         else if (result->name() == "application/vnd.oasis.opendocument.presentation")
         {
-          list->getItem()->addItem(new KwPlaylistPresentation(file));
+          beginInsertRows(parent, row, row);
+          list->childrenAdded(row, row);
+          list->getItem()->addItem(new KwPlaylistPresentation(file), row);
+          endInsertRows();
           success = true;
         }
       }
       if (!success)
       {
-        list->getItem()->addItem(new KwPlaylistFile(file));
+        beginInsertRows(parent, row, row);
+        list->childrenAdded(row, row);
+        list->getItem()->addItem(new KwPlaylistFile(file), row);
+        endInsertRows();
         success = true;
       }
-      needReset = needReset || success;
-    }
-
-    if (needReset)
-    {
-      reset();
+      ++row;
     }
 
     return true;

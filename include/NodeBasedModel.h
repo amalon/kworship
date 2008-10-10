@@ -26,6 +26,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "compiler.h"
+
 #include <QAbstractItemModel>
 #include <QVector>
 #include <QVariant>
@@ -66,7 +68,11 @@ class DefaultModelNode
     /// Get a child node by index.
     DefaultModelNode* getChild(int index)
     {
-      assert(index < getChildCount());
+      if (unlikely(index >= getChildCount()))
+      {
+        return 0;
+      }
+
       if (index >= m_children.size())
       {
         int prevSize = m_children.size();
@@ -82,6 +88,34 @@ class DefaultModelNode
         m_children[index] = _getChild(index);
       }
       return m_children[index];
+    }
+
+    /// Notify that children have been added.
+    void childrenAdded(int first, int last)
+    {
+      if (first > m_children.size())
+      {
+        first = m_children.size();
+      }
+      m_children.insert(first, last - first + 1, 0);
+    }
+
+    /// Notify that children have been removed.
+    void childrenRemoved(int first, int last)
+    {
+      int cacheSize = m_children.size();
+      if (first < cacheSize)
+      {
+        if (last >= cacheSize)
+        {
+          last = cacheSize - 1;
+        }
+        for (int i = first; i <= last; ++i)
+        {
+          delete m_children[i];
+        }
+        m_children.remove(first, last - first + 1);
+      }
     }
 
     /// Clear the cache of child nodes.
@@ -143,7 +177,7 @@ class DefaultModelNode
     QVector<DefaultModelNode*> m_children;
 
 };
-    
+
 
 /// A Qt model based on nodes.
 template <class NODE = DefaultModelNode>
