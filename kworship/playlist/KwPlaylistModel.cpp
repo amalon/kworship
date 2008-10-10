@@ -144,52 +144,32 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
     {
       // Get the file's mime type
       KMimeType::Ptr result = KMimeType::findByUrl(KUrl(file));
-      bool success = false;
+      KwPlaylistItem* newItem = 0;
       if (!result->isDefault())
       {
-        if (result->name().startsWith("audio/"))
+        if (result->name().startsWith("image/"))
         {
-          //beginInsertRows(parent, row, row);
-          //list->childrenAdded(row, row);
-          //list->getItem()->addItem(new KwPlaylistAudio(file), row);
-          //endInsertRows();
-          //success = true;
-        }
-        else if (result->name().startsWith("image/"))
-        {
-          beginInsertRows(parent, row, row);
-          list->childrenAdded(row, row);
-          list->getItem()->addItem(new KwPlaylistImage(file), row);
-          endInsertRows();
-          success = true;
+          newItem = new KwPlaylistImage(file);
         }
         else if (result->name().startsWith("video/"))
         {
-          beginInsertRows(parent, row, row);
-          list->childrenAdded(row, row);
-          list->getItem()->addItem(new KwPlaylistVideo(file), row);
-          endInsertRows();
-          success = true;
+          newItem = new KwPlaylistVideo(file);
         }
         // perhaps its a presentation
         /// @todo match against all known presentation mime types
         else if (result->name() == "application/vnd.oasis.opendocument.presentation")
         {
-          beginInsertRows(parent, row, row);
-          list->childrenAdded(row, row);
-          list->getItem()->addItem(new KwPlaylistPresentation(file), row);
-          endInsertRows();
-          success = true;
+          newItem = new KwPlaylistPresentation(file);
         }
       }
-      if (!success)
+      if (0 == newItem)
       {
-        beginInsertRows(parent, row, row);
-        list->childrenAdded(row, row);
-        list->getItem()->addItem(new KwPlaylistFile(file), row);
-        endInsertRows();
-        success = true;
+        newItem = new KwPlaylistFile(file);
       }
+      beginInsertRows(parent, row, row);
+      list->childrenAdded(row, row);
+      list->getItem()->addItem(newItem, row);
+      endInsertRows();
       ++row;
     }
 
