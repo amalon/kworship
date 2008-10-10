@@ -100,6 +100,8 @@ private slots:
     void refreshSlideshows();
     void refreshSlides();
     void editCustomSlideshowsDialog();
+    void addSlideshowLinkToPlaylist();
+    void addSlideshowCopyToPlaylist();
 
     // From current presentation
     void slideshowStarted(int numSlides);

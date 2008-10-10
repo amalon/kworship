@@ -234,9 +234,24 @@ kworship::kworship()
   QToolBar* customSlideshowsToolBar = new QToolBar(i18n("Custom Slideshows"));
   customSlideshowsToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
   m_view->slideshows->layout()->addWidget(customSlideshowsToolBar);
+  // Edit custom slideshows
   KAction* editCustomSlideshows = new KAction(KIcon("preferences-system"), i18n("Edit Custom Slideshows"), customSlideshowsToolBar);
   connect(editCustomSlideshows, SIGNAL(triggered(bool)), this, SLOT(editCustomSlideshowsDialog()));
   customSlideshowsToolBar->addAction(editCustomSlideshows);
+  // Add slideshow to playlist
+  KActionMenu* addSlideshowToPlaylistAction = new KActionMenu(KIcon("list-add"), i18n("Add Slideshow to Playlist"), customSlideshowsToolBar);
+  addSlideshowToPlaylistAction->setDelayed(false);
+  customSlideshowsToolBar->addAction(addSlideshowToPlaylistAction);
+  {
+    KAction* asLinkAction = new KAction(KIcon("insert-link"), i18n("Add Link to Slideshow into Playlist"), customSlideshowsToolBar);
+    connect(asLinkAction, SIGNAL(triggered(bool)), this, SLOT(addSlideshowLinkToPlaylist()));
+    addSlideshowToPlaylistAction->addAction(asLinkAction);
+  }
+  {
+    KAction* asCopyAction = new KAction(KIcon("edit-copy"), i18n("Save Copy of Slideshow into Playlist"), customSlideshowsToolBar);
+    connect(asCopyAction, SIGNAL(triggered(bool)), this, SLOT(addSlideshowCopyToPlaylist()));
+    addSlideshowToPlaylistAction->addAction(asCopyAction);
+  }
 
   // Presentations toolbar
   QToolBar* presToolBar = new QToolBar("Presentations");
@@ -700,6 +715,20 @@ void kworship::editCustomSlideshowsDialog()
 {
   Q_ASSERT(0 != m_currentPresentation);
   m_currentPresentation->editCustomSlideshowsDialog();
+}
+
+void kworship::addSlideshowLinkToPlaylist()
+{
+  Q_ASSERT(0 != m_currentPresentation);
+  QUrl url = m_currentPresentation->url();
+  QString slideshow = m_currentPresentation->currentSlideshow();
+  /// @todo Implement me
+}
+void kworship::addSlideshowCopyToPlaylist()
+{
+  Q_ASSERT(0 != m_currentPresentation);
+  QString slideshow = m_currentPresentation->currentSlideshow();
+  /// @todo Implement me
 }
 
 // From current presentation
