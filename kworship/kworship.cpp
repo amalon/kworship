@@ -23,6 +23,7 @@
 #include "prefsDisplay.h"
 #include "prefsSongDB.h"
 #include "KwDatabaseSetup.h"
+#include "KwDocument.h"
 
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -65,6 +66,8 @@
 #include <kactioncollection.h>
 #include <kstandardaction.h>
 #include <KDE/KLocale>
+#include <KFileDialog>
+#include <KMessageBox>
 
 #include <phonon/audiooutput.h>
 
@@ -82,10 +85,13 @@ kworship::kworship()
 : KXmlGuiWindow()
 , m_view(new kworshipView(this))
 , m_displayManager(0)
+, m_document(0)
 , m_presentationManager(new UpManager(this))
 , m_currentPresentation(0)
 , m_printer(0)
 {
+  setDocument();
+
   // set up presentation backends
   m_presentationManager->registerBackend<UpOoBackend>();
   m_presentationManager->registerBackend<UpKpr2Backend>();
@@ -469,20 +475,93 @@ void kworship::toggleFullscreen(bool checked)
   }
 }
 
+bool kworship::askToSave()
+{
+  if (m_document->isModified())
+  {
+    switch (KMessageBox::questionYesNoCancel(this,
+                                             i18n("The current playlist has been modified. "
+                                                  "These modifications will be lost if you continue without saving. "
+                                                  "Would you like to save now?"),
+                                             i18n("Playlist is modified")))
+    {
+      case KMessageBox::Yes:
+        {
+          fileSave();
+          // If the document is still modified, save must have been cancelled
+          if (m_document->isModified())
+          {
+            return false;
+          }
+        }
+        break;
+      case KMessageBox::No:
+        break;
+      case KMessageBox::Cancel:
+      default:
+        {
+          return false;
+        }
+        break;
+    }
+  }
+  return true;
+}
+
 void kworship::fileNew()
 {
+  if (askToSave())
+  {
+    setDocument();
+  }
 }
 
 void kworship::fileOpen()
 {
+  if (askToSave())
+  {
+    // Do the open operation
+    QString filter = "*.kwz *.kw|" + i18n("All KWorship playlists");
+    KUrl defaultUrl("kfiledialog:///playlist");
+    if (m_document->isSaved())
+    {
+      defaultUrl = m_document->url();
+    }
+    KUrl url = KFileDialog::getOpenUrl(defaultUrl, filter, this);
+    if (!url.isEmpty())
+    {
+      setDocument(url);
+      m_document->reload();
+    }
+  }
 }
 
 void kworship::fileSave()
 {
+  if (m_document->isSaved())
+  {
+    m_document->save();
+  }
+  else
+  {
+    fileSaveAs();
+  }
 }
 
 void kworship::fileSaveAs()
 {
+  QString filter = "*.kwz|" + i18n("KWorship playlists") + "\n"
+                   "*.kw|" + i18n("KWorship uncompressed playlists");
+  KUrl defaultUrl("kfiledialog:///playlist");
+  if (m_document->isSaved())
+  {
+    defaultUrl = m_document->url();
+  }
+  KUrl url = KFileDialog::getSaveUrl(defaultUrl, filter, this);
+  if (!url.isEmpty())
+  {
+    m_document->saveAs(url);
+  }
 }
 
 void kworship::optionsPreferences()
@@ -621,6 +700,15 @@ void kworship::slide_doubleClicked(QModelIndex index)
   {
     presNode->getItem()->goToSlide(index.row());
   }
+}
+
+// Documents
+void kworship::setDocument(KUrl url)
+{
+  delete m_document;
+  m_document = new KwDocument(url, this);
+
+  /// @todo Wire up signals
 }
 
 // Presentations

@@ -38,6 +38,7 @@ class KwPlaylistList;
 class KwPlaylistModel;
 class KwMediaManager;
 class KwSongdbModel;
+class KwDocument;
 
 class UpManager;
 class UpPresentation;
@@ -77,6 +78,7 @@ private slots:
     void toggleMainDisplay(bool checked);
     void mainDisplayClosed();
     void displayClear();
+    bool askToSave();
     void fileNew();
     void fileOpen();
     void fileSave();
@@ -114,6 +116,8 @@ private:
     int getCorrectDisplayScreen();
     int getCurrentDisplayScreen();
 
+    // Documents
+    void setDocument(KUrl url = KUrl());
     // Presentations
     void setPresentation(UpPresentation* presentation, bool alreadyDestroyed = false);
 
@@ -128,6 +132,7 @@ private:
     KwLocalDisplay* m_mainDisplay;
     KwLocalDisplayPreview* m_previewDisplay;
 
+    KwDocument* m_document;
     KwPlaylistList* m_primaryPlaylist;
     KwPlaylistModel* m_playlistModel;
 
