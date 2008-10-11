@@ -90,6 +90,7 @@ kworship::kworship()
 , m_currentPresentation(0)
 , m_printer(0)
 {
+  m_playlistModel = new KwPlaylistModel;
   setDocument();
 
   // set up presentation backends
@@ -152,8 +153,7 @@ kworship::kworship()
   }
 
   // Playlist
-  m_primaryPlaylist = new KwPlaylistList();
-  m_primaryPlaylist->addClass("beachy");
+  m_document->playlist()->addClass("beachy");
 
   KwCssStyleSheet* styleRules = new KwCssStyleSheet;
 
@@ -163,10 +163,8 @@ kworship::kworship()
   beachyTheme.setStyle<QPixmap>("background.image.pixmap", QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
   styleRules->addRule(beachyTheme);
 
-  m_primaryPlaylist->addStyleSheet(styleRules);
+  m_document->playlist()->addStyleSheet(styleRules);
 
-  m_playlistModel = new KwPlaylistModel;
-  m_playlistModel->setRootNode(m_primaryPlaylist->getNode(0));
   m_view->treePlaylist->setModel(m_playlistModel);
   m_view->treePlaylist->setExpandsOnDoubleClick(false);
   m_view->treePlaylist->setAcceptDrops(true);
@@ -708,6 +706,8 @@ void kworship::setDocument(KUrl url)
   delete m_document;
   m_document = new KwDocument(url, this);
 
+  // Connect up the new document
+  m_playlistModel->setRootNode(m_document->playlist()->getNode(0));
   /// @todo Wire up signals
 }
 

@@ -25,6 +25,8 @@
 
 #include "KwDocument.h"
 
+#include "KwPlaylistList.h"
+
 #include <QtDebug>
 
 /*
@@ -36,12 +38,14 @@ KwDocument::KwDocument(KUrl url, QObject* parent)
 : QObject(parent)
 , m_url(url)
 , m_modified(false)
+, m_playlist(new KwPlaylistList())
 {
 }
 
 /// Destructor.
 KwDocument::~KwDocument()
 {
+  delete m_playlist;
 }
 
 /*
@@ -64,6 +68,12 @@ bool KwDocument::isSaved() const
 KUrl KwDocument::url() const
 {
   return m_url;
+}
+
+/// Get the main playlist.
+KwPlaylistList* KwDocument::playlist()
+{
+  return m_playlist;
 }
 
 /*

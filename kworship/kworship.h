@@ -133,7 +133,6 @@ private:
     KwLocalDisplayPreview* m_previewDisplay;
 
     KwDocument* m_document;
-    KwPlaylistList* m_primaryPlaylist;
     KwPlaylistModel* m_playlistModel;
 
     KwSongdbModel* m_songDbModel;

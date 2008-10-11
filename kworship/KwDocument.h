@@ -30,6 +30,8 @@
 
 #include <QObject>
 
+class KwPlaylistList;
+
 /// A KWorship document (anything saved in a KWorship data file).
 class KwDocument : public QObject
 {
@@ -59,6 +61,9 @@ class KwDocument : public QObject
 
     /// Get the URL the document is saved at.
     KUrl url() const;
+
+    /// Get the main playlist.
+    KwPlaylistList* playlist();
 
   public slots:
 
@@ -102,6 +107,9 @@ class KwDocument : public QObject
 
     /// Whether the document has been modified.
     bool m_modified;
+
+    /// The main playlist item.
+    KwPlaylistList* m_playlist;
 
 };
 
