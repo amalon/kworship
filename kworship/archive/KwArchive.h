@@ -28,6 +28,8 @@
 
 #include <QStringList>
 
+class KwDataFile;
+
 class KArchive;
 
 class QIODevice;
@@ -89,6 +91,18 @@ class KwArchive
 
     /// Get a list of resource names in this archive.
     QStringList resources();
+
+  protected:
+
+    /*
+     * Data files
+     */
+
+    /// Load a data file from the archive.
+    KwDataFile* loadDataFile(QString path);
+
+    /// Write a data file to the archive.
+    void writeDataFile(QString path, const KwDataFile* data);
 
   private:
 

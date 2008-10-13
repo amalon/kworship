@@ -24,11 +24,13 @@
  */
 
 #include "KwArchive.h"
+#include "KwDataFile.h"
 
 #include <KTar>
 #include <KFilterDev>
 
 #include <QFile>
+#include <QTextStream>
 
 /*
  * Constructors + destructor
@@ -49,6 +51,14 @@ KwArchive::KwArchive(QIODevice* dev, bool writing)
 
   if (!writing)
   {
+    KwDataFile* index = loadDataFile("index.kw");
+    delete index;
+  }
+  else
+  {
+    KwDataFile* index = new KwDataFile();
+    writeDataFile("index.kw", index);
+    delete index;
   }
 }
 
@@ -123,5 +133,50 @@ int KwArchive::numResources()
 QStringList KwArchive::resources()
 {
   return QStringList();
+}
+
+/*
+ * Data files
+ */
+
+/// Load a data file from the archive.
+KwDataFile* KwArchive::loadDataFile(QString path)
+{
+  Q_ASSERT(isReading());
+
+  // Look for the entry
+  const KArchiveEntry* entry = m_archive->directory()->entry(path);
+  if (0 == entry || !entry->isFile())
+  {
+    return 0;
+  }
+
+  // Turn entry into a file
+  const KArchiveFile* fileEntry = dynamic_cast<const KArchiveFile*>(entry);
+  Q_ASSERT(fileEntry); // isFile() should mean entry is a KArchiveFile
+
+  // Load into a KwDataFile object
+  QIODevice* fileDevice = fileEntry->createDevice();
+  KwDataFile* dataFile = new KwDataFile();
+  dataFile->readFrom(fileDevice);
+  delete fileDevice;
+
+  return dataFile;
+}
+
+/// Write a data file to the archive.
+void KwArchive::writeDataFile(QString path, const KwDataFile* data)
+{
+  Q_ASSERT(isWriting());
+
+  // Get the raw xml data
+  QByteArray xmlData;
+  {
+    QTextStream stream(&xmlData);
+    data->writeTo(stream);
+  }
+
+  // Write this to the archive
+  m_archive->writeFile(path, "user", "group", xmlData, xmlData.size());
 }
 
