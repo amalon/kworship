@@ -46,6 +46,11 @@ KwPlaylistImage::~KwPlaylistImage()
  * Main interface.
  */
 
+QString KwPlaylistImage::itemType() const
+{
+  return "image";
+}
+
 void KwPlaylistImage::activate(KwDisplayManager* manager)
 {
   manager->text.clear();

@@ -53,6 +53,11 @@ QString KwPlaylistText::getLabel() const
   return m_label;
 }
 
+QString KwPlaylistText::itemType() const
+{
+  return "text";
+}
+
 KwPlaylistNode* KwPlaylistText::getNode(KwPlaylistNode* parent)
 {
   return new KwPlaylistTextNode(parent, this);

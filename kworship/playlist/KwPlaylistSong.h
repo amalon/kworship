@@ -56,6 +56,7 @@ class KwPlaylistSong : public KwPlaylistItem
      * Main interface
      */
 
+    virtual QString itemType() const;
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:

@@ -52,6 +52,7 @@ class KwPlaylistNote : public KwPlaylistItem
     /// Get the text.
     QString getContent() const;
 
+    virtual QString itemType() const;
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:

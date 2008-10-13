@@ -46,6 +46,11 @@ KwPlaylistFile::~KwPlaylistFile()
  * Main interface.
  */
 
+QString KwPlaylistFile::itemType() const
+{
+  return "file";
+}
+
 KwPlaylistNode* KwPlaylistFile::getNode(KwPlaylistNode* parent)
 {
   return new KwPlaylistFileNode(parent, this);

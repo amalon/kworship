@@ -60,11 +60,14 @@ class KwPlaylistList : public KwPlaylistItem
 
     /// Get a specific child.
     KwPlaylistItem* getItem(int index);
+    /// Get a specific child.
+    const KwPlaylistItem* getItem(int index) const;
 
     /*
      * Main interface.
      */
 
+    virtual QString itemType() const;
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:

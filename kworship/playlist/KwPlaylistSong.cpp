@@ -57,6 +57,11 @@ KwSongdbVersion* KwPlaylistSong::getSongVersion()
  * Main interface
  */
 
+QString KwPlaylistSong::itemType() const
+{
+  return "song";
+}
+
 KwPlaylistNode* KwPlaylistSong::getNode(KwPlaylistNode* parent)
 {
   return new KwPlaylistSongNode(parent, this);

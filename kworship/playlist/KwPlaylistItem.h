@@ -28,6 +28,8 @@
 
 #include "KwCssScope.h"
 
+#include <QString>
+
 class KwPlaylistNode;
 
 /// An item that can be added to a playlist.
@@ -51,6 +53,9 @@ class KwPlaylistItem : public KwCssScope
     /*
      * Main interface.
      */
+
+    /// Get the type of the item.
+    virtual QString itemType() const = 0;
 
     /// Get a tree node for this item.
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent) = 0;

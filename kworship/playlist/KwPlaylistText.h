@@ -50,6 +50,7 @@ class KwPlaylistText : public KwPlaylistPaged
     /// Get the label.
     QString getLabel() const;
 
+    virtual QString itemType() const;
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:

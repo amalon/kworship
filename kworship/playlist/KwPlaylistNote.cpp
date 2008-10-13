@@ -52,6 +52,11 @@ QString KwPlaylistNote::getContent() const
   return m_content;
 }
 
+QString KwPlaylistNote::itemType() const
+{
+  return "note";
+}
+
 KwPlaylistNode* KwPlaylistNote::getNode(KwPlaylistNode* parent)
 {
   return new KwPlaylistNoteNode(parent, this);

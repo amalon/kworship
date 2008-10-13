@@ -47,6 +47,7 @@ class KwPlaylistImage : public KwPlaylistFile
      * Main interface.
      */
 
+    virtual QString itemType() const;
     virtual void activate(KwDisplayManager* manager);
 };
 

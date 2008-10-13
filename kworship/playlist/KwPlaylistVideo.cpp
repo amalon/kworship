@@ -49,6 +49,11 @@ KwPlaylistVideo::~KwPlaylistVideo()
  * Main interface.
  */
 
+QString KwPlaylistVideo::itemType() const
+{
+  return "video";
+}
+
 void KwPlaylistVideo::activate(KwDisplayManager* manager)
 {
   manager->background.setVideo();

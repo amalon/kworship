@@ -88,10 +88,35 @@ KwPlaylistItem* KwPlaylistList::getItem(int index)
     return *it;
   }
 }
+/// Get a specific child.
+const KwPlaylistItem* KwPlaylistList::getItem(int index) const
+{
+  assert(index < getItemCount());
+  Playlist::const_iterator it = m_playlist.constBegin();
+  while (index && it != m_playlist.constEnd())
+  {
+    ++it;
+    --index;
+  }
+  assert(it != m_playlist.constEnd());
+  if (it == m_playlist.constEnd())
+  {
+    return 0;
+  }
+  else
+  {
+    return *it;
+  }
+}
 
 /*
  * Main interface.
  */
+
+QString KwPlaylistList::itemType() const
+{
+  return "list";
+}
 
 KwPlaylistNode* KwPlaylistList::getNode(KwPlaylistNode* parent)
 {
