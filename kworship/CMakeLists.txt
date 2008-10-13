@@ -16,12 +16,14 @@ include_directories(${KDE4_INCLUDES}
                     css
                     songdb
                     playlist
+                    archive
 )
 add_subdirectory (media)
 add_subdirectory (display)
 add_subdirectory (css)
 add_subdirectory (songdb)
 add_subdirectory (playlist)
+add_subdirectory (archive)
 
 set(kworship_SRCS
     kworship.cpp
@@ -55,6 +57,7 @@ target_link_libraries(kworship
                       unipresentkpresenter1
                       unipresentkpresenter2
                       unipresentopenoffice
+                      kworshiparchive
                       kworshipplaylist
                       kworshipcss
                       kworshipsongdb

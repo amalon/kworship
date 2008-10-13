@@ -17,27 +17,27 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwDocument_h_
-#define _KwDocument_h_
+#ifndef _KwArchive_h_
+#define _KwArchive_h_
 
 /**
- * @file KwDocument.h
- * @brief A KWorship document (anything saved in a KWorship data file).
+ * @file KwArchive.h
+ * @brief A KWorship data archive file.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <KUrl>
+#include <QStringList>
 
-#include <QObject>
+class KArchive;
 
-class KwPlaylistList;
-class KwArchive;
+class QIODevice;
 
-/// A KWorship document (anything saved in a KWorship data file).
-class KwDocument : public QObject
+/** A KWorship data archive file.
+ * This class provides access to a KWorship archive file without loading all
+ * the data into memory first.
+ */
+class KwArchive
 {
-    Q_OBJECT
-
   public:
 
     /*
@@ -45,69 +45,50 @@ class KwDocument : public QObject
      */
 
     /// Primary constructor.
-    KwDocument(KUrl url, QObject* parent = 0);
+    KwArchive(QIODevice* dev, bool writing);
 
     /// Destructor.
-    virtual ~KwDocument();
+    virtual ~KwArchive();
 
     /*
      * Accessors
      */
 
-    /// Find whether the document has been modified.
-    bool isModified() const;
+    /// Get whether the archive is being written.
+    bool isWriting() const;
 
-    /// Find whether the document has ever been saved.
-    bool isSaved() const;
-
-    /// Get the URL the document is saved at.
-    KUrl url() const;
-
-    /// Get the main playlist.
-    KwPlaylistList* playlist();
-
-  public slots:
+    /// Get whether the archive is being read.
+    bool isReading() const;
 
     /*
-     * Saving and loading actions
+     * Access to playlist data
      */
 
-    /// Load the file.
-    void reload();
+    /// Find how many playlists are in this archive.
+    int numPlaylists();
 
-    /// Save the file.
-    void save();
-
-    /// Save the file to a different URL.
-    void saveAs(const KUrl& url);
+    /// Get a list of playlist names in this archive.
+    QStringList playlists();
 
     /*
-     * Other slots
+     * Access to song data
      */
 
-    /// Set whether the file is modified.
-    void setModified(bool modified);
+    /// Find how many songs are in this archive.
+    int numSongs();
 
-  signals:
+    /// Get a list of song names in this archive.
+    QStringList songs();
 
     /*
-     * Signals
+     * Access to generic resources
      */
 
-    /// Emitted when the document modified status changes.
-    void modifiedChanged(bool modified);
+    /// Find how many resources are in this archive.
+    int numResources();
 
-  protected:
-
-    /*
-     * Archive interface.
-     */
-
-    /// Load from an archive.
-    void loadFromArchive(KwArchive* archive);
-
-    /// Save to an archive.
-    void saveToArchive(KwArchive* archive) const;
+    /// Get a list of resource names in this archive.
+    QStringList resources();
 
   private:
 
@@ -115,16 +96,16 @@ class KwDocument : public QObject
      * Variables
      */
 
-    /// The URL of the saved file.
-    KUrl m_url;
+    /// Whether we are in writing mode.
+    bool m_writing;
 
-    /// Whether the document has been modified.
-    bool m_modified;
+    /// Compressor device.
+    QIODevice* m_compressor;
 
-    /// The main playlist item.
-    KwPlaylistList* m_playlist;
+    /// Archive object.
+    KArchive* m_archive;
 
 };
 
-#endif // _KwDocument_h_
+#endif // _KwArchive_h_
 

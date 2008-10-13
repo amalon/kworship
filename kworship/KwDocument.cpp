@@ -24,10 +24,12 @@
  */
 
 #include "KwDocument.h"
-
+#include "KwArchive.h"
 #include "KwPlaylistList.h"
 
-#include <QtDebug>
+#include <KSaveFile>
+#include <KLocale>
+#include <KMessageBox>
 
 /*
  * Constructors + destructor
@@ -83,14 +85,69 @@ KwPlaylistList* KwDocument::playlist()
 /// Load the file.
 void KwDocument::reload()
 {
-  qDebug() << __PRETTY_FUNCTION__ << m_url;
+  // Start off by opening the archive file
+  if (!m_url.isLocalFile())
+  {
+    KMessageBox::error(0, i18n("KWorship"),
+        i18n("Non-local saves not yet supported"));
+    return;
+  }
+  QFile file;
+  file.setFileName(m_url.toLocalFile());
+  if (!file.open(QFile::ReadOnly))
+  {
+    KMessageBox::error(0, i18n("KWorship"),
+        i18n("Cannot read file %1:\n%2.")
+        .arg(file.fileName())
+        .arg(file.errorString()));
+    return;
+  }
+
+  // Create a new archive object and fill it
+  KwArchive* archive = new KwArchive(&file, false);
+  loadFromArchive(archive);
+  delete archive;
+
   setModified(false);
 }
 
 /// Save the file.
 void KwDocument::save()
 {
-  qDebug() << __PRETTY_FUNCTION__ << m_url;
+  Q_ASSERT(isSaved());
+
+  // Start off by opening the archive file
+  if (!m_url.isLocalFile())
+  {
+    KMessageBox::error(0, i18n("KWorship"),
+        i18n("Non-local saves not yet supported"));
+    return;
+  }
+  KSaveFile file;
+  file.setFileName(m_url.toLocalFile());
+  if (!file.open(QFile::WriteOnly))
+  {
+    KMessageBox::error(0, i18n("KWorship"),
+        i18n("Cannot write file %1:\n%2.")
+        .arg(file.fileName())
+        .arg(file.errorString()));
+    return;
+  }
+
+  // Create a new archive object and fill it
+  KwArchive* archive = new KwArchive(&file, true);
+  saveToArchive(archive);
+  delete archive;
+
+  if (!file.finalize())
+  {
+    KMessageBox::error(0, i18n("KWorship"),
+        i18n("Cannot finalize file %1:\n%2.")
+        .arg(file.fileName())
+        .arg(file.errorString()));
+    return;
+  }
+
   setModified(false);
 }
 
@@ -113,5 +170,21 @@ void KwDocument::setModified(bool modified)
     m_modified = modified;
     modifiedChanged(modified);
   }
+}
+
+/*
+ * Archive interface.
+ */
+
+/// Load from an archive.
+void KwDocument::loadFromArchive(KwArchive* archive)
+{
+  Q_ASSERT(archive->isReading());
+}
+
+/// Save to an archive.
+void KwDocument::saveToArchive(KwArchive* archive) const
+{
+  Q_ASSERT(archive->isWriting());
 }
 

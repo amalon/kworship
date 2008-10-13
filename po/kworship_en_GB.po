@@ -7,14 +7,48 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kworship\n"
 "Report-Msgid-Bugs-To: bugs.kworship.org\n"
-"POT-Creation-Date: 2008-10-13 12:55+0100\n"
-"PO-Revision-Date: 2008-10-13 13:16+0100\n"
+"POT-Creation-Date: 2008-10-13 21:53+0100\n"
+"PO-Revision-Date: 2008-10-13 21:55+0100\n"
 "Last-Translator: James Hogan <james@albanarts.com>\n"
 "Language-Team: British English <en-gb@kworship.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: kworship/KwDocument.cpp:91 kworship/KwDocument.cpp:99
+#: kworship/KwDocument.cpp:122 kworship/KwDocument.cpp:130
+#: kworship/KwDocument.cpp:144 kworship/main.cpp:31
+msgid "KWorship"
+msgstr "KWorship"
+
+#: kworship/KwDocument.cpp:92 kworship/KwDocument.cpp:123
+msgid "Non-local saves not yet supported"
+msgstr "Non-local saves not yet supported"
+
+#: kworship/KwDocument.cpp:100
+msgid ""
+"Cannot read file %1:\n"
+"%2."
+msgstr ""
+"Cannot read file %1:\n"
+"%2."
+
+#: kworship/KwDocument.cpp:131
+msgid ""
+"Cannot write file %1:\n"
+"%2."
+msgstr ""
+"Cannot write file %1:\n"
+"%2."
+
+#: kworship/KwDocument.cpp:145
+msgid ""
+"Cannot finalize file %1:\n"
+"%2."
+msgstr ""
+"Cannot finalise file %1:\n"
+"%2."
 
 #: kworship/kworship.cpp:191
 msgid "Group By"
@@ -140,10 +174,6 @@ msgstr "Presentations"
 #: kworship/kworship.cpp:585
 msgid "Presentations and Slideshows"
 msgstr "Presentations and Slideshows"
-
-#: kworship/main.cpp:31
-msgid "KWorship"
-msgstr "KWorship"
 
 #: kworship/main.cpp:32
 msgid "Free/Open source church worship & presentation software"
@@ -580,4 +610,3 @@ msgstr "couldn't find data %1"
 #: unipresent/openoffice.org/UpOoBridge.cpp:96
 msgid "(start OpenOffice.org with %1)"
 msgstr "(start OpenOffice.org with %1)"
-
