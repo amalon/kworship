@@ -31,3 +31,7 @@ moc_*.cpp
 ui_*.h
 settings.h
 settings.cpp
+
+# Translations
+*.pot
+*.gmo
