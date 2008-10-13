@@ -26,6 +26,9 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+class KwResourceManager;
+class KwPlaylistList;
+
 class QIODevice;
 class QTextStream;
 class QDomDocument;
@@ -44,6 +47,16 @@ class KwDataFile
 
     /// Destructor.
     virtual ~KwDataFile();
+
+    /*
+     * Insertion of objects.
+     */
+
+    /** Insert a playlist.
+     * @param playlist Playlist to insert.
+     * @param resources Resource manager.
+     */
+    void insertPlaylist(const KwPlaylistList* playlist, KwResourceManager* resourceManager);
 
     /*
      * Reading and writing

@@ -17,62 +17,49 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwResourceManager_h_
+#define _KwResourceManager_h_
+
 /**
- * @file KwDataFile.cpp
- * @brief A KWorship XML data file.
+ * @file KwResourceManager.h
+ * @brief Manages external resources when loading/saving data files.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwDataFile.h"
-#include "KwResourceManager.h"
+#include "KwResourceLink.h"
 
-#include <QDomDocument>
-
-/*
- * Constructors + destructor
+/** Manages external resources when loading/saving data files.
+ * This abstract base class defines an interface which can be used to ensure
+ * that any resource files that are required when constructing a data archive
+ * can be safely linked to.
  */
-
-/// Default constructor.
-KwDataFile::KwDataFile()
-: m_domDocument(new QDomDocument())
+class KwResourceManager
 {
-  QDomElement rootNode = m_domDocument->createElement("kworship");
-  m_domDocument->appendChild(rootNode);
-}
+  public:
 
-/// Destructor.
-KwDataFile::~KwDataFile()
-{
-  delete m_domDocument;
-}
+    /*
+     * Constructors + destructor
+     */
 
-/*
- * Insertion of objects.
- */
+    /// Default constructor.
+    KwResourceManager();
 
-/// Insert a playlist.
-void KwDataFile::insertPlaylist(const KwPlaylistList* playlist, KwResourceManager* resourceManager)
-{
-  QDomElement root = m_domDocument->documentElement();
+    /// Destructor.
+    virtual ~KwResourceManager();
 
-  QDomElement playlistElement = m_domDocument->createElement("playlist");
-  root.appendChild(playlistElement);
-}
+    /*
+     * Main resource interface
+     */
 
-/*
- * Reading and writing
- */
+    /** Link a resource by URL.
+     * This creates a link to a resource URL. The implementation may use a
+     * different type to that specified in @p preferredType.
+     * @param url Url of the resource.
+     * @param preferredType Preferred type of link.
+     */
+    virtual KwResourceLink linkResource(const KUrl& url, KwResourceLink::Type preferredType) = 0;
 
-/// Read from device.
-void KwDataFile::readFrom(QIODevice* device)
-{
-  m_domDocument->setContent(device);
-}
+};
 
-/// Write to stream.
-void KwDataFile::writeTo(QTextStream& stream) const
-{
-  const int indentSize = 4;
-  m_domDocument->save(stream, indentSize);
-}
+#endif // _KwResourceManager_h_
 

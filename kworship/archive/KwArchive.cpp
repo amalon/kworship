@@ -41,6 +41,8 @@ KwArchive::KwArchive(QIODevice* dev, bool writing)
 : m_writing(writing)
 , m_compressor(0)
 , m_archive(0)
+, m_index(0)
+, m_numPlaylists(-1)
 {
   // Compression
   m_compressor = KFilterDev::device(dev, "application/x-gzip", false);
@@ -51,20 +53,22 @@ KwArchive::KwArchive(QIODevice* dev, bool writing)
 
   if (!writing)
   {
-    KwDataFile* index = loadDataFile("index.kw");
-    delete index;
+    m_index = loadDataFile("index.kw");
   }
   else
   {
-    KwDataFile* index = new KwDataFile();
-    writeDataFile("index.kw", index);
-    delete index;
+    m_index = new KwDataFile();
   }
 }
 
 /// Destructor.
 KwArchive::~KwArchive()
 {
+  // Finally we need to write out the index file
+  writeDataFile("index.kw", m_index);
+  delete m_index;
+
+  // Now its safe to close the archive
   m_archive->close();
   delete m_archive;
   m_compressor->close();
@@ -88,7 +92,7 @@ bool KwArchive::isReading() const
 }
 
 /*
- * Access to playlist data
+ * Playlist data
  */
 
 /// Find how many playlists are in this archive.
@@ -101,6 +105,18 @@ int KwArchive::numPlaylists()
 QStringList KwArchive::playlists()
 {
   return QStringList();
+}
+
+/// Add a playlist to the archive.
+void KwArchive::addPlaylist(KwPlaylistList* playlist)
+{
+  Q_ASSERT(isWriting());
+
+  KwDataFile* playlistFile = new KwDataFile();
+  playlistFile->insertPlaylist(playlist, 0);
+  writeDataFile(QString("playlists/%1.kw").arg(++m_numPlaylists),
+                playlistFile);
+  delete playlistFile;
 }
 
 /*

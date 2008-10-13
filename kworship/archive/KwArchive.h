@@ -29,6 +29,7 @@
 #include <QStringList>
 
 class KwDataFile;
+class KwPlaylistList;
 
 class KArchive;
 
@@ -63,7 +64,7 @@ class KwArchive
     bool isReading() const;
 
     /*
-     * Access to playlist data
+     * Playlist data
      */
 
     /// Find how many playlists are in this archive.
@@ -71,6 +72,9 @@ class KwArchive
 
     /// Get a list of playlist names in this archive.
     QStringList playlists();
+
+    /// Add a playlist to the archive.
+    void addPlaylist(KwPlaylistList* playlist);
 
     /*
      * Access to song data
@@ -118,6 +122,12 @@ class KwArchive
 
     /// Archive object.
     KArchive* m_archive;
+
+    /// Index data file.
+    KwDataFile* m_index;
+
+    /// Number of playlists.
+    int m_numPlaylists;
 
 };
 

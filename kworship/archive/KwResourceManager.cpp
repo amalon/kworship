@@ -18,61 +18,24 @@
  ***************************************************************************/
 
 /**
- * @file KwDataFile.cpp
- * @brief A KWorship XML data file.
+ * @file KwResourceManager.cpp
+ * @brief Manages external resources when loading/saving data files.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwDataFile.h"
 #include "KwResourceManager.h"
-
-#include <QDomDocument>
 
 /*
  * Constructors + destructor
  */
 
 /// Default constructor.
-KwDataFile::KwDataFile()
-: m_domDocument(new QDomDocument())
+KwResourceManager::KwResourceManager()
 {
-  QDomElement rootNode = m_domDocument->createElement("kworship");
-  m_domDocument->appendChild(rootNode);
 }
 
 /// Destructor.
-KwDataFile::~KwDataFile()
+KwResourceManager::~KwResourceManager()
 {
-  delete m_domDocument;
-}
-
-/*
- * Insertion of objects.
- */
-
-/// Insert a playlist.
-void KwDataFile::insertPlaylist(const KwPlaylistList* playlist, KwResourceManager* resourceManager)
-{
-  QDomElement root = m_domDocument->documentElement();
-
-  QDomElement playlistElement = m_domDocument->createElement("playlist");
-  root.appendChild(playlistElement);
-}
-
-/*
- * Reading and writing
- */
-
-/// Read from device.
-void KwDataFile::readFrom(QIODevice* device)
-{
-  m_domDocument->setContent(device);
-}
-
-/// Write to stream.
-void KwDataFile::writeTo(QTextStream& stream) const
-{
-  const int indentSize = 4;
-  m_domDocument->save(stream, indentSize);
 }
 

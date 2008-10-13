@@ -17,62 +17,80 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwResourceLink_h_
+#define _KwResourceLink_h_
+
 /**
- * @file KwDataFile.cpp
- * @brief A KWorship XML data file.
+ * @file KwResourceLink.h
+ * @brief A link to a resource file.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwDataFile.h"
-#include "KwResourceManager.h"
+#include <KUrl>
 
-#include <QDomDocument>
-
-/*
- * Constructors + destructor
- */
-
-/// Default constructor.
-KwDataFile::KwDataFile()
-: m_domDocument(new QDomDocument())
+/// A link to a resource file.
+class KwResourceLink
 {
-  QDomElement rootNode = m_domDocument->createElement("kworship");
-  m_domDocument->appendChild(rootNode);
-}
+  public:
 
-/// Destructor.
-KwDataFile::~KwDataFile()
-{
-  delete m_domDocument;
-}
+    /*
+     * Types
+     */
 
-/*
- * Insertion of objects.
- */
+    /// Type of resource link.
+    enum Type {
+      Url,             ///< URL link.
+      FileRelative,    ///< Path relative to the save file.
+      ArchiveRoot,     ///< Path relative to the archive root.
+      ArchiveRelative  ///< Path relative to the referencer in the archive.
+    };
 
-/// Insert a playlist.
-void KwDataFile::insertPlaylist(const KwPlaylistList* playlist, KwResourceManager* resourceManager)
-{
-  QDomElement root = m_domDocument->documentElement();
+    /*
+     * Constructors + destructor
+     */
 
-  QDomElement playlistElement = m_domDocument->createElement("playlist");
-  root.appendChild(playlistElement);
-}
+    /** Construct a URL link.
+     * @param url URL to the resource.
+     */
+    KwResourceLink(const KUrl& url);
 
-/*
- * Reading and writing
- */
+    /** Construct a path link.
+     * @param type Type of path (must not be Url).
+     * @param path Path of whatever type to the resource.
+     */
+    KwResourceLink(Type type, const QString& path);
 
-/// Read from device.
-void KwDataFile::readFrom(QIODevice* device)
-{
-  m_domDocument->setContent(device);
-}
+    /// Destructor.
+    ~KwResourceLink();
 
-/// Write to stream.
-void KwDataFile::writeTo(QTextStream& stream) const
-{
-  const int indentSize = 4;
-  m_domDocument->save(stream, indentSize);
-}
+    /*
+     * Accessors
+     */
+
+    /// Get the type of resource link.
+    Type type() const;
+
+    /// Get the url.
+    KUrl url() const;
+
+    /// Get the type dependent path.
+    QString path() const;
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Type of link.
+    Type m_type;
+
+    /// URL to resource.
+    KUrl m_url;
+
+    /// Path to resource depending on type.
+    QString m_path;
+};
+
+#endif // _KwResourceLink_h_
 

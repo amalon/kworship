@@ -186,5 +186,7 @@ void KwDocument::loadFromArchive(KwArchive* archive)
 void KwDocument::saveToArchive(KwArchive* archive) const
 {
   Q_ASSERT(archive->isWriting());
+
+  archive->addPlaylist(m_playlist);
 }
 
