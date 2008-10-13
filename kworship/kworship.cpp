@@ -575,7 +575,7 @@ void kworship::optionsPreferences()
   dialog->addPage(generalSettingsDlg, i18n("General"), "preferences-other", i18n("General"));
 
   prefsDisplay *displaySettingsDlg = new prefsDisplay(dialog);
-  dialog->addPage(displaySettingsDlg, i18n("Display"), "video-projector", i18n("Diaplay and Screen"));
+  dialog->addPage(displaySettingsDlg, i18n("Display"), "video-projector", i18n("Display and Screen"));
 
   prefsSongDB *songdbSettingsDlg = new prefsSongDB(dialog);
   dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "applications-multimedia", i18n("Song Database"));

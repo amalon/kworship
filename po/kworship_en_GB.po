@@ -1,14 +1,14 @@
 # KWorship British English Translation.
 # Copyright (C) 2008 James Hogan
 # This file is distributed under the same license as the KWorship package.
-# James Hogan <james@albanarts.com>, 2008.
 #
+# James Hogan <james@albanarts.com>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: kworship\n"
 "Report-Msgid-Bugs-To: bugs.kworship.org\n"
-"POT-Creation-Date: 2008-10-13 12:45+0100\n"
-"PO-Revision-Date: 2008-10-13 11:15+0100\n"
+"POT-Creation-Date: 2008-10-13 12:55+0100\n"
+"PO-Revision-Date: 2008-10-13 13:16+0100\n"
 "Last-Translator: James Hogan <james@albanarts.com>\n"
 "Language-Team: British English <en-gb@kworship.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,156 +18,159 @@ msgstr ""
 
 #: kworship/kworship.cpp:191
 msgid "Group By"
-msgstr ""
+msgstr "Group By"
 
 #: kworship/kworship.cpp:200
 msgid "Add Song"
-msgstr ""
+msgstr "Add Song"
 
 #: kworship/kworship.cpp:202
 msgid "Edit Song"
-msgstr ""
+msgstr "Edit Song"
 
 #: kworship/kworship.cpp:204
 msgid "Add Song Version"
-msgstr ""
+msgstr "Add Song Version"
 
 #: kworship/kworship.cpp:206
 msgid "Insert Into Playlist"
-msgstr ""
+msgstr "Insert Into Playlist"
 
 #: kworship/kworship.cpp:238
 msgid "Custom Slideshows"
-msgstr ""
+msgstr "Custom Slideshows"
 
 #: kworship/kworship.cpp:242
 msgid "Edit Custom Slideshows"
-msgstr ""
+msgstr "Edit Custom Slideshows"
 
 #: kworship/kworship.cpp:246
 msgid "Add Slideshow to Playlist"
-msgstr ""
+msgstr "Add Slideshow to Playlist"
 
 #: kworship/kworship.cpp:250
 msgid "Add Link to Slideshow into Playlist"
-msgstr ""
+msgstr "Add Link to Slideshow into Playlist"
 
 #: kworship/kworship.cpp:255
 msgid "Save Copy of Slideshow into Playlist"
-msgstr ""
+msgstr "Save Copy of Slideshow into Playlist"
 
 #: kworship/kworship.cpp:286
 msgid "Previous Slide"
-msgstr ""
+msgstr "Previous Slide"
 
 #: kworship/kworship.cpp:290
 msgid "Previous Step"
-msgstr ""
+msgstr "Previous Step"
 
 #: kworship/kworship.cpp:294
 msgid "Next Step"
-msgstr ""
+msgstr "Next Step"
 
 #: kworship/kworship.cpp:298
 msgid "Next Slide"
-msgstr ""
+msgstr "Next Slide"
 
 #: kworship/kworship.cpp:302
 msgid "Start/Stop Slideshow"
-msgstr ""
+msgstr "Start/Stop Slideshow"
 
 #: kworship/kworship.cpp:348
 msgid "Show Main Display"
-msgstr ""
+msgstr "Show Main Display"
 
 #: kworship/kworship.cpp:353
 msgid "Clear display"
-msgstr ""
+msgstr "Clear display"
 
 #: kworship/kworship.cpp:481
 msgid ""
 "The current playlist has been modified. These modifications will be lost if "
 "you continue without saving. Would you like to save now?"
 msgstr ""
+"The current playlist has been modified. These modifications will be lost if "
+"you continue without saving. Would you like to save now?"
 
 #: kworship/kworship.cpp:484
 msgid "Playlist is modified"
-msgstr ""
+msgstr "Playlist is modified"
 
 #: kworship/kworship.cpp:522
 msgid "All KWorship playlists"
-msgstr ""
+msgstr "All KWorship playlists"
 
 #: kworship/kworship.cpp:551
 msgid "KWorship playlists"
-msgstr ""
+msgstr "KWorship playlists"
 
 #: kworship/kworship.cpp:552
 msgid "KWorship uncompressed playlists"
-msgstr ""
+msgstr "KWorship uncompressed playlists"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsPresentations_base.ui line 17
 #: kworship/kworship.cpp:575 kworship/ui_prefsPresentations_base.h:91
 #: rc.cpp:116
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: kworship/kworship.cpp:578
 msgid "Display"
-msgstr ""
+msgstr "Display"
 
 #: kworship/kworship.cpp:578
-msgid "Diaplay and Screen"
-msgstr ""
+msgid "Display and Screen"
+msgstr "Display and Screen"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 219
 #: kworship/kworship.cpp:581 kworship/ui_kworshipview_base.h:416 rc.cpp:93
 msgid "Song DB"
-msgstr ""
+msgstr "Song DB"
 
 #: kworship/kworship.cpp:581
 msgid "Song Database"
-msgstr ""
+msgstr "Song Database"
 
 #: kworship/kworship.cpp:585
 msgid "Presentations"
-msgstr ""
+msgstr "Presentations"
 
 #: kworship/kworship.cpp:585
 msgid "Presentations and Slideshows"
-msgstr ""
+msgstr "Presentations and Slideshows"
 
 #: kworship/main.cpp:31
 msgid "KWorship"
-msgstr ""
+msgstr "KWorship"
 
 #: kworship/main.cpp:32
 msgid "Free/Open source church worship & presentation software"
-msgstr ""
+msgstr "Free/Open source church worship & presentation software"
 
 #: kworship/main.cpp:34
 msgid "(C) 2008 James Hogan"
-msgstr ""
+msgstr "(C) 2008 James Hogan"
 
 #: kworship/main.cpp:38
 msgid "James Hogan"
-msgstr ""
+msgstr "James Hogan"
 
 #: kworship/main.cpp:42
 msgid "Document to open"
-msgstr ""
+msgstr "Document to open"
 
 #: kworship/playlist/KwPlaylistPresentation.cpp:65
 msgid ""
 "The presentation could not be opened by any of the presentation backends."
 msgstr ""
+"The presentation could not be opened by any of the presentation backends."
 
 #: kworship/playlist/KwPlaylistPresentation.cpp:66
 #: kworship/playlist/KwPlaylistPresentation.cpp:73
 msgid "Presentation could not be opened"
-msgstr ""
+msgstr "Presentation could not be opened"
 
 #: kworship/playlist/KwPlaylistPresentation.cpp:72
 msgid ""
@@ -175,278 +178,283 @@ msgid ""
 "\"%1\". Please install an appropriate presentation backend or associate this "
 "MIME type with an existing backend in the configuration."
 msgstr ""
+"No presentation backend is known to be able to open files of the MIME type "
+"\"%1\". Please install an appropriate presentation backend or associate this "
+"MIME type with an existing backend in the configuration."
 
 #: kworship/prefsSongDB.cpp:92
 msgid "Success"
-msgstr ""
+msgstr "Success"
 
 #: kworship/prefsSongDB.cpp:92
 msgid "Successfully connected to the database using the provided settings."
-msgstr ""
+msgstr "Successfully connected to the database using the provided settings."
 
 #: kworship/prefsSongDB.cpp:96
 msgid "Failure"
-msgstr ""
+msgstr "Failure"
 
 #: kworship/prefsSongDB.cpp:96
 msgid ""
 "Could not connect to the database using the provided settings. Please check "
 "the settings and try again."
 msgstr ""
+"Could not connect to the database using the provided settings. Please check "
+"the settings and try again."
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 13
 #: kworship/ui_kworshipview_base.h:400 rc.cpp:60
 msgid "kworship_base"
-msgstr ""
+msgstr "kworship_base"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 22
 #: kworship/ui_kworshipview_base.h:401 rc.cpp:63
 msgid "Themes"
-msgstr ""
+msgstr "Themes"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 33
 #: kworship/ui_kworshipview_base.h:402 rc.cpp:66
 msgid "Solid"
-msgstr ""
+msgstr "Solid"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 53
 #: kworship/ui_kworshipview_base.h:403 rc.cpp:69
 msgid "Image"
-msgstr ""
+msgstr "Image"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 73
 #: kworship/ui_kworshipview_base.h:404 rc.cpp:72
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 93
 #: kworship/ui_kworshipview_base.h:405 rc.cpp:75
 msgid "Theme"
-msgstr ""
+msgstr "Theme"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 129
 #: kworship/ui_kworshipview_base.h:411 rc.cpp:78
 msgid "Live Preview"
-msgstr ""
+msgstr "Live Preview"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 149
 #: kworship/ui_kworshipview_base.h:412 rc.cpp:81
 msgid "Playlist"
-msgstr ""
+msgstr "Playlist"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 167
 #: kworship/ui_kworshipview_base.h:413 rc.cpp:84
 msgid "Bible"
-msgstr ""
+msgstr "Bible"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 184
 #: kworship/ui_kworshipview_base.h:414 rc.cpp:87
 msgid "Now Playing"
-msgstr ""
+msgstr "Now Playing"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 202
 #: kworship/ui_kworshipview_base.h:415 rc.cpp:90
 msgid "Lyrics"
-msgstr ""
+msgstr "Lyrics"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 245
 #: kworship/ui_kworshipview_base.h:417 rc.cpp:96
 msgid "Presentation"
-msgstr ""
+msgstr "Presentation"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 288
 #: kworship/ui_kworshipview_base.h:418 rc.cpp:100
 #, no-c-format
 msgid "Slide %v of %m"
-msgstr ""
+msgstr "Slide %v of %m"
 
 #. i18n: tag string
 #. i18n: file ./kworship/kworshipview_base.ui line 301
 #: kworship/ui_kworshipview_base.h:419 rc.cpp:104
 #, no-c-format
 msgid "Step %v of %m"
-msgstr ""
+msgstr "Step %v of %m"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsDisplay_base.ui line 26
 #: kworship/ui_prefsDisplay_base.h:86 rc.cpp:107
 msgid "Choose the display screen automatically."
-msgstr ""
+msgstr "Choose the display screen automatically."
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsDisplay_base.ui line 33
 #: kworship/ui_prefsDisplay_base.h:87 rc.cpp:110
 msgid "Let me choose the display screen."
-msgstr ""
+msgstr "Let me choose the display screen."
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsDisplay_base.ui line 43
 #: kworship/ui_prefsDisplay_base.h:88 rc.cpp:113
 msgid "Show display on startup."
-msgstr ""
+msgstr "Show display on startup."
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsPresentations_base.ui line 23
 #: kworship/ui_prefsPresentations_base.h:90 rc.cpp:119
 msgid "Enable live preview during presentations"
-msgstr ""
+msgstr "Enable live preview during presentations"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsPresentations_base.ui line 43
 #: kworship/ui_prefsPresentations_base.h:92 rc.cpp:125
 msgid "Information"
-msgstr ""
+msgstr "Information"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsPresentations_base.ui line 31
 #: kworship/ui_prefsPresentations_base.h:93 rc.cpp:122
 msgid "Backends"
-msgstr ""
+msgstr "Backends"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 30
 #: kworship/ui_prefsSongDB_base.h:246 rc.cpp:128
 msgid "Database Type"
-msgstr ""
+msgstr "Database Type"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 41
 #: kworship/ui_prefsSongDB_base.h:249 rc.cpp:131
 msgid "SQLite"
-msgstr ""
+msgstr "SQLite"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 46
 #: kworship/ui_prefsSongDB_base.h:250 rc.cpp:134
 msgid "MySQL"
-msgstr ""
+msgstr "MySQL"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 51
 #: kworship/ui_prefsSongDB_base.h:251 rc.cpp:137
 msgid "PostgreSQL"
-msgstr ""
+msgstr "PostgreSQL"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 72
 #: kworship/ui_prefsSongDB_base.h:253 rc.cpp:140
 msgid "Database Location"
-msgstr ""
+msgstr "Database Location"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 78
 #: kworship/ui_prefsSongDB_base.h:254 rc.cpp:143
 msgid "Use the default database location."
-msgstr ""
+msgstr "Use the default database location."
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 85
 #: kworship/ui_prefsSongDB_base.h:255 rc.cpp:146
 msgid "Use a custom database location."
-msgstr ""
+msgstr "Use a custom database location."
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 104
 #: kworship/ui_prefsSongDB_base.h:256 rc.cpp:149
 msgid "Location"
-msgstr ""
+msgstr "Location"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 130
 #: kworship/ui_prefsSongDB_base.h:258 rc.cpp:152
 msgid "Database Connection"
-msgstr ""
+msgstr "Database Connection"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 138
 #: kworship/ui_prefsSongDB_base.h:259 rc.cpp:155
 msgid "Host"
-msgstr ""
+msgstr "Host"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 148
 #: kworship/ui_prefsSongDB_base.h:260 rc.cpp:158
 msgid "Database name"
-msgstr ""
+msgstr "Database name"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 158
 #: kworship/ui_prefsSongDB_base.h:261 rc.cpp:161
 msgid "Username"
-msgstr ""
+msgstr "Username"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 168
 #: kworship/ui_prefsSongDB_base.h:262 rc.cpp:164
 msgid "Password"
-msgstr ""
+msgstr "Password"
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 193
 #: kworship/ui_prefsSongDB_base.h:263 rc.cpp:167
 msgid "Password stored as plain text."
-msgstr ""
+msgstr "Password stored as plain text."
 
 #. i18n: tag string
 #. i18n: file ./kworship/prefsSongDB_base.ui line 202
 #: kworship/ui_prefsSongDB_base.h:264 rc.cpp:170
 msgid "&Test connection settings"
-msgstr ""
+msgstr "&Test connection settings"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 9
 #: rc.cpp:3
 msgid "show on startup"
-msgstr ""
+msgstr "show on startup"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 13
 #: rc.cpp:6
 msgid "screen mode automatic"
-msgstr ""
+msgstr "screen mode automatic"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 17
 #: rc.cpp:9
 msgid "screen mode choose"
-msgstr ""
+msgstr "screen mode choose"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 21
 #: rc.cpp:12
 msgid "screen number"
-msgstr ""
+msgstr "screen number"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 27
 #: rc.cpp:15
 msgid "database type"
-msgstr ""
+msgstr "database type"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 36
 #: rc.cpp:18
 msgid "auto database location"
-msgstr ""
+msgstr "auto database location"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 40
 #: rc.cpp:21
 msgid "custom database location"
-msgstr ""
+msgstr "custom database location"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 44
@@ -458,117 +466,118 @@ msgstr ""
 #. i18n: file ./kworship/kworship.kcfg line 47
 #: rc.cpp:24 rc.cpp:27
 msgid "database hostname"
-msgstr ""
+msgstr "database hostname"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 51
 #: rc.cpp:30
 msgid "database name"
-msgstr ""
+msgstr "database name"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 55
 #: rc.cpp:33
 msgid "database username"
-msgstr ""
+msgstr "database username"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 59
 #: rc.cpp:36
 msgid "database password"
-msgstr ""
+msgstr "database password"
 
 #. i18n: tag label
 #. i18n: file ./kworship/kworship.kcfg line 65
 #: rc.cpp:39
 msgid "live preview during presentations"
-msgstr ""
+msgstr "live preview during presentations"
 
 #. i18n: tag text
 #. i18n: file ./kworship/kworshipui.rc line 4
 #: rc.cpp:42
 msgid "&Display"
-msgstr ""
+msgstr "&Display"
 
 #. i18n: tag text
 #. i18n: file ./kworship/kworshipui.rc line 8
 #: rc.cpp:45
 msgid "&Presentation"
-msgstr ""
+msgstr "&Presentation"
 
 #. i18n: tag text
 #. i18n: file ./kworship/kworshipui.rc line 10
 #: rc.cpp:48
 msgid "&Song DB"
-msgstr ""
+msgstr "&Song DB"
 
 #. i18n: tag text
 #. i18n: file ./kworship/kworshipui.rc line 18
 #: rc.cpp:51
 msgid "&Bible"
-msgstr ""
+msgstr "&Bible"
 
 #. i18n: tag text
 #. i18n: file ./kworship/kworshipui.rc line 20
 #: rc.cpp:54
 msgid "&Playlist"
-msgstr ""
+msgstr "&Playlist"
 
 #. i18n: tag text
 #. i18n: file ./kworship/kworshipui.rc line 26
 #: rc.cpp:57
 msgid "Display Toolbar"
-msgstr ""
+msgstr "Display Toolbar"
 
 #: rc.cpp:171
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "Your names"
 
 #: rc.cpp:172
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "Your emails"
 
 #: unipresent/kpresenter1/UpKpr1Backend.cpp:62
 msgid "KPresenter 1"
-msgstr ""
+msgstr "KPresenter 1"
 
 #: unipresent/kpresenter1/UpKpr1Backend.cpp:67
 msgid "Controls a running KPresenter 1 presentation"
-msgstr ""
+msgstr "Controls a running KPresenter 1 presentation"
 
 #: unipresent/kpresenter2/UpKpr2Backend.cpp:85
 msgid "KPresenter 2"
-msgstr ""
+msgstr "KPresenter 2"
 
 #: unipresent/kpresenter2/UpKpr2Backend.cpp:90
 msgid "Controls a running KPresenter 2 presentation"
-msgstr ""
+msgstr "Controls a running KPresenter 2 presentation"
 
 #: unipresent/kpresenter2/UpKpr2Presentation.cpp:107
 #: unipresent/kpresenter2/UpKpr2Presentation.cpp:113
 #: unipresent/kpresenter2/UpKpr2Presentation.cpp:127
 #: unipresent/kpresenter2/UpKpr2Presentation.cpp:324
 msgid "All slides"
-msgstr ""
+msgstr "All slides"
 
 #: unipresent/openoffice.org/UpOoBackend.cpp:87
 msgid "OpenOffice.org"
-msgstr ""
+msgstr "OpenOffice.org"
 
 #: unipresent/openoffice.org/UpOoBackend.cpp:92
 msgid "Controls a running OpenOffice.org presentation"
-msgstr ""
+msgstr "Controls a running OpenOffice.org presentation"
 
 #: unipresent/openoffice.org/UpOoBridge.cpp:63
 msgid "OpenOffice.org backend:"
-msgstr ""
+msgstr "OpenOffice.org backend:"
 
 #: unipresent/openoffice.org/UpOoBridge.cpp:67
 msgid "couldn't find data %1"
-msgstr ""
+msgstr "couldn't find data %1"
 
 #: unipresent/openoffice.org/UpOoBridge.cpp:96
 msgid "(start OpenOffice.org with %1)"
-msgstr ""
+msgstr "(start OpenOffice.org with %1)"
+
