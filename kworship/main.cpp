@@ -27,53 +27,54 @@
 
 int main(int argc, char **argv)
 {
-    KAboutData about("kworship", 0,
-                     ki18n("KWorship"), "0.1",
-                     ki18n("Free/Open source church worship & presentation software"),
-                     KAboutData::License_GPL_V2,
-                     ki18n("(C) 2008 James Hogan"),
-                     KLocalizedString(),
-                     "http://kworship.org",
-                     "bugs@kworship.org");
-    about.addAuthor( ki18n("James Hogan"), KLocalizedString(), "james@albanarts.com" );
-    KCmdLineArgs::init(argc, argv, &about);
+  KAboutData about("kworship", 0,
+                   ki18n("KWorship"), "0.1",
+                   ki18n("Free/Open source church worship & presentation software"),
+                   KAboutData::License_GPL_V2,
+                   ki18n("(C) 2008 James Hogan"),
+                   KLocalizedString(),
+                   "http://kworship.org",
+                   "bugs@kworship.org");
+  about.addAuthor( ki18n("James Hogan"), KLocalizedString(), "james@albanarts.com" );
+  KCmdLineArgs::init(argc, argv, &about);
 
-    KCmdLineOptions options;
-    options.add("+[URL]", ki18n( "Document to open" ));
-    KCmdLineArgs::addCmdLineOptions(options);
-    KApplication app;
+  KCmdLineOptions options;
+  options.add("+[URL]", ki18n( "Document to open" ));
+  KCmdLineArgs::addCmdLineOptions(options);
+  KApplication app;
 
-    // Screen number can be managed by a DesktopView widget
-    KConfigDialogManager::changedMap()->insert("DesktopView", SIGNAL(screenChanged(int)));
-    KConfigDialogManager::propertyMap()->insert("DesktopView", "selectedScreen");
+  // Screen number can be managed by a DesktopView widget
+  KConfigDialogManager::changedMap()->insert("DesktopView", SIGNAL(screenChanged(int)));
+  KConfigDialogManager::propertyMap()->insert("DesktopView", "selectedScreen");
 
-    kworship *widget = new kworship;
+  kworship *widget = new kworship;
 
-    // see if we are starting with session management
-    if (app.isSessionRestored())
+  // see if we are starting with session management
+  if (app.isSessionRestored())
+  {
+    RESTORE(kworship);
+  }
+  else
+  {
+    widget->show();
+    // no session.. just start up normally
+    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+    if (args->count() > 0)
     {
-        RESTORE(kworship);
+      KUrl arg = args->arg(0);
+      KUrl url = KCmdLineArgs::cwd();
+      if (arg.isRelative())
+      {
+        url.addPath(arg.path());
+      }
+      else
+      {
+        url = arg;
+      }
+      widget->loadPlaylist(url);
     }
-    else
-    {
-        // no session.. just start up normally
-        KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-        if (args->count() == 0)
-        {
-            //kworship *widget = new kworship;
-            widget->show();
-        }
-        else
-        {
-            int i = 0;
-            for (; i < args->count(); i++)
-            {
-                //kworship *widget = new kworship;
-                widget->show();
-            }
-        }
-        args->clear();
-    }
+    args->clear();
+  }
 
-    return app.exec();
+  return app.exec();
 }

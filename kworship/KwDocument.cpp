@@ -88,8 +88,9 @@ void KwDocument::reload()
   // Start off by opening the archive file
   if (!m_url.isLocalFile())
   {
-    KMessageBox::error(0, i18n("KWorship"),
-        i18n("Non-local saves not yet supported"));
+    KMessageBox::error(0,
+        i18n("Non-local loads not yet supported"),
+        i18n("KWorship"));
     return;
   }
 
@@ -109,18 +110,20 @@ void KwDocument::save()
   // Start off by opening the archive file
   if (!m_url.isLocalFile())
   {
-    KMessageBox::error(0, i18n("KWorship"),
-        i18n("Non-local saves not yet supported"));
+    KMessageBox::error(0,
+        i18n("Non-local saves not yet supported"),
+        i18n("KWorship"));
     return;
   }
   KSaveFile file;
   file.setFileName(m_url.toLocalFile());
   if (!file.open(QFile::WriteOnly))
   {
-    KMessageBox::error(0, i18n("KWorship"),
+    KMessageBox::error(0,
         i18n("Cannot write file %1:\n%2.")
-        .arg(file.fileName())
-        .arg(file.errorString()));
+          .arg(file.fileName())
+          .arg(file.errorString()),
+        i18n("KWorship"));
     return;
   }
 
@@ -131,10 +134,11 @@ void KwDocument::save()
 
   if (!file.finalize())
   {
-    KMessageBox::error(0, i18n("KWorship"),
+    KMessageBox::error(0,
         i18n("Cannot finalize file %1:\n%2.")
-        .arg(file.fileName())
-        .arg(file.errorString()));
+          .arg(file.fileName())
+          .arg(file.errorString()),
+        i18n("KWorship"));
     return;
   }
 

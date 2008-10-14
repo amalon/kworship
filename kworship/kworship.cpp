@@ -330,6 +330,17 @@ kworship::~kworship()
   delete KwSongdb::self();
 }
 
+/*
+ * Public interface
+ */
+
+/// Load a specified playlist.
+void kworship::loadPlaylist(const KUrl& url)
+{
+  setDocument(url);
+  m_document->reload();
+}
+
 void kworship::setupActions()
 {
   // Application
@@ -528,8 +539,7 @@ void kworship::fileOpen()
     KUrl url = KFileDialog::getOpenUrl(defaultUrl, filter, this);
     if (!url.isEmpty())
     {
-      setDocument(url);
-      m_document->reload();
+      loadPlaylist(url);
     }
   }
 }

@@ -73,6 +73,13 @@ public:
      */
     virtual ~kworship();
 
+    /*
+     * Public interface
+     */
+
+    /// Load a specified playlist.
+    void loadPlaylist(const KUrl& url);
+
 private slots:
     void settingsChanged();
     void toggleMainDisplay(bool checked);
