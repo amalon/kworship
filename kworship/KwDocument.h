@@ -94,6 +94,9 @@ class KwDocument : public QObject
      * Signals
      */
 
+    /// Emitted when the playlist is reset.
+    void playlistReset();
+
     /// Emitted when the document modified status changes.
     void modifiedChanged(bool modified);
 

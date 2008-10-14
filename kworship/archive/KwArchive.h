@@ -50,6 +50,9 @@ class KwArchive
     /// Primary constructor.
     KwArchive(QIODevice* dev, bool writing);
 
+    /// Primary constructor.
+    KwArchive(const QString& fileName, bool writing);
+
     /// Destructor.
     virtual ~KwArchive();
 
@@ -72,6 +75,9 @@ class KwArchive
 
     /// Get a list of playlist names in this archive.
     QStringList playlists();
+
+    /// Create a new playlist from the archive.
+    KwPlaylistList* createPlaylist(QString name);
 
     /// Add a playlist to the archive.
     void addPlaylist(KwPlaylistList* playlist);

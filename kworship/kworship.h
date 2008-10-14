@@ -86,6 +86,7 @@ private slots:
     void toggleFullscreen(bool checked);
     void optionsPreferences();
     void playlist_doubleClicked(QModelIndex);
+    void playlistReset();
     void presentationDelete();
     void presentationSelected(int);
     void presentationToggled(bool);

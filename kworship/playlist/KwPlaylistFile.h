@@ -44,6 +44,9 @@ class KwPlaylistFile : public KwPlaylistItem
     /// Primary constructor.
     KwPlaylistFile(const QUrl& url);
 
+    /// Construct from a DOM element.
+    KwPlaylistFile(const QDomElement& element, KwResourceManager* resourceManager);
+
     /// Destructor.
     virtual ~KwPlaylistFile();
 

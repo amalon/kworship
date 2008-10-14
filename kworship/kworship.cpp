@@ -596,6 +596,12 @@ void kworship::playlist_doubleClicked(QModelIndex index)
   node->activate(m_displayManager);
 }
 
+void kworship::playlistReset()
+{
+  // Connect up the new document
+  m_playlistModel->setRootNode(m_document->playlist()->getNode(0));
+}
+
 void kworship::presentationDelete()
 {
   setPresentation(0, true);
@@ -706,9 +712,11 @@ void kworship::setDocument(KUrl url)
   delete m_document;
   m_document = new KwDocument(url, this);
 
-  // Connect up the new document
-  m_playlistModel->setRootNode(m_document->playlist()->getNode(0));
-  /// @todo Wire up signals
+  // Playlist will have changed
+  playlistReset();
+
+  // Wire up signals
+  connect(m_document, SIGNAL(playlistReset()), this, SLOT(playlistReset()));
 }
 
 // Presentations

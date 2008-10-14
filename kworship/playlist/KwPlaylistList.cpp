@@ -26,6 +26,8 @@
 #include "KwPlaylistList.h"
 #include "KwPlaylistListNode.h"
 
+#include <QDomElement>
+
 #include <cassert>
 
 /*
@@ -37,6 +39,26 @@ KwPlaylistList::KwPlaylistList()
 : KwPlaylistItem()
 , m_playlist()
 {
+}
+
+/// Construct from a DOM element.
+KwPlaylistList::KwPlaylistList(const QDomElement& element, KwResourceManager* resourceManager)
+: KwPlaylistItem(element, resourceManager)
+{
+  QDomElement list = element.firstChildElement("playlist_items");
+  QDomNodeList children = list.childNodes();
+  for (int i = 0; i < children.count(); ++i)
+  {
+    QDomElement child = children.item(i).toElement();
+    if (!child.isNull())
+    {
+      KwPlaylistItem* item = KwPlaylistItem::createFromDom(child, resourceManager);
+      if (0 != item)
+      {
+        addItem(item);
+      }
+    }
+  }
 }
 
 /// Destructor.
@@ -120,9 +142,12 @@ QString KwPlaylistList::itemType() const
 
 void KwPlaylistList::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
+  QDomElement children = document.createElement("playlist_items");
+  element.appendChild(children);
+
   foreach (const KwPlaylistItem* item, m_playlist)
   {
-    item->exportToDom(document, element, resourceManager);
+    item->exportToDom(document, children, resourceManager);
   }
 }
 

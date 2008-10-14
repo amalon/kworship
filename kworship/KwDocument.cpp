@@ -92,19 +92,9 @@ void KwDocument::reload()
         i18n("Non-local saves not yet supported"));
     return;
   }
-  QFile file;
-  file.setFileName(m_url.toLocalFile());
-  if (!file.open(QFile::ReadOnly))
-  {
-    KMessageBox::error(0, i18n("KWorship"),
-        i18n("Cannot read file %1:\n%2.")
-        .arg(file.fileName())
-        .arg(file.errorString()));
-    return;
-  }
 
   // Create a new archive object and fill it
-  KwArchive* archive = new KwArchive(&file, false);
+  KwArchive* archive = new KwArchive(m_url.toLocalFile(), false);
   loadFromArchive(archive);
   delete archive;
 
@@ -180,6 +170,14 @@ void KwDocument::setModified(bool modified)
 void KwDocument::loadFromArchive(KwArchive* archive)
 {
   Q_ASSERT(archive->isReading());
+
+  KwPlaylistList* playlist = archive->createPlaylist("0");
+  if (0 != playlist)
+  {
+    delete m_playlist;
+    m_playlist = playlist;
+    playlistReset();
+  }
 }
 
 /// Save to an archive.

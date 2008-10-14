@@ -26,6 +26,9 @@
 #include "KwPlaylistFile.h"
 #include "KwPlaylistFileNode.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+
 /*
  * Constructors + destructor.
  */
@@ -35,6 +38,18 @@ KwPlaylistFile::KwPlaylistFile(const QUrl& url)
 : KwPlaylistItem()
 , m_url(url)
 {
+}
+
+/// Construct from a DOM element.
+KwPlaylistFile::KwPlaylistFile(const QDomElement& element, KwResourceManager* resourceManager)
+: KwPlaylistItem(element, resourceManager)
+, m_url()
+{
+  QDomElement url = element.firstChildElement("url");
+  if (!url.isNull())
+  {
+    m_url = QUrl(url.text());
+  }
 }
 
 /// Destructor.
@@ -53,6 +68,9 @@ QString KwPlaylistFile::itemType() const
 
 void KwPlaylistFile::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
+  QDomElement url = document.createElement("url");
+  element.appendChild(url);
+  url.appendChild(document.createTextNode(m_url.toString()));
 }
 
 /*

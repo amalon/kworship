@@ -48,7 +48,7 @@ KwDataFile::~KwDataFile()
 }
 
 /*
- * Insertion of objects.
+ * Playlists
  */
 
 /// Insert a playlist.
@@ -60,6 +60,24 @@ void KwDataFile::insertPlaylist(const KwPlaylistList* playlist, KwResourceManage
   root.appendChild(playlistElement);
 
   playlist->exportToDom(*m_domDocument, playlistElement, resourceManager);
+}
+
+/// Create a playlist object from the data.
+KwPlaylistList* KwDataFile::createPlaylist(KwResourceManager* resourceManager) const
+{
+  QDomElement root = m_domDocument->documentElement();
+
+  QDomElement playlistElement = root.firstChildElement("playlist");
+  if (!playlistElement.isNull())
+  {
+    QDomElement playlistItemElement = playlistElement.firstChildElement("playlist_item");
+    if (playlistItemElement.attribute("type") == "list")
+    {
+      return new KwPlaylistList(playlistItemElement, resourceManager);
+    }
+  }
+
+  return 0;
 }
 
 /*

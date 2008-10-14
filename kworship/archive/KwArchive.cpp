@@ -45,10 +45,33 @@ KwArchive::KwArchive(QIODevice* dev, bool writing)
 , m_numPlaylists(-1)
 {
   // Compression
-  m_compressor = KFilterDev::device(dev, "application/x-gzip", false);
+  m_compressor = KFilterDev::device(dev, "application/x-bzip2", true);
   m_compressor->open(writing ? QFile::WriteOnly : QFile::ReadOnly);
+
   // Archiving
   m_archive = new KTar(m_compressor);
+  m_archive->open(writing ? QFile::WriteOnly : QFile::ReadOnly);
+
+  if (!writing)
+  {
+    m_index = loadDataFile("index.kw");
+  }
+  else
+  {
+    m_index = new KwDataFile();
+  }
+}
+
+/// Primary constructor.
+KwArchive::KwArchive(const QString& fileName, bool writing)
+: m_writing(writing)
+, m_compressor(0)
+, m_archive(0)
+, m_index(0)
+, m_numPlaylists(-1)
+{
+  // Archiving
+  m_archive = new KTar(fileName, "application/x-bzip2");
   m_archive->open(writing ? QFile::WriteOnly : QFile::ReadOnly);
 
   if (!writing)
@@ -64,15 +87,20 @@ KwArchive::KwArchive(QIODevice* dev, bool writing)
 /// Destructor.
 KwArchive::~KwArchive()
 {
-  // Finally we need to write out the index file
-  writeDataFile("index.kw", m_index);
+  if (m_writing)
+  {
+    // Finally we need to write out the index file
+    writeDataFile("index.kw", m_index);
+  }
   delete m_index;
 
   // Now its safe to close the archive
   m_archive->close();
+  if (0 != m_compressor)
+  {
+    m_compressor->close();
+  }
   delete m_archive;
-  m_compressor->close();
-  delete m_compressor;
 }
 
 /*
@@ -107,6 +135,19 @@ QStringList KwArchive::playlists()
   return QStringList();
 }
 
+/// Create a new playlist from the archive.
+KwPlaylistList* KwArchive::createPlaylist(QString name)
+{
+  Q_ASSERT(isReading());
+
+  KwDataFile* playlistFile = loadDataFile("playlist/"+name+".kw");
+  if (0 != playlistFile)
+  {
+    return playlistFile->createPlaylist(0);
+  }
+  return 0;
+}
+
 /// Add a playlist to the archive.
 void KwArchive::addPlaylist(KwPlaylistList* playlist)
 {
@@ -114,7 +155,7 @@ void KwArchive::addPlaylist(KwPlaylistList* playlist)
 
   KwDataFile* playlistFile = new KwDataFile();
   playlistFile->insertPlaylist(playlist, 0);
-  writeDataFile(QString("playlists/%1.kw").arg(++m_numPlaylists),
+  writeDataFile(QString("playlist/%1.kw").arg(++m_numPlaylists),
                 playlistFile);
   delete playlistFile;
 }
@@ -169,9 +210,8 @@ KwDataFile* KwArchive::loadDataFile(QString path)
 
   // Turn entry into a file
   const KArchiveFile* fileEntry = dynamic_cast<const KArchiveFile*>(entry);
-  Q_ASSERT(fileEntry); // isFile() should mean entry is a KArchiveFile
+  Q_ASSERT(0 != fileEntry); // isFile() should mean entry is a KArchiveFile
 
-  // Load into a KwDataFile object
   QIODevice* fileDevice = fileEntry->createDevice();
   KwDataFile* dataFile = new KwDataFile();
   dataFile->readFrom(fileDevice);
@@ -193,6 +233,8 @@ void KwArchive::writeDataFile(QString path, const KwDataFile* data)
   }
 
   // Write this to the archive
-  m_archive->writeFile(path, "user", "group", xmlData, xmlData.size());
+  time_t now = time(0);
+  m_archive->writeFile(path, "user", "group", xmlData, xmlData.size(),
+                       0100644, now, now, now);
 }
 

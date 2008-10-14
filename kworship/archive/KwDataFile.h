@@ -51,7 +51,7 @@ class KwDataFile
     virtual ~KwDataFile();
 
     /*
-     * Insertion of objects.
+     * Playlists
      */
 
     /** Insert a playlist.
@@ -59,6 +59,11 @@ class KwDataFile
      * @param resources Resource manager.
      */
     void insertPlaylist(const KwPlaylistList* playlist, KwResourceManager* resourceManager);
+
+    /** Create a playlist object from the data.
+     * @returns Newly created playlist which the user must delete.
+     */
+    KwPlaylistList* createPlaylist(KwResourceManager* resourceManager) const;
 
     /*
      * Reading and writing

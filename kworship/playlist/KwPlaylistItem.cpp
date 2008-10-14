@@ -25,6 +25,9 @@
 
 #include "KwPlaylistItem.h"
 
+#include "KwPlaylistList.h"
+#include "KwPlaylistFile.h"
+
 #include <QDomDocument>
 #include <QDomElement>
 
@@ -38,6 +41,14 @@ KwPlaylistItem::KwPlaylistItem()
 {
 }
 
+/// Construct from a DOM element.
+KwPlaylistItem::KwPlaylistItem(const QDomElement& element, KwResourceManager* resourceManager)
+: KwCssScope()
+{
+  Q_UNUSED(element)
+  Q_UNUSED(resourceManager)
+}
+
 /// Destructor.
 KwPlaylistItem::~KwPlaylistItem()
 {
@@ -46,6 +57,24 @@ KwPlaylistItem::~KwPlaylistItem()
 /*
  * DOM Translation.
  */
+
+/// Create an item from a DOM element.
+KwPlaylistItem* KwPlaylistItem::createFromDom(const QDomElement& element, KwResourceManager* resourceManager)
+{
+  // Look at the type
+  QString type = element.attribute("type");
+
+  if (type == "list")
+  {
+    return new KwPlaylistList(element, resourceManager);
+  }
+  else if (type == "file")
+  {
+    return new KwPlaylistFile(element, resourceManager);
+  }
+
+  return 0;
+}
 
 /// Export this item to the DOM.
 void KwPlaylistItem::exportToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const

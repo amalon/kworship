@@ -45,6 +45,9 @@ class KwPlaylistList : public KwPlaylistItem
     /// Default constructor.
     KwPlaylistList();
 
+    /// Construct from a DOM element.
+    KwPlaylistList(const QDomElement& element, KwResourceManager* resourceManager);
+
     /// Destructor.
     virtual ~KwPlaylistList();
 

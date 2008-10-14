@@ -51,12 +51,18 @@ class KwPlaylistItem : public KwCssScope
     /// Default constructor.
     KwPlaylistItem();
 
+    /// Construct from a DOM element.
+    KwPlaylistItem(const QDomElement& element, KwResourceManager* resourceManager);
+
     /// Destructor.
     virtual ~KwPlaylistItem();
 
     /*
      * DOM Translation.
      */
+
+    /// Create an item from a DOM element.
+    static KwPlaylistItem* createFromDom(const QDomElement& element, KwResourceManager* resourceManager);
 
     /// Export this item to the DOM.
     void exportToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
