@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+It comes with ABSOLUTELY NO WARRANTY, to the extent permitted by law. You may
+redistribute copies of update-mime-database under the terms of the GNU General
+Public License. For more information about these matters, see the file named
+COPYING.
+-->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-kworship+xml">
+    <sub-class-of type="application/xml"/>
+    <comment>KWorship data file</comment>
+    <glob pattern="*.kw"/>
+  </mime-type>
+  <mime-type type="application/x-kworship-archive">
+    <sub-class-of type="application/x-bzip2"/>
+    <comment>KWorship data archive</comment>
+    <glob pattern="*.kwz"/>
+  </mime-type>
+</mime-info>

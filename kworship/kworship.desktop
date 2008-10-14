@@ -6,3 +6,4 @@ Comment=The KDE church projector display system.
 TryExec=kworship
 Exec=kworship %F
 Icon=kworship
+MimeType=application/x-kworship+xml;application/x-kworship-archive;
