@@ -43,13 +43,21 @@ KwPlaylistImage::~KwPlaylistImage()
 }
 
 /*
- * Main interface.
+ * DOM Translation.
  */
 
 QString KwPlaylistImage::itemType() const
 {
   return "image";
 }
+
+void KwPlaylistImage::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+}
+
+/*
+ * Main interface.
+ */
 
 void KwPlaylistImage::activate(KwDisplayManager* manager)
 {

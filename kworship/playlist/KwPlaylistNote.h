@@ -46,13 +46,19 @@ class KwPlaylistNote : public KwPlaylistItem
     virtual ~KwPlaylistNote();
 
     /*
+     * DOM Translation.
+     */
+
+    virtual QString itemType() const;
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
+
+    /*
      * Main interface.
      */
 
     /// Get the text.
     QString getContent() const;
 
-    virtual QString itemType() const;
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:

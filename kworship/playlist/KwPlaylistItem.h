@@ -30,7 +30,11 @@
 
 #include <QString>
 
+class KwResourceManager;
 class KwPlaylistNode;
+
+class QDomDocument;
+class QDomElement;
 
 /// An item that can be added to a playlist.
 /**
@@ -51,11 +55,21 @@ class KwPlaylistItem : public KwCssScope
     virtual ~KwPlaylistItem();
 
     /*
-     * Main interface.
+     * DOM Translation.
      */
+
+    /// Export this item to the DOM.
+    void exportToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
 
     /// Get the type of the item.
     virtual QString itemType() const = 0;
+
+    /// Export details of this item to the DOM.
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const = 0;
+
+    /*
+     * Main interface.
+     */
 
     /// Get a tree node for this item.
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent) = 0;

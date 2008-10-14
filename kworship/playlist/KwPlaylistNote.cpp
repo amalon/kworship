@@ -43,6 +43,19 @@ KwPlaylistNote::~KwPlaylistNote()
 }
 
 /*
+ * DOM Translation.
+ */
+
+QString KwPlaylistNote::itemType() const
+{
+  return "note";
+}
+
+void KwPlaylistNote::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+}
+
+/*
  * Main interface.
  */
 
@@ -50,11 +63,6 @@ KwPlaylistNote::~KwPlaylistNote()
 QString KwPlaylistNote::getContent() const
 {
   return m_content;
-}
-
-QString KwPlaylistNote::itemType() const
-{
-  return "note";
 }
 
 KwPlaylistNode* KwPlaylistNote::getNode(KwPlaylistNode* parent)

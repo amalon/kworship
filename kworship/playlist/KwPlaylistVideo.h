@@ -46,10 +46,16 @@ class KwPlaylistVideo : public KwPlaylistFile
     virtual ~KwPlaylistVideo();
 
     /*
-     * Main interface.
+     * DOM Translation.
      */
 
     virtual QString itemType() const;
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
+
+    /*
+     * Main interface.
+     */
+
     virtual void activate(KwDisplayManager* manager);
 
   private:

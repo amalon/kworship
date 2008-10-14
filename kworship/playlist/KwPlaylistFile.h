@@ -48,10 +48,16 @@ class KwPlaylistFile : public KwPlaylistItem
     virtual ~KwPlaylistFile();
 
     /*
-     * Main interface.
+     * DOM Translation.
      */
 
     virtual QString itemType() const;
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
+
+    /*
+     * Main interface.
+     */
+
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
     /// Activate the file.

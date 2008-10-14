@@ -44,6 +44,19 @@ KwPlaylistText::~KwPlaylistText()
 }
 
 /*
+ * DOM Translation.
+ */
+
+QString KwPlaylistText::itemType() const
+{
+  return "text";
+}
+
+void KwPlaylistText::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+}
+
+/*
  * Main interface
  */
 
@@ -51,11 +64,6 @@ KwPlaylistText::~KwPlaylistText()
 QString KwPlaylistText::getLabel() const
 {
   return m_label;
-}
-
-QString KwPlaylistText::itemType() const
-{
-  return "text";
 }
 
 KwPlaylistNode* KwPlaylistText::getNode(KwPlaylistNode* parent)

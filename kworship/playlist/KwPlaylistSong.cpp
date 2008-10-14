@@ -54,13 +54,21 @@ KwSongdbVersion* KwPlaylistSong::getSongVersion()
 }
 
 /*
- * Main interface
+ * DOM Translation.
  */
 
 QString KwPlaylistSong::itemType() const
 {
   return "song";
 }
+
+void KwPlaylistSong::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+}
+
+/*
+ * Main interface
+ */
 
 KwPlaylistNode* KwPlaylistSong::getNode(KwPlaylistNode* parent)
 {

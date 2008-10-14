@@ -43,13 +43,21 @@ KwPlaylistFile::~KwPlaylistFile()
 }
 
 /*
- * Main interface.
+ * DOM Translation.
  */
 
 QString KwPlaylistFile::itemType() const
 {
   return "file";
 }
+
+void KwPlaylistFile::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+}
+
+/*
+ * Main interface.
+ */
 
 KwPlaylistNode* KwPlaylistFile::getNode(KwPlaylistNode* parent)
 {

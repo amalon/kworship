@@ -25,6 +25,9 @@
 
 #include "KwPlaylistItem.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+
 /*
  * Constructors + destructor.
  */
@@ -38,5 +41,21 @@ KwPlaylistItem::KwPlaylistItem()
 /// Destructor.
 KwPlaylistItem::~KwPlaylistItem()
 {
+}
+
+/*
+ * DOM Translation.
+ */
+
+/// Export this item to the DOM.
+void KwPlaylistItem::exportToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+  // Add an item element with type attribute and child elements determined by type
+  QDomElement itemElement = document.createElement("playlist_item");
+  element.appendChild(itemElement);
+  QString type = itemType();
+  itemElement.setAttribute("type", type);
+
+  exportDetailsToDom(document, itemElement, resourceManager);
 }
 

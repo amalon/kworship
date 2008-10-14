@@ -59,7 +59,7 @@ void KwDataFile::insertPlaylist(const KwPlaylistList* playlist, KwResourceManage
   QDomElement playlistElement = m_domDocument->createElement("playlist");
   root.appendChild(playlistElement);
 
-  insertPlaylistList(playlist, resourceManager, playlistElement);
+  playlist->exportToDom(*m_domDocument, playlistElement, resourceManager);
 }
 
 /*
@@ -76,36 +76,5 @@ void KwDataFile::readFrom(QIODevice* device)
 void KwDataFile::writeTo(QTextStream& stream) const
 {
   m_domDocument->save(stream, 0);
-}
-
-/*
- * Playlist insertion
- */
-
-/// Insert a generic playlist item.
-void KwDataFile::insertPlaylistItem(const KwPlaylistItem* item, KwResourceManager* resourceManager, QDomElement& parent)
-{
-  // Add an item element with type attribute and child elements determined by type
-  QDomElement itemElement = m_domDocument->createElement("playlist_item");
-  parent.appendChild(itemElement);
-  QString type = item->itemType();
-  itemElement.setAttribute("type", type);
-
-  if (type == "list")
-  {
-    insertPlaylistList(dynamic_cast<const KwPlaylistList*>(item), resourceManager, itemElement);
-  }
-}
-
-/// Insert a list playlist item.
-void KwDataFile::insertPlaylistList(const KwPlaylistList* list, KwResourceManager* resourceManager, QDomElement& parent)
-{
-  // Insert child item elements directly in the list element
-  int count = list->getItemCount();
-  for (int i = 0; i < count; ++i)
-  {
-    const KwPlaylistItem* item = list->getItem(i);
-    insertPlaylistItem(item, resourceManager, parent);
-  }
 }
 

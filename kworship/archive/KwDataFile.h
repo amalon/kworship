@@ -70,18 +70,6 @@ class KwDataFile
     /// Write to stream.
     void writeTo(QTextStream& stream) const;
 
-  protected:
-
-    /*
-     * Playlist insertion
-     */
-
-    /// Insert a generic playlist item.
-    void insertPlaylistItem(const KwPlaylistItem* item, KwResourceManager* resourceManager, QDomElement& parent);
-
-    /// Insert a list playlist item.
-    void insertPlaylistList(const KwPlaylistList* list, KwResourceManager* resourceManager, QDomElement& parent);
-
   private:
 
     /*

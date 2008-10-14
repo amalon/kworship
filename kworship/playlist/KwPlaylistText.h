@@ -44,13 +44,19 @@ class KwPlaylistText : public KwPlaylistPaged
     virtual ~KwPlaylistText();
 
     /*
+     * DOM Translation.
+     */
+
+    virtual QString itemType() const;
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
+
+    /*
      * Main interface
      */
 
     /// Get the label.
     QString getLabel() const;
 
-    virtual QString itemType() const;
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
   private:

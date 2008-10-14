@@ -110,13 +110,25 @@ const KwPlaylistItem* KwPlaylistList::getItem(int index) const
 }
 
 /*
- * Main interface.
+ * DOM Translation.
  */
 
 QString KwPlaylistList::itemType() const
 {
   return "list";
 }
+
+void KwPlaylistList::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+  foreach (const KwPlaylistItem* item, m_playlist)
+  {
+    item->exportToDom(document, element, resourceManager);
+  }
+}
+
+/*
+ * Main interface.
+ */
 
 KwPlaylistNode* KwPlaylistList::getNode(KwPlaylistNode* parent)
 {

@@ -46,13 +46,21 @@ KwPlaylistVideo::~KwPlaylistVideo()
 }
 
 /*
- * Main interface.
+ * DOM Translation.
  */
 
 QString KwPlaylistVideo::itemType() const
 {
   return "video";
 }
+
+void KwPlaylistVideo::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+}
+
+/*
+ * Main interface.
+ */
 
 void KwPlaylistVideo::activate(KwDisplayManager* manager)
 {
