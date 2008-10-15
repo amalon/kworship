@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=KWorship
-GenericName=Church projector controller
+GenericName=Church Projector Controller
 Comment=The KDE church projector display system.
 TryExec=kworship
 Exec=kworship %F
