@@ -17,86 +17,49 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwPlaylistUnknownNode_h_
+#define _KwPlaylistUnknownNode_h_
+
 /**
- * @file KwPlaylistFile.h
- * @brief An image playlist item.
+ * @file KwPlaylistUnknownNode.h
+ * @brief A playlist node for an unknown item.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlaylistFile.h"
-#include "KwPlaylistFileNode.h"
+#include "KwPlaylistNode.h"
 
-#include <QDomDocument>
-#include <QDomElement>
+class KwPlaylistUnknown;
 
-KW_REGISTER_PLAYLIST_ITEM(KwPlaylistFile, "file")
-
-/*
- * Constructors + destructor.
- */
-
-/// Primary constructor.
-KwPlaylistFile::KwPlaylistFile(const QUrl& url)
-: KwPlaylistItem()
-, m_url(url)
+/// A playlist node for an unknown item.
+class KwPlaylistUnknownNode : public KwPlaylistNode
 {
-}
+  public:
+    
+    /*
+     * Constructors + destructor.
+     */
 
-/// Construct from a DOM element.
-KwPlaylistFile::KwPlaylistFile(const QDomElement& element, KwResourceManager* resourceManager)
-: KwPlaylistItem(element, resourceManager)
-, m_url()
-{
-  elementHandled("url");
-  QDomElement url = element.firstChildElement("url");
-  if (!url.isNull())
-  {
-    m_url = QUrl(url.text());
-  }
-}
+    /// Primary constructor.
+    KwPlaylistUnknownNode(KwPlaylistNode* parent, KwPlaylistUnknown* item);
 
-/// Destructor.
-KwPlaylistFile::~KwPlaylistFile()
-{
-}
+    /// Destructor.
+    virtual ~KwPlaylistUnknownNode();
 
-/*
- * DOM Translation.
- */
+    /*
+     * Main interface
+     */
 
-QString KwPlaylistFile::itemType() const
-{
-  return "file";
-}
+    virtual QVariant getData(int role, int column);
 
-void KwPlaylistFile::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
-{
-  QDomElement url = document.createElement("url");
-  element.appendChild(url);
-  url.appendChild(document.createTextNode(m_url.toString()));
-}
+  private:
 
-/*
- * Main interface.
- */
+    /*
+     * Variables
+     */
 
-KwPlaylistNode* KwPlaylistFile::getNode(KwPlaylistNode* parent)
-{
-  return new KwPlaylistFileNode(parent, this);
-}
+    /// Playlist item.
+    KwPlaylistUnknown* m_item;
+};
 
-/// Activate the file.
-void KwPlaylistFile::activate(KwDisplayManager*)
-{
-}
-
-/*
- * Accessors
- */
-
-/// Get the image url.
-QUrl KwPlaylistFile::getUrl() const
-{
-  return m_url;
-}
+#endif // _KwPlaylistUnknownNode_h_
 

@@ -11,6 +11,8 @@ set(kworshipplaylist_SRCS
     KwPlaylistImage.cpp
     KwPlaylistVideo.cpp
     KwPlaylistItem.cpp
+    KwPlaylistUnknown.cpp
+    KwPlaylistUnknownNode.cpp
     KwPlaylistPaged.cpp
     KwPlaylistPagedNode.cpp
     KwPlaylistPagedNodePage.cpp

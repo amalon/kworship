@@ -25,12 +25,8 @@
 
 #include "KwPlaylistItem.h"
 
-#include "KwPlaylistList.h"
-#include "KwPlaylistFile.h"
+#include "KwPlaylistUnknown.h"
 
-#include <KLocale>
-
-#include <QtDebug>
 #include <QDomDocument>
 #include <QDomElement>
 
@@ -52,15 +48,25 @@ KwPlaylistItem::Factory* KwPlaylistItem::factory()
 /// Default constructor.
 KwPlaylistItem::KwPlaylistItem()
 : KwCssScope()
+, m_domDocument()
+, m_domPreserve(m_domDocument.createDocumentFragment())
 {
 }
 
 /// Construct from a DOM element.
 KwPlaylistItem::KwPlaylistItem(const QDomElement& element, KwResourceManager* resourceManager)
 : KwCssScope()
+, m_domDocument()
+, m_domPreserve(m_domDocument.createDocumentFragment())
 {
-  Q_UNUSED(element)
-  Q_UNUSED(resourceManager)
+  // Import the children of element into m_domPreserve
+  QDomNodeList children = element.childNodes();
+  for (int i = 0; i < children.size(); ++i)
+  {
+    QDomNode child = children.item(i);
+    QDomNode preserved = m_domDocument.importNode(child, true); // deep copy
+    m_domPreserve.appendChild(preserved);
+  }
 }
 
 /// Destructor.
@@ -80,7 +86,7 @@ KwPlaylistItem* KwPlaylistItem::createFromDom(const QDomElement& element, KwReso
   KwPlaylistItem* item = factory()->construct(type, element, resourceManager);
   if (0 == item)
   {
-    qDebug() << i18n("Playlist item factory does not know about item type '%1'").arg(type);
+    item = new KwPlaylistUnknown(element, resourceManager);
   }
   return item;
 }
@@ -95,5 +101,34 @@ void KwPlaylistItem::exportToDom(QDomDocument& document, QDomElement& element, K
   itemElement.setAttribute("type", type);
 
   exportDetailsToDom(document, itemElement, resourceManager);
+
+  // Add preserve elements as well
+  QDomNode importedFragment = document.importNode(m_domPreserve, true);
+  itemElement.appendChild(importedFragment);
+}
+
+/*
+ * Protected methods
+ */
+
+/// Indicate that elements of a particular tag name have been handled.
+void KwPlaylistItem::elementsHandled(const QString& tagName)
+{
+  QDomElement current = m_domPreserve.firstChildElement(tagName);
+  while (!current.isNull())
+  {
+    m_domPreserve.removeChild(current);
+    current = current.nextSiblingElement(tagName);
+  }
+}
+
+/// Indicate that the first elements of a particular tag name have been handled.
+void KwPlaylistItem::elementHandled(const QString& tagName)
+{
+  QDomElement current = m_domPreserve.firstChildElement(tagName);
+  if (!current.isNull())
+  {
+    m_domPreserve.removeChild(current);
+  }
 }
 

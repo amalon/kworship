@@ -18,85 +18,53 @@
  ***************************************************************************/
 
 /**
- * @file KwPlaylistFile.h
- * @brief An image playlist item.
+ * @file KwPlaylistUnknownNode.cpp
+ * @brief A playlist node for an unknown item.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlaylistFile.h"
-#include "KwPlaylistFileNode.h"
+#include "KwPlaylistUnknownNode.h"
+#include "KwPlaylistUnknown.h"
 
-#include <QDomDocument>
-#include <QDomElement>
-
-KW_REGISTER_PLAYLIST_ITEM(KwPlaylistFile, "file")
+#include <KIcon>
+#include <KLocale>
 
 /*
  * Constructors + destructor.
  */
 
 /// Primary constructor.
-KwPlaylistFile::KwPlaylistFile(const QUrl& url)
-: KwPlaylistItem()
-, m_url(url)
+KwPlaylistUnknownNode::KwPlaylistUnknownNode(KwPlaylistNode* parent, KwPlaylistUnknown* item)
+: KwPlaylistNode(parent)
+, m_item(item)
 {
-}
-
-/// Construct from a DOM element.
-KwPlaylistFile::KwPlaylistFile(const QDomElement& element, KwResourceManager* resourceManager)
-: KwPlaylistItem(element, resourceManager)
-, m_url()
-{
-  elementHandled("url");
-  QDomElement url = element.firstChildElement("url");
-  if (!url.isNull())
-  {
-    m_url = QUrl(url.text());
-  }
 }
 
 /// Destructor.
-KwPlaylistFile::~KwPlaylistFile()
+KwPlaylistUnknownNode::~KwPlaylistUnknownNode()
 {
 }
 
 /*
- * DOM Translation.
+ * Main interface
  */
 
-QString KwPlaylistFile::itemType() const
+QVariant KwPlaylistUnknownNode::getData(int role, int column)
 {
-  return "file";
-}
-
-void KwPlaylistFile::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
-{
-  QDomElement url = document.createElement("url");
-  element.appendChild(url);
-  url.appendChild(document.createTextNode(m_url.toString()));
-}
-
-/*
- * Main interface.
- */
-
-KwPlaylistNode* KwPlaylistFile::getNode(KwPlaylistNode* parent)
-{
-  return new KwPlaylistFileNode(parent, this);
-}
-
-/// Activate the file.
-void KwPlaylistFile::activate(KwDisplayManager*)
-{
-}
-
-/*
- * Accessors
- */
-
-/// Get the image url.
-QUrl KwPlaylistFile::getUrl() const
-{
-  return m_url;
+  if (role == Qt::DisplayRole)
+  {
+    if (column == 0)
+    {
+      return i18n("Unrecognised playlist item of type '%1'").arg(m_item->itemType());
+    }
+  }
+  else if (role == Qt::DecorationRole)
+  {
+    if (column == 0)
+    {
+      return KIcon("unknown");
+    }
+  }
+  return QVariant();
 }
 

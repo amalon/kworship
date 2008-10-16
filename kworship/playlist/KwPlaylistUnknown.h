@@ -17,86 +17,57 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwPlaylistUnknown_h_
+#define _KwPlaylistUnknown_h_
+
 /**
- * @file KwPlaylistFile.h
- * @brief An image playlist item.
+ * @file KwPlaylistUnknown.h
+ * @brief Placeholder for an unknown playlist item (forwards compatilibity).
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlaylistFile.h"
-#include "KwPlaylistFileNode.h"
+#include "KwPlaylistItem.h"
 
-#include <QDomDocument>
-#include <QDomElement>
+#include <QString>
 
-KW_REGISTER_PLAYLIST_ITEM(KwPlaylistFile, "file")
-
-/*
- * Constructors + destructor.
- */
-
-/// Primary constructor.
-KwPlaylistFile::KwPlaylistFile(const QUrl& url)
-: KwPlaylistItem()
-, m_url(url)
+/// Placeholder for an unknown playlist item (forwards compatilibity).
+class KwPlaylistUnknown : public KwPlaylistItem
 {
-}
+  public:
+    
+    /*
+     * Constructors + destructor.
+     */
 
-/// Construct from a DOM element.
-KwPlaylistFile::KwPlaylistFile(const QDomElement& element, KwResourceManager* resourceManager)
-: KwPlaylistItem(element, resourceManager)
-, m_url()
-{
-  elementHandled("url");
-  QDomElement url = element.firstChildElement("url");
-  if (!url.isNull())
-  {
-    m_url = QUrl(url.text());
-  }
-}
+    /// Construct from a DOM element.
+    KwPlaylistUnknown(const QDomElement& element, KwResourceManager* resourceManager);
 
-/// Destructor.
-KwPlaylistFile::~KwPlaylistFile()
-{
-}
+    /// Destructor.
+    virtual ~KwPlaylistUnknown();
 
-/*
- * DOM Translation.
- */
+    /*
+     * DOM Translation.
+     */
 
-QString KwPlaylistFile::itemType() const
-{
-  return "file";
-}
+    virtual QString itemType() const;
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
 
-void KwPlaylistFile::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
-{
-  QDomElement url = document.createElement("url");
-  element.appendChild(url);
-  url.appendChild(document.createTextNode(m_url.toString()));
-}
+    /*
+     * Main interface.
+     */
 
-/*
- * Main interface.
- */
+    virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 
-KwPlaylistNode* KwPlaylistFile::getNode(KwPlaylistNode* parent)
-{
-  return new KwPlaylistFileNode(parent, this);
-}
+  private:
 
-/// Activate the file.
-void KwPlaylistFile::activate(KwDisplayManager*)
-{
-}
+    /*
+     * Variables
+     */
 
-/*
- * Accessors
- */
+    /// Type of item.
+    QString m_type;
 
-/// Get the image url.
-QUrl KwPlaylistFile::getUrl() const
-{
-  return m_url;
-}
+};
+
+#endif // _KwPlaylistUnknown_h_
 

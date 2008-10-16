@@ -30,13 +30,12 @@
 #include "Factory.h"
 
 #include <QString>
+#include <QDomDocument>
+#include <QDomDocumentFragment>
 
 class KwResourceManager;
 class KwPlaylistItem;
 class KwPlaylistNode;
-
-class QDomDocument;
-class QDomElement;
 
 #define KW_PLAYLIST_ITEM \
   private: \
@@ -101,6 +100,34 @@ class KwPlaylistItem : public KwCssScope
 
     /// Get a tree node for this item.
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent) = 0;
+
+  protected:
+
+    /*
+     * Protected methods
+     */
+
+    /** Indicate that elements of a particular tag name have been handled.
+     * This clears the specified elements from the DOM preserve.
+     */
+    void elementsHandled(const QString& tagName);
+
+    /** Indicate that the first elements of a particular tag name have been handled.
+     * This clears the specified element from the DOM preserve.
+     */
+    void elementHandled(const QString& tagName);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Document to store fragment in.
+    QDomDocument m_domDocument;
+
+    /// Fragment of DOM from save file which needs preserving.
+    QDomDocumentFragment m_domPreserve;
 };
 
 #endif // _KwPlaylistItem_h_

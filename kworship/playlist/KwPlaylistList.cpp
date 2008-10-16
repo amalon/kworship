@@ -47,19 +47,24 @@ KwPlaylistList::KwPlaylistList()
 KwPlaylistList::KwPlaylistList(const QDomElement& element, KwResourceManager* resourceManager)
 : KwPlaylistItem(element, resourceManager)
 {
+  elementsHandled("playlist_items");
   QDomElement list = element.firstChildElement("playlist_items");
-  QDomNodeList children = list.childNodes();
-  for (int i = 0; i < children.count(); ++i)
+  while (!list.isNull())
   {
-    QDomElement child = children.item(i).toElement();
-    if (!child.isNull())
+    QDomNodeList children = list.childNodes();
+    for (int i = 0; i < children.count(); ++i)
     {
-      KwPlaylistItem* item = KwPlaylistItem::createFromDom(child, resourceManager);
-      if (0 != item)
+      QDomElement child = children.item(i).toElement();
+      if (!child.isNull())
       {
-        addItem(item);
+        KwPlaylistItem* item = KwPlaylistItem::createFromDom(child, resourceManager);
+        if (0 != item)
+        {
+          addItem(item);
+        }
       }
     }
+    list = list.nextSiblingElement("playlist_items");
   }
 }
 
