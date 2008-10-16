@@ -27,14 +27,26 @@
  */
 
 #include "KwCssScope.h"
+#include "Factory.h"
 
 #include <QString>
 
 class KwResourceManager;
+class KwPlaylistItem;
 class KwPlaylistNode;
 
 class QDomDocument;
 class QDomElement;
+
+#define KW_PLAYLIST_ITEM \
+  private: \
+    /* \
+     * Static private variables \
+     */ \
+    static bool s_registered;
+
+#define KW_REGISTER_PLAYLIST_ITEM(X, KEY) \
+  bool X::s_registered = KwPlaylistItem::factory()->addType< X >(KEY);
 
 /// An item that can be added to a playlist.
 /**
@@ -43,6 +55,16 @@ class QDomElement;
 class KwPlaylistItem : public KwCssScope
 {
   public:
+
+    /*
+     * Item factory
+     */
+
+    /// Factory of items identified by strings and constructed from DOM.
+    typedef ::Factory<QString, KwPlaylistItem, META_TUPLE((const QDomElement&, KwResourceManager*))> Factory;
+
+    /// Get a factory object.
+    static Factory* factory();
     
     /*
      * Constructors + destructor.

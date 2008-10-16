@@ -28,8 +28,22 @@
 #include "KwPlaylistList.h"
 #include "KwPlaylistFile.h"
 
+#include <KLocale>
+
+#include <QtDebug>
 #include <QDomDocument>
 #include <QDomElement>
+
+/*
+ * Item factory
+ */
+
+/// Get a factory object.
+KwPlaylistItem::Factory* KwPlaylistItem::factory()
+{
+  static KwPlaylistItem::Factory fac;
+  return &fac;
+}
 
 /*
  * Constructors + destructor.
@@ -63,17 +77,12 @@ KwPlaylistItem* KwPlaylistItem::createFromDom(const QDomElement& element, KwReso
 {
   // Look at the type
   QString type = element.attribute("type");
-
-  if (type == "list")
+  KwPlaylistItem* item = factory()->construct(type, element, resourceManager);
+  if (0 == item)
   {
-    return new KwPlaylistList(element, resourceManager);
+    qDebug() << i18n("Playlist item factory does not know about item type '%1'").arg(type);
   }
-  else if (type == "file")
-  {
-    return new KwPlaylistFile(element, resourceManager);
-  }
-
-  return 0;
+  return item;
 }
 
 /// Export this item to the DOM.

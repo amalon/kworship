@@ -29,6 +29,8 @@
 #include <QDomDocument>
 #include <QDomElement>
 
+KW_REGISTER_PLAYLIST_ITEM(KwPlaylistFile, "file")
+
 /*
  * Constructors + destructor.
  */

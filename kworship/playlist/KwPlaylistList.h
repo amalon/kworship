@@ -36,6 +36,8 @@
  */
 class KwPlaylistList : public KwPlaylistItem
 {
+    KW_PLAYLIST_ITEM
+
   public:
     
     /*

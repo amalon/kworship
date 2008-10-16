@@ -35,6 +35,8 @@ class KwDisplayManager;
 /// A file based playlist item.
 class KwPlaylistFile : public KwPlaylistItem
 {
+    KW_PLAYLIST_ITEM
+
   public:
     
     /*

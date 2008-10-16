@@ -30,6 +30,8 @@
 
 #include <cassert>
 
+KW_REGISTER_PLAYLIST_ITEM(KwPlaylistList, "list")
+
 /*
  * Constructors + destructor.
  */
