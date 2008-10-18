@@ -33,6 +33,8 @@
 /// A media playlist item.
 class KwPlaylistVideo : public KwPlaylistFile
 {
+    KW_PLAYLIST_ITEM
+
   public:
     
     /*
@@ -41,6 +43,9 @@ class KwPlaylistVideo : public KwPlaylistFile
 
     /// Primary constructor.
     KwPlaylistVideo(const QUrl& url);
+
+    /// Construct from a DOM element.
+    KwPlaylistVideo(const QDomElement& element, KwResourceManager* resourceManager);
 
     /// Destructor.
     virtual ~KwPlaylistVideo();

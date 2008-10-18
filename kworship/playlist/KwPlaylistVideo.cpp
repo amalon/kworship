@@ -24,8 +24,9 @@
  */
 
 #include "KwPlaylistVideo.h"
-
 #include "KwDisplayManager.h"
+
+KW_REGISTER_PLAYLIST_ITEM(KwPlaylistVideo, "video")
 
 /*
  * Constructors + destructor.
@@ -35,6 +36,15 @@
 KwPlaylistVideo::KwPlaylistVideo(const QUrl& url)
 : KwPlaylistFile(url)
 , m_mediaItem(url)
+{
+  m_mediaItem.setAudio(true);
+  m_mediaItem.setVideo(true);
+}
+
+/// Construct from a DOM element.
+KwPlaylistVideo::KwPlaylistVideo(const QDomElement& element, KwResourceManager* resourceManager)
+: KwPlaylistFile(element, resourceManager)
+, m_mediaItem(getUrl())
 {
   m_mediaItem.setAudio(true);
   m_mediaItem.setVideo(true);
@@ -56,6 +66,7 @@ QString KwPlaylistVideo::itemType() const
 
 void KwPlaylistVideo::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
+  KwPlaylistFile::exportDetailsToDom(document, element, resourceManager);
 }
 
 /*

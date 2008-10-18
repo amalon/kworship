@@ -24,8 +24,9 @@
  */
 
 #include "KwPlaylistImage.h"
-
 #include "KwDisplayManager.h"
+
+KW_REGISTER_PLAYLIST_ITEM(KwPlaylistImage, "image")
 
 /*
  * Constructors + destructor.
@@ -34,6 +35,12 @@
 /// Default constructor.
 KwPlaylistImage::KwPlaylistImage(const QUrl& url)
 : KwPlaylistFile(url)
+{
+}
+
+/// Construct from a DOM element.
+KwPlaylistImage::KwPlaylistImage(const QDomElement& element, KwResourceManager* resourceManager)
+: KwPlaylistFile(element, resourceManager)
 {
 }
 
@@ -53,6 +60,7 @@ QString KwPlaylistImage::itemType() const
 
 void KwPlaylistImage::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
+  KwPlaylistFile::exportDetailsToDom(document, element, resourceManager);
 }
 
 /*

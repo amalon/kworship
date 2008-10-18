@@ -31,6 +31,8 @@
 /// A presentation document playlist item.
 class KwPlaylistPresentation : public KwPlaylistFile
 {
+    KW_PLAYLIST_ITEM
+
   public:
     
     /*
@@ -40,8 +42,18 @@ class KwPlaylistPresentation : public KwPlaylistFile
     /// Primary constructor.
     KwPlaylistPresentation(const QUrl& url);
 
+    /// Construct from a DOM element.
+    KwPlaylistPresentation(const QDomElement& element, KwResourceManager* resourceManager);
+
     /// Destructor.
     virtual ~KwPlaylistPresentation();
+
+    /*
+     * DOM Translation.
+     */
+
+    virtual QString itemType() const;
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
 
     /*
      * Main interface.

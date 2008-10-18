@@ -31,6 +31,8 @@
 /// An image playlist item.
 class KwPlaylistImage : public KwPlaylistFile
 {
+    KW_PLAYLIST_ITEM
+
   public:
     
     /*
@@ -39,6 +41,9 @@ class KwPlaylistImage : public KwPlaylistFile
 
     /// Primary constructor.
     KwPlaylistImage(const QUrl& url);
+
+    /// Construct from a DOM element.
+    KwPlaylistImage(const QDomElement& element, KwResourceManager* resourceManager);
 
     /// Destructor.
     virtual ~KwPlaylistImage();

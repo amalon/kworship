@@ -32,6 +32,8 @@
 #include <KMimeType>
 #include <KMessageBox>
 
+KW_REGISTER_PLAYLIST_ITEM(KwPlaylistPresentation, "presentation")
+
 /*
  * Constructors + destructor.
  */
@@ -42,9 +44,29 @@ KwPlaylistPresentation::KwPlaylistPresentation(const QUrl& url)
 {
 }
 
+/// Construct from a DOM element.
+KwPlaylistPresentation::KwPlaylistPresentation(const QDomElement& element, KwResourceManager* resourceManager)
+: KwPlaylistFile(element, resourceManager)
+{
+}
+
 /// Destructor.
 KwPlaylistPresentation::~KwPlaylistPresentation()
 {
+}
+
+/*
+ * DOM Translation.
+ */
+
+QString KwPlaylistPresentation::itemType() const
+{
+  return "image";
+}
+
+void KwPlaylistPresentation::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+  KwPlaylistFile::exportDetailsToDom(document, element, resourceManager);
 }
 
 /*
