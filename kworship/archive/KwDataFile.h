@@ -63,7 +63,7 @@ class KwDataFile
     /** Create a playlist object from the data.
      * @returns Newly created playlist which the user must delete.
      */
-    KwPlaylistList* createPlaylist(KwResourceManager* resourceManager) const;
+    KwPlaylistList* extractPlaylist(KwResourceManager* resourceManager) const;
 
     /*
      * Reading and writing

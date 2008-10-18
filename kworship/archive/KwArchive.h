@@ -77,7 +77,7 @@ class KwArchive
     QStringList playlists();
 
     /// Create a new playlist from the archive.
-    KwPlaylistList* createPlaylist(QString name);
+    KwPlaylistList* extractPlaylist(QString name);
 
     /// Add a playlist to the archive.
     void addPlaylist(KwPlaylistList* playlist);

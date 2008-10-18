@@ -63,7 +63,7 @@ void KwDataFile::insertPlaylist(const KwPlaylistList* playlist, KwResourceManage
 }
 
 /// Create a playlist object from the data.
-KwPlaylistList* KwDataFile::createPlaylist(KwResourceManager* resourceManager) const
+KwPlaylistList* KwDataFile::extractPlaylist(KwResourceManager* resourceManager) const
 {
   QDomElement root = m_domDocument->documentElement();
 

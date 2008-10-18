@@ -175,7 +175,7 @@ void KwDocument::loadFromArchive(KwArchive* archive)
 {
   Q_ASSERT(archive->isReading());
 
-  KwPlaylistList* playlist = archive->createPlaylist("0");
+  KwPlaylistList* playlist = archive->extractPlaylist("0");
   if (0 != playlist)
   {
     delete m_playlist;

@@ -136,14 +136,14 @@ QStringList KwArchive::playlists()
 }
 
 /// Create a new playlist from the archive.
-KwPlaylistList* KwArchive::createPlaylist(QString name)
+KwPlaylistList* KwArchive::extractPlaylist(QString name)
 {
   Q_ASSERT(isReading());
 
   KwDataFile* playlistFile = loadDataFile("playlist/"+name+".kw");
   if (0 != playlistFile)
   {
-    return playlistFile->createPlaylist(0);
+    return playlistFile->extractPlaylist(0);
   }
   return 0;
 }
