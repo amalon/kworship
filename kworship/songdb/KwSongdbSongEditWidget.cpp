@@ -40,7 +40,7 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
 {
   setupUi(this);
 
-  // Add versions toolbar
+  // Versions toolbar
   QToolBar* versionsToolBar = new QToolBar("versionsToolBar");
   layoutVersionsToolBar->layout()->addWidget(versionsToolBar);
   {
@@ -51,7 +51,7 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
     versionsToolBar->addAction(duplicateAction);
   }
 
-  // Add song books toolbar
+  // Song books toolbar
   QToolBar* songBooksToolBar = new QToolBar("songBooksToolBar");
   songBooksToolBar->setOrientation(Qt::Vertical);
   layoutSongBooksToolBar->layout()->addWidget(songBooksToolBar);
@@ -63,12 +63,28 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
     songBooksToolBar->addAction(removeAction);
   }
 
-  // Add lyrics toolbar
+  // Lyrics toolbar
   QToolBar* lyricsToolBar = new QToolBar("lyricsToolBar");
+  lyricsToolBar->setOrientation(Qt::Vertical);
   layoutLyricsToolBar->layout()->addWidget(lyricsToolBar);
   {
-    KAction* addSongAction = new KAction(KIcon("list-add"), i18n("Add Song"), lyricsToolBar);
+    KAction* addSongAction = new KAction(KIcon("list-add"), i18n("Add Verse"), lyricsToolBar);
     lyricsToolBar->addAction(addSongAction);
+  }
+
+  // Arrangement toolbar
+  QToolBar* arrangementToolBar = new QToolBar("arrangementToolBar");
+  arrangementToolBar->setOrientation(Qt::Vertical);
+  layoutArrangementToolBar->layout()->addWidget(arrangementToolBar);
+  {
+    KAction* useVerseAction = new KAction(KIcon("move-right"), i18n("Use Verse"), arrangementToolBar);
+    arrangementToolBar->addAction(useVerseAction);
+
+    KAction* moveUpAction = new KAction(KIcon("move-up"), i18n("Move Up"), arrangementToolBar);
+    arrangementToolBar->addAction(moveUpAction);
+
+    KAction* moveDownAction = new KAction(KIcon("move-down"), i18n("Move Down"), arrangementToolBar);
+    arrangementToolBar->addAction(moveDownAction);
   }
 
 }

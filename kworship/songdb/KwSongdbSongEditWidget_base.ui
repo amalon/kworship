@@ -37,98 +37,153 @@
       </layout>
      </item>
      <item>
-      <widget class="QFrame" name="frameVersion" >
-       <property name="enabled" >
-        <bool>true</bool>
-       </property>
-       <property name="frameShape" >
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow" >
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3" >
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5" >
+      <layout class="QVBoxLayout" name="verticalLayout_4" >
+       <item>
+        <widget class="QFrame" name="frameVersion" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3" >
           <item>
-           <layout class="QFormLayout" name="formLayout" >
-            <item row="1" column="0" >
-             <widget class="QLabel" name="label" >
-              <property name="text" >
-               <string>Version Name</string>
-              </property>
-             </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_5" >
+            <item>
+             <layout class="QFormLayout" name="formLayout" >
+              <item row="1" column="0" >
+               <widget class="QLabel" name="label" >
+                <property name="text" >
+                 <string>Version Name</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1" >
+               <widget class="KLineEdit" name="editVersionName" />
+              </item>
+              <item row="2" column="0" >
+               <widget class="QLabel" name="label_2" >
+                <property name="text" >
+                 <string>Writer</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1" >
+               <widget class="KLineEdit" name="editVersionWriter" />
+              </item>
+              <item row="3" column="0" >
+               <widget class="QLabel" name="label_3" >
+                <property name="text" >
+                 <string>Copyright</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1" >
+               <widget class="KLineEdit" name="editVersionCopyright" />
+              </item>
+             </layout>
             </item>
-            <item row="1" column="1" >
-             <widget class="KLineEdit" name="editVersionName" />
-            </item>
-            <item row="2" column="0" >
-             <widget class="QLabel" name="label_2" >
-              <property name="text" >
-               <string>Writer</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1" >
-             <widget class="KLineEdit" name="editVersionWriter" />
-            </item>
-            <item row="3" column="0" >
-             <widget class="QLabel" name="label_3" >
-              <property name="text" >
-               <string>Copyright</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1" >
-             <widget class="KLineEdit" name="editVersionCopyright" />
+            <item>
+             <layout class="QFormLayout" name="formLayout_3" >
+              <item row="0" column="1" >
+               <layout class="QHBoxLayout" name="horizontalLayout_4" >
+                <item>
+                 <widget class="QListView" name="listSongBooks" >
+                  <property name="maximumSize" >
+                   <size>
+                    <width>16777215</width>
+                    <height>100</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="layoutSongBooksToolBar" />
+                </item>
+               </layout>
+              </item>
+              <item row="0" column="0" >
+               <widget class="QLabel" name="label_4" >
+                <property name="text" >
+                 <string>Song Books</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frame" >
+         <property name="frameShape" >
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5" >
           <item>
-           <layout class="QFormLayout" name="formLayout_3" >
-            <item row="0" column="1" >
-             <layout class="QHBoxLayout" name="horizontalLayout_4" >
+           <layout class="QHBoxLayout" name="horizontalLayout_3" >
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6" >
               <item>
-               <widget class="QListView" name="listSongBooks" >
-                <property name="maximumSize" >
-                 <size>
-                  <width>16777215</width>
-                  <height>100</height>
-                 </size>
+               <widget class="QLabel" name="labelVerses" >
+                <property name="text" >
+                 <string>Lyric Verses</string>
                 </property>
                </widget>
               </item>
               <item>
-               <layout class="QVBoxLayout" name="layoutSongBooksToolBar" />
+               <layout class="QHBoxLayout" name="horizontalLayout_6" >
+                <item>
+                 <layout class="QVBoxLayout" name="layoutLyricsToolBar" />
+                </item>
+                <item>
+                 <widget class="QListView" name="listVersionLyrics" />
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
-            <item row="0" column="0" >
-             <widget class="QLabel" name="label_4" >
-              <property name="text" >
-               <string>Song Books</string>
-              </property>
-             </widget>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_7" >
+              <item>
+               <widget class="QLabel" name="labelArrangement" >
+                <property name="text" >
+                 <string>Arrangement</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_7" >
+                <item>
+                 <layout class="QVBoxLayout" name="layoutArrangementToolBar" />
+                </item>
+                <item>
+                 <widget class="QListView" name="listVersionArrangement" />
+                </item>
+               </layout>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>
          </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="layoutLyricsToolBar" />
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3" >
-          <item>
-           <widget class="QListView" name="listVersionLyrics" />
-          </item>
-          <item>
-           <widget class="QListView" name="listVersionArrangement" />
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

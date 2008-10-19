@@ -53,6 +53,10 @@ Icon todo list
     [ ] delete song version
     [t] add song book number
     [t] remove song book number
+    [t] add verse
+    [ ] use verse
+    [ ] move verse up
+    [ ] move verse down
     [ ] tree
         [t] song
         [t] song version
