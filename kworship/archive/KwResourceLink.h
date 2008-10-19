@@ -76,7 +76,7 @@ class KwResourceLink
     ~KwResourceLink();
 
     /*
-     * DOM Translation.
+     * DOM Translation
      */
 
     /// Export this resource link into a DOM.

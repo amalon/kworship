@@ -47,9 +47,12 @@ Icon todo list
     [t] add song
     [t] edit song
     [t] add song version
+    [ ] duplicate song version
     [ ] insert song into playlist
     [ ] delete song
     [ ] delete song version
+    [t] add song book number
+    [t] remove song book number
     [ ] tree
         [t] song
         [t] song version

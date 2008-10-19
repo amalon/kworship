@@ -119,6 +119,9 @@ private slots:
     void slideshowSlideChanged(int slide, int numSteps);
     void slideshowStepChanged(int step);
 
+    // Song DB
+    void songdbAdd();
+
 private:
     void setupActions();
     int getCorrectDisplayScreen();

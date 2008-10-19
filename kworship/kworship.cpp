@@ -47,6 +47,7 @@
 #include "KwSongdbModel.h"
 #include "KwSongdbFilterNode.h"
 #include "KwSongdbTree.h"
+#include "KwSongdbSongEditDialog.h"
 
 #include "UpManager.h"
 #include "UpPresentationsModel.h"
@@ -198,6 +199,7 @@ kworship::kworship()
   m_view->layoutSongsToolbar->layout()->addWidget(songToolBar);
 
   KAction* addSongAction = new KAction(KIcon("list-add"), i18n("Add Song"), songToolBar);
+  connect(addSongAction, SIGNAL(triggered(bool)), this, SLOT(songdbAdd()));
   songToolBar->addAction(addSongAction);
   KAction* editSongAction = new KAction(KIcon("view-media-lyrics"), i18n("Edit Song"), songToolBar);
   songToolBar->addAction(editSongAction);
@@ -913,6 +915,14 @@ void kworship::slideshowStepChanged(int step)
   bool lastStep = lastSlide && (step >= m_view->progressPresSteps->maximum() - 1);
   m_slideshowPrevStepAction->setEnabled(!firstStep);
   m_slideshowNextStepAction->setEnabled(!lastStep);
+}
+
+// Song DB
+void kworship::songdbAdd()
+{
+  KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog;
+  dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+  dialog->show();
 }
 
 #include "kworship.moc"
