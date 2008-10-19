@@ -28,6 +28,11 @@
 
 #include <KUrl>
 
+class KwResourceManager;
+
+class QDomDocument;
+class QDomElement;
+
 /// A link to a resource file.
 class KwResourceLink
 {
@@ -39,6 +44,7 @@ class KwResourceLink
 
     /// Type of resource link.
     enum Type {
+      Null,            ///< Invalid.
       Url,             ///< URL link.
       FileRelative,    ///< Path relative to the save file.
       ArchiveRoot,     ///< Path relative to the archive root.
@@ -48,6 +54,12 @@ class KwResourceLink
     /*
      * Constructors + destructor
      */
+
+    /// Default constructor.
+    KwResourceLink();
+
+    /// Construct from a DOM element.
+    KwResourceLink(const QDomElement& element, KwResourceManager* resourceManager);
 
     /** Construct a URL link.
      * @param url URL to the resource.
@@ -64,8 +76,18 @@ class KwResourceLink
     ~KwResourceLink();
 
     /*
+     * DOM Translation.
+     */
+
+    /// Export this resource link into a DOM.
+    void exportToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
+
+    /*
      * Accessors
      */
+
+    /// Get whether the link is null.
+    bool isNull() const;
 
     /// Get the type of resource link.
     Type type() const;

@@ -27,6 +27,7 @@
  */
 
 #include "KwPlaylistItem.h"
+#include "KwResourceLink.h"
 
 #include <QUrl>
 
@@ -81,8 +82,8 @@ class KwPlaylistFile : public KwPlaylistItem
      * Variables
      */
 
-    /// File url.
-    QUrl m_url;
+    /// File resource.
+    KwResourceLink* m_resource;
 };
 
 #endif // _KwPlaylistFile_h_

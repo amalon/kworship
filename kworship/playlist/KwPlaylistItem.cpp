@@ -24,8 +24,8 @@
  */
 
 #include "KwPlaylistItem.h"
-
 #include "KwPlaylistUnknown.h"
+#include "KwResourceLink.h"
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -64,6 +64,20 @@ KwPlaylistItem::KwPlaylistItem(const QDomElement& element, KwResourceManager* re
   for (int i = 0; i < children.size(); ++i)
   {
     QDomNode child = children.item(i);
+    if (child.isElement())
+    {
+      QDomElement childElement = child.toElement();
+      if (childElement.tagName() == "resource")
+      {
+        QString name = childElement.attribute("name");
+        if (!name.isEmpty())
+        {
+          setResource(name, new KwResourceLink(childElement, resourceManager));
+          // Don't preserve this resource
+          continue;
+        }
+      }
+    }
     QDomNode preserved = m_domDocument.importNode(child, true); // deep copy
     m_domPreserve.appendChild(preserved);
   }
@@ -72,6 +86,12 @@ KwPlaylistItem::KwPlaylistItem(const QDomElement& element, KwResourceManager* re
 /// Destructor.
 KwPlaylistItem::~KwPlaylistItem()
 {
+  // Delete resource links
+  Resources::iterator it;
+  for (it = m_resources.begin(); it != m_resources.end(); ++it)
+  {
+    delete (*it).link;
+  }
 }
 
 /*
@@ -102,6 +122,20 @@ void KwPlaylistItem::exportToDom(QDomDocument& document, QDomElement& element, K
 
   exportDetailsToDom(document, itemElement, resourceManager);
 
+  // Export resources after type specific stuff so they can be modified at the last minute
+  Resources::const_iterator it;
+  for (it = m_resources.constBegin(); it != m_resources.constEnd(); ++it)
+  {
+    if (!(*it).link->isNull())
+    {
+      QDomElement resourceElement = document.createElement("resource");
+      resourceElement.setAttribute("name", (*it).name);
+      itemElement.appendChild(resourceElement);
+
+      (*it).link->exportToDom(document, resourceElement, resourceManager);
+    }
+  }
+
   // Add preserve elements as well
   QDomNode importedFragment = document.importNode(m_domPreserve, true);
   itemElement.appendChild(importedFragment);
@@ -129,6 +163,49 @@ void KwPlaylistItem::elementHandled(const QString& tagName)
   if (!current.isNull())
   {
     m_domPreserve.removeChild(current);
+  }
+}
+
+/// Get a resource by name.
+KwResourceLink* KwPlaylistItem::getResource(const QString& name, bool create)
+{
+  Resources::iterator it;
+  for (it = m_resources.begin(); it != m_resources.end(); ++it)
+  {
+    if ((*it).name == name)
+    {
+      return (*it).link;
+    }
+  }
+  if (create)
+  {
+    Resource resource = { name, new KwResourceLink };
+    m_resources.push_back(resource);
+    return resource.link;
+  }
+  return 0;
+}
+
+/// Set a resource associated with a name.
+KwResourceLink* KwPlaylistItem::setResource(const QString& name, KwResourceLink* link)
+{
+  deleteResource(name);
+  Resource resource = { name, link };
+  m_resources.push_back(resource);
+  return link;
+}
+
+/// Delete a resource.
+void KwPlaylistItem::deleteResource(const QString& name)
+{
+  Resources::iterator it;
+  for (it = m_resources.begin(); it != m_resources.end(); ++it)
+  {
+    if ((*it).name == name)
+    {
+      delete (*it).link;
+      m_resources.erase(it);
+    }
   }
 }
 

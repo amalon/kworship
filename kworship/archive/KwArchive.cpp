@@ -38,7 +38,8 @@
 
 /// Primary constructor.
 KwArchive::KwArchive(QIODevice* dev, bool writing)
-: m_writing(writing)
+: KwResourceManager()
+, m_writing(writing)
 , m_compressor(0)
 , m_archive(0)
 , m_index(0)
@@ -64,7 +65,8 @@ KwArchive::KwArchive(QIODevice* dev, bool writing)
 
 /// Primary constructor.
 KwArchive::KwArchive(const QString& fileName, bool writing)
-: m_writing(writing)
+: KwResourceManager()
+, m_writing(writing)
 , m_compressor(0)
 , m_archive(0)
 , m_index(0)
@@ -120,6 +122,14 @@ bool KwArchive::isReading() const
 }
 
 /*
+ * Main resource interface
+ */
+
+void KwArchive::addResource(const KwResourceLink* link)
+{
+}
+
+/*
  * Playlist data
  */
 
@@ -143,7 +153,7 @@ KwPlaylistList* KwArchive::extractPlaylist(QString name)
   KwDataFile* playlistFile = loadDataFile("playlist/"+name+".kw");
   if (0 != playlistFile)
   {
-    return playlistFile->extractPlaylist(0);
+    return playlistFile->extractPlaylist(this);
   }
   return 0;
 }
@@ -154,7 +164,7 @@ void KwArchive::addPlaylist(KwPlaylistList* playlist)
   Q_ASSERT(isWriting());
 
   KwDataFile* playlistFile = new KwDataFile();
-  playlistFile->insertPlaylist(playlist, 0);
+  playlistFile->insertPlaylist(playlist, this);
   writeDataFile(QString("playlist/%1.kw").arg(++m_numPlaylists),
                 playlistFile);
   delete playlistFile;

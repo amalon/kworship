@@ -30,10 +30,12 @@
 #include "Factory.h"
 
 #include <QString>
+#include <QList>
 #include <QDomDocument>
 #include <QDomDocumentFragment>
 
 class KwResourceManager;
+class KwResourceLink;
 class KwPlaylistItem;
 class KwPlaylistNode;
 
@@ -117,7 +119,36 @@ class KwPlaylistItem : public KwCssScope
      */
     void elementHandled(const QString& tagName);
 
+    /** Get a resource by name.
+     * @param name Name of resource.
+     * @param create If true the resource link is created if it doesn't exist.
+     */
+    KwResourceLink* getResource(const QString& name, bool create = true);
+
+    /** Set a resource associated with a name.
+     * @param name Name of resource.
+     * @param link Link to associate with @p name.
+     */
+    KwResourceLink* setResource(const QString& name, KwResourceLink* link);
+
+    /** Delete a resource.
+     * @param name Name of resource to delete.
+     */
+    void deleteResource(const QString& name);
+
   private:
+
+    /*
+     * Types
+     */
+
+    /// Resource information.
+    struct Resource
+    {
+      QString name;
+      KwResourceLink* link;
+    };
+    typedef QList<Resource> Resources;
 
     /*
      * Variables
@@ -128,6 +159,9 @@ class KwPlaylistItem : public KwCssScope
 
     /// Fragment of DOM from save file which needs preserving.
     QDomDocumentFragment m_domPreserve;
+
+    /// Resources.
+    Resources m_resources;
 };
 
 #endif // _KwPlaylistItem_h_

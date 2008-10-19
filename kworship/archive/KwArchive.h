@@ -26,6 +26,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "KwResourceManager.h"
+
 #include <QStringList>
 
 class KwDataFile;
@@ -39,7 +41,7 @@ class QIODevice;
  * This class provides access to a KWorship archive file without loading all
  * the data into memory first.
  */
-class KwArchive
+class KwArchive : public KwResourceManager
 {
   public:
 
@@ -65,6 +67,12 @@ class KwArchive
 
     /// Get whether the archive is being read.
     bool isReading() const;
+
+    /*
+     * Main resource interface
+     */
+
+    virtual void addResource(const KwResourceLink* link);
 
     /*
      * Playlist data

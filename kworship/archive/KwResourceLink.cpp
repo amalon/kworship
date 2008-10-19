@@ -24,10 +24,36 @@
  */
 
 #include "KwResourceLink.h"
+#include "KwResourceManager.h"
+
+#include <QDomDocument>
+#include <QDomElement>
 
 /*
  * Constructors + destructor
  */
+
+/// Default constructor.
+KwResourceLink::KwResourceLink()
+: m_type(Null)
+, m_url()
+, m_path()
+{
+}
+
+/// Construct from a DOM element.
+KwResourceLink::KwResourceLink(const QDomElement& element, KwResourceManager* resourceManager)
+: m_type(Null)
+, m_url()
+, m_path()
+{
+  QString type = element.attribute("type");
+  if (type == "url")
+  {
+    m_type = Url;
+    m_url = element.text();
+  }
+}
 
 /// Construct a URL link.
 KwResourceLink::KwResourceLink(const KUrl& url)
@@ -43,7 +69,7 @@ KwResourceLink::KwResourceLink(Type type, const QString& path)
 , m_url()
 , m_path(path)
 {
-  Q_ASSERT(type != Url);
+  Q_ASSERT(type != Null && type != Url);
 }
 
 /// Destructor.
@@ -52,8 +78,37 @@ KwResourceLink::~KwResourceLink()
 }
 
 /*
+ * DOM Translation.
+ */
+
+/// Export this resource link into a DOM.
+void KwResourceLink::exportToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+  resourceManager->addResource(this);
+  switch (m_type)
+  {
+    case Url:
+    {
+      element.setAttribute("type", "url");
+      element.appendChild(document.createTextNode(m_url.url()));
+      break;
+    }
+    default:
+    {
+      break;
+    }
+  }
+}
+
+/*
  * Accessors
  */
+
+/// Get whether the link is null.
+bool KwResourceLink::isNull() const
+{
+  return (Null == m_type);
+}
 
 /// Get the type of resource link.
 KwResourceLink::Type KwResourceLink::type() const
@@ -71,7 +126,7 @@ KUrl KwResourceLink::url() const
 /// Get the type dependent path.
 QString KwResourceLink::path() const
 {
-  Q_ASSERT(type != Url);
+  Q_ASSERT(type != Null && type != Url);
   return m_path;
 }
 

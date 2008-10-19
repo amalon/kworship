@@ -51,13 +51,8 @@ class KwResourceManager
      * Main resource interface
      */
 
-    /** Link a resource by URL.
-     * This creates a link to a resource URL. The implementation may use a
-     * different type to that specified in @p preferredType.
-     * @param url Url of the resource.
-     * @param preferredType Preferred type of link.
-     */
-    virtual KwResourceLink linkResource(const KUrl& url, KwResourceLink::Type preferredType) = 0;
+    /// Add a resource to the manager.
+    virtual void addResource(const KwResourceLink* link) = 0;
 
 };
 
