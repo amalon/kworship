@@ -109,7 +109,6 @@ private slots:
     void changeSlideshowExternal(QString name);
     void refreshSlideshows();
     void refreshSlides();
-    void editCustomSlideshowsDialog();
     void addSlideshowLinkToPlaylist();
     void addSlideshowCopyToPlaylist();
 

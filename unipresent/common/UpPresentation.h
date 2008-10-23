@@ -80,9 +80,6 @@ class UpPresentation : public QObject
     /// Set the current slideshow.
     virtual void setSlideshow(QString slideshow) = 0;
 
-    /// Show edit custom slideshows dialog.
-    virtual void editCustomSlideshowsDialog() = 0;
-
     /// Get the number of slides in the current slideshow.
     virtual int numSlides() = 0;
 

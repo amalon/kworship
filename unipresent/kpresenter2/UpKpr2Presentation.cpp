@@ -58,11 +58,11 @@ UpKpr2Presentation::UpKpr2Presentation(QString service, QString path, UpKpr2Back
       QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "activeCustomSlideShowChanged", this, SLOT(dbusCurrentSlideshowChanged(QString)));
       QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "customSlideShowsModified", this, SIGNAL(customSlideshowsModified()));
 
-      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStarted", this, SLOT(dbusScreenStarted(int)));
-      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "screenStopped", this, SIGNAL(slideshowStopped()));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "presentationStarted", this, SLOT(dbusScreenStarted(int)));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "presentationStopped", this, SIGNAL(slideshowStopped()));
 
-      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresPage", this, SIGNAL(slideshowSlideChanged(int, int)));
-      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "changedPresStep", this, SIGNAL(slideshowStepChanged(int)));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "presentationPageChanged", this, SIGNAL(slideshowSlideChanged(int, int)));
+      QDBusConnection::sessionBus().connect(service, viewPath, "org.kde.koffice.presentation.view", "presentationStepChanged", this, SIGNAL(slideshowStepChanged(int)));
     }
   }
 }
@@ -134,15 +134,6 @@ void UpKpr2Presentation::setSlideshow(QString slideshow)
   }
 }
 
-void UpKpr2Presentation::editCustomSlideshowsDialog()
-{
-  if (m_dbusView && !m_customSlideshowsDialog)
-  {
-    m_customSlideshowsDialog = true;
-    m_dbusView->callWithCallback("editCustomSlideShowsDialog", QList<QVariant>(), this, SLOT(callbackResult()), SLOT(callbackError()));
-  }
-}
-
 int UpKpr2Presentation::numSlides()
 {
   if (m_dbusView)
@@ -169,7 +160,7 @@ bool UpKpr2Presentation::isSlideshowRunning()
 {
   if (m_dbusView)
   {
-    QDBusReply<bool> result = m_dbusView->call("isPresRunning");
+    QDBusReply<bool> result = m_dbusView->call("isPresentationRunning");
     if (result.isValid())
     {
       return result;
@@ -182,7 +173,7 @@ int UpKpr2Presentation::numSlidesInSlideshow()
 {
   if (m_dbusView)
   {
-    QDBusReply<int> result = m_dbusView->call("numPresPages");
+    QDBusReply<int> result = m_dbusView->call("numPresentationPages");
     if (result.isValid())
     {
       // There's also the finish slide
@@ -197,7 +188,7 @@ int UpKpr2Presentation::currentSlideshowSlide()
 {
   if (m_dbusView)
   {
-    QDBusReply<int> result = m_dbusView->call("currentPresPage");
+    QDBusReply<int> result = m_dbusView->call("currentPresentationPage");
     if (result.isValid())
     {
       return result;
@@ -210,7 +201,7 @@ int UpKpr2Presentation::stepsInCurrentSlideshowSlide()
 {
   if (m_dbusView)
   {
-    QDBusReply<int> result = m_dbusView->call("numStepsInPresPage");
+    QDBusReply<int> result = m_dbusView->call("numStepsInPresentationPage");
     if (result.isValid())
     {
       int steps = result;
@@ -228,7 +219,7 @@ int UpKpr2Presentation::currentSlideshowStep()
 {
   if (m_dbusView)
   {
-    QDBusReply<int> result = m_dbusView->call("currentPresStep");
+    QDBusReply<int> result = m_dbusView->call("currentPresentationStep");
     if (result.isValid())
     {
       return result;
@@ -245,7 +236,7 @@ void UpKpr2Presentation::startSlideshow()
 {
   if (m_dbusView)
   {
-    m_dbusView->call("screenStart");
+    m_dbusView->call("presentationStart");
   }
 }
 
@@ -253,7 +244,7 @@ void UpKpr2Presentation::stopSlideshow()
 {
   if (m_dbusView)
   {
-    m_dbusView->call("screenStop");
+    m_dbusView->call("presentationStop");
   }
 }
 
@@ -261,7 +252,7 @@ void UpKpr2Presentation::goToSlide(int index)
 {
   if (m_dbusView)
   {
-    m_dbusView->call("gotoPresPage", index);
+    m_dbusView->call("gotoPresentationPage", index);
   }
 }
 
@@ -269,7 +260,7 @@ void UpKpr2Presentation::previousSlide()
 {
   if (m_dbusView)
   {
-    m_dbusView->call("screenPrevSlide");
+    m_dbusView->call("presentationPrevSlide");
   }
 }
 
@@ -277,7 +268,7 @@ void UpKpr2Presentation::nextSlide()
 {
   if (m_dbusView)
   {
-    m_dbusView->call("screenNextSlide");
+    m_dbusView->call("presentationNextSlide");
   }
 }
 
@@ -285,7 +276,7 @@ void UpKpr2Presentation::previousStep()
 {
   if (m_dbusView)
   {
-    m_dbusView->call("screenPrev");
+    m_dbusView->call("presentationPrev");
   }
 }
 
@@ -293,7 +284,7 @@ void UpKpr2Presentation::nextStep()
 {
   if (m_dbusView)
   {
-    m_dbusView->call("screenNext");
+    m_dbusView->call("presentationNext");
   }
 }
 

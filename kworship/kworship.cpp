@@ -240,10 +240,6 @@ kworship::kworship()
   QToolBar* customSlideshowsToolBar = new QToolBar(i18n("Custom Slideshows"));
   customSlideshowsToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
   m_view->slideshows->layout()->addWidget(customSlideshowsToolBar);
-  // Edit custom slideshows
-  KAction* editCustomSlideshows = new KAction(KIcon("preferences-system"), i18n("Edit Custom Slideshows"), customSlideshowsToolBar);
-  connect(editCustomSlideshows, SIGNAL(triggered(bool)), this, SLOT(editCustomSlideshowsDialog()));
-  customSlideshowsToolBar->addAction(editCustomSlideshows);
   // Add slideshow to playlist
   KActionMenu* addSlideshowToPlaylistAction = new KActionMenu(KIcon("list-add"), i18n("Add Slideshow to Playlist"), customSlideshowsToolBar);
   addSlideshowToPlaylistAction->setDelayed(false);
@@ -817,12 +813,6 @@ void kworship::refreshSlides()
 
   // Force a refresh
   m_view->listSlides->setRootIndex(root);
-}
-
-void kworship::editCustomSlideshowsDialog()
-{
-  Q_ASSERT(0 != m_currentPresentation);
-  m_currentPresentation->editCustomSlideshowsDialog();
 }
 
 void kworship::addSlideshowLinkToPlaylist()

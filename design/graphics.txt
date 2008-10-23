@@ -26,7 +26,6 @@ Icon todo list
     [t] refresh presentations
     [ ] close presentation
     [t] toggle fullscreen presentation controller
-    [t] edit custom slideshows
     [t] add custom slideshow to playlist
         [t] as link
         [t] as copy
