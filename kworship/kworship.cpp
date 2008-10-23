@@ -81,6 +81,7 @@
 #include <QComboBox>
 #include <QSqlDatabase>
 #include <QHeaderView>
+#include <QTextEdit>
 
 kworship::kworship()
 : KXmlGuiWindow()
@@ -301,6 +302,12 @@ kworship::kworship()
   connect(m_slideshowAction, SIGNAL(toggled(bool)), this, SLOT(presentationToggled(bool)));
   slidesToolBar->addAction(m_slideshowAction);
 
+  // Slide notes
+  m_slideNotes = new QTextEdit();
+  m_slideNotes->setReadOnly(true);
+  m_slideNotes->setWindowTitle(i18n("Slide Notes"));
+  m_slideNotes->show();
+
   // Ensure the controls are as when slideshow is stopped
   m_slideshowAction->setEnabled(false);
   slideshowStopped();
@@ -326,6 +333,7 @@ kworship::kworship()
 kworship::~kworship()
 {
   delete KwSongdb::self();
+  delete m_slideNotes;
 }
 
 /*
@@ -862,6 +870,8 @@ void kworship::slideshowStopped()
 
   // Clear any preview left from the slideshow
   m_displayManager->background.clear();
+  // Clear slide notes
+  m_slideNotes->document()->clear();
 
   // Show the screen again
   if (0 != m_mainDisplay)
@@ -879,19 +889,19 @@ void kworship::slideshowSlideChanged(int slide, int numSteps)
   m_slideshowPrevSlideAction->setEnabled(slide > 0);
   m_slideshowNextSlideAction->setEnabled(slide < m_view->progressPresSlides->maximum()-1);
 
-  // Update live preview
-  if (Settings::presLivePreview())
+  // live preview and notes
+  m_slideNotes->document()->clear();
+  assert(0 != m_currentPresentation);
+  UpSlide* currentSlide = m_currentPresentation->slide(slide);
+  if (0 != currentSlide)
   {
-    assert(0 != m_currentPresentation);
-    UpSlide* currentSlide = m_currentPresentation->slide(slide);
-    if (0 != currentSlide)
+    // live preview
+    if (Settings::presLivePreview())
     {
       m_displayManager->background.setImage(currentSlide->preview());
     }
-    else
-    {
-      m_displayManager->background.clear();
-    }
+    // notes
+    currentSlide->writeNotes(m_slideNotes->document());
   }
 }
 

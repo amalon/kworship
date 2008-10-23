@@ -71,11 +71,6 @@ QString UpKpr1Slide::outline()
   return m_outline;
 }
 
-QString UpKpr1Slide::notes()
-{
-  return QString();
-}
-
 QPixmap UpKpr1Slide::preview()
 {
   if (m_preview.isNull())

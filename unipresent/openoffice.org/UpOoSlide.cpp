@@ -78,11 +78,6 @@ QString UpOoSlide::outline()
   return result.join("\n");
 }
 
-QString UpOoSlide::notes()
-{
-  return QString();
-}
-
 QPixmap UpOoSlide::preview()
 {
   return QPixmap();

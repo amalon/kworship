@@ -25,6 +25,8 @@
 
 #include "UpSlide.h"
 
+#include <QTextDocument>
+
 /*
  * Constructors + destructor
  */
@@ -56,10 +58,11 @@ QString UpSlide::outline()
   return QString();
 }
 
-/// Get notes text.
-QString UpSlide::notes()
+/// Write notes into a text document.
+bool UpSlide::writeNotes(QTextDocument* doc)
 {
-  return QString();
+  doc->clear();
+  return false;
 }
 
 /// Get preview pixmap.

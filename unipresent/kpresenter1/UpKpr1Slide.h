@@ -53,7 +53,6 @@ class UpKpr1Slide : public UpSlide
 
     virtual QString title();
     virtual QString outline();
-    virtual QString notes();
     virtual QPixmap preview();
 
   private:

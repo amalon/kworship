@@ -52,7 +52,7 @@ class UpKpr2Slide : public UpSlide
 
     virtual QString title();
     virtual QString outline();
-    virtual QString notes();
+    virtual bool writeNotes(QTextDocument* doc);
     virtual QPixmap preview();
 
   private:
@@ -72,6 +72,9 @@ class UpKpr2Slide : public UpSlide
 
     /// Outline text.
     QString m_outline;
+
+    /// Notes as html.
+    QString m_notesHtml;
 
     /// Preview pixmap.
     QPixmap m_preview;

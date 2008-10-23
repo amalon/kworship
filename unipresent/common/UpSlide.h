@@ -29,6 +29,8 @@
 #include <QObject>
 #include <QPixmap>
 
+class QTextDocument;
+
 /** An abstract presentation slide.
  * Inherit from this class to implement each backend's presentation slide.
  */
@@ -57,11 +59,17 @@ class UpSlide : public QObject
     /// Get outline text.
     virtual QString outline();
 
-    /// Get notes text.
-    virtual QString notes();
+    /** Write notes into a text document.
+     * Clears the document if returns false.
+     *
+     * @param doc Text document to write notes into.
+     * @return Whether the slide had any notes to write.
+     */
+    virtual bool writeNotes(QTextDocument* doc);
 
     /// Get preview pixmap.
     virtual QPixmap preview();
+
 };
 
 #endif // _UpSlide_h_

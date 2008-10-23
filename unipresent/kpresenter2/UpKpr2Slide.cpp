@@ -27,6 +27,8 @@
 #include "UpKpr2Presentation.h"
 
 #include <QTemporaryFile>
+#include <QDBusReply>
+#include <QTextDocument>
 
 /*
  * Constructors + destructor
@@ -39,6 +41,7 @@ UpKpr2Slide::UpKpr2Slide(UpKpr2Presentation* presentation, int index)
 , m_index(index)
 , m_title()
 , m_outline()
+, m_notesHtml()
 , m_preview()
 {
 }
@@ -62,9 +65,22 @@ QString UpKpr2Slide::outline()
   return QString();
 }
 
-QString UpKpr2Slide::notes()
+bool UpKpr2Slide::writeNotes(QTextDocument* doc)
 {
-  return QString();
+  if (m_notesHtml.isNull())
+  {
+    QDBusInterface* view = m_presentation->dbusView();
+    if (0 != view)
+    {
+      m_notesHtml = (QDBusReply<QString>)view->call("pageNotes", m_index, "html");
+    }
+    else
+    {
+      return UpSlide::writeNotes(doc);
+    }
+  }
+  doc->setHtml(m_notesHtml);
+  return true;
 }
 
 QPixmap UpKpr2Slide::preview()

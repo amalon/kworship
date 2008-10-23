@@ -50,6 +50,7 @@ class KAction;
 class KToggleAction;
 
 class QTreeView;
+class QTextEdit;
 
 /**
  * This class serves as the main window for kworship.  It handles the
@@ -149,6 +150,7 @@ private:
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;
+    QTextEdit* m_slideNotes;
     KAction* m_slideshowPrevSlideAction;
     KAction* m_slideshowPrevStepAction;
     KAction* m_slideshowNextStepAction;
