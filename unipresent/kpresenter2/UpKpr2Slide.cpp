@@ -26,6 +26,8 @@
 #include "UpKpr2Slide.h"
 #include "UpKpr2Presentation.h"
 
+#include <KLocale>
+
 #include <QTemporaryFile>
 #include <QDBusReply>
 #include <QTextDocument>
@@ -57,7 +59,22 @@ UpKpr2Slide::~UpKpr2Slide()
 
 QString UpKpr2Slide::title()
 {
-  return QString();
+  if (m_title.isNull())
+  {
+    QDBusInterface* view = m_presentation->dbusView();
+    if (0 != view)
+    {
+      m_title = (QDBusReply<QString>)view->call("pageName", m_index);
+    }
+  }
+  if (m_title.isEmpty())
+  {
+    return i18n("Page %1", m_index + 1);
+  }
+  else
+  {
+    return m_title;
+  }
 }
 
 QString UpKpr2Slide::outline()
