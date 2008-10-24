@@ -107,6 +107,12 @@ void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedV
   }
 }
 
+/// Save to database.
+void KwSongdbSongEditWidget::save()
+{
+  /// @todo Implement me
+}
+
 /*
  * Private slots
  */

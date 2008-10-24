@@ -52,12 +52,17 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// Destructor.
     virtual ~KwSongdbSongEditWidget();
 
+  public slots:
+
     /*
      * Saving and loading
      */
 
     /// Load from database.
     void load(KwSongdbSong* song, KwSongdbVersion* selectedVersion = 0);
+
+    /// Save to database.
+    void save();
 
   signals:
 
@@ -67,6 +72,9 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
 
     /// Emitted when the lyrics markup has changed.
     void lyricsMarkupChangedSignal(const QString& lyricsMarkup);
+
+    /// Emitted when the changed state of the form changes.
+    void changed(bool changed);
 
   private slots:
 

@@ -47,6 +47,7 @@
 #include "KwSongdbModel.h"
 #include "KwSongdbFilterNode.h"
 #include "KwSongdbTree.h"
+#include "KwSongdbSong.h"
 #include "KwSongdbSongEditDialog.h"
 
 #include "UpManager.h"
@@ -922,6 +923,7 @@ void kworship::slideshowStepChanged(int step)
 void kworship::songdbAdd()
 {
   KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog(0);
+  dialog->setCaption(i18n("Add Song"));
   dialog->setAttribute(Qt::WA_DeleteOnClose, true);
   dialog->show();
 }
@@ -934,6 +936,7 @@ void kworship::songdbEdit()
     KwSongdbVersion* version = m_songDbTree->currentSongVersion();
     // version may be 0
     KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog(song, version);
+    dialog->setCaption(i18n("Edit Song - %1", song->name()));
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
     dialog->show();
   }

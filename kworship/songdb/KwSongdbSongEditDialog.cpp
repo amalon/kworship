@@ -43,8 +43,20 @@ KwSongdbSongEditDialog::KwSongdbSongEditDialog(KwSongdbSong* song, KwSongdbVersi
   setMainWidget(m_view);
   if (0 != song)
   {
+    setButtons(KDialog::Ok | KDialog::Cancel | KDialog::Apply);
     m_view->load(song, version);
   }
+  else
+  {
+    setButtons(KDialog::Ok | KDialog::Cancel);
+  }
+
+  connect(this, SIGNAL(applyClicked()),
+          m_view, SLOT(save()));
+  connect(this, SIGNAL(okClicked()),
+          m_view, SLOT(save()));
+  connect(m_view, SIGNAL(changed(bool)),
+          this, SLOT(enableButtonApply(bool)));
 }
 
 /// Destructor.
