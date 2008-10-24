@@ -27,6 +27,9 @@
  */
 
 #include <QString>
+#include <QList>
+
+class KwSongdbVersion;
 
 /// A song from the database.
 class KwSongdbSong
@@ -48,10 +51,13 @@ class KwSongdbSong
      */
 
     /// Get the id.
-    int getId() const;
+    int id() const;
 
     /// Get the name of the song.
-    QString getName() const;
+    QString name() const;
+
+    /// Get list of song versions.
+    QList<KwSongdbVersion*> versions();
 
   private:
 
@@ -64,6 +70,9 @@ class KwSongdbSong
 
     /// Name.
     QString m_name;
+
+    /// Version ids.
+    QList<int> m_versionIds;
 };
 
 #endif // _KwSongdbSong_h_

@@ -34,12 +34,17 @@
  * Constructors + destructor
  */
 
-/// Default constructor.
-KwSongdbSongEditDialog::KwSongdbSongEditDialog()
+/// Construct a dialog box to edit a song.
+KwSongdbSongEditDialog::KwSongdbSongEditDialog(KwSongdbSong* song, KwSongdbVersion* version)
 : KDialog()
 , m_view(new KwSongdbSongEditWidget())
+, m_song(song)
 {
   setMainWidget(m_view);
+  if (0 != song)
+  {
+    m_view->load(song, version);
+  }
 }
 
 /// Destructor.

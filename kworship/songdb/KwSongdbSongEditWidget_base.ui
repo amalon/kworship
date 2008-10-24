@@ -32,7 +32,7 @@
         <layout class="QHBoxLayout" name="layoutVersionsToolBar" />
        </item>
        <item>
-        <widget class="QListView" name="listVersions" />
+        <widget class="QListWidget" name="listVersions" />
        </item>
       </layout>
      </item>
@@ -41,7 +41,7 @@
        <item>
         <widget class="QFrame" name="frameVersion" >
          <property name="enabled" >
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
@@ -126,7 +126,10 @@
         </widget>
        </item>
        <item>
-        <widget class="QFrame" name="frame" >
+        <widget class="QFrame" name="frameLyrics" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
          <property name="frameShape" >
           <enum>QFrame::StyledPanel</enum>
          </property>

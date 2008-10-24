@@ -31,6 +31,8 @@
 #include <QTreeView>
 
 class KwSongdbModel;
+class KwSongdbSong;
+class KwSongdbVersion;
 class QActionGroup;
 
 /// A tree widget with songs from songdb.
@@ -55,6 +57,16 @@ class KwSongdbTree : public QTreeView
 
     /// Get the group by actions.
     QActionGroup* groupByActions();
+
+    /*
+     * Accessors
+     */
+
+    /// Get the currently selected song.
+    KwSongdbSong* currentSong();
+
+    /// Get the currently selected song version.
+    KwSongdbVersion* currentSongVersion();
 
   private slots:
 

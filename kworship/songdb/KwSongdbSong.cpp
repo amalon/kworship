@@ -39,9 +39,10 @@
 KwSongdbSong::KwSongdbSong(int id)
 : m_id(id)
 , m_name()
+, m_versionIds()
 {
-  // Get the song version data
-  QSqlQuery query(KwSongdb::self()->getDatabase());
+  // Get the song data
+  QSqlQuery query(KwSongdb::self()->database());
   query.prepare("SELECT `name`, `css_style_sheet_id` "
                 "FROM `Song` "
                 "WHERE `id` = ?");
@@ -64,14 +65,36 @@ KwSongdbSong::~KwSongdbSong()
  */
 
 /// Get the id.
-int KwSongdbSong::getId() const
+int KwSongdbSong::id() const
 {
   return m_id;
 }
 
 /// Get the name of the song.
-QString KwSongdbSong::getName() const
+QString KwSongdbSong::name() const
 {
   return m_name;
+}
+
+/// Get list of song versions.
+QList<KwSongdbVersion*> KwSongdbSong::versions()
+{
+  if (m_versionIds.isEmpty())
+  {
+    // Get the version ids
+    QSqlQuery query(KwSongdb::self()->database());
+    query.prepare("SELECT `id` "
+                  "FROM `SongVersion` "
+                  "WHERE `song_id` = ?");
+    query.addBindValue(QVariant(m_id));
+    bool worked = query.exec();
+    assert(worked);
+
+    query.first();
+    do {
+      m_versionIds.push_back(query.value(0).toInt());
+    } while (query.next());
+  }
+  return KwSongdb::self()->songVersionsByIds(m_versionIds);
 }
 

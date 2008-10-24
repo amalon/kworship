@@ -49,6 +49,13 @@ class KwSongdbFilterNode : public KwSongdbNode
     virtual ~KwSongdbFilterNode();
 
     /*
+     * Associated data access
+     */
+
+    virtual KwSongdbSong* associatedSong();
+    virtual KwSongdbVersion* associatedSongVersion();
+
+    /*
      * Main interface
      */
 

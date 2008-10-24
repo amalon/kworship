@@ -48,10 +48,10 @@ class KwSongdbLyrics
      */
 
     /// Get lyrics id.
-    int getId() const;
+    int id() const;
 
     /// Get the lyrics.
-    QString getLyrics() const;
+    QString lyrics() const;
 
   private:
 

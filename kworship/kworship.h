@@ -38,6 +38,7 @@ class KwPlaylistList;
 class KwPlaylistModel;
 class KwMediaManager;
 class KwSongdbModel;
+class KwSongdbTree;
 class KwDocument;
 
 class UpManager;
@@ -121,6 +122,7 @@ private slots:
 
     // Song DB
     void songdbAdd();
+    void songdbEdit();
 
 private:
     void setupActions();
@@ -147,6 +149,7 @@ private:
     KwPlaylistModel* m_playlistModel;
 
     KwSongdbModel* m_songDbModel;
+    KwSongdbTree* m_songDbTree;
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;

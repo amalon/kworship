@@ -203,6 +203,7 @@ kworship::kworship()
   connect(addSongAction, SIGNAL(triggered(bool)), this, SLOT(songdbAdd()));
   songToolBar->addAction(addSongAction);
   KAction* editSongAction = new KAction(KIcon("view-media-lyrics"), i18n("Edit Song"), songToolBar);
+  connect(editSongAction, SIGNAL(triggered(bool)), this, SLOT(songdbEdit()));
   songToolBar->addAction(editSongAction);
   KAction* addSongVersionAction = new KAction(KIcon("format-list-ordered"), i18n("Add Song Version"), songToolBar);
   songToolBar->addAction(addSongVersionAction);
@@ -214,9 +215,9 @@ kworship::kworship()
 
   if (databaseOk)
   {
-    KwSongdbTree* treeView = new KwSongdbTree(m_view);
-    m_view->layoutSongsTree->addWidget(treeView);
-    groupByMenu->addActions(treeView->groupByActions()->actions());
+    m_songDbTree = new KwSongdbTree(m_view);
+    m_view->layoutSongsTree->addWidget(m_songDbTree);
+    groupByMenu->addActions(m_songDbTree->groupByActions()->actions());
   }
 
 
@@ -920,9 +921,26 @@ void kworship::slideshowStepChanged(int step)
 // Song DB
 void kworship::songdbAdd()
 {
-  KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog;
+  KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog(0);
   dialog->setAttribute(Qt::WA_DeleteOnClose, true);
   dialog->show();
+}
+
+void kworship::songdbEdit()
+{
+  KwSongdbSong* song = m_songDbTree->currentSong();
+  if (0 != song)
+  {
+    KwSongdbVersion* version = m_songDbTree->currentSongVersion();
+    // version may be 0
+    KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog(song, version);
+    dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+    dialog->show();
+  }
+  else
+  {
+    KMessageBox::information(this, i18n("Please select a song."));
+  }
 }
 
 #include "kworship.moc"

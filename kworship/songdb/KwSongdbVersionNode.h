@@ -46,6 +46,13 @@ class KwSongdbVersionNode : public KwSongdbNode
     virtual ~KwSongdbVersionNode();
 
     /*
+     * Associated data access
+     */
+
+    virtual KwSongdbSong* associatedSong();
+    virtual KwSongdbVersion* associatedSongVersion();
+
+    /*
      * Main interface
      */
 

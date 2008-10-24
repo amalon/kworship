@@ -28,6 +28,8 @@
 
 #include <KDialog>
 
+class KwSongdbSong;
+class KwSongdbVersion;
 class KwSongdbSongEditWidget;
 
 /** Dialog for editing a song.
@@ -43,8 +45,12 @@ class KwSongdbSongEditDialog : public KDialog
      * Constructors + destructor
      */
 
-    /// Default constructor.
-    KwSongdbSongEditDialog();
+    /** Construct a dialog box to edit a song.
+     * @param song The song to load into the dialog and save to.
+     *             If song == 0, the dialog box creates a new song.
+     * @param version The version to default to editing.
+     */
+    KwSongdbSongEditDialog(KwSongdbSong* song, KwSongdbVersion* version = 0);
 
     /// Destructor.
     virtual ~KwSongdbSongEditDialog();
@@ -57,6 +63,9 @@ class KwSongdbSongEditDialog : public KDialog
 
     /// Main widget in dialog.
     KwSongdbSongEditWidget* m_view;
+
+    /// Database song.
+    KwSongdbSong* m_song;
 };
 
 #endif // _KwSongdbSongEditDialog_h_

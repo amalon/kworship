@@ -24,8 +24,12 @@
  */
 
 #include "KwSongdbVersionNode.h"
+#include "KwSongdb.h"
+#include "KwSongdbVersion.h"
+#include "KwSongdbVersionNode.h"
 
 #include <KIcon>
+#include <KLocale>
 
 /*
  * Constructors + destructor
@@ -38,15 +42,29 @@ KwSongdbVersionNode::KwSongdbVersionNode(KwSongdbNode* parent, QString label, in
 , m_id(id)
 , m_icon()
 {
-  if (m_label == "")
+  if (m_label.isEmpty())
   {
-    m_label = "Default version";
+    m_label = i18n("Default version");
   }
 }
 
 /// Destructor.
 KwSongdbVersionNode::~KwSongdbVersionNode()
 {
+}
+
+/*
+ * Associated data access
+ */
+
+KwSongdbSong* KwSongdbVersionNode::associatedSong()
+{
+  return KwSongdb::self()->songVersionById(m_id)->song();
+}
+
+KwSongdbVersion* KwSongdbVersionNode::associatedSongVersion()
+{
+  return KwSongdb::self()->songVersionById(m_id);
 }
 
 /*

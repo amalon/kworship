@@ -24,6 +24,8 @@
  */
 
 #include "KwSongdbNode.h"
+#include "KwSongdbSong.h"
+#include "KwSongdbVersion.h"
 
 #include <cassert>
 
@@ -40,6 +42,38 @@ KwSongdbNode::KwSongdbNode(KwSongdbNode* parent)
 /// Destructor.
 KwSongdbNode::~KwSongdbNode()
 {
+}
+
+/*
+ * Associated data access
+ */
+
+/// Get the song associated with this node.
+KwSongdbSong* KwSongdbNode::associatedSong()
+{
+  if (0 != getParent())
+  {
+    KwSongdbNode* parent = dynamic_cast<KwSongdbNode*>(getParent());
+    Q_ASSERT(0 != parent);
+    KwSongdbVersion* version = parent->associatedSongVersion();
+    if (0 != version)
+    {
+      return version->song();
+    }
+  }
+  return 0;
+}
+
+/// Get the song version associated with this node.
+KwSongdbVersion* KwSongdbNode::associatedSongVersion()
+{
+  if (0 != getParent())
+  {
+    KwSongdbNode* parent = dynamic_cast<KwSongdbNode*>(getParent());
+    Q_ASSERT(parent);
+    return parent->associatedSongVersion();
+  }
+  return 0;
 }
 
 /*

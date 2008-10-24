@@ -48,10 +48,10 @@ class KwSongdbLyricsOrder
      */
 
     /// Get the order.
-    int getOrder() const;
+    int order() const;
 
     /// Get the lyrics object.
-    KwSongdbLyrics* getLyrics() const;
+    KwSongdbLyrics* lyrics() const;
 
   private:
 

@@ -25,6 +25,7 @@
 
 #include "KwSongdbFilterNode.h"
 #include "KwSongdbVersionNode.h"
+#include "KwSongdb.h"
 
 #include <QSqlQuery>
 
@@ -72,6 +73,38 @@ KwSongdbFilterNode::KwSongdbFilterNode(KwSongdbFilterNode* parent, QString label
   m_knownValue.idValue = knownId;
   m_knownValue.next = &parent->m_knownValue;
   setupQuery();
+}
+
+/*
+ * Associated data access
+ */
+
+KwSongdbSong* KwSongdbFilterNode::associatedSong()
+{
+  KnownValue* val = &m_knownValue;
+  while (val->next)
+  {
+    if (val->idExpression == "`Song`.`id`")
+    {
+      return KwSongdb::self()->songById(val->idValue);
+    }
+    val = val->next;
+  }
+  return 0;
+}
+
+KwSongdbVersion* KwSongdbFilterNode::associatedSongVersion()
+{
+  // If only the one child, ask it
+  if (getChildCount() == 1)
+  {
+    KwSongdbNode* child = dynamic_cast<KwSongdbNode*>(getChild(0));
+    if (0 != child)
+    {
+      return child->associatedSongVersion();
+    }
+  }
+  return 0;
 }
 
 /*

@@ -46,13 +46,13 @@ KwSongdbLyricsOrder::~KwSongdbLyricsOrder()
  */
 
 /// Get the order.
-int KwSongdbLyricsOrder::getOrder() const
+int KwSongdbLyricsOrder::order() const
 {
   return m_order;
 }
 
 /// Get the lyrics object.
-KwSongdbLyrics* KwSongdbLyricsOrder::getLyrics() const
+KwSongdbLyrics* KwSongdbLyricsOrder::lyrics() const
 {
   return m_lyrics;
 }

@@ -57,7 +57,7 @@ QVariant KwPlaylistSongNode::getData(int role, int column)
   {
     if (column == 0)
     {
-      return m_item->getSongVersion()->getSong()->getName();
+      return m_item->getSongVersion()->song()->name();
     }
   }
   else if (role == Qt::DecorationRole)
@@ -72,7 +72,7 @@ QVariant KwPlaylistSongNode::getData(int role, int column)
 
 int KwPlaylistSongNode::getChildCount() const
 {
-  return m_item->getSongVersion()->getNumLyricsOrders();
+  return m_item->getSongVersion()->numLyricsOrders();
 }
 
 KwPlaylistNode* KwPlaylistSongNode::_getChild(int index)

@@ -29,6 +29,8 @@
 #include "NodeBasedModel.h"
 
 class KwDisplayManager;
+class KwSongdbSong;
+class KwSongdbVersion;
 
 /// A node on a song database tree.
 /**
@@ -47,6 +49,16 @@ class KwSongdbNode : public DefaultModelNode
 
     /// Destructor.
     virtual ~KwSongdbNode();
+
+    /*
+     * Associated data access
+     */
+
+    /// Get the song associated with this node.
+    virtual KwSongdbSong* associatedSong();
+
+    /// Get the song version associated with this node.
+    virtual KwSongdbVersion* associatedSongVersion();
 
     /*
      * Drag and drop

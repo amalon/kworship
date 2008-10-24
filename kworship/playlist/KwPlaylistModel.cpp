@@ -124,7 +124,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
           int versionId = words[1].toInt(&ok, 0);
           if (ok)
           {
-            KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->getSongVersionById(versionId));
+            KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->songVersionById(versionId));
             beginInsertRows(parent, row, row);
             list->childrenAdded(row, row);
             list->getItem()->addItem(newSong, row);

@@ -17,26 +17,23 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwSongdbSongEditWidget_h_
-#define _KwSongdbSongEditWidget_h_
+#ifndef _KwSongdbVersionListWidgetItem_h_
+#define _KwSongdbVersionListWidgetItem_h_
 
 /**
- * @file KwSongdbSongEditWidget.h
- * @brief Widget for editing a song.
+ * @file KwSongdbVersionListWidgetItem.h
+ * @brief A list widget item for a song version.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "ui_KwSongdbSongEditWidget_base.h"
+#include <QObject>
+#include <QListWidgetItem>
+#include <QString>
 
-#include <QWidget>
-
-class KwSongdbSong;
 class KwSongdbVersion;
 
-/** Widget for editing a song.
- * Allows editing of song information, song versions and lyrics.
- */
-class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget_base
+/// A list widget item for a song version.
+class KwSongdbVersionListWidgetItem : public QObject, public QListWidgetItem
 {
     Q_OBJECT
 
@@ -46,28 +43,64 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
      * Constructors + destructor
      */
 
-    /// Default constructor.
-    KwSongdbSongEditWidget();
+    /// Primary constructor.
+    KwSongdbVersionListWidgetItem(KwSongdbVersion* version, QListWidget* parent = 0);
 
     /// Destructor.
-    virtual ~KwSongdbSongEditWidget();
+    virtual ~KwSongdbVersionListWidgetItem();
 
     /*
-     * Saving and loading
+     * Accessors
      */
 
-    /// Load from database.
-    void load(KwSongdbSong* song, KwSongdbVersion* selectedVersion = 0);
+    /// Get the song version id.
+    KwSongdbVersion* version();
 
-  private slots:
+    /// Get the version name.
+    QString versionName() const;
+
+    /// Get the name of the writer.
+    QString writer() const;
+
+    /// Get the copyright notice.
+    QString copyright() const;
+
+  public slots:
 
     /*
-     * Private slots
+     * Modifier slots
      */
 
-    /// A different version has been selected.
-    void versionChanged(QListWidgetItem* current, QListWidgetItem* previous);
+    /// Set the version name.
+    void setVersionName(const QString& name);
+
+    /// Set the name of the writer.
+    void setWriter(const QString& writer);
+
+    /// Set the copyright notice.
+    void setCopyright(const QString& copyright);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Original database version object.
+    KwSongdbVersion* m_version;
+
+    /// Version name.
+    QString m_name;
+
+    /// Writer.
+    QString m_writer;
+
+    /// Copyright.
+    QString m_copyright;
+
+    /// Song books.
 
 };
 
-#endif // _KwSongdbSongEditWidget_h_
+#endif // _KwSongdbVersionListWidgetItem_h_
+

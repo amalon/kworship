@@ -24,6 +24,9 @@
  */
 
 #include "KwSongdbSongEditWidget.h"
+#include "KwSongdbSong.h"
+#include "KwSongdbVersion.h"
+#include "KwSongdbVersionListWidgetItem.h"
 
 #include <KAction>
 
@@ -87,10 +90,72 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
     arrangementToolBar->addAction(moveDownAction);
   }
 
+  // Signals
+  connect(listVersions, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+          this, SLOT(versionChanged(QListWidgetItem*, QListWidgetItem*)));
+
 }
 
 /// Destructor.
 KwSongdbSongEditWidget::~KwSongdbSongEditWidget()
 {
+}
+
+/*
+ * Saving and loading
+ */
+
+/// Load from database.
+void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedVersion)
+{
+  editSongName->setText(song->name());
+  QList<KwSongdbVersion*> versions = song->versions();
+  bool first = true;
+  foreach (KwSongdbVersion* version, versions)
+  {
+    KwSongdbVersionListWidgetItem* item = new KwSongdbVersionListWidgetItem(version, listVersions);
+    if ((0 == selectedVersion && first) || selectedVersion == version)
+    {
+      listVersions->setCurrentItem(item);
+      first = false;
+    }
+  }
+}
+
+/*
+ * Private slots
+ */
+
+/// A different version has been selected.
+void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidgetItem* previous)
+{
+  KwSongdbVersionListWidgetItem* previousVersion = dynamic_cast<KwSongdbVersionListWidgetItem*>(previous);
+  KwSongdbVersionListWidgetItem* currentVersion = dynamic_cast<KwSongdbVersionListWidgetItem*>(current);
+  
+  if (0 != previousVersion)
+  {
+    disconnect(editVersionName, SIGNAL(textEdited(const QString&)),
+               previousVersion, SLOT(setVersionName(const QString&)));
+    disconnect(editVersionWriter, SIGNAL(textEdited(const QString&)),
+               previousVersion, SLOT(setWriter(const QString&)));
+    disconnect(editVersionCopyright, SIGNAL(textEdited(const QString&)),
+               previousVersion, SLOT(setCopyright(const QString&)));
+  }
+
+  if (0 != currentVersion)
+  {
+    editVersionName->setText(currentVersion->versionName());
+    editVersionWriter->setText(currentVersion->writer());
+    editVersionCopyright->setText(currentVersion->copyright());
+
+    connect(editVersionName, SIGNAL(textEdited(const QString&)),
+            currentVersion, SLOT(setVersionName(const QString&)));
+    connect(editVersionWriter, SIGNAL(textEdited(const QString&)),
+            currentVersion, SLOT(setWriter(const QString&)));
+    connect(editVersionCopyright, SIGNAL(textEdited(const QString&)),
+            currentVersion, SLOT(setCopyright(const QString&)));
+  }
+  frameVersion->setEnabled(0 != currentVersion);
+  frameLyrics->setEnabled(0 != currentVersion);
 }
 

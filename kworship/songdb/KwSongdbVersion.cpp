@@ -28,6 +28,8 @@
 #include "KwSongdbLyrics.h"
 #include "KwSongdbLyricsOrder.h"
 
+#include <KLocale>
+
 #include <QSqlQuery>
 #include <QVariant>
 
@@ -41,12 +43,15 @@
 KwSongdbVersion::KwSongdbVersion(int id)
 : m_id(id)
 , m_song(0)
+, m_name()
+, m_writer()
+, m_copyright()
 , m_lyricsLoaded(false)
 , m_lyricsById()
 , m_lyricsOrdersByOrder()
 {
   // Get the song version data
-  QSqlQuery query(KwSongdb::self()->getDatabase());
+  QSqlQuery query(KwSongdb::self()->database());
   query.prepare("SELECT song_id, name, writer, copyright, css_style_sheet_id "
                 "FROM SongVersion "
                 "WHERE id = ?");
@@ -56,7 +61,10 @@ KwSongdbVersion::KwSongdbVersion(int id)
 
   // Copy the data
   assert(query.first());
-  m_song = KwSongdb::self()->getSongById(query.value(0).toInt());
+  m_song = KwSongdb::self()->songById(query.value(0).toInt());
+  m_name = query.value(1).toString();
+  m_writer = query.value(2).toString();
+  m_copyright = query.value(3).toString();
 }
 
 /// Destructor.
@@ -84,13 +92,44 @@ KwSongdbVersion::~KwSongdbVersion()
  */
 
 /// Get the song this is a version of.
-KwSongdbSong* KwSongdbVersion::getSong()
+KwSongdbSong* KwSongdbVersion::song()
 {
   return m_song;
 }
 
+/// Get the name of this version.
+QString KwSongdbVersion::name() const
+{
+  return m_name;
+}
+
+/// Get a non-empty name of this version.
+QString KwSongdbVersion::niceName() const
+{
+  if (m_name.isEmpty())
+  {
+    return i18n("Default version");
+  }
+  else
+  {
+    return m_name;
+  }
+}
+
+/// Get the name of the writer.
+QString KwSongdbVersion::writer() const
+{
+  return m_writer;
+}
+
+/// Get the copyright notice.
+QString KwSongdbVersion::copyright() const
+{
+  return m_copyright;
+}
+
 /// Get lyrics by id.
-KwSongdbLyrics* KwSongdbVersion::getLyricsById(int id)
+KwSongdbLyrics* KwSongdbVersion::lyricsById(int id)
 {
   loadLyrics();
   LyricsIndex::iterator it = m_lyricsById.find(id);
@@ -105,12 +144,12 @@ KwSongdbLyrics* KwSongdbVersion::getLyricsById(int id)
 }
 
 /// Get lyrics by order.
-KwSongdbLyrics* KwSongdbVersion::getLyricsByOrder(int order)
+KwSongdbLyrics* KwSongdbVersion::lyricsByOrder(int order)
 {
   loadLyrics();
   if (order >= 0 && order < m_lyricsOrdersByOrder.size())
   {
-    return m_lyricsOrdersByOrder[order]->getLyrics();
+    return m_lyricsOrdersByOrder[order]->lyrics();
   }
   else
   {
@@ -119,14 +158,14 @@ KwSongdbLyrics* KwSongdbVersion::getLyricsByOrder(int order)
 }
 
 /// Get number of lyric verses.
-int KwSongdbVersion::getNumLyricsOrders()
+int KwSongdbVersion::numLyricsOrders()
 {
   loadLyrics();
   return m_lyricsOrdersByOrder.size();
 }
 
 /// Get a lyrics order object.
-KwSongdbLyricsOrder* KwSongdbVersion::getLyricsOrderByOrder(int order)
+KwSongdbLyricsOrder* KwSongdbVersion::lyricsOrderByOrder(int order)
 {
   loadLyrics();
   if (order >= 0 && order < m_lyricsOrdersByOrder.size())
@@ -140,14 +179,14 @@ KwSongdbLyricsOrder* KwSongdbVersion::getLyricsOrderByOrder(int order)
 }
 
 /// Get an ordered vector of lyrics.
-QVector<KwSongdbLyrics*> KwSongdbVersion::getOrderedLyrics()
+QVector<KwSongdbLyrics*> KwSongdbVersion::orderedLyrics()
 {
   loadLyrics();
   QVector<KwSongdbLyrics*> result;
   result.resize(m_lyricsOrdersByOrder.size());
   for (int i = 0; i < m_lyricsOrdersByOrder.size(); ++i)
   {
-    result[i] = m_lyricsOrdersByOrder[i]->getLyrics();
+    result[i] = m_lyricsOrdersByOrder[i]->lyrics();
   }
   return result;
 }
@@ -161,7 +200,7 @@ void KwSongdbVersion::loadLyrics()
 {
   if (!m_lyricsLoaded)
   {
-    QSqlQuery query(KwSongdb::self()->getDatabase());
+    QSqlQuery query(KwSongdb::self()->database());
 
     {
       // Get the lyrics data

@@ -59,15 +59,18 @@ class KwSongdb
      */
 
     /// Get the database.
-    QSqlDatabase getDatabase();
+    QSqlDatabase database();
 
     /// Get a song by id.
-    KwSongdbSong* getSongById(int id);
+    KwSongdbSong* songById(int id);
 
     /** Get a song version by id.
      * This prefetches the song the version is a part of.
      */
-    KwSongdbVersion* getSongVersionById(int id);
+    KwSongdbVersion* songVersionById(int id);
+
+    /// Get song versions by ids.
+    QList<KwSongdbVersion*> songVersionsByIds(const QList<int>& ids);
 
   private:
     

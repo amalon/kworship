@@ -84,13 +84,13 @@ KwSongdb::~KwSongdb()
  */
 
 /// Get the database.
-QSqlDatabase KwSongdb::getDatabase()
+QSqlDatabase KwSongdb::database()
 {
   return m_database;
 }
 
 /// Get a song by id.
-KwSongdbSong* KwSongdb::getSongById(int id)
+KwSongdbSong* KwSongdb::songById(int id)
 {
   SongHash::iterator it = m_songsById.find(id);
   if (it != m_songsById.end())
@@ -108,7 +108,7 @@ KwSongdbSong* KwSongdb::getSongById(int id)
 /** Get a song version by id.
  * This prefetches the song the version is a part of.
  */
-KwSongdbVersion* KwSongdb::getSongVersionById(int id)
+KwSongdbVersion* KwSongdb::songVersionById(int id)
 {
   VersionHash::iterator it = m_versionsById.find(id);
   if (it != m_versionsById.end())
@@ -121,5 +121,20 @@ KwSongdbVersion* KwSongdb::getSongVersionById(int id)
     m_versionsById[id] = newVersion;
     return newVersion;
   }
+}
+
+/// Get song versions by ids.
+QList<KwSongdbVersion*> KwSongdb::songVersionsByIds(const QList<int>& ids)
+{
+  QList<KwSongdbVersion*> list;
+  foreach (int id, ids)
+  {
+    KwSongdbVersion* version = songVersionById(id);
+    if (0 != version)
+    {
+      list.push_back(version);
+    }
+  }
+  return list;
 }
 

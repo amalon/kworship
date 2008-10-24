@@ -18,26 +18,33 @@
  ***************************************************************************/
 
 /**
- * @file KwSongdbLyrics.cpp
- * @brief A verse of lyrics from the database.
+ * @file KwSongdbVersionListWidgetItem.cpp
+ * @brief A list widget item for a song version.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwSongdbLyrics.h"
+#include "KwSongdbVersionListWidgetItem.h"
+#include "KwSongdbVersion.h"
+
+#include <KLocale>
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-KwSongdbLyrics::KwSongdbLyrics(int id, const QString& lyrics)
-: m_id(id)
-, m_lyrics(lyrics)
+KwSongdbVersionListWidgetItem::KwSongdbVersionListWidgetItem(KwSongdbVersion* version, QListWidget* parent)
+: QObject()
+, QListWidgetItem(version->niceName(), parent)
+, m_version(version)
+, m_name(version->name())
+, m_writer(version->writer())
+, m_copyright(version->copyright())
 {
 }
 
 /// Destructor.
-KwSongdbLyrics::~KwSongdbLyrics()
+KwSongdbVersionListWidgetItem::~KwSongdbVersionListWidgetItem()
 {
 }
 
@@ -45,15 +52,50 @@ KwSongdbLyrics::~KwSongdbLyrics()
  * Accessors
  */
 
-/// Get lyrics id.
-int KwSongdbLyrics::id() const
+/// Get the song version id.
+KwSongdbVersion* KwSongdbVersionListWidgetItem::version()
 {
-  return m_id;
+  return m_version;
 }
 
-/// Get the lyrics.
-QString KwSongdbLyrics::lyrics() const
+/// Get the version name.
+QString KwSongdbVersionListWidgetItem::versionName() const
 {
-  return m_lyrics;
+  return m_name;
+}
+
+/// Get the name of the writer.
+QString KwSongdbVersionListWidgetItem::writer() const
+{
+  return m_writer;
+}
+
+/// Get the copyright notice.
+QString KwSongdbVersionListWidgetItem::copyright() const
+{
+  return m_copyright;
+}
+
+/*
+ * Modifier slots
+ */
+
+/// Set the version name.
+void KwSongdbVersionListWidgetItem::setVersionName(const QString& name)
+{
+  m_name = name;
+  setText(m_name.isEmpty() ? i18n("Default version") : name);
+}
+
+/// Set the name of the writer.
+void KwSongdbVersionListWidgetItem::setWriter(const QString& writer)
+{
+  m_writer = writer;
+}
+
+/// Set the copyright notice.
+void KwSongdbVersionListWidgetItem::setCopyright(const QString& copyright)
+{
+  m_copyright = copyright;
 }
 

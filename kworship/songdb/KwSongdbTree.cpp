@@ -108,6 +108,34 @@ QActionGroup* KwSongdbTree::groupByActions()
 }
 
 /*
+ * Accessors
+ */
+
+/// Get the currently selected song.
+KwSongdbSong* KwSongdbTree::currentSong()
+{
+  QModelIndex index = currentIndex();
+  KwSongdbNode* node = m_model->itemFromIndex(index);
+  if (0 != node)
+  {
+    return node->associatedSong();
+  }
+  return 0;
+}
+
+/// Get the currently selected song version.
+KwSongdbVersion* KwSongdbTree::currentSongVersion()
+{
+  QModelIndex index = currentIndex();
+  KwSongdbNode* node = m_model->itemFromIndex(index);
+  if (0 != node)
+  {
+    return node->associatedSongVersion();
+  }
+  return 0;
+}
+
+/*
  * Private slots
  */
 

@@ -53,22 +53,36 @@ class KwSongdbVersion
      */
 
     /// Get the song this is a version of.
-    KwSongdbSong* getSong();
+    KwSongdbSong* song();
+
+    /// Get the name of this version.
+    QString name() const;
+
+    /** Get a non-empty name of this version.
+     * @return The name or i18n("Default version").
+     */
+    QString niceName() const;
+
+    /// Get the name of the writer.
+    QString writer() const;
+
+    /// Get the copyright notice.
+    QString copyright() const;
 
     /// Get lyrics by id.
-    KwSongdbLyrics* getLyricsById(int id);
+    KwSongdbLyrics* lyricsById(int id);
 
     /// Get lyrics by order.
-    KwSongdbLyrics* getLyricsByOrder(int order);
+    KwSongdbLyrics* lyricsByOrder(int order);
 
     /// Get number of lyric verses.
-    int getNumLyricsOrders();
+    int numLyricsOrders();
 
     /// Get a lyrics order object.
-    KwSongdbLyricsOrder* getLyricsOrderByOrder(int order);
+    KwSongdbLyricsOrder* lyricsOrderByOrder(int order);
 
     /// Get an ordered vector of lyrics.
-    QVector<KwSongdbLyrics*> getOrderedLyrics();
+    QVector<KwSongdbLyrics*> orderedLyrics();
 
   private:
 
@@ -81,6 +95,15 @@ class KwSongdbVersion
 
     /// Song object.
     KwSongdbSong* m_song;
+
+    /// Name of this version.
+    QString m_name;
+
+    /// Name of the writer.
+    QString m_writer;
+
+    /// Copyright notice.
+    QString m_copyright;
 
     /// Whether lyrics have been loaded.
     bool m_lyricsLoaded;
