@@ -56,7 +56,6 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
 
   // Song books toolbar
   QToolBar* songBooksToolBar = new QToolBar("songBooksToolBar");
-  songBooksToolBar->setOrientation(Qt::Vertical);
   layoutSongBooksToolBar->layout()->addWidget(songBooksToolBar);
   {
     KAction* addAction = new KAction(KIcon("list-add"), i18n("Add Song Book Number"), songBooksToolBar);
@@ -66,28 +65,12 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
     songBooksToolBar->addAction(removeAction);
   }
 
-  // Lyrics toolbar
-  QToolBar* lyricsToolBar = new QToolBar("lyricsToolBar");
-  lyricsToolBar->setOrientation(Qt::Vertical);
-  layoutLyricsToolBar->layout()->addWidget(lyricsToolBar);
+  // Lyrics markup toolbar
+  QToolBar* lyricsMarkupToolBar = new QToolBar("lyricsMarkupToolBar");
+  layoutLyricsMarkupToolBar->layout()->addWidget(lyricsMarkupToolBar);
   {
-    KAction* addSongAction = new KAction(KIcon("list-add"), i18n("Add Verse"), lyricsToolBar);
-    lyricsToolBar->addAction(addSongAction);
-  }
-
-  // Arrangement toolbar
-  QToolBar* arrangementToolBar = new QToolBar("arrangementToolBar");
-  arrangementToolBar->setOrientation(Qt::Vertical);
-  layoutArrangementToolBar->layout()->addWidget(arrangementToolBar);
-  {
-    KAction* useVerseAction = new KAction(KIcon("move-right"), i18n("Use Verse"), arrangementToolBar);
-    arrangementToolBar->addAction(useVerseAction);
-
-    KAction* moveUpAction = new KAction(KIcon("move-up"), i18n("Move Up"), arrangementToolBar);
-    arrangementToolBar->addAction(moveUpAction);
-
-    KAction* moveDownAction = new KAction(KIcon("move-down"), i18n("Move Down"), arrangementToolBar);
-    arrangementToolBar->addAction(moveDownAction);
+    KAction* addSongAction = new KAction(KIcon("list-add"), i18n("Add Verse"), lyricsMarkupToolBar);
+    lyricsMarkupToolBar->addAction(addSongAction);
   }
 
   // Signals
@@ -156,6 +139,6 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
             currentVersion, SLOT(setCopyright(const QString&)));
   }
   frameVersion->setEnabled(0 != currentVersion);
-  frameLyrics->setEnabled(0 != currentVersion);
+  groupLyrics->setEnabled(0 != currentVersion);
 }
 

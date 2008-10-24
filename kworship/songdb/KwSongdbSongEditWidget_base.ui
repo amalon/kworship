@@ -25,172 +25,183 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" >
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2" >
+    <widget class="QSplitter" name="splitter" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" native="1" name="widget" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+        <horstretch>1</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_8" >
+       <property name="spacing" >
+        <number>0</number>
+       </property>
+       <property name="margin" >
+        <number>0</number>
+       </property>
        <item>
         <layout class="QHBoxLayout" name="layoutVersionsToolBar" />
        </item>
        <item>
-        <widget class="QListWidget" name="listVersions" />
+        <widget class="QListWidget" name="listVersions" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+           <horstretch>1</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4" >
-       <item>
-        <widget class="QFrame" name="frameVersion" >
-         <property name="enabled" >
-          <bool>false</bool>
+     </widget>
+     <widget class="QFrame" name="frameVersion" >
+      <property name="enabled" >
+       <bool>false</bool>
+      </property>
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+        <horstretch>1</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="frameShape" >
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow" >
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QFormLayout" name="formLayout_2" >
+       <property name="fieldGrowthPolicy" >
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>Version Name</string>
          </property>
+        </widget>
+       </item>
+       <item row="0" column="1" >
+        <widget class="KLineEdit" name="editVersionName" />
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>Writer</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <widget class="KLineEdit" name="editVersionWriter" />
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_3" >
+         <property name="text" >
+          <string>Copyright</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="KLineEdit" name="editVersionCopyright" />
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
+          <string>Song Books</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <layout class="QVBoxLayout" name="verticalLayout_7" >
+         <property name="spacing" >
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="layoutSongBooksToolBar" />
+         </item>
+         <item>
+          <widget class="QListWidget" name="listSongBooks" />
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupLyrics" >
+      <property name="enabled" >
+       <bool>false</bool>
+      </property>
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+        <horstretch>3</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title" >
+       <string>Lyrics</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5" >
+       <item>
+        <widget class="QTabWidget" name="tabsLyrics" >
          <property name="sizePolicy" >
-          <sizepolicy vsizetype="Maximum" hsizetype="Preferred" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
-         <property name="frameShape" >
-          <enum>QFrame::StyledPanel</enum>
+         <property name="tabPosition" >
+          <enum>QTabWidget::West</enum>
          </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
+         <property name="currentIndex" >
+          <number>1</number>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3" >
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5" >
-            <item>
-             <layout class="QFormLayout" name="formLayout" >
-              <item row="1" column="0" >
-               <widget class="QLabel" name="label" >
-                <property name="text" >
-                 <string>Version Name</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1" >
-               <widget class="KLineEdit" name="editVersionName" />
-              </item>
-              <item row="2" column="0" >
-               <widget class="QLabel" name="label_2" >
-                <property name="text" >
-                 <string>Writer</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1" >
-               <widget class="KLineEdit" name="editVersionWriter" />
-              </item>
-              <item row="3" column="0" >
-               <widget class="QLabel" name="label_3" >
-                <property name="text" >
-                 <string>Copyright</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1" >
-               <widget class="KLineEdit" name="editVersionCopyright" />
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QFormLayout" name="formLayout_3" >
-              <item row="0" column="1" >
-               <layout class="QHBoxLayout" name="horizontalLayout_4" >
-                <item>
-                 <widget class="QListView" name="listSongBooks" >
-                  <property name="maximumSize" >
-                   <size>
-                    <width>16777215</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <layout class="QVBoxLayout" name="layoutSongBooksToolBar" />
-                </item>
-               </layout>
-              </item>
-              <item row="0" column="0" >
-               <widget class="QLabel" name="label_4" >
-                <property name="text" >
-                 <string>Song Books</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="frameLyrics" >
-         <property name="enabled" >
-          <bool>false</bool>
-         </property>
-         <property name="frameShape" >
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="frameShadow" >
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5" >
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3" >
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_6" >
-              <item>
-               <widget class="QLabel" name="labelVerses" >
-                <property name="text" >
-                 <string>Lyric Verses</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_6" >
-                <item>
-                 <layout class="QVBoxLayout" name="layoutLyricsToolBar" />
-                </item>
-                <item>
-                 <widget class="QListView" name="listVersionLyrics" />
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_7" >
-              <item>
-               <widget class="QLabel" name="labelArrangement" >
-                <property name="text" >
-                 <string>Arrangement</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_7" >
-                <item>
-                 <layout class="QVBoxLayout" name="layoutArrangementToolBar" />
-                </item>
-                <item>
-                 <widget class="QListView" name="listVersionArrangement" />
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
+         <widget class="QWidget" name="tabLyricsEditor" >
+          <attribute name="title" >
+           <string>Editor</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="tabLyricsMarkup" >
+          <attribute name="title" >
+           <string>Markup</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_6" >
+           <property name="spacing" >
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="layoutLyricsMarkupToolBar" />
+           </item>
+           <item>
+            <widget class="QPlainTextEdit" name="editLyricsMarkup" />
+           </item>
+          </layout>
+          <zorder>ktextedit</zorder>
+          <zorder>editLyricsMarkup</zorder>
+          <zorder>karrowbutton</zorder>
+          <zorder>horizontalLayoutWidget</zorder>
+          <zorder>frameVersion</zorder>
+         </widget>
         </widget>
        </item>
       </layout>
-     </item>
-    </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
+  <zorder>widget_2</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>widget_2</zorder>
+  <zorder>splitter</zorder>
+  <zorder>splitter</zorder>
  </widget>
  <customwidgets>
   <customwidget>
