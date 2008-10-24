@@ -22,13 +22,14 @@
 
 /**
  * @file KwSongdbLyrics.h
- * @brief A verse of lyrics from the database.
+ * @brief Contains and manupulates a set of song lyrics.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include <QString>
+#include <QStringList>
 
-/// A verse of lyrics from the database.
+/// Contains and manupulates a set of song lyrics.
 class KwSongdbLyrics
 {
   public:
@@ -37,8 +38,11 @@ class KwSongdbLyrics
      * Constructors + destructor
      */
 
+    /// Default constructor.
+    KwSongdbLyrics();
+
     /// Primary constructor.
-    KwSongdbLyrics(int id, const QString& lyrics);
+    KwSongdbLyrics(const QString& markup);
 
     /// Destructor.
     virtual ~KwSongdbLyrics();
@@ -47,11 +51,18 @@ class KwSongdbLyrics
      * Accessors
      */
 
-    /// Get lyrics id.
-    int id() const;
+    /// Get the markup for these lyrics.
+    QString markup() const;
 
-    /// Get the lyrics.
-    QString lyrics() const;
+    /// Get verses of lyrics in plain text.
+    QStringList plainVerses() const;
+
+    /*
+     * Mutators
+     */
+
+    /// Set the lyrics from markup.
+    void setMarkup(const QString& markup);
 
   private:
 
@@ -59,11 +70,8 @@ class KwSongdbLyrics
      * Variables
      */
 
-    /// Lyrics id.
-    int m_id;
-
-    /// Actual lyrics.
-    QString m_lyrics;
+    /// Source lyric markup.
+    QString m_markup;
 };
 
 #endif // _KwSongdbLyrics_h_

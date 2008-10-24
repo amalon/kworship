@@ -8,14 +8,14 @@ set(kworshipsongdb_SRCS
     KwSongdbSong.cpp
     KwSongdbVersion.cpp
     KwSongdbLyrics.cpp
-    KwSongdbLyricsOrder.cpp
-    KwSongdbTree.cpp
-    KwSongdbTreeGroupAction.cpp
+    KwSongdbLyricsLayout.cpp
     KwSongdbModel.cpp
     KwSongdbNode.cpp
     KwSongdbFilterNode.cpp
     KwSongdbVersionNode.cpp
     # User interface
+    KwSongdbTree.cpp
+    KwSongdbTreeGroupAction.cpp
     KwSongdbVersionItem.cpp
     KwSongdbSongEditWidget.cpp
     KwSongdbSongEditDialog.cpp

@@ -65,6 +65,9 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
     /// Get the copyright notice.
     QString copyright() const;
 
+    /// Get the lyrics markup.
+    QString lyricsMarkup() const;
+
   public slots:
 
     /*
@@ -79,6 +82,9 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
 
     /// Set the copyright notice.
     void setCopyright(const QString& copyright);
+
+    /// Set the lyrics markup.
+    void setLyricsMarkup(const QString& lyricsMarkup);
 
   private:
 
@@ -98,7 +104,8 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
     /// Copyright.
     QString m_copyright;
 
-    /// Song books.
+    /// Lyrics markup.
+    QString m_lyricsMarkup;
 
 };
 

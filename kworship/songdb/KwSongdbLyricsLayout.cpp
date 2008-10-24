@@ -18,42 +18,51 @@
  ***************************************************************************/
 
 /**
- * @file KwSongdbLyricsOrder.cpp
- * @brief An order item for a song from the database.
+ * @file KwSongdbLyricsLayout.cpp
+ * @brief Manipulates a layout of lyrics.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwSongdbLyricsOrder.h"
+#include "KwSongdbLyricsLayout.h"
+
+#include "compiler.h"
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-KwSongdbLyricsOrder::KwSongdbLyricsOrder(int order, KwSongdbLyrics* lyrics)
-: m_order(order)
-, m_lyrics(lyrics)
+KwSongdbLyricsLayout::KwSongdbLyricsLayout(const KwSongdbLyrics& lyrics)
+: m_lyrics(lyrics)
+, m_pageCache(lyrics.plainVerses())
 {
 }
 
 /// Destructor.
-KwSongdbLyricsOrder::~KwSongdbLyricsOrder()
+KwSongdbLyricsLayout::~KwSongdbLyricsLayout()
 {
 }
 
 /*
- * Accessors
+ * Pagination
  */
 
-/// Get the order.
-int KwSongdbLyricsOrder::order() const
+/// Get the number of pages.
+int KwSongdbLyricsLayout::numPages() const
 {
-  return m_order;
+  return m_pageCache.size();
 }
 
-/// Get the lyrics object.
-KwSongdbLyrics* KwSongdbLyricsOrder::lyrics() const
+/// Get the plain text content of a page.
+QString KwSongdbLyricsLayout::pageContent(int page) const
 {
-  return m_lyrics;
+  if (likely(page > 0 && page < m_pageCache.size()))
+  {
+    return m_pageCache[page];
+  }
+  else
+  {
+    return QString();
+  }
 }
 

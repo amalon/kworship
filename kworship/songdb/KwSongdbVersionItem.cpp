@@ -40,6 +40,7 @@ KwSongdbVersionItem::KwSongdbVersionItem(KwSongdbVersion* version, QListWidget* 
 , m_name(version->name())
 , m_writer(version->writer())
 , m_copyright(version->copyright())
+, m_lyricsMarkup(version->lyrics().markup())
 {
 }
 
@@ -76,6 +77,12 @@ QString KwSongdbVersionItem::copyright() const
   return m_copyright;
 }
 
+/// Get the lyrics markup.
+QString KwSongdbVersionItem::lyricsMarkup() const
+{
+  return m_lyricsMarkup;
+}
+
 /*
  * Modifier slots
  */
@@ -97,5 +104,11 @@ void KwSongdbVersionItem::setWriter(const QString& writer)
 void KwSongdbVersionItem::setCopyright(const QString& copyright)
 {
   m_copyright = copyright;
+}
+
+/// Set the lyrics markup.
+void KwSongdbVersionItem::setLyricsMarkup(const QString& lyricsMarkup)
+{
+  m_lyricsMarkup = lyricsMarkup;
 }
 

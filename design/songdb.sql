@@ -84,6 +84,7 @@ CREATE TABLE SongVersion (
   `css_style_sheet_id`  INT            NULL,
   `writer`              VARCHAR(128)   NULL,
   `copyright`           VARCHAR(128)   NULL,
+  `lyrics`              TEXT           NOT NULL
   PRIMARY KEY (`id`),
   UNIQUE (`song_id`, `name`),
   FOREIGN KEY (`song_id`) REFERENCES Song (`id`)
@@ -112,36 +113,6 @@ CREATE TABLE SongMedia (
   `video_use`           BOOLEAN        NOT NULL  DEFAULT FALSE,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
-    ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE = INNODB;
-
-CREATE TABLE SongLyrics (
-  `id`                  INT            NOT NULL  AUTO_INCREMENT,
-  `version_id`          INT            NOT NULL,
-  `lyrics`              MEDIUMTEXT     NOT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
-    ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE = INNODB;
-
-CREATE TABLE SongLyricsClass (
-  `lyrics_id`           INT            NOT NULL,
-  `css_class`           VARCHAR(64)    NOT NULL,
-  PRIMARY KEY (`lyrics_id`, `css_class`),
-  FOREIGN KEY (`lyrics_id`) REFERENCES SongLyrics (`id`)
-    ON UPDATE CASCADE ON DELETE RESTRICT
-) ENGINE = INNODB;
-
-CREATE TABLE SongLyricsOrder (
-  `version_id`          INT            NOT NULL,
-  `order`               INT            NOT NULL,
-  `lyrics_id`           INT            NOT NULL,
-  `start_time`          INT            NULL COMMENT "Measured in milliseconds",
-  `duration`            INT            NULL COMMENT "Measured in milliseconds",
-  PRIMARY KEY (`version_id`, `order`),
-  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
-    ON UPDATE CASCADE ON DELETE RESTRICT,
-  FOREIGN KEY (`lyrics_id`) REFERENCES SongLyrics (`id`)
     ON UPDATE CASCADE ON DELETE RESTRICT
 ) ENGINE = INNODB;
 

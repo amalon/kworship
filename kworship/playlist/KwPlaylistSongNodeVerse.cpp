@@ -58,7 +58,7 @@ QVariant KwPlaylistSongNodeVerse::getData(int role, int column)
   {
     if (column == 0)
     {
-      return m_item->getSongVersion()->lyricsByOrder(m_verse)->lyrics();
+      return m_item->getLyricsLayout().pageContent(m_verse);
     }
   }
   else if (role == Qt::DecorationRole)
@@ -75,6 +75,6 @@ void KwPlaylistSongNodeVerse::activate(KwDisplayManager* manager)
 {
   manager->applyStyles(m_item);
   // Set text
-  manager->text.setText(m_item->getSongVersion()->lyricsByOrder(m_verse)->lyrics());
+  manager->text.setText(m_item->getLyricsLayout().pageContent(m_verse));
 }
 

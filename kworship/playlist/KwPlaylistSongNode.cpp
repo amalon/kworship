@@ -72,7 +72,7 @@ QVariant KwPlaylistSongNode::getData(int role, int column)
 
 int KwPlaylistSongNode::getChildCount() const
 {
-  return m_item->getSongVersion()->numLyricsOrders();
+  return m_item->getLyricsLayout().numPages();
 }
 
 KwPlaylistNode* KwPlaylistSongNode::_getChild(int index)

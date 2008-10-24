@@ -59,6 +59,15 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// Load from database.
     void load(KwSongdbSong* song, KwSongdbVersion* selectedVersion = 0);
 
+  signals:
+
+    /*
+     * Signals
+     */
+
+    /// Emitted when the lyrics markup has changed.
+    void lyricsMarkupChangedSignal(const QString& lyricsMarkup);
+
   private slots:
 
     /*
@@ -67,6 +76,9 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
 
     /// A different version has been selected.
     void versionChanged(QListWidgetItem* current, QListWidgetItem* previous);
+
+    /// Lyrics markup edit box has been modified.
+    void lyricsMarkupChanged();
 
 };
 

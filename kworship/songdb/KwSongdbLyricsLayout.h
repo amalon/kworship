@@ -17,19 +17,19 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwSongdbLyricsOrder_h_
-#define _KwSongdbLyricsOrder_h_
+#ifndef _KwSongdbLyricsLayout_h_
+#define _KwSongdbLyricsLayout_h_
 
 /**
- * @file KwSongdbLyricsOrder.h
- * @brief An order item for a song from the database.
+ * @file KwSongdbLyricsLayout.h
+ * @brief Manipulates a layout of lyrics.
  * @author James Hogan <james@albanarts.com>
  */
 
-class KwSongdbLyrics;
+#include "KwSongdbLyrics.h"
 
-/// An order item for a song from the database.
-class KwSongdbLyricsOrder
+/// Manipulates a layout of lyrics.
+class KwSongdbLyricsLayout
 {
   public:
 
@@ -38,20 +38,20 @@ class KwSongdbLyricsOrder
      */
 
     /// Primary constructor.
-    KwSongdbLyricsOrder(int order, KwSongdbLyrics* lyrics);
+    explicit KwSongdbLyricsLayout(const KwSongdbLyrics& lyrics);
 
     /// Destructor.
-    virtual ~KwSongdbLyricsOrder();
+    virtual ~KwSongdbLyricsLayout();
 
     /*
-     * Accessors
+     * Pagination
      */
 
-    /// Get the order.
-    int order() const;
+    /// Get the number of pages.
+    int numPages() const;
 
-    /// Get the lyrics object.
-    KwSongdbLyrics* lyrics() const;
+    /// Get the plain text content of a page.
+    QString pageContent(int page) const;
 
   private:
 
@@ -59,12 +59,12 @@ class KwSongdbLyricsOrder
      * Variables
      */
 
-    /// Lyrics order.
-    int m_order;
+    /// Lyrics.
+    const KwSongdbLyrics& m_lyrics;
 
-    /// Lyrics object.
-    KwSongdbLyrics* m_lyrics;
+    /// Pages cache.
+    QStringList m_pageCache;
 };
 
-#endif // _KwSongdbLyricsOrder_h_
+#endif // _KwSongdbLyricsLayout_h_
 

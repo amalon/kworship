@@ -25,7 +25,7 @@
 
 #include "KwPlaylistSong.h"
 #include "KwPlaylistSongNode.h"
-#include "KwSongdb.h"
+#include "KwSongdbVersion.h"
 
 /*
  * Constructors + destructor.
@@ -35,6 +35,7 @@
 KwPlaylistSong::KwPlaylistSong(KwSongdbVersion* version)
 : KwPlaylistItem()
 , m_version(version)
+, m_lyricsLayout(version->lyrics())
 {
 }
 
@@ -51,6 +52,12 @@ KwPlaylistSong::~KwPlaylistSong()
 KwSongdbVersion* KwPlaylistSong::getSongVersion()
 {
   return m_version;
+}
+
+/// Get the lyrics layout.
+KwSongdbLyricsLayout& KwPlaylistSong::getLyricsLayout()
+{
+  return m_lyricsLayout;
 }
 
 /*

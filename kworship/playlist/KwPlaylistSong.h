@@ -27,6 +27,7 @@
  */
 
 #include "KwPlaylistItem.h"
+#include "KwSongdbLyricsLayout.h"
 
 class KwSongdbVersion;
 
@@ -52,6 +53,9 @@ class KwPlaylistSong : public KwPlaylistItem
     /// Get the song version object.
     KwSongdbVersion* getSongVersion();
 
+    /// Get the lyrics layout.
+    KwSongdbLyricsLayout& getLyricsLayout();
+
     /*
      * DOM Translation.
      */
@@ -73,6 +77,9 @@ class KwPlaylistSong : public KwPlaylistItem
 
     /// Song version.
     KwSongdbVersion* m_version;
+
+    /// Lyrics layout.
+    KwSongdbLyricsLayout m_lyricsLayout;
 };
 
 #endif // _KwPlaylistSong_h_

@@ -26,12 +26,12 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "KwSongdbLyrics.h"
+
 #include <QHash>
 #include <QVector>
 
 class KwSongdbSong;
-class KwSongdbLyrics;
-class KwSongdbLyricsOrder;
 
 /// A song version from the database.
 class KwSongdbVersion
@@ -69,20 +69,8 @@ class KwSongdbVersion
     /// Get the copyright notice.
     QString copyright() const;
 
-    /// Get lyrics by id.
-    KwSongdbLyrics* lyricsById(int id);
-
-    /// Get lyrics by order.
-    KwSongdbLyrics* lyricsByOrder(int order);
-
-    /// Get number of lyric verses.
-    int numLyricsOrders();
-
-    /// Get a lyrics order object.
-    KwSongdbLyricsOrder* lyricsOrderByOrder(int order);
-
-    /// Get an ordered vector of lyrics.
-    QVector<KwSongdbLyrics*> orderedLyrics();
+    /// Get the lyrics.
+    const KwSongdbLyrics& lyrics() const;
 
   private:
 
@@ -105,23 +93,8 @@ class KwSongdbVersion
     /// Copyright notice.
     QString m_copyright;
 
-    /// Whether lyrics have been loaded.
-    bool m_lyricsLoaded;
-
-    /// Song lyrics.
-    typedef QHash<int, KwSongdbLyrics*> LyricsIndex;
-    LyricsIndex m_lyricsById;
-
-    /// Lyrics ordering.
-    typedef QVector<KwSongdbLyricsOrder*> LyricsOrderIndex;
-    LyricsOrderIndex m_lyricsOrdersByOrder;
-
-    /*
-     * Helper functions
-     */
-
-    /// Ensure that lyrics are loaded.
-    void loadLyrics();
+    /// Lyrics.
+    KwSongdbLyrics m_lyrics;
 };
 
 #endif // _KwSongdbVersion_h_

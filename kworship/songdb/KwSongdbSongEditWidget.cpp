@@ -76,6 +76,8 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
   // Signals
   connect(listVersions, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
           this, SLOT(versionChanged(QListWidgetItem*, QListWidgetItem*)));
+  connect(editLyricsMarkup, SIGNAL(textChanged()),
+          this, SLOT(lyricsMarkupChanged()));
 
 }
 
@@ -123,6 +125,8 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
                previousVersion, SLOT(setWriter(const QString&)));
     disconnect(editVersionCopyright, SIGNAL(textEdited(const QString&)),
                previousVersion, SLOT(setCopyright(const QString&)));
+    disconnect(this, SIGNAL(lyricsMarkupChangedSignal(const QString&)),
+               previousVersion, SLOT(setLyricsMarkup(const QString&)));
   }
 
   if (0 != currentVersion)
@@ -130,6 +134,7 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
     editVersionName->setText(currentVersion->versionName());
     editVersionWriter->setText(currentVersion->writer());
     editVersionCopyright->setText(currentVersion->copyright());
+    editLyricsMarkup->document()->setPlainText(currentVersion->lyricsMarkup());
 
     connect(editVersionName, SIGNAL(textEdited(const QString&)),
             currentVersion, SLOT(setVersionName(const QString&)));
@@ -137,8 +142,16 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
             currentVersion, SLOT(setWriter(const QString&)));
     connect(editVersionCopyright, SIGNAL(textEdited(const QString&)),
             currentVersion, SLOT(setCopyright(const QString&)));
+    connect(this, SIGNAL(lyricsMarkupChangedSignal(const QString&)),
+            currentVersion, SLOT(setLyricsMarkup(const QString&)));
   }
   frameVersion->setEnabled(0 != currentVersion);
   groupLyrics->setEnabled(0 != currentVersion);
+}
+
+/// Lyrics markup edit box has been modified.
+void KwSongdbSongEditWidget::lyricsMarkupChanged()
+{
+  lyricsMarkupChangedSignal(editLyricsMarkup->document()->toPlainText());
 }
 

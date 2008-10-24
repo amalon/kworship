@@ -19,7 +19,7 @@
 
 /**
  * @file KwSongdbLyrics.cpp
- * @brief A verse of lyrics from the database.
+ * @brief Contains and manupulates a set of song lyrics.
  * @author James Hogan <james@albanarts.com>
  */
 
@@ -29,10 +29,15 @@
  * Constructors + destructor
  */
 
+/// Default constructor.
+KwSongdbLyrics::KwSongdbLyrics()
+: m_markup()
+{
+}
+
 /// Primary constructor.
-KwSongdbLyrics::KwSongdbLyrics(int id, const QString& lyrics)
-: m_id(id)
-, m_lyrics(lyrics)
+KwSongdbLyrics::KwSongdbLyrics(const QString& markup)
+: m_markup(markup)
 {
 }
 
@@ -45,15 +50,25 @@ KwSongdbLyrics::~KwSongdbLyrics()
  * Accessors
  */
 
-/// Get lyrics id.
-int KwSongdbLyrics::id() const
+/// Get the markup for these lyrics.
+QString KwSongdbLyrics::markup() const
 {
-  return m_id;
+  return m_markup;
 }
 
-/// Get the lyrics.
-QString KwSongdbLyrics::lyrics() const
+/// Get verses of lyrics in plain text.
+QStringList KwSongdbLyrics::plainVerses() const
 {
-  return m_lyrics;
+  return m_markup.split("\n\n");
+}
+
+/*
+ * Mutators
+ */
+
+/// Set the lyrics from markup.
+void KwSongdbLyrics::setMarkup(const QString& markup)
+{
+  m_markup = markup;
 }
 
