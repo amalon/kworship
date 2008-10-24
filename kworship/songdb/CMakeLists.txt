@@ -16,7 +16,7 @@ set(kworshipsongdb_SRCS
     KwSongdbFilterNode.cpp
     KwSongdbVersionNode.cpp
     # User interface
-    KwSongdbVersionListWidgetItem.cpp
+    KwSongdbVersionItem.cpp
     KwSongdbSongEditWidget.cpp
     KwSongdbSongEditDialog.cpp
 )

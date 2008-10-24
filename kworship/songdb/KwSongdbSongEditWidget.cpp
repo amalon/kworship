@@ -26,7 +26,7 @@
 #include "KwSongdbSongEditWidget.h"
 #include "KwSongdbSong.h"
 #include "KwSongdbVersion.h"
-#include "KwSongdbVersionListWidgetItem.h"
+#include "KwSongdbVersionItem.h"
 
 #include <KAction>
 
@@ -113,7 +113,7 @@ void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedV
   bool first = true;
   foreach (KwSongdbVersion* version, versions)
   {
-    KwSongdbVersionListWidgetItem* item = new KwSongdbVersionListWidgetItem(version, listVersions);
+    KwSongdbVersionItem* item = new KwSongdbVersionItem(version, listVersions);
     if ((0 == selectedVersion && first) || selectedVersion == version)
     {
       listVersions->setCurrentItem(item);
@@ -129,8 +129,8 @@ void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedV
 /// A different version has been selected.
 void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
-  KwSongdbVersionListWidgetItem* previousVersion = dynamic_cast<KwSongdbVersionListWidgetItem*>(previous);
-  KwSongdbVersionListWidgetItem* currentVersion = dynamic_cast<KwSongdbVersionListWidgetItem*>(current);
+  KwSongdbVersionItem* previousVersion = dynamic_cast<KwSongdbVersionItem*>(previous);
+  KwSongdbVersionItem* currentVersion = dynamic_cast<KwSongdbVersionItem*>(current);
   
   if (0 != previousVersion)
   {

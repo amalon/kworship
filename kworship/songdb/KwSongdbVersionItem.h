@@ -17,85 +17,90 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwSongdbVersionItem_h_
+#define _KwSongdbVersionItem_h_
+
 /**
- * @file KwSongdbVersionListWidgetItem.cpp
+ * @file KwSongdbVersionItem.h
  * @brief A list widget item for a song version.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwSongdbVersionListWidgetItem.h"
-#include "KwSongdbVersion.h"
+#include <QObject>
+#include <QListWidgetItem>
+#include <QString>
 
-#include <KLocale>
+class KwSongdbVersion;
 
-/*
- * Constructors + destructor
- */
-
-/// Primary constructor.
-KwSongdbVersionListWidgetItem::KwSongdbVersionListWidgetItem(KwSongdbVersion* version, QListWidget* parent)
-: QObject()
-, QListWidgetItem(version->niceName(), parent)
-, m_version(version)
-, m_name(version->name())
-, m_writer(version->writer())
-, m_copyright(version->copyright())
+/// A list widget item for a song version.
+class KwSongdbVersionItem : public QObject, public QListWidgetItem
 {
-}
+    Q_OBJECT
 
-/// Destructor.
-KwSongdbVersionListWidgetItem::~KwSongdbVersionListWidgetItem()
-{
-}
+  public:
 
-/*
- * Accessors
- */
+    /*
+     * Constructors + destructor
+     */
 
-/// Get the song version id.
-KwSongdbVersion* KwSongdbVersionListWidgetItem::version()
-{
-  return m_version;
-}
+    /// Primary constructor.
+    KwSongdbVersionItem(KwSongdbVersion* version, QListWidget* parent = 0);
 
-/// Get the version name.
-QString KwSongdbVersionListWidgetItem::versionName() const
-{
-  return m_name;
-}
+    /// Destructor.
+    virtual ~KwSongdbVersionItem();
 
-/// Get the name of the writer.
-QString KwSongdbVersionListWidgetItem::writer() const
-{
-  return m_writer;
-}
+    /*
+     * Accessors
+     */
 
-/// Get the copyright notice.
-QString KwSongdbVersionListWidgetItem::copyright() const
-{
-  return m_copyright;
-}
+    /// Get the song version id.
+    KwSongdbVersion* version();
 
-/*
- * Modifier slots
- */
+    /// Get the version name.
+    QString versionName() const;
 
-/// Set the version name.
-void KwSongdbVersionListWidgetItem::setVersionName(const QString& name)
-{
-  m_name = name;
-  setText(m_name.isEmpty() ? i18n("Default version") : name);
-}
+    /// Get the name of the writer.
+    QString writer() const;
 
-/// Set the name of the writer.
-void KwSongdbVersionListWidgetItem::setWriter(const QString& writer)
-{
-  m_writer = writer;
-}
+    /// Get the copyright notice.
+    QString copyright() const;
 
-/// Set the copyright notice.
-void KwSongdbVersionListWidgetItem::setCopyright(const QString& copyright)
-{
-  m_copyright = copyright;
-}
+  public slots:
+
+    /*
+     * Modifier slots
+     */
+
+    /// Set the version name.
+    void setVersionName(const QString& name);
+
+    /// Set the name of the writer.
+    void setWriter(const QString& writer);
+
+    /// Set the copyright notice.
+    void setCopyright(const QString& copyright);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Original database version object.
+    KwSongdbVersion* m_version;
+
+    /// Version name.
+    QString m_name;
+
+    /// Writer.
+    QString m_writer;
+
+    /// Copyright.
+    QString m_copyright;
+
+    /// Song books.
+
+};
+
+#endif // _KwSongdbVersionItem_h_
 
