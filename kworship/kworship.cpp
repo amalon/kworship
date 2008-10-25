@@ -930,6 +930,7 @@ void kworship::songdbAdd()
 
 void kworship::songdbEdit()
 {
+  /// @todo Ensure the same song isn't open twice
   KwSongdbSong* song = m_songDbTree->currentSong();
   if (0 != song)
   {

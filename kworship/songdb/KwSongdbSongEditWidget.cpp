@@ -49,6 +49,8 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
   layoutVersionsToolBar->layout()->addWidget(versionsToolBar);
   {
     KAction* addAction = new KAction(KIcon("list-add"), i18n("Add Song Version"), versionsToolBar);
+    connect(addAction, SIGNAL(triggered(bool)),
+            this, SLOT(addVersion()));
     versionsToolBar->addAction(addAction);
 
     KAction* duplicateAction = new KAction(KIcon("duplicate"), i18n("Duplicate Song Version"), versionsToolBar);
@@ -104,8 +106,14 @@ void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedV
     if ((0 == selectedVersion && first) || selectedVersion == version)
     {
       listVersions->setCurrentItem(item);
-      first = false;
     }
+    first = false;
+  }
+
+  // If there are no versions, add one
+  if (first)
+  {
+    addVersion();
   }
 }
 
@@ -127,6 +135,13 @@ void KwSongdbSongEditWidget::save()
     Q_ASSERT(0 != item);
     item->save(m_song);
   }
+}
+
+/// Add a song version.
+void KwSongdbSongEditWidget::addVersion()
+{
+  KwSongdbVersionItem* item = new KwSongdbVersionItem(listVersions);
+  listVersions->setCurrentItem(item);
 }
 
 /*

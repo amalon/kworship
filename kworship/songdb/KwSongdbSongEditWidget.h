@@ -64,6 +64,9 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// Save to database.
     void save();
 
+    /// Add a song version.
+    void addVersion();
+
   signals:
 
     /*

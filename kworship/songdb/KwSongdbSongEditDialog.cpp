@@ -49,6 +49,7 @@ KwSongdbSongEditDialog::KwSongdbSongEditDialog(KwSongdbSong* song, KwSongdbVersi
   else
   {
     setButtons(KDialog::Ok | KDialog::Cancel);
+    m_view->addVersion();
   }
 
   connect(this, SIGNAL(applyClicked()),
