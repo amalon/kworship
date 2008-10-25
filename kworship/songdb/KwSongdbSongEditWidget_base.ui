@@ -15,7 +15,7 @@
      <item>
       <widget class="QLabel" name="labelSongName" >
        <property name="text" >
-        <string>Song Name</string>
+        <string>Song &amp;Name</string>
        </property>
        <property name="buddy" >
         <cstring>editSongName</cstring>
@@ -83,71 +83,143 @@
       <property name="frameShadow" >
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QFormLayout" name="formLayout_2" >
-       <property name="fieldGrowthPolicy" >
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
-       <item row="0" column="0" >
-        <widget class="QLabel" name="label" >
-         <property name="text" >
-          <string>Version Name</string>
-         </property>
-         <property name="buddy" >
-          <cstring>editVersionName</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" >
-        <widget class="KLineEdit" name="editVersionName" />
-       </item>
-       <item row="1" column="0" >
-        <widget class="QLabel" name="label_2" >
-         <property name="text" >
-          <string>Writer</string>
-         </property>
-         <property name="buddy" >
-          <cstring>editVersionWriter</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1" >
-        <widget class="KLineEdit" name="editVersionWriter" />
-       </item>
-       <item row="2" column="0" >
-        <widget class="QLabel" name="label_3" >
-         <property name="text" >
-          <string>Copyright</string>
-         </property>
-         <property name="buddy" >
-          <cstring>editVersionCopyright</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1" >
-        <widget class="KLineEdit" name="editVersionCopyright" />
-       </item>
-       <item row="4" column="0" >
-        <widget class="QLabel" name="label_4" >
-         <property name="text" >
-          <string>Song Books</string>
-         </property>
-         <property name="buddy" >
-          <cstring>listSongBooks</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1" >
-        <layout class="QVBoxLayout" name="verticalLayout_7" >
-         <property name="spacing" >
-          <number>0</number>
-         </property>
-         <item>
-          <layout class="QHBoxLayout" name="layoutSongBooksToolBar" />
+      <layout class="QVBoxLayout" name="verticalLayout_2" >
+       <item>
+        <layout class="QFormLayout" name="formLayout_2" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="label" >
+           <property name="text" >
+            <string>&amp;Version Name</string>
+           </property>
+           <property name="buddy" >
+            <cstring>editVersionName</cstring>
+           </property>
+          </widget>
          </item>
-         <item>
-          <widget class="QListWidget" name="listSongBooks" />
+         <item row="0" column="1" >
+          <widget class="KLineEdit" name="editVersionName" />
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLabel" name="label_2" >
+           <property name="text" >
+            <string>&amp;Writer</string>
+           </property>
+           <property name="buddy" >
+            <cstring>editVersionWriter</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" >
+          <widget class="QLabel" name="label_3" >
+           <property name="text" >
+            <string>&amp;Copyright</string>
+           </property>
+           <property name="buddy" >
+            <cstring>editVersionCopyright</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" >
+          <widget class="KLineEdit" name="editVersionWriter" />
+         </item>
+         <item row="2" column="1" >
+          <widget class="KLineEdit" name="editVersionCopyright" />
+         </item>
+         <item row="3" column="0" >
+          <widget class="QLabel" name="label_4" >
+           <property name="text" >
+            <string>Song &amp;Books</string>
+           </property>
+           <property name="buddy" >
+            <cstring>listSongBooks</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" >
+          <layout class="QVBoxLayout" name="verticalLayout_7" >
+           <property name="spacing" >
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="layoutSongBooksToolBar" />
+           </item>
+           <item>
+            <widget class="QListWidget" name="listSongBooks" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupSongBook" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="title" >
+          <string>Song Book</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout_4" >
+          <property name="fieldGrowthPolicy" >
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0" >
+           <widget class="QLabel" name="labelSongBook" >
+            <property name="text" >
+             <string>Song B&amp;ook</string>
+            </property>
+            <property name="buddy" >
+             <cstring>comboSongBooks</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" >
+           <widget class="KComboBox" name="comboSongBooks" />
+          </item>
+          <item row="2" column="0" >
+           <widget class="QLabel" name="labelSongBookNumber" >
+            <property name="text" >
+             <string>Song N&amp;umber</string>
+            </property>
+            <property name="buddy" >
+             <cstring>spinSongBookNumber</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" >
+           <widget class="QSpinBox" name="spinSongBookNumber" />
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnEditSongBooks" >
+         <property name="toolTip" >
+          <string/>
+         </property>
+         <property name="text" >
+          <string>&amp;Edit Song Books</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer" >
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -181,12 +253,12 @@
          </property>
          <widget class="QWidget" name="tabLyricsEditor" >
           <attribute name="title" >
-           <string>Editor</string>
+           <string>&amp;Editor</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="tabLyricsMarkup" >
           <attribute name="title" >
-           <string>Markup</string>
+           <string>&amp;Markup</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_6" >
            <property name="spacing" >
@@ -209,6 +281,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>KComboBox</class>
+   <extends>QComboBox</extends>
+   <header>kcombobox.h</header>
+  </customwidget>
   <customwidget>
    <class>KLineEdit</class>
    <extends>QLineEdit</extends>

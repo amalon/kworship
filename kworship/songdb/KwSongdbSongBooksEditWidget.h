@@ -17,50 +17,78 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwSongdbSongBooksEditWidget_h_
+#define _KwSongdbSongBooksEditWidget_h_
+
 /**
- * @file KwSongdbSongEditDialog.cpp
- * @brief Dialog for editing a song.
+ * @file KwSongdbSongBooksEditWidget.h
+ * @brief Widget for editing song books.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwSongdbSongEditDialog.h"
-#include "KwSongdbSongEditWidget.h"
+#include "ui_KwSongdbSongBooksEditWidget_base.h"
 
-/*
- * Constructors + destructor
+#include <QWidget>
+
+/** Widget for editing song books.
+ * Allows editing of song book information.
  */
-
-/// Construct a dialog box to edit a song.
-KwSongdbSongEditDialog::KwSongdbSongEditDialog(KwSongdbSong* song, KwSongdbVersion* version)
-: KDialog()
-, m_view(new KwSongdbSongEditWidget())
-, m_song(song)
+class KwSongdbSongBooksEditWidget : public QWidget, public Ui::KwSongdbSongBooksEditWidget_base
 {
-  setMainWidget(m_view);
-  if (0 != song)
-  {
-    setButtons(KDialog::Ok | KDialog::Cancel | KDialog::Apply);
-    m_view->load(song, version);
-  }
-  else
-  {
-    setButtons(KDialog::Ok | KDialog::Cancel);
-    m_view->addVersion();
-  }
+    Q_OBJECT
 
-  connect(this, SIGNAL(applyClicked()),
-          m_view, SLOT(save()));
-  connect(this, SIGNAL(okClicked()),
-          m_view, SLOT(save()));
-  connect(m_view, SIGNAL(changed(bool)),
-          this, SLOT(enableButtonApply(bool)));
+  public:
 
-  enableButtonApply(false);
-}
+    /*
+     * Static
+     */
 
-/// Destructor.
-KwSongdbSongEditDialog::~KwSongdbSongEditDialog()
-{
-  delete m_view;
-}
+    /// Show the edit song books dialog.
+    static KwSongdbSongBooksEditWidget* showDialog();
 
+    /*
+     * Constructors + destructor
+     */
+
+    /// Default constructor.
+    KwSongdbSongBooksEditWidget();
+
+    /// Destructor.
+    virtual ~KwSongdbSongBooksEditWidget();
+
+  public slots:
+
+    /*
+     * Saving and loading
+     */
+
+    /// Save to database.
+    void save();
+
+    /// Add a song book.
+    void addSongBook();
+
+  signals:
+
+    /*
+     * Signals
+     */
+
+    /// Emitted when the changed state of the form changes.
+    void changed(bool changed);
+
+  private slots:
+
+    /*
+     * Private slots
+     */
+
+    /// A different song book has been selected.
+    void songBookChanged(QListWidgetItem* current, QListWidgetItem* previous);
+
+    /// Remove the selected song book.
+    void removeSongBook();
+
+};
+
+#endif // _KwSongdbSongBooksEditWidget_h_

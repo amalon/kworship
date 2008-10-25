@@ -19,10 +19,12 @@ set(kworshipsongdb_SRCS
     KwSongdbVersionItem.cpp
     KwSongdbSongEditWidget.cpp
     KwSongdbSongEditDialog.cpp
+    KwSongdbSongBooksEditWidget.cpp
 )
 
 kde4_add_ui_files(kworshipsongdb_SRCS
                   KwSongdbSongEditWidget_base.ui
+                  KwSongdbSongBooksEditWidget_base.ui
 )
 
 kde4_add_library(kworshipsongdb ${kworshipsongdb_SRCS})

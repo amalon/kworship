@@ -27,8 +27,10 @@
 #include "KwSongdbSong.h"
 #include "KwSongdbVersion.h"
 #include "KwSongdbVersionItem.h"
+#include "KwSongdbSongBooksEditWidget.h"
 
 #include <KAction>
+#include <KDialog>
 
 #include <QToolBar>
 
@@ -81,6 +83,8 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
           this, SLOT(versionChanged(QListWidgetItem*, QListWidgetItem*)));
   connect(editLyricsMarkup, SIGNAL(textChanged()),
           this, SLOT(lyricsMarkupChanged()));
+  connect(btnEditSongBooks, SIGNAL(clicked()),
+          this, SLOT(editSongBooksClicked()));
 
 }
 
@@ -190,5 +194,11 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
 void KwSongdbSongEditWidget::lyricsMarkupChanged()
 {
   lyricsMarkupChangedSignal(editLyricsMarkup->document()->toPlainText());
+}
+
+/// Button to edit song books has been clicked.
+void KwSongdbSongEditWidget::editSongBooksClicked()
+{
+  KwSongdbSongBooksEditWidget::showDialog();
 }
 

@@ -91,6 +91,9 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// Lyrics markup edit box has been modified.
     void lyricsMarkupChanged();
 
+    /// Button to edit song books has been clicked.
+    void editSongBooksClicked();
+
   private:
 
     /*
