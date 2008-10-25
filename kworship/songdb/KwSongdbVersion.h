@@ -39,6 +39,21 @@ class KwSongdbVersion
   public:
 
     /*
+     * Types
+     */
+
+    /// Version data fields.
+    enum Field
+    {
+      None = 0x0,
+      Name = 0x1,
+      Writer = 0x2,
+      Copyright = 0x4,
+      Lyrics = 0x8
+    };
+    Q_DECLARE_FLAGS(Fields, Field)
+
+    /*
      * Constructors + destructor
      */
 
@@ -72,6 +87,28 @@ class KwSongdbVersion
     /// Get the lyrics.
     const KwSongdbLyrics& lyrics() const;
 
+    /*
+     * Mutators
+     */
+
+    /// Set the name.
+    void setName(const QString& name);
+
+    /// Set the writer.
+    void setWriter(const QString& writer);
+
+    /// Set the copyright notice.
+    void setCopyright(const QString& copyright);
+
+    /// Set the lyrics markup.
+    void setLyricsMarkup(const QString& markup);
+
+    /// Set the lyrics.
+    void setLyrics(const KwSongdbLyrics& lyrics);
+
+    /// Save changes to the version data.
+    void save();
+
   private:
 
     /*
@@ -83,6 +120,9 @@ class KwSongdbVersion
 
     /// Song object.
     KwSongdbSong* m_song;
+
+    /// Which fields have been modified.
+    Fields m_modifiedFields;
 
     /// Name of this version.
     QString m_name;
@@ -96,6 +136,8 @@ class KwSongdbVersion
     /// Lyrics.
     KwSongdbLyrics m_lyrics;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(KwSongdbVersion::Fields)
 
 #endif // _KwSongdbVersion_h_
 

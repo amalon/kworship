@@ -64,6 +64,21 @@ class KwSongdbLyrics
     /// Set the lyrics from markup.
     void setMarkup(const QString& markup);
 
+    /*
+     * Equality + inequality operators
+     */
+
+    /// Equals operator.
+    bool operator == (const KwSongdbLyrics& rhs) const
+    {
+      return m_markup == rhs.m_markup;
+    }
+    /// Not equals operator.
+    bool operator != (const KwSongdbLyrics& rhs) const
+    {
+      return m_markup != rhs.m_markup;
+    }
+
   private:
 
     /*

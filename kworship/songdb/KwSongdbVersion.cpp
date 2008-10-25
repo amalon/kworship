@@ -41,6 +41,7 @@
 KwSongdbVersion::KwSongdbVersion(int id)
 : m_id(id)
 , m_song(0)
+, m_modifiedFields(0)
 , m_name()
 , m_writer()
 , m_copyright()
@@ -114,5 +115,119 @@ QString KwSongdbVersion::copyright() const
 const KwSongdbLyrics& KwSongdbVersion::lyrics() const
 {
   return m_lyrics;
+}
+
+/*
+ * Mutators
+ */
+
+/// Set the name.
+void KwSongdbVersion::setName(const QString& name)
+{
+  if (name != m_name)
+  {
+    m_modifiedFields |= Name;
+    m_name = name;
+  }
+}
+
+/// Set the writer.
+void KwSongdbVersion::setWriter(const QString& writer)
+{
+  if (writer != m_writer)
+  {
+    m_modifiedFields |= Writer;
+    m_writer = writer;
+  }
+}
+
+/// Set the copyright notice.
+void KwSongdbVersion::setCopyright(const QString& copyright)
+{
+  if (copyright != m_copyright)
+  {
+    m_modifiedFields |= Copyright;
+    m_copyright = copyright;
+  }
+}
+
+/// Set the lyrics markup.
+void KwSongdbVersion::setLyricsMarkup(const QString& markup)
+{
+  if (markup != m_lyrics.markup())
+  {
+    m_modifiedFields |= Lyrics;
+    m_lyrics.setMarkup(markup);
+  }
+}
+
+/// Set the lyrics.
+void KwSongdbVersion::setLyrics(const KwSongdbLyrics& lyrics)
+{
+  if (lyrics != m_lyrics)
+  {
+    m_modifiedFields |= Lyrics;
+    m_lyrics = lyrics;
+  }
+}
+
+/// Save changes to the version data.
+void KwSongdbVersion::save()
+{
+  QStringList fields;
+  QList<QVariant> values;
+  Fields handled;
+
+  // Straightforward modifications
+
+  if (m_modifiedFields.testFlag(Name))
+  {
+    handled |= Name;
+    fields.push_back("`name`=?");
+    values.push_back(QVariant(m_name));
+  }
+
+  if (m_modifiedFields.testFlag(Writer))
+  {
+    handled |= Writer;
+    fields.push_back("`writer`=?");
+    values.push_back(QVariant(m_writer));
+  }
+
+  if (m_modifiedFields.testFlag(Copyright))
+  {
+    handled |= Copyright;
+    fields.push_back("`copyright`=?");
+    values.push_back(QVariant(m_copyright));
+  }
+
+  if (m_modifiedFields.testFlag(Lyrics))
+  {
+    handled |= Lyrics;
+    fields.push_back("`lyrics`=?");
+    values.push_back(QVariant(m_lyrics.markup()));
+  }
+
+  if (!fields.isEmpty())
+  {
+    // Construct the query
+    QSqlQuery query(KwSongdb::self()->database());
+    query.prepare("UPDATE SongVersion "
+                  "SET " + fields.join(",") + " "
+                  "WHERE id = ?");
+    // Add bind values
+    foreach (QVariant value, values)
+    {
+      query.addBindValue(value);
+    }
+    query.addBindValue(QVariant(m_id));
+
+    // Execute query
+    bool worked = query.exec();
+    assert(worked);
+
+    // Update which fields are modified
+    m_modifiedFields &= ~handled;
+  }
 }
 

@@ -87,6 +87,23 @@ QString KwSongdbVersionItem::lyricsMarkup() const
  * Modifier slots
  */
 
+/// Save the changes to the version object.
+void KwSongdbVersionItem::save()
+{
+  // Create new version if applicable
+  if (0 == m_version)
+  {
+    /// @todo implement me
+    return;
+  }
+
+  m_version->setName(m_name);
+  m_version->setWriter(m_writer);
+  m_version->setCopyright(m_copyright);
+  m_version->setLyricsMarkup(m_lyricsMarkup);
+  m_version->save();
+}
+
 /// Set the version name.
 void KwSongdbVersionItem::setVersionName(const QString& name)
 {

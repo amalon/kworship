@@ -111,6 +111,14 @@ void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedV
 void KwSongdbSongEditWidget::save()
 {
   /// @todo Implement me
+
+  // Versions
+  for (int i = 0; i < listVersions->count(); ++i)
+  {
+    KwSongdbVersionItem* item = dynamic_cast<KwSongdbVersionItem*>(listVersions->item(i));
+    Q_ASSERT(0 != item);
+    item->save();
+  }
 }
 
 /*

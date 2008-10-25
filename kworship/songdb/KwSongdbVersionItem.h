@@ -74,6 +74,9 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
      * Modifier slots
      */
 
+    /// Save the changes to the version object.
+    void save();
+
     /// Set the version name.
     void setVersionName(const QString& name);
 
