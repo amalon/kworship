@@ -40,6 +40,7 @@
 KwSongdbSongEditWidget::KwSongdbSongEditWidget()
 : QWidget()
 , Ui::KwSongdbSongEditWidget_base()
+, m_song(0)
 {
   setupUi(this);
 
@@ -93,6 +94,7 @@ KwSongdbSongEditWidget::~KwSongdbSongEditWidget()
 /// Load from database.
 void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedVersion)
 {
+  m_song = song;
   editSongName->setText(song->name());
   QList<KwSongdbVersion*> versions = song->versions();
   bool first = true;
@@ -110,14 +112,20 @@ void KwSongdbSongEditWidget::load(KwSongdbSong* song, KwSongdbVersion* selectedV
 /// Save to database.
 void KwSongdbSongEditWidget::save()
 {
-  /// @todo Implement me
+  // Song
+  if (0 == m_song)
+  {
+    m_song = new KwSongdbSong();
+  }
+  m_song->setName(editSongName->text());
+  m_song->save();
 
   // Versions
   for (int i = 0; i < listVersions->count(); ++i)
   {
     KwSongdbVersionItem* item = dynamic_cast<KwSongdbVersionItem*>(listVersions->item(i));
     Q_ASSERT(0 != item);
-    item->save();
+    item->save(m_song);
   }
 }
 

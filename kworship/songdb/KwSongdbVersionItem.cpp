@@ -32,7 +32,19 @@
  * Constructors + destructor
  */
 
-/// Primary constructor.
+/// Construct a new song version.
+KwSongdbVersionItem::KwSongdbVersionItem(QListWidget* parent)
+: QObject()
+, QListWidgetItem(i18n("Default version"), parent)
+, m_version(0)
+, m_name()
+, m_writer()
+, m_copyright()
+, m_lyricsMarkup()
+{
+}
+
+/// Construct from an existing song version.
 KwSongdbVersionItem::KwSongdbVersionItem(KwSongdbVersion* version, QListWidget* parent)
 : QObject()
 , QListWidgetItem(version->niceName(), parent)
@@ -88,13 +100,12 @@ QString KwSongdbVersionItem::lyricsMarkup() const
  */
 
 /// Save the changes to the version object.
-void KwSongdbVersionItem::save()
+void KwSongdbVersionItem::save(KwSongdbSong* song)
 {
   // Create new version if applicable
   if (0 == m_version)
   {
-    /// @todo implement me
-    return;
+    m_version = new KwSongdbVersion(song);
   }
 
   m_version->setName(m_name);

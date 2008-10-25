@@ -23,21 +23,32 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwSongdb.h"
 #include "KwSongdbVersion.h"
+#include "KwSongdbSong.h"
+#include "KwSongdb.h"
 
 #include <KLocale>
 
 #include <QSqlQuery>
 #include <QVariant>
 
-#include <cassert>
-
 /*
  * Constructors + destructor
  */
 
-/// Primary constructor.
+/// Construct a new version for database insertion.
+KwSongdbVersion::KwSongdbVersion(KwSongdbSong* song)
+: m_id(-1)
+, m_song(song)
+, m_modifiedFields(0)
+, m_name()
+, m_writer()
+, m_copyright()
+, m_lyrics()
+{
+}
+
+/// Construct from the database.
 KwSongdbVersion::KwSongdbVersion(int id)
 : m_id(id)
 , m_song(0)
@@ -54,15 +65,18 @@ KwSongdbVersion::KwSongdbVersion(int id)
                 "WHERE id = ?");
   query.addBindValue(QVariant(id));
   bool worked = query.exec();
-  assert(worked);
+  Q_ASSERT(worked);
 
   // Copy the data
-  assert(query.first());
+  Q_ASSERT(query.first());
   m_song = KwSongdb::self()->songById(query.value(0).toInt());
   m_name = query.value(1).toString();
   m_writer = query.value(2).toString();
   m_copyright = query.value(3).toString();
   m_lyrics.setMarkup(query.value(4).toString());
+
+  // Register with songdb
+  KwSongdb::self()->registerVersion(this);
 }
 
 /// Destructor.
@@ -73,6 +87,12 @@ KwSongdbVersion::~KwSongdbVersion()
 /*
  * Accessors
  */
+
+/// Get the version id.
+int KwSongdbVersion::id()
+{
+  return m_id;
+}
 
 /// Get the song this is a version of.
 KwSongdbSong* KwSongdbVersion::song()
@@ -208,26 +228,47 @@ void KwSongdbVersion::save()
     values.push_back(QVariant(m_lyrics.markup()));
   }
 
-  if (!fields.isEmpty())
+  bool insertion = (m_id < 0);
+  if (insertion || !fields.isEmpty())
   {
-    // Construct the query
     QSqlQuery query(KwSongdb::self()->database());
-    query.prepare("UPDATE SongVersion "
-                  "SET " + fields.join(",") + " "
-                  "WHERE id = ?");
+
+    if (insertion)
+    {
+      // Insert a new row
+      fields.push_back("`song_id`=?");
+      values.push_back(QVariant(m_song->id()));
+      query.prepare("INSERT INTO `SongVersion` "
+                    "SET " + fields.join(","));
+    }
+    else
+    {
+      query.prepare("UPDATE `SongVersion` "
+                    "SET " + fields.join(",") + " "
+                    "WHERE id = ?");
+      values.push_back(QVariant(m_id));
+    }
+
     // Add bind values
     foreach (QVariant value, values)
     {
       query.addBindValue(value);
     }
-    query.addBindValue(QVariant(m_id));
 
     // Execute query
     bool worked = query.exec();
-    assert(worked);
+    Q_ASSERT(worked);
 
     // Update which fields are modified
     m_modifiedFields &= ~handled;
+
+    // Update relevent objects
+    if (insertion)
+    {
+      m_id = query.lastInsertId().toInt();
+      KwSongdb::self()->registerVersion(this);
+      m_song->registerVersion(this);
+    }
   }
 }
 

@@ -72,6 +72,16 @@ class KwSongdb
     /// Get song versions by ids.
     QList<KwSongdbVersion*> songVersionsByIds(const QList<int>& ids);
 
+    /*
+     * Mutators
+     */
+
+    /// Register a song object.
+    void registerSong(KwSongdbSong* song);
+
+    /// Register a version object.
+    void registerVersion(KwSongdbVersion* version);
+
   private:
     
     /*

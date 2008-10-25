@@ -45,7 +45,6 @@ class KwSongdbVersion
     /// Version data fields.
     enum Field
     {
-      None = 0x0,
       Name = 0x1,
       Writer = 0x2,
       Copyright = 0x4,
@@ -57,7 +56,17 @@ class KwSongdbVersion
      * Constructors + destructor
      */
 
-    /// Primary constructor.
+    /** Construct a new version for database insertion.
+     * This constructs a blank song version which will be inserted into the
+     * database when it is saved.
+     * @param song The song for the version to belong to.
+     */
+    KwSongdbVersion(KwSongdbSong* song);
+
+    /** Construct from the database.
+     * Loads the version information from the database.
+     * @param id Database id of version.
+     */
     KwSongdbVersion(int id);
 
     /// Destructor.
@@ -66,6 +75,9 @@ class KwSongdbVersion
     /*
      * Accessors
      */
+
+    /// Get the version id.
+    int id();
 
     /// Get the song this is a version of.
     KwSongdbSong* song();

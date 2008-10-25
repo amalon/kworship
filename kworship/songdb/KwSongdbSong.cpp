@@ -24,21 +24,33 @@
  */
 
 #include "KwSongdbSong.h"
+#include "KwSongdbVersion.h"
 #include "KwSongdb.h"
 
 #include <QSqlQuery>
 #include <QVariant>
-
-#include <cassert>
+#include <QStringList>
 
 /*
  * Constructors + destructor
  */
 
-/// Primary constructor.
+/// Construct a new song for database insertion.
+KwSongdbSong::KwSongdbSong()
+: m_id(-1)
+, m_modifiedFields(Name)
+, m_name()
+, m_versionsLoaded(false)
+, m_versionIds()
+{
+}
+
+/// Construct from the database.
 KwSongdbSong::KwSongdbSong(int id)
 : m_id(id)
+, m_modifiedFields(0)
 , m_name()
+, m_versionsLoaded(false)
 , m_versionIds()
 {
   // Get the song data
@@ -48,10 +60,10 @@ KwSongdbSong::KwSongdbSong(int id)
                 "WHERE `id` = ?");
   query.addBindValue(QVariant(id));
   bool worked = query.exec();
-  assert(worked);
+  Q_ASSERT(worked);
 
   // Copy the data
-  assert(query.first());
+  Q_ASSERT(query.first());
   m_name = query.value(0).toString();
 }
 
@@ -79,7 +91,7 @@ QString KwSongdbSong::name() const
 /// Get list of song versions.
 QList<KwSongdbVersion*> KwSongdbSong::versions()
 {
-  if (m_versionIds.isEmpty())
+  if (!m_versionsLoaded)
   {
     // Get the version ids
     QSqlQuery query(KwSongdb::self()->database());
@@ -88,13 +100,94 @@ QList<KwSongdbVersion*> KwSongdbSong::versions()
                   "WHERE `song_id` = ?");
     query.addBindValue(QVariant(m_id));
     bool worked = query.exec();
-    assert(worked);
+    Q_ASSERT(worked);
 
-    query.first();
-    do {
-      m_versionIds.push_back(query.value(0).toInt());
-    } while (query.next());
+    if (query.first())
+    {
+      do {
+        m_versionIds.push_back(query.value(0).toInt());
+      } while (query.next());
+    }
+
+    m_versionsLoaded = true;
   }
   return KwSongdb::self()->songVersionsByIds(m_versionIds);
+}
+
+/*
+ * Mutators
+ */
+
+/// Set the name.
+void KwSongdbSong::setName(const QString& name)
+{
+  if (name != m_name)
+  {
+    m_modifiedFields |= Name;
+    m_name = name;
+  }
+}
+
+/// Save changes to the version data.
+void KwSongdbSong::save()
+{
+  QStringList fields;
+  QList<QVariant> values;
+  Fields handled;
+
+  // Straightforward modifications
+
+  if (m_modifiedFields.testFlag(Name))
+  {
+    handled |= Name;
+    fields.push_back("`name`=?");
+    values.push_back(QVariant(m_name));
+  }
+
+  bool insertion = (m_id < 0);
+  if (insertion || !fields.isEmpty())
+  {
+    QSqlQuery query(KwSongdb::self()->database());
+
+    if (insertion)
+    {
+      // Insert a new row
+      query.prepare("INSERT INTO `Song` "
+                    "SET " + fields.join(","));
+    }
+    else
+    {
+      query.prepare("UPDATE `Song` "
+                    "SET " + fields.join(",") + " "
+                    "WHERE id = ?");
+      values.push_back(QVariant(m_id));
+    }
+
+    // Add bind values
+    foreach (QVariant value, values)
+    {
+      query.addBindValue(value);
+    }
+
+    // Execute query
+    bool worked = query.exec();
+    Q_ASSERT(worked);
+
+    // Update which fields are modified
+    m_modifiedFields &= ~handled;
+
+    // Update relevent objects
+    if (insertion)
+    {
+      m_id = query.lastInsertId().toInt();
+      KwSongdb::self()->registerSong(this);
+    }
+  }
+}
+
+/// Register a version object.
+void KwSongdbSong::registerVersion(KwSongdbVersion* version)
+{
+  m_versionIds.push_back(version->id());
 }
 

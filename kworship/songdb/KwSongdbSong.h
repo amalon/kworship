@@ -37,10 +37,30 @@ class KwSongdbSong
   public:
 
     /*
+     * Types
+     */
+
+    /// Version data fields.
+    enum Field
+    {
+      Name = 0x1,
+    };
+    Q_DECLARE_FLAGS(Fields, Field)
+
+    /*
      * Constructors + destructor
      */
 
-    /// Primary constructor.
+    /** Construct a new song for database insertion.
+     * This constructs a blank song which will be inserted into the
+     * database when it is saved.
+     */
+    KwSongdbSong();
+
+    /** Construct from the database.
+     * Loads the song information from the database.
+     * @param id Database id of song.
+     */
     KwSongdbSong(int id);
 
     /// Destructor.
@@ -59,6 +79,19 @@ class KwSongdbSong
     /// Get list of song versions.
     QList<KwSongdbVersion*> versions();
 
+    /*
+     * Mutators
+     */
+
+    /// Set the name.
+    void setName(const QString& name);
+
+    /// Save changes to the version data.
+    void save();
+
+    /// Register a version object.
+    void registerVersion(KwSongdbVersion* version);
+
   private:
 
     /*
@@ -68,12 +101,20 @@ class KwSongdbSong
     /// Song id.
     int m_id;
 
+    /// Which fields have been modified.
+    Fields m_modifiedFields;
+
     /// Name.
     QString m_name;
+
+    /// Whether versions have been loaded.
+    bool m_versionsLoaded;
 
     /// Version ids.
     QList<int> m_versionIds;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(KwSongdbSong::Fields)
 
 #endif // _KwSongdbSong_h_
 

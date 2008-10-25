@@ -88,6 +88,15 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// Lyrics markup edit box has been modified.
     void lyricsMarkupChanged();
 
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Song object.
+    KwSongdbSong* m_song;
+
 };
 
 #endif // _KwSongdbSongEditWidget_h_

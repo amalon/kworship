@@ -30,6 +30,7 @@
 #include <QListWidgetItem>
 #include <QString>
 
+class KwSongdbSong;
 class KwSongdbVersion;
 
 /// A list widget item for a song version.
@@ -43,7 +44,10 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
      * Constructors + destructor
      */
 
-    /// Primary constructor.
+    /// Construct a new song version.
+    KwSongdbVersionItem(QListWidget* parent = 0);
+
+    /// Construct from an existing song version.
     KwSongdbVersionItem(KwSongdbVersion* version, QListWidget* parent = 0);
 
     /// Destructor.
@@ -75,7 +79,7 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
      */
 
     /// Save the changes to the version object.
-    void save();
+    void save(KwSongdbSong* song);
 
     /// Set the version name.
     void setVersionName(const QString& name);

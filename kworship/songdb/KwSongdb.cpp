@@ -118,7 +118,6 @@ KwSongdbVersion* KwSongdb::songVersionById(int id)
   else
   {
     KwSongdbVersion* newVersion = new KwSongdbVersion(id);
-    m_versionsById[id] = newVersion;
     return newVersion;
   }
 }
@@ -136,5 +135,23 @@ QList<KwSongdbVersion*> KwSongdb::songVersionsByIds(const QList<int>& ids)
     }
   }
   return list;
+}
+
+/*
+ * Mutators
+ */
+
+/// Register a song object.
+void KwSongdb::registerSong(KwSongdbSong* song)
+{
+  Q_ASSERT(m_songsById.constFind(song->id()) == m_songsById.constEnd());
+  m_songsById[song->id()] = song;
+}
+
+/// Register a version object.
+void KwSongdb::registerVersion(KwSongdbVersion* version)
+{
+  Q_ASSERT(m_versionsById.constFind(version->id()) == m_versionsById.constEnd());
+  m_versionsById[version->id()] = version;
 }
 
