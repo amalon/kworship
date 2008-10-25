@@ -119,14 +119,14 @@ KwResourceLink::Type KwResourceLink::type() const
 /// Get the url.
 KUrl KwResourceLink::url() const
 {
-  Q_ASSERT(type == Url);
+  Q_ASSERT(m_type == Url);
   return m_url;
 }
 
 /// Get the type dependent path.
 QString KwResourceLink::path() const
 {
-  Q_ASSERT(type != Null && type != Url);
+  Q_ASSERT(m_type != Null && m_type != Url);
   return m_path;
 }
 
