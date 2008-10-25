@@ -56,7 +56,7 @@ int KwSongdbLyricsLayout::numPages() const
 /// Get the plain text content of a page.
 QString KwSongdbLyricsLayout::pageContent(int page) const
 {
-  if (likely(page > 0 && page < m_pageCache.size()))
+  if (likely(page >= 0 && page < m_pageCache.size()))
   {
     return m_pageCache[page];
   }
