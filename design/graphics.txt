@@ -42,20 +42,18 @@ Icon todo list
     [ ] next/previous chapter
     [ ] bibletime bookmarks (bibletime)
 [ ] song db
+    [t] unlock song database
+    [t] lock song database
     [t] "group by" (view-filter)
     [t] add song
     [t] edit song
-    [t] add song version
+    [ ] edit song books
     [ ] duplicate song version
     [ ] insert song into playlist
     [ ] delete song
     [ ] delete song version
     [t] add song book number
     [t] remove song book number
-    [t] add verse
-    [ ] use verse
-    [ ] move verse up
-    [ ] move verse down
     [ ] tree
         [t] song
         [t] song version
