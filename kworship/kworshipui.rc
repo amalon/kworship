@@ -8,11 +8,13 @@
   <Menu name="menuPresentation"><text>&amp;Presentation</text>
   </Menu>
   <Menu name="menuSongs"><text>&amp;Song DB</text>
-    <Action name="song_unlock" />
-    <Action name="song_lock" />
-    <Action name="song_new" />
-    <Action name="song_edit" />
-    <Action name="song_delete" />
+    <Action name="unlock_song_database" />
+    <Action name="lock_song_database" />
+    <Action name="group_songs_by" />
+    <Action name="add_song" />
+    <Action name="edit_song" />
+    <Action name="delete_song" />
+    <Action name="edit_song_books" />
     <Action name="song_add_to_playlist" />
   </Menu>
   <Menu name="menuBible"><text>&amp;Bible</text>

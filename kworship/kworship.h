@@ -48,6 +48,7 @@ class KPrinter;
 class KToggleAction;
 class KUrl;
 class KAction;
+class KActionMenu;
 class KToggleAction;
 
 class QTreeView;
@@ -121,8 +122,11 @@ private slots:
     void slideshowStepChanged(int step);
 
     // Song DB
+    void songdbUnlock();
+    void songdbLock();
     void songdbAdd();
     void songdbEdit();
+    void songdbEditSongBooks();
 
 private:
     void setupActions();
@@ -150,6 +154,12 @@ private:
 
     KwSongdbModel* m_songDbModel;
     KwSongdbTree* m_songDbTree;
+    KAction* m_unlockSongDbAction;
+    KAction* m_lockSongDbAction;
+    KActionMenu* m_groupSongsByAction;
+    KAction* m_addSongAction;
+    KAction* m_editSongAction;
+    KAction* m_editSongBooksAction;
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;
