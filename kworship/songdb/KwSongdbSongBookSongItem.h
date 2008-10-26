@@ -73,16 +73,13 @@ class KwSongdbSongBookSongItem : public QObject, public QListWidgetItem
      */
 
     /// Save the changes to the song book object.
-    void save();
+    void save(KwSongdbVersion* version);
 
     /// Set the song book.
     void setSongBook(KwSongdbSongBook* songBook);
 
     /// Set the song book number.
     void setSongNumber(int songNumber);
-
-    /// Set the song version at this song book number.
-    void setVersion(KwSongdbVersion* version);
 
     /// Update the text.
     void updateText();

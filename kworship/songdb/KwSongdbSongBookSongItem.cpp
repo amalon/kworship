@@ -89,17 +89,17 @@ KwSongdbVersion* KwSongdbSongBookSongItem::version()
  */
 
 /// Save the changes to the song book object.
-void KwSongdbSongBookSongItem::save()
+void KwSongdbSongBookSongItem::save(KwSongdbVersion* version)
 {
   // Create new song book song if applicable
   if (0 == m_songBookSong)
   {
     m_songBookSong = new KwSongdbSongBookSong();
+    m_songBookSong->setVersion(version);
   }
 
   m_songBookSong->setSongBook(m_songBook);
   m_songBookSong->setSongNumber(m_songNumber);
-  m_songBookSong->setVersion(m_version);
   m_songBookSong->save();
 }
 
@@ -115,12 +115,6 @@ void KwSongdbSongBookSongItem::setSongNumber(int songNumber)
 {
   m_songNumber = songNumber;
   updateText();
-}
-
-/// Set the song version at this song book number.
-void KwSongdbSongBookSongItem::setVersion(KwSongdbVersion* version)
-{
-  m_version = version;
 }
 
 /// Update the text.

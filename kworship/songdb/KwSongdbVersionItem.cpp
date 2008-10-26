@@ -131,6 +131,12 @@ void KwSongdbVersionItem::save(KwSongdbSong* song)
   m_version->setCopyright(m_copyright);
   m_version->setLyricsMarkup(m_lyricsMarkup);
   m_version->save();
+
+  // Now for the song book numbers
+  foreach (KwSongdbSongBookSongItem* songBookNumber, m_songBookNumbers)
+  {
+    songBookNumber->save(m_version);
+  }
 }
 
 /// Set the version name.
