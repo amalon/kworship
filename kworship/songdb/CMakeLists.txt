@@ -7,6 +7,7 @@ set(kworshipsongdb_SRCS
     KwSongdb.cpp
     KwSongdbSong.cpp
     KwSongdbVersion.cpp
+    KwSongdbSongBook.cpp
     KwSongdbLyrics.cpp
     KwSongdbLyricsLayout.cpp
     KwSongdbModel.cpp
@@ -19,6 +20,7 @@ set(kworshipsongdb_SRCS
     KwSongdbVersionItem.cpp
     KwSongdbSongEditWidget.cpp
     KwSongdbSongEditDialog.cpp
+    KwSongdbSongBookItem.cpp
     KwSongdbSongBooksEditWidget.cpp
 )
 

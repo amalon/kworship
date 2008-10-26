@@ -65,7 +65,7 @@ KwSongdbVersionItem::~KwSongdbVersionItem()
  * Accessors
  */
 
-/// Get the song version id.
+/// Get the song version.
 KwSongdbVersion* KwSongdbVersionItem::version()
 {
   return m_version;

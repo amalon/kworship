@@ -18,13 +18,12 @@
  ***************************************************************************/
 
 /**
- * @file KwSongdbSong.cpp
- * @brief A song from the database.
+ * @file KwSongdbSongBook.cpp
+ * @brief A song book of songs from the database.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwSongdbSong.h"
-#include "KwSongdbVersion.h"
+#include "KwSongdbSongBook.h"
 #include "KwSongdb.h"
 
 #include <QSqlQuery>
@@ -35,28 +34,28 @@
  * Constructors + destructor
  */
 
-/// Construct a new song for database insertion.
-KwSongdbSong::KwSongdbSong()
+/// Construct a new song book for database insertion.
+KwSongdbSongBook::KwSongdbSongBook()
 : m_id(-1)
-, m_modifiedFields(Name)
+, m_modifiedFields(Abreviation)
+, m_abreviation()
 , m_name()
-, m_versionsLoaded(false)
-, m_versionIds()
+, m_description()
 {
 }
 
 /// Construct from the database.
-KwSongdbSong::KwSongdbSong(int id)
+KwSongdbSongBook::KwSongdbSongBook(int id)
 : m_id(id)
 , m_modifiedFields(0)
+, m_abreviation()
 , m_name()
-, m_versionsLoaded(false)
-, m_versionIds()
+, m_description()
 {
-  // Get the song data
+  // Get the song book data
   QSqlQuery query(KwSongdb::self()->database());
-  query.prepare("SELECT `name`, `css_style_sheet_id` "
-                "FROM `Song` "
+  query.prepare("SELECT `abreviation`, `name`, `description` "
+                "FROM `SongBook` "
                 "WHERE `id` = ?");
   query.addBindValue(QVariant(id));
   bool worked = query.exec();
@@ -64,14 +63,16 @@ KwSongdbSong::KwSongdbSong(int id)
 
   // Copy the data
   Q_ASSERT(query.first());
-  m_name = query.value(0).toString();
+  m_abreviation = query.value(0).toString();
+  m_name = query.value(1).toString();
+  m_description = query.value(2).toString();
 
   // Register with songdb
-  KwSongdb::self()->registerSong(this);
+  KwSongdb::self()->registerSongBook(this);
 }
 
 /// Destructor.
-KwSongdbSong::~KwSongdbSong()
+KwSongdbSongBook::~KwSongdbSongBook()
 {
 }
 
@@ -80,49 +81,46 @@ KwSongdbSong::~KwSongdbSong()
  */
 
 /// Get the id.
-int KwSongdbSong::id() const
+int KwSongdbSongBook::id() const
 {
   return m_id;
 }
 
-/// Get the name of the song.
-QString KwSongdbSong::name() const
+/// Get the abreviation of the song book.
+QString KwSongdbSongBook::abreviation() const
+{
+  return m_abreviation;
+}
+
+/// Get the name of the song book.
+QString KwSongdbSongBook::name() const
 {
   return m_name;
 }
 
-/// Get list of song versions.
-QList<KwSongdbVersion*> KwSongdbSong::versions()
+/// Get the description of the song book.
+QString KwSongdbSongBook::description() const
 {
-  if (!m_versionsLoaded)
-  {
-    // Get the version ids
-    QSqlQuery query(KwSongdb::self()->database());
-    query.prepare("SELECT `id` "
-                  "FROM `SongVersion` "
-                  "WHERE `song_id` = ?");
-    query.addBindValue(QVariant(m_id));
-    bool worked = query.exec();
-    Q_ASSERT(worked);
-
-    if (query.first())
-    {
-      do {
-        m_versionIds.push_back(query.value(0).toInt());
-      } while (query.next());
-    }
-
-    m_versionsLoaded = true;
-  }
-  return KwSongdb::self()->songVersionsByIds(m_versionIds);
+  return m_description;
 }
 
 /*
  * Mutators
  */
 
+/// Set the abreviation.
+void KwSongdbSongBook::setAbreviation(const QString& abreviation)
+{
+  if (abreviation != m_abreviation)
+  {
+    m_modifiedFields |= Abreviation;
+    m_abreviation = abreviation;
+    /// @todo Update any songdb abreviation hash
+  }
+}
+
 /// Set the name.
-void KwSongdbSong::setName(const QString& name)
+void KwSongdbSongBook::setName(const QString& name)
 {
   if (name != m_name)
   {
@@ -131,8 +129,18 @@ void KwSongdbSong::setName(const QString& name)
   }
 }
 
-/// Save changes to the song data.
-void KwSongdbSong::save()
+/// Set the description.
+void KwSongdbSongBook::setDescription(const QString& description)
+{
+  if (description != m_description)
+  {
+    m_modifiedFields |= Description;
+    m_description = description;
+  }
+}
+
+/// Save changes to the song book data.
+void KwSongdbSongBook::save()
 {
   QStringList fields;
   QList<QVariant> values;
@@ -140,11 +148,25 @@ void KwSongdbSong::save()
 
   // Straightforward modifications
 
+  if (m_modifiedFields.testFlag(Abreviation))
+  {
+    handled |= Abreviation;
+    fields.push_back("`abreviation`=?");
+    values.push_back(QVariant(m_abreviation));
+  }
+
   if (m_modifiedFields.testFlag(Name))
   {
     handled |= Name;
     fields.push_back("`name`=?");
     values.push_back(QVariant(m_name));
+  }
+
+  if (m_modifiedFields.testFlag(Description))
+  {
+    handled |= Description;
+    fields.push_back("`description`=?");
+    values.push_back(QVariant(m_description));
   }
 
   bool insertion = (m_id < 0);
@@ -155,12 +177,12 @@ void KwSongdbSong::save()
     if (insertion)
     {
       // Insert a new row
-      query.prepare("INSERT INTO `Song` "
+      query.prepare("INSERT INTO `SongBook` "
                     "SET " + fields.join(","));
     }
     else
     {
-      query.prepare("UPDATE `Song` "
+      query.prepare("UPDATE `SongBook` "
                     "SET " + fields.join(",") + " "
                     "WHERE id = ?");
       values.push_back(QVariant(m_id));
@@ -183,14 +205,8 @@ void KwSongdbSong::save()
     if (insertion)
     {
       m_id = query.lastInsertId().toInt();
-      KwSongdb::self()->registerSong(this);
+      KwSongdb::self()->registerSongBook(this);
     }
   }
-}
-
-/// Register a version object.
-void KwSongdbSong::registerVersion(KwSongdbVersion* version)
-{
-  m_versionIds.push_back(version->id());
 }
 

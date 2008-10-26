@@ -24,9 +24,11 @@
  */
 
 #include "KwSongdbSongBooksEditWidget.h"
+#include "KwSongdbSongBookItem.h"
 
 #include <KAction>
 #include <KDialog>
+#include <KLocale>
 
 #include <QToolBar>
 #include <QPointer>
@@ -47,6 +49,7 @@ KwSongdbSongBooksEditWidget* KwSongdbSongBooksEditWidget::showDialog()
     view = new KwSongdbSongBooksEditWidget();
     dialog->setMainWidget(view);
     dialog->setButtons(KDialog::Ok | KDialog::Cancel | KDialog::Apply);
+    dialog->enableButtonApply(false);
 
     connect(dialog, SIGNAL(applyClicked()),
             view, SLOT(save()));
@@ -55,7 +58,7 @@ KwSongdbSongBooksEditWidget* KwSongdbSongBooksEditWidget::showDialog()
     connect(view, SIGNAL(changed(bool)),
             dialog, SLOT(enableButtonApply(bool)));
 
-    dialog->enableButtonApply(false);
+    dialog->setWindowTitle(i18n("Edit Song Books"));
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
     dialog->show();
   }
@@ -98,7 +101,8 @@ KwSongdbSongBooksEditWidget::KwSongdbSongBooksEditWidget()
   // Signals
   connect(listSongBooks, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
           this, SLOT(songBookChanged(QListWidgetItem*, QListWidgetItem*)));
-
+  connect(editDescription, SIGNAL(textChanged()),
+          this, SLOT(descriptionChanged()));
 }
 
 /// Destructor.
@@ -113,20 +117,20 @@ KwSongdbSongBooksEditWidget::~KwSongdbSongBooksEditWidget()
 /// Save to database.
 void KwSongdbSongBooksEditWidget::save()
 {
-  // Versions
+  // Song books
   for (int i = 0; i < listSongBooks->count(); ++i)
   {
-    //KwSongdbSongBookItem* item = dynamic_cast<KwSongdbSongBookItem*>(listSongBooks->item(i));
-    //Q_ASSERT(0 != item);
-    //item->save(m_song);
+    KwSongdbSongBookItem* item = dynamic_cast<KwSongdbSongBookItem*>(listSongBooks->item(i));
+    Q_ASSERT(0 != item);
+    item->save();
   }
 }
 
 /// Add a song book.
 void KwSongdbSongBooksEditWidget::addSongBook()
 {
-  //KwSongdbSongBookItem* item = new KwSongdbSongBookItem(listSongBooks);
-  //listSongBooks->setCurrentItem(item);
+  KwSongdbSongBookItem* item = new KwSongdbSongBookItem(listSongBooks);
+  listSongBooks->setCurrentItem(item);
 }
 
 /*
@@ -136,17 +140,39 @@ void KwSongdbSongBooksEditWidget::addSongBook()
 /// A different song book has been selected.
 void KwSongdbSongBooksEditWidget::songBookChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
-  /*KwSongdbSongBooksItem* previousVersion = dynamic_cast<KwSongdbSongBooksItem*>(previous);
-  KwSongdbSongBooksItem* currentVersion = dynamic_cast<KwSongdbSongBooksItem*>(current);
+  KwSongdbSongBookItem* previousVersion = dynamic_cast<KwSongdbSongBookItem*>(previous);
+  KwSongdbSongBookItem* currentVersion = dynamic_cast<KwSongdbSongBookItem*>(current);
   
   if (0 != previousVersion)
   {
+    disconnect(editAbreviation, SIGNAL(textEdited(const QString&)),
+               previousVersion, SLOT(setAbreviation(const QString&)));
+    disconnect(editName, SIGNAL(textEdited(const QString&)),
+               previousVersion, SLOT(setName(const QString&)));
+    disconnect(this, SIGNAL(descriptionChangedSignal(const QString&)),
+               previousVersion, SLOT(setDescription(const QString&)));
   }
 
   if (0 != currentVersion)
   {
+    editAbreviation->setText(currentVersion->abreviation());
+    editName->setText(currentVersion->name());
+    editDescription->document()->setPlainText(currentVersion->description());
+
+    connect(editAbreviation, SIGNAL(textEdited(const QString&)),
+            currentVersion, SLOT(setAbreviation(const QString&)));
+    connect(editName, SIGNAL(textEdited(const QString&)),
+            currentVersion, SLOT(setName(const QString&)));
+    connect(this, SIGNAL(descriptionChangedSignal(const QString&)),
+            currentVersion, SLOT(setDescription(const QString&)));
   }
-  groupSongBook->setEnabled(0 != currentVersion);*/
+  groupSongBook->setEnabled(0 != currentVersion);
+}
+
+/// Description edit box has been modified.
+void KwSongdbSongBooksEditWidget::descriptionChanged()
+{
+  descriptionChangedSignal(editDescription->document()->toPlainText());
 }
 
 /// Remove the selected song book.

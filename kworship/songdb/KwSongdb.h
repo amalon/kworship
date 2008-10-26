@@ -31,6 +31,7 @@
 
 class KwSongdbSong;
 class KwSongdbVersion;
+class KwSongdbSongBook;
 
 /// A song database manager class.
 class KwSongdb
@@ -81,6 +82,9 @@ class KwSongdb
 
     /// Register a version object.
     void registerVersion(KwSongdbVersion* version);
+
+    /// Register a song book.
+    void registerSongBook(KwSongdbSongBook* songBook);
 
   private:
     

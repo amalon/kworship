@@ -100,7 +100,6 @@ KwSongdbSong* KwSongdb::songById(int id)
   else
   {
     KwSongdbSong* newSong = new KwSongdbSong(id);
-    m_songsById[id] = newSong;
     return newSong;
   }
 }
@@ -153,5 +152,10 @@ void KwSongdb::registerVersion(KwSongdbVersion* version)
 {
   Q_ASSERT(m_versionsById.constFind(version->id()) == m_versionsById.constEnd());
   m_versionsById[version->id()] = version;
+}
+
+/// Register a song book.
+void KwSongdb::registerSongBook(KwSongdbSongBook* songBook)
+{
 }
 

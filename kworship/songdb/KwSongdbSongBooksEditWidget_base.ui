@@ -50,19 +50,6 @@
        <property name="fieldGrowthPolicy" >
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
        </property>
-       <item row="0" column="0" >
-        <widget class="QLabel" name="labelName" >
-         <property name="text" >
-          <string>&amp;Name</string>
-         </property>
-         <property name="buddy" >
-          <cstring>editName</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" >
-        <widget class="KLineEdit" name="editName" />
-       </item>
        <item row="1" column="0" >
         <widget class="QLabel" name="labelAbreviation" >
          <property name="text" >
@@ -73,7 +60,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0" >
+       <item row="3" column="0" >
         <widget class="QLabel" name="labelDescription" >
          <property name="text" >
           <string>&amp;Description</string>
@@ -86,8 +73,21 @@
        <item row="1" column="1" >
         <widget class="KLineEdit" name="editAbreviation" />
        </item>
-       <item row="2" column="1" >
+       <item row="3" column="1" >
         <widget class="QPlainTextEdit" name="editDescription" />
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="labelName" >
+         <property name="text" >
+          <string>&amp;Name</string>
+         </property>
+         <property name="buddy" >
+          <cstring>editName</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="KLineEdit" name="editName" />
        </item>
       </layout>
      </widget>
@@ -102,6 +102,12 @@
    <header>klineedit.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>editAbreviation</tabstop>
+  <tabstop>editName</tabstop>
+  <tabstop>editDescription</tabstop>
+  <tabstop>listSongBooks</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

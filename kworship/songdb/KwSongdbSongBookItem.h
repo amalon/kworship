@@ -17,84 +17,97 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwSongdbSongBooksEditWidget_h_
-#define _KwSongdbSongBooksEditWidget_h_
+#ifndef _KwSongdbSongBookItem_h_
+#define _KwSongdbSongBookItem_h_
 
 /**
- * @file KwSongdbSongBooksEditWidget.h
- * @brief Widget for editing song books.
+ * @file KwSongdbSongBookItem.h
+ * @brief A list widget item for a song book.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "ui_KwSongdbSongBooksEditWidget_base.h"
+#include <QObject>
+#include <QListWidgetItem>
+#include <QString>
 
-#include <QWidget>
+class KwSongdbSongBook;
 
-/** Widget for editing song books.
- * Allows editing of song book information.
- */
-class KwSongdbSongBooksEditWidget : public QWidget, public Ui::KwSongdbSongBooksEditWidget_base
+/// A list widget item for a song book.
+class KwSongdbSongBookItem : public QObject, public QListWidgetItem
 {
     Q_OBJECT
 
   public:
 
     /*
-     * Static
-     */
-
-    /// Show the edit song books dialog.
-    static KwSongdbSongBooksEditWidget* showDialog();
-
-    /*
      * Constructors + destructor
      */
 
-    /// Default constructor.
-    KwSongdbSongBooksEditWidget();
+    /// Construct a new song book.
+    KwSongdbSongBookItem(QListWidget* parent = 0);
+
+    /// Construct from an existing song book.
+    KwSongdbSongBookItem(KwSongdbSongBook* songBook, QListWidget* parent = 0);
 
     /// Destructor.
-    virtual ~KwSongdbSongBooksEditWidget();
+    virtual ~KwSongdbSongBookItem();
+
+    /*
+     * Accessors
+     */
+
+    /// Get the song book.
+    KwSongdbSongBook* songBook();
+
+    /// Get the abreviation text.
+    QString abreviation() const;
+
+    /// Get the song book name.
+    QString name() const;
+
+    /// Get the description.
+    QString description() const;
 
   public slots:
 
     /*
-     * Saving and loading
+     * Modifier slots
      */
 
-    /// Save to database.
+    /// Save the changes to the song book object.
     void save();
 
-    /// Add a song book.
-    void addSongBook();
+    /// Set the abreviation text.
+    void setAbreviation(const QString& abreviation);
 
-  signals:
+    /// Set the song book name.
+    void setName(const QString& name);
 
-    /*
-     * Signals
-     */
+    /// Set the description.
+    void setDescription(const QString& description);
 
-    /// Emitted when the description has changed.
-    void descriptionChangedSignal(const QString& description);
+    /// Update the text.
+    void updateText();
 
-    /// Emitted when the changed state of the form changes.
-    void changed(bool changed);
-
-  private slots:
+  private:
 
     /*
-     * Private slots
+     * Variables
      */
 
-    /// A different song book has been selected.
-    void songBookChanged(QListWidgetItem* current, QListWidgetItem* previous);
+    /// Original database song book object.
+    KwSongdbSongBook* m_songBook;
 
-    /// Description edit box has been modified.
-    void descriptionChanged();
+    /// Short abreviation text.
+    QString m_abreviation;
 
-    /// Remove the selected song book.
-    void removeSongBook();
+    /// SongBook name.
+    QString m_name;
+
+    /// Description.
+    QString m_description;
 
 };
 
-#endif // _KwSongdbSongBooksEditWidget_h_
+#endif // _KwSongdbSongBookItem_h_
+

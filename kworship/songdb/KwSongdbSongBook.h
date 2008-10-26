@@ -17,22 +17,20 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwSongdbSong_h_
-#define _KwSongdbSong_h_
+#ifndef _KwSongdbSongBook_h_
+#define _KwSongdbSongBook_h_
 
 /**
- * @file KwSongdbSong.h
- * @brief A song from the database.
+ * @file KwSongdbSongBook.h
+ * @brief A song book of songs from the database.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include <QString>
-#include <QList>
+#include <QFlags>
 
-class KwSongdbVersion;
-
-/// A song from the database.
-class KwSongdbSong
+/// A song book of songs from the database.
+class KwSongdbSongBook
 {
   public:
 
@@ -43,7 +41,9 @@ class KwSongdbSong
     /// Version data fields.
     enum Field
     {
-      Name = 0x1
+      Abreviation = 0x1,
+      Name = 0x2,
+      Description = 0x4
     };
     Q_DECLARE_FLAGS(Fields, Field)
 
@@ -51,20 +51,20 @@ class KwSongdbSong
      * Constructors + destructor
      */
 
-    /** Construct a new song for database insertion.
-     * This constructs a blank song which will be inserted into the
+    /** Construct a new song book for database insertion.
+     * This constructs a blank song book which will be inserted into the
      * database when it is saved.
      */
-    KwSongdbSong();
+    KwSongdbSongBook();
 
     /** Construct from the database.
-     * Loads the song information from the database.
-     * @param id Database id of song.
+     * Loads the song book information from the database.
+     * @param id Database id of song book.
      */
-    KwSongdbSong(int id);
+    KwSongdbSongBook(int id);
 
     /// Destructor.
-    virtual ~KwSongdbSong();
+    virtual ~KwSongdbSongBook();
 
     /*
      * Accessors
@@ -73,24 +73,30 @@ class KwSongdbSong
     /// Get the id.
     int id() const;
 
-    /// Get the name of the song.
+    /// Get the abreviation of the song book.
+    QString abreviation() const;
+
+    /// Get the name of the song book.
     QString name() const;
 
-    /// Get list of song versions.
-    QList<KwSongdbVersion*> versions();
+    /// Get the description of the song book.
+    QString description() const;
 
     /*
      * Mutators
      */
 
+    /// Set the abreviation.
+    void setAbreviation(const QString& abreviation);
+
     /// Set the name.
     void setName(const QString& name);
 
-    /// Save changes to the song data.
-    void save();
+    /// Set the description.
+    void setDescription(const QString& description);
 
-    /// Register a version object.
-    void registerVersion(KwSongdbVersion* version);
+    /// Save changes to the song book data.
+    void save();
 
   private:
 
@@ -98,23 +104,23 @@ class KwSongdbSong
      * Variables
      */
 
-    /// Song id.
+    /// Song book id.
     int m_id;
 
     /// Which fields have been modified.
     Fields m_modifiedFields;
 
+    /// Short abreviation text.
+    QString m_abreviation;
+
     /// Name.
     QString m_name;
 
-    /// Whether versions have been loaded.
-    bool m_versionsLoaded;
-
-    /// Version ids.
-    QList<int> m_versionIds;
+    /// Description.
+    QString m_description;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(KwSongdbSong::Fields)
+Q_DECLARE_OPERATORS_FOR_FLAGS(KwSongdbSongBook::Fields)
 
-#endif // _KwSongdbSong_h_
+#endif // _KwSongdbSongBook_h_
 

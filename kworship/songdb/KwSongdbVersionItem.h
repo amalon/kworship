@@ -57,7 +57,7 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
      * Accessors
      */
 
-    /// Get the song version id.
+    /// Get the song version.
     KwSongdbVersion* version();
 
     /// Get the version name.

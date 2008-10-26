@@ -292,6 +292,19 @@
    <header>klineedit.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>editSongName</tabstop>
+  <tabstop>listVersions</tabstop>
+  <tabstop>editVersionName</tabstop>
+  <tabstop>editVersionWriter</tabstop>
+  <tabstop>editVersionCopyright</tabstop>
+  <tabstop>listSongBooks</tabstop>
+  <tabstop>comboSongBooks</tabstop>
+  <tabstop>spinSongBookNumber</tabstop>
+  <tabstop>btnEditSongBooks</tabstop>
+  <tabstop>tabsLyrics</tabstop>
+  <tabstop>editLyricsMarkup</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
