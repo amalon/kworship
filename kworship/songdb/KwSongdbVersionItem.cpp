@@ -25,6 +25,7 @@
 
 #include "KwSongdbVersionItem.h"
 #include "KwSongdbVersion.h"
+#include "KwSongdbSongBookSongItem.h"
 
 #include <KLocale>
 
@@ -41,6 +42,7 @@ KwSongdbVersionItem::KwSongdbVersionItem(QListWidget* parent)
 , m_writer()
 , m_copyright()
 , m_lyricsMarkup()
+, m_songBookNumbers()
 {
 }
 
@@ -53,12 +55,22 @@ KwSongdbVersionItem::KwSongdbVersionItem(KwSongdbVersion* version, QListWidget* 
 , m_writer(version->writer())
 , m_copyright(version->copyright())
 , m_lyricsMarkup(version->lyrics().markup())
+, m_songBookNumbers()
 {
+  QList<KwSongdbSongBookSong*> songBookNumbers = version->songBookNumbers();
+  foreach (KwSongdbSongBookSong* songBookNumber, songBookNumbers)
+  {
+    m_songBookNumbers.push_back(new KwSongdbSongBookSongItem(songBookNumber));
+  }
 }
 
 /// Destructor.
 KwSongdbVersionItem::~KwSongdbVersionItem()
 {
+  foreach (KwSongdbSongBookSongItem* songBookNumber, m_songBookNumbers)
+  {
+    delete songBookNumber;
+  }
 }
 
 /*
@@ -93,6 +105,12 @@ QString KwSongdbVersionItem::copyright() const
 QString KwSongdbVersionItem::lyricsMarkup() const
 {
   return m_lyricsMarkup;
+}
+
+/// Get the list of song book number items.
+QList<KwSongdbSongBookSongItem*> KwSongdbVersionItem::songBookNumbers()
+{
+  return m_songBookNumbers;
 }
 
 /*

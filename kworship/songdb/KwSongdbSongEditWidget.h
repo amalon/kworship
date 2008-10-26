@@ -32,6 +32,8 @@
 
 class KwSongdbSong;
 class KwSongdbVersion;
+class KwSongdbVersionItem;
+class KwSongdbSongBook;
 
 /** Widget for editing a song.
  * Allows editing of song information, song versions and lyrics.
@@ -76,6 +78,9 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// Emitted when the lyrics markup has changed.
     void lyricsMarkupChangedSignal(const QString& lyricsMarkup);
 
+    /// Emitted when the song book is changed.
+    void songBookChangedSignal(KwSongdbSongBook* songBook);
+
     /// Emitted when the changed state of the form changes.
     void changed(bool changed);
 
@@ -88,11 +93,20 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// A different version has been selected.
     void versionChanged(QListWidgetItem* current, QListWidgetItem* previous);
 
+    /// A different song book number has been selected.
+    void songBookNumberChanged(QListWidgetItem* current, QListWidgetItem* previous);
+
     /// Lyrics markup edit box has been modified.
     void lyricsMarkupChanged();
 
+    /// Selected song book has changed.
+    void songBookChanged(int index);
+
     /// Button to edit song books has been clicked.
     void editSongBooksClicked();
+
+    /// Update the list of song books.
+    void updateSongBooks();
 
   private:
 
@@ -102,6 +116,9 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
 
     /// Song object.
     KwSongdbSong* m_song;
+
+    /// Current version.
+    KwSongdbVersionItem* m_currentVersion;
 
 };
 

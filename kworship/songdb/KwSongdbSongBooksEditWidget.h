@@ -80,6 +80,9 @@ class KwSongdbSongBooksEditWidget : public QWidget, public Ui::KwSongdbSongBooks
     /// Emitted when the changed state of the form changes.
     void changed(bool changed);
 
+    /// Emitted when the song books are saved.
+    void saved();
+
   private slots:
 
     /*

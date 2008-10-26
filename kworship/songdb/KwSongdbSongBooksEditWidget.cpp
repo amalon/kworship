@@ -131,6 +131,7 @@ void KwSongdbSongBooksEditWidget::save()
     Q_ASSERT(0 != item);
     item->save();
   }
+  saved();
 }
 
 /// Add a song book.

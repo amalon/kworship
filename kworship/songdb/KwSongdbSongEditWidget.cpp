@@ -27,7 +27,10 @@
 #include "KwSongdbSong.h"
 #include "KwSongdbVersion.h"
 #include "KwSongdbVersionItem.h"
+#include "KwSongdbSongBook.h"
+#include "KwSongdbSongBookSongItem.h"
 #include "KwSongdbSongBooksEditWidget.h"
+#include "KwSongdb.h"
 
 #include <KAction>
 #include <KDialog>
@@ -43,6 +46,7 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
 : QWidget()
 , Ui::KwSongdbSongEditWidget_base()
 , m_song(0)
+, m_currentVersion(0)
 {
   setupUi(this);
 
@@ -78,11 +82,18 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
     lyricsMarkupToolBar->addAction(addSongAction);
   }
 
+  // Song books combobox
+  updateSongBooks();
+
   // Signals
   connect(listVersions, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
           this, SLOT(versionChanged(QListWidgetItem*, QListWidgetItem*)));
+  connect(listSongBooks, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+          this, SLOT(songBookNumberChanged(QListWidgetItem*, QListWidgetItem*)));
   connect(editLyricsMarkup, SIGNAL(textChanged()),
           this, SLOT(lyricsMarkupChanged()));
+  connect(comboSongBooks, SIGNAL(currentIndexChanged(int)),
+          this, SLOT(songBookChanged(int)));
   connect(btnEditSongBooks, SIGNAL(clicked()),
           this, SLOT(editSongBooksClicked()));
 
@@ -168,6 +179,12 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
                previousVersion, SLOT(setCopyright(const QString&)));
     disconnect(this, SIGNAL(lyricsMarkupChangedSignal(const QString&)),
                previousVersion, SLOT(setLyricsMarkup(const QString&)));
+
+    // Remove song book numbers
+    while (0 != listSongBooks->takeItem(0))
+    {
+      // remove the lot
+    }
   }
 
   if (0 != currentVersion)
@@ -176,6 +193,14 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
     editVersionWriter->setText(currentVersion->writer());
     editVersionCopyright->setText(currentVersion->copyright());
     editLyricsMarkup->document()->setPlainText(currentVersion->lyricsMarkup());
+
+    // Insert song book numbers
+    QList<KwSongdbSongBookSongItem*> songBookNumbers = currentVersion->songBookNumbers();
+    foreach (KwSongdbSongBookSongItem* songBookNumber, songBookNumbers)
+    {
+      songBookNumber->updateText();
+      listSongBooks->addItem(songBookNumber);
+    }
 
     connect(editVersionName, SIGNAL(textEdited(const QString&)),
             currentVersion, SLOT(setVersionName(const QString&)));
@@ -188,6 +213,45 @@ void KwSongdbSongEditWidget::versionChanged(QListWidgetItem* current, QListWidge
   }
   frameVersion->setEnabled(0 != currentVersion);
   groupLyrics->setEnabled(0 != currentVersion);
+
+  m_currentVersion = currentVersion;
+}
+
+/// A different song book number has been selected.
+void KwSongdbSongEditWidget::songBookNumberChanged(QListWidgetItem* current, QListWidgetItem* previous)
+{
+  KwSongdbSongBookSongItem* previousNumber = dynamic_cast<KwSongdbSongBookSongItem*>(previous);
+  KwSongdbSongBookSongItem* currentNumber = dynamic_cast<KwSongdbSongBookSongItem*>(current);
+  
+  if (0 != previousNumber)
+  {
+    disconnect(this, SIGNAL(songBookChangedSignal(KwSongdbSongBook*)),
+               previousNumber, SLOT(setSongBook(KwSongdbSongBook*)));
+    disconnect(spinSongBookNumber, SIGNAL(valueChanged(int)),
+               previousNumber, SLOT(setSongNumber(int)));
+
+    comboSongBooks->setCurrentIndex(-1);
+  }
+
+  if (0 != currentNumber)
+  {
+    connect(this, SIGNAL(songBookChangedSignal(KwSongdbSongBook*)),
+            currentNumber, SLOT(setSongBook(KwSongdbSongBook*)));
+    connect(spinSongBookNumber, SIGNAL(valueChanged(int)),
+            currentNumber, SLOT(setSongNumber(int)));
+
+    KwSongdbSongBook* songBook = currentNumber->songBook();
+    if (0 != songBook)
+    {
+      comboSongBooks->setCurrentIndex(comboSongBooks->findData(songBook->id()));
+    }
+    else
+    {
+      comboSongBooks->setCurrentIndex(-1);
+    }
+    spinSongBookNumber->setValue(currentNumber->songNumber());
+  }
+  groupSongBook->setEnabled(0 != currentNumber);
 }
 
 /// Lyrics markup edit box has been modified.
@@ -196,9 +260,41 @@ void KwSongdbSongEditWidget::lyricsMarkupChanged()
   lyricsMarkupChangedSignal(editLyricsMarkup->document()->toPlainText());
 }
 
+/// Selected song book has changed.
+void KwSongdbSongEditWidget::songBookChanged(int index)
+{
+  if (index >= 0)
+  {
+    int id = comboSongBooks->itemData(index).toInt();
+    KwSongdbSongBook* book = KwSongdb::self()->songBookById(id);
+    if (0 != book)
+    {
+      songBookChangedSignal(book);
+    }
+  }
+}
+
 /// Button to edit song books has been clicked.
 void KwSongdbSongEditWidget::editSongBooksClicked()
 {
-  KwSongdbSongBooksEditWidget::showDialog();
+  KwSongdbSongBooksEditWidget* editor = KwSongdbSongBooksEditWidget::showDialog();
+  connect(editor, SIGNAL(saved()),
+          this, SLOT(updateSongBooks()));
+}
+
+/// Update the list of song books.
+void KwSongdbSongEditWidget::updateSongBooks()
+{
+  KwSongdbVersionItem* version = m_currentVersion;
+  versionChanged(0, version);
+
+  comboSongBooks->clear();
+  QList<KwSongdbSongBook*> songBooks = KwSongdb::self()->songBooks();
+  foreach (KwSongdbSongBook* songBook, songBooks)
+  {
+    comboSongBooks->addItem(i18n("%1 - %2", songBook->abreviation(), songBook->name()), QVariant(songBook->id()));
+  }
+
+  versionChanged(version, 0);
 }
 

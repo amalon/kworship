@@ -29,9 +29,11 @@
 #include <QObject>
 #include <QListWidgetItem>
 #include <QString>
+#include <QList>
 
 class KwSongdbSong;
 class KwSongdbVersion;
+class KwSongdbSongBookSongItem;
 
 /// A list widget item for a song version.
 class KwSongdbVersionItem : public QObject, public QListWidgetItem
@@ -71,6 +73,9 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
 
     /// Get the lyrics markup.
     QString lyricsMarkup() const;
+
+    /// Get the list of song book number items.
+    QList<KwSongdbSongBookSongItem*> songBookNumbers();
 
   public slots:
 
@@ -113,6 +118,9 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
 
     /// Lyrics markup.
     QString m_lyricsMarkup;
+
+    /// Song book numbers.
+    QList<KwSongdbSongBookSongItem*> m_songBookNumbers;
 
 };
 

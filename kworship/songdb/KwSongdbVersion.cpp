@@ -25,6 +25,7 @@
 
 #include "KwSongdbVersion.h"
 #include "KwSongdbSong.h"
+#include "KwSongdbSongBookSong.h"
 #include "KwSongdb.h"
 
 #include <KLocale>
@@ -45,6 +46,8 @@ KwSongdbVersion::KwSongdbVersion(KwSongdbSong* song)
 , m_writer()
 , m_copyright()
 , m_lyrics()
+, m_songBookNumbersLoaded(false)
+, m_songBookNumbers()
 {
 }
 
@@ -57,12 +60,14 @@ KwSongdbVersion::KwSongdbVersion(int id)
 , m_writer()
 , m_copyright()
 , m_lyrics()
+, m_songBookNumbersLoaded(false)
+, m_songBookNumbers()
 {
   // Get the song version data
   QSqlQuery query(KwSongdb::self()->database());
-  query.prepare("SELECT song_id, name, writer, copyright, lyrics, css_style_sheet_id "
-                "FROM SongVersion "
-                "WHERE id = ?");
+  query.prepare("SELECT `song_id`, `name`, `writer`, `copyright`, `lyrics`, `css_style_sheet_id` "
+                "FROM `SongVersion` "
+                "WHERE `id` = ?");
   query.addBindValue(QVariant(id));
   bool worked = query.exec();
   Q_ASSERT(worked);
@@ -135,6 +140,38 @@ QString KwSongdbVersion::copyright() const
 const KwSongdbLyrics& KwSongdbVersion::lyrics() const
 {
   return m_lyrics;
+}
+
+/// Get song book numbers.
+QList<KwSongdbSongBookSong*> KwSongdbVersion::songBookNumbers()
+{
+  if (!m_songBookNumbersLoaded)
+  {
+    Q_ASSERT(m_id >= 0);
+
+    // Get the song version data
+    QSqlQuery query(KwSongdb::self()->database());
+    query.prepare("SELECT `book_id`, `book_number` "
+                  "FROM `SongBookSong` "
+                  "WHERE `version_id` = ?");
+    query.addBindValue(QVariant(m_id));
+    bool worked = query.exec();
+    Q_ASSERT(worked);
+
+    m_songBookNumbersLoaded = true;
+
+    // Copy the data
+    if (query.first())
+    {
+      do {
+        int bookId = query.value(0).toInt();
+        int bookNumber = query.value(1).toInt();
+        KwSongdbSongBook* songBook = KwSongdb::self()->songBookById(bookId);
+        m_songBookNumbers.push_back(new KwSongdbSongBookSong(songBook, bookNumber, this));
+      } while (query.next());
+    }
+  }
+  return m_songBookNumbers;
 }
 
 /*

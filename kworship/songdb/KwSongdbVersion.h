@@ -32,6 +32,7 @@
 #include <QVector>
 
 class KwSongdbSong;
+class KwSongdbSongBookSong;
 
 /// A song version from the database.
 class KwSongdbVersion
@@ -99,6 +100,9 @@ class KwSongdbVersion
     /// Get the lyrics.
     const KwSongdbLyrics& lyrics() const;
 
+    /// Get song book numbers.
+    QList<KwSongdbSongBookSong*> songBookNumbers();
+
     /*
      * Mutators
      */
@@ -147,6 +151,12 @@ class KwSongdbVersion
 
     /// Lyrics.
     KwSongdbLyrics m_lyrics;
+
+    /// Whether song book numbers have been loaded.
+    bool m_songBookNumbersLoaded;
+
+    /// Song book numbers.
+    QList<KwSongdbSongBookSong*> m_songBookNumbers;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KwSongdbVersion::Fields)
