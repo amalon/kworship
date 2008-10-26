@@ -26,8 +26,10 @@
 #include "KwSongdb.h"
 #include "KwSongdbSong.h"
 #include "KwSongdbVersion.h"
+#include "KwSongdbSongBook.h"
 
-#include <cassert>
+#include <QSqlQuery>
+#include <QVariant>
 
 /*
  * Singletonhood
@@ -50,7 +52,7 @@ KwSongdb* KwSongdb::self()
 KwSongdb::KwSongdb(QSqlDatabase& db)
 : m_database(db)
 {
-  assert(0 == s_singleton);
+  Q_ASSERT(0 == s_singleton);
   s_singleton = this;
 }
 
@@ -136,6 +138,42 @@ QList<KwSongdbVersion*> KwSongdb::songVersionsByIds(const QList<int>& ids)
   return list;
 }
 
+/// Get song book by id.
+KwSongdbSongBook* KwSongdb::songBookById(int id)
+{
+  SongBookHash::iterator it = m_songBooksById.find(id);
+  if (it != m_songBooksById.end())
+  {
+    return *it;
+  }
+  else
+  {
+    KwSongdbSongBook* newSongBook = new KwSongdbSongBook(id);
+    return newSongBook;
+  }
+}
+
+/// Get all song books.
+QList<KwSongdbSongBook*> KwSongdb::songBooks()
+{
+  // First use a query to get all song book ids
+  QSqlQuery query(m_database);
+  query.prepare("SELECT `id` "
+                "FROM `SongBook`");
+  bool worked = query.exec();
+  Q_ASSERT(worked);
+
+  // Then load them individually into a list
+  QList<KwSongdbSongBook*> songBooks;
+  if (query.first())
+  {
+    do {
+      songBooks.push_back(songBookById(query.value(0).toInt()));
+    } while (query.next());
+  }
+  return songBooks;
+}
+
 /*
  * Mutators
  */
@@ -157,5 +195,7 @@ void KwSongdb::registerVersion(KwSongdbVersion* version)
 /// Register a song book.
 void KwSongdb::registerSongBook(KwSongdbSongBook* songBook)
 {
+  Q_ASSERT(m_songBooksById.constFind(songBook->id()) == m_songBooksById.constEnd());
+  m_songBooksById[songBook->id()] = songBook;
 }
 

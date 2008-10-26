@@ -25,6 +25,7 @@
 
 #include "KwSongdbSongBooksEditWidget.h"
 #include "KwSongdbSongBookItem.h"
+#include "KwSongdb.h"
 
 #include <KAction>
 #include <KDialog>
@@ -103,6 +104,12 @@ KwSongdbSongBooksEditWidget::KwSongdbSongBooksEditWidget()
           this, SLOT(songBookChanged(QListWidgetItem*, QListWidgetItem*)));
   connect(editDescription, SIGNAL(textChanged()),
           this, SLOT(descriptionChanged()));
+
+  QList<KwSongdbSongBook*> songBooks = KwSongdb::self()->songBooks();
+  foreach (KwSongdbSongBook* songBook, songBooks)
+  {
+    KwSongdbSongBookItem* item = new KwSongdbSongBookItem(songBook, listSongBooks);
+  }
 }
 
 /// Destructor.

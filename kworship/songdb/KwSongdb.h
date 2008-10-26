@@ -27,6 +27,7 @@
  */
 
 #include <QHash>
+#include <QList>
 #include <QSqlDatabase>
 
 class KwSongdbSong;
@@ -73,6 +74,12 @@ class KwSongdb
     /// Get song versions by ids.
     QList<KwSongdbVersion*> songVersionsByIds(const QList<int>& ids);
 
+    /// Get song book by id.
+    KwSongdbSongBook* songBookById(int id);
+
+    /// Get all song books.
+    QList<KwSongdbSongBook*> songBooks();
+
     /*
      * Mutators
      */
@@ -113,6 +120,10 @@ class KwSongdb
     /// Song versions.
     typedef QHash<int, KwSongdbVersion*> VersionHash;
     VersionHash m_versionsById;
+
+    /// Song books.
+    typedef QHash<int, KwSongdbSongBook*> SongBookHash;
+    SongBookHash m_songBooksById;
 };
 
 #endif // _KwSongdb_h_
