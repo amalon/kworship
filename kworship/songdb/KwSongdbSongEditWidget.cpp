@@ -68,9 +68,13 @@ KwSongdbSongEditWidget::KwSongdbSongEditWidget()
   layoutSongBooksToolBar->layout()->addWidget(songBooksToolBar);
   {
     KAction* addAction = new KAction(KIcon("list-add"), i18n("Add Song Book Number"), songBooksToolBar);
+    connect(addAction, SIGNAL(triggered(bool)),
+            this, SLOT(addSongBookNumber()));
     songBooksToolBar->addAction(addAction);
 
     KAction* removeAction = new KAction(KIcon("list-remove"), i18n("Remove Song Book Number"), songBooksToolBar);
+    connect(removeAction, SIGNAL(triggered(bool)),
+            this, SLOT(removeSongBookNumber()));
     songBooksToolBar->addAction(removeAction);
   }
 
@@ -296,5 +300,21 @@ void KwSongdbSongEditWidget::updateSongBooks()
   }
 
   versionChanged(version, 0);
+}
+
+/// Add a song book number to the version.
+void KwSongdbSongEditWidget::addSongBookNumber()
+{
+  if (0 != m_currentVersion)
+  {
+    KwSongdbSongBookSongItem* item = m_currentVersion->addSongBookNumber();
+    listSongBooks->addItem(item);
+    listSongBooks->setCurrentItem(item);
+  }
+}
+
+/// Remove the selected song book number.
+void KwSongdbSongEditWidget::removeSongBookNumber()
+{
 }
 

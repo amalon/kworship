@@ -108,6 +108,12 @@ class KwSongdbSongEditWidget : public QWidget, public Ui::KwSongdbSongEditWidget
     /// Update the list of song books.
     void updateSongBooks();
 
+    /// Add a song book number to the version.
+    void addSongBookNumber();
+
+    /// Remove the selected song book number.
+    void removeSongBookNumber();
+
   private:
 
     /*

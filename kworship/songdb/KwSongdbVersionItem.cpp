@@ -164,3 +164,11 @@ void KwSongdbVersionItem::setLyricsMarkup(const QString& lyricsMarkup)
   m_lyricsMarkup = lyricsMarkup;
 }
 
+/// Add a song book number.
+KwSongdbSongBookSongItem* KwSongdbVersionItem::addSongBookNumber()
+{
+  KwSongdbSongBookSongItem* item = new KwSongdbSongBookSongItem();
+  m_songBookNumbers.push_back(item);
+  return item;
+}
+

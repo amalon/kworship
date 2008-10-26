@@ -98,6 +98,9 @@ class KwSongdbVersionItem : public QObject, public QListWidgetItem
     /// Set the lyrics markup.
     void setLyricsMarkup(const QString& lyricsMarkup);
 
+    /// Add a song book number.
+    KwSongdbSongBookSongItem* addSongBookNumber();
+
   private:
 
     /*

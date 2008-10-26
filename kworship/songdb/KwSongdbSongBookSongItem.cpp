@@ -120,6 +120,11 @@ void KwSongdbSongBookSongItem::setSongNumber(int songNumber)
 /// Update the text.
 void KwSongdbSongBookSongItem::updateText()
 {
-  setText(i18n("%1 #%2", m_songBook->abreviation(), m_songNumber));
+  QString abreviation;
+  if (0 != m_songBook)
+  {
+    abreviation = m_songBook->abreviation();
+  }
+  setText(i18n("%1 #%2", abreviation, m_songNumber));
 }
 
