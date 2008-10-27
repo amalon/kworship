@@ -22,7 +22,9 @@ include_directories(${KDE4_INCLUDES}
 
 find_package(UNO REQUIRED)
 
-UNO_ADD_TYPES(unipresentopenoffice
+include_directories(${UNO_INCLUDES})
+
+set(unipresentopenoffice_UNOTYPES
     com.sun.star.beans.XPropertySet
     com.sun.star.bridge.XUnoUrlResolver
     com.sun.star.container.XEnumeration
@@ -44,8 +46,6 @@ UNO_ADD_TYPES(unipresentopenoffice
     com.sun.star.registry.XSimpleRegistry
 )
 
-include_directories(${UNO_INCLUDES})
-
 set(unipresentopenoffice_SRCS
     UpOoBackend.cpp
     UpOoBridge.cpp
@@ -53,13 +53,15 @@ set(unipresentopenoffice_SRCS
     UpOoSlide.cpp
 )
 
+UNO_ADD_TYPES(unipresentopenoffice_SRCS
+              ${unipresentopenoffice_UNOTYPES}
+)
+
 kde4_add_library(unipresentopenoffice STATIC ${unipresentopenoffice_SRCS})
 
 target_link_libraries(unipresentopenoffice
                       ${UNO_LIBS}
 )
-
-add_dependencies(unipresentopenoffice ${UNO_TARGET})
 
 ########### install files ###############
 

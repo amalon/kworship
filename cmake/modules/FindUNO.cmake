@@ -11,7 +11,6 @@ SET(UNO_IDLC "${UNO_OO_SDK_HOME}/linux/bin/idlc")
 SET(UNO_REGMERGE "${UNO_OO_SDK_HOME}/linux/bin/regmerge")
 SET(UNO_REGCOMP "${UNO_OO_SDK_HOME}/linux/bin/regcomp")
 SET(UNO_CPPUMAKER "${UNO_OO_SDK_HOME}/linux/bin/cppumaker")
-SET(UNO_TEMP_DIR "${PROJECT_BINARY_DIR}/CMakeFiles")
 SET(UNO_MAIN_INCLUDES "${UNO_OO_SDK_HOME}/include")
 SET(UNO_INCLUDES ${UNO_MAIN_INCLUDES})
 
@@ -66,13 +65,12 @@ SET(UNO_LIBS
 
 # Macros
 
-# UNO_ADD_TYPES(component {types} )
-MACRO (UNO_ADD_TYPES component)
-  SET(UNO_TARGET "UNO_${component}")
-  SET(UNO_COMPONENT_INC "${UNO_TEMP_DIR}/${UNO_TARGET}.dir/inc")
-  SET(UNO_RDB "${UNO_TEMP_DIR}/${UNO_TARGET}.dir/types.rdb")
+# UNO_ADD_TYPES(sourcevar {types} )
+MACRO (UNO_ADD_TYPES sourcevar)
+  SET(UNO_COMPONENT_INC "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/uno_include")
+  SET(UNO_RDB "${CMAKE_CURRENT_BINARY_DIR}/types.rdb")
   # Add include directory
-  SET(UNO_INCLUDES ${UNO_INCLUDES} ${UNO_COMPONENT_INC})
+  INCLUDE_DIRECTORIES(${UNO_COMPONENT_INC})
 
   # rdb -> [cppumaker] -> hpp
   SET(UNO_HPPFILES )
@@ -81,29 +79,23 @@ MACRO (UNO_ADD_TYPES component)
   FOREACH(type ${ARGN})
     SET(UNO_TYPELIST ${UNO_TYPELIST} -T${type})
     STRING(REPLACE "." "/" UNO_HPPFILE "${type}")
-    SET(UNO_HPPFILE "${UNO_TEMP_DIR}/${UNO_HPPFILE}.hpp")
+    SET(UNO_HPPFILE "${UNO_COMPONENT_INC}/${UNO_HPPFILE}.hpp")
     SET(UNO_HPPFILES ${UNO_HPPFILES} ${UNO_HPPFILE})
   ENDFOREACH(type)
 
+  # Combined into a single command because regcomp alters the rdb
   ADD_CUSTOM_COMMAND(
-    OUTPUT ${UNO_RDB}
+    OUTPUT ${UNO_RDB} ${UNO_HPPFILES}
     COMMAND ${UNO_REGMERGE} ${UNO_RDB} / ${UNO_OO_TYPES_RDB}
-    MAIN_DEPENDENCY ${UNO_OO_TYPES_RDB}
-  )
-  ADD_CUSTOM_COMMAND(
-    OUTPUT ${UNO_HPPFILES}
     COMMAND ${UNO_CPPUMAKER} -Gc -BUCR -O${UNO_COMPONENT_INC} ${UNO_TYPELIST} ${UNO_RDB}
     COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c connector.uno.${UNO_SHLIB_EXT}
     COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c remotebridge.uno.${UNO_SHLIB_EXT}
     COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c bridgefac.uno.${UNO_SHLIB_EXT}
     COMMAND ${UNO_REGCOMP} -register -r ${UNO_RDB} -c uuresolver.uno.${UNO_SHLIB_EXT}
-    MAIN_DEPENDENCY ${UNO_RDB}
+    MAIN_DEPENDENCY ${UNO_OO_TYPES_RDB}
   )
 
-  # force generation of header files
-  ADD_CUSTOM_TARGET(
-    ${UNO_TARGET}
-    DEPENDS ${UNO_HPPFILES}
-  )
+  # Make each source file depend on the header files
+  SET_SOURCE_FILES_PROPERTIES(${${sourcevar}} PROPERTIES OBJECT_DEPENDS "${UNO_HPPFILES}")
 ENDMACRO (UNO_ADD_TYPES)
 
