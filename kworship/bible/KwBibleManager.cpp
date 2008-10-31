@@ -60,6 +60,8 @@ KwBibleManager::KwBibleManager()
 : m_manager(new sword::SWMgr(new sword::MarkupFilterMgr(sword::FMT_HTMLHREF)))
 , m_modules()
 {
+  m_manager->setGlobalOption("Headings", "On");
+
   sword::ModMap::iterator modIterator;
 
   for (modIterator = m_manager->Modules.begin(); modIterator != m_manager->Modules.end(); ++modIterator)

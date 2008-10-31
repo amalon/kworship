@@ -25,7 +25,10 @@
 
 #include "KwBibleModule.h"
 
+#include <QStringList>
+
 #include <swmodule.h>
+#include <versekey.h>
 
 /*
  * Constructors + destructor
@@ -61,7 +64,41 @@ QString KwBibleModule::description() const
 /// Get rendered text for a given passage.
 QString KwBibleModule::renderText(const QString& key) const
 {
-  m_module->setKey((const char*)key.toAscii());
-  return QString::fromUtf8(m_module->RenderText());
+  QStringList bits = key.split('-');
+  sword::VerseKey vkey;
+  if (bits.size() >= 2)
+  {
+    vkey = sword::VerseKey(bits[0].toAscii(), bits[1].toAscii());
+  }
+  else
+  {
+    vkey = sword::VerseKey(key.toAscii(), key.toAscii());
+  }
+
+  QString result;
+  sword::VerseKey verse = vkey.LowerBound();
+  verse.Headings(1);
+  sword::VerseKey last = vkey.UpperBound();
+  Q_ASSERT(verse.isTraversable());
+
+  int limit = 100;
+  for (; verse.compare(last) <= 0; verse.increment(1))
+  {
+    m_module->setKey(&verse);
+    m_module->RenderText();
+    const char* preverse = m_module->getEntryAttributes()["Heading"]["Preverse"]["0"];
+    result += " ";
+    if (preverse[0] != '\0')
+    {
+      result += QString("<h1>%1</h1>").arg(QString::fromUtf8(preverse));
+    }
+    result += QString("<sup>%1</sup>").arg(verse.Verse()) + QString::fromUtf8(m_module->RenderText());
+    if (0 == --limit)
+    {
+      break;
+    }
+  }
+
+  return result;
 }
 

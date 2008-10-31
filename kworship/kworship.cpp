@@ -1012,17 +1012,14 @@ void kworship::bibleSearch()
     if (0 != module)
     {
       QString key = m_view->searchBible->text();
-      m_view->textBible->document()->setHtml(module->renderText(key));
-    }
-    else
-    {
-      m_view->textBible->document()->setPlainText(QString());
+      if (!key.isEmpty())
+      {
+        m_view->textBible->document()->setHtml(module->renderText(key));
+        return;
+      }
     }
   }
-  else
-  {
-    m_view->textBible->document()->setPlainText(QString());
-  }
+  m_view->textBible->document()->setPlainText(QString());
 }
 
 #include "kworship.moc"
