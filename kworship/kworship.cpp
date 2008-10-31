@@ -43,6 +43,9 @@
 #include "KwMediaManager.h"
 #include "KwMediaControlWidget.h"
 
+#include "KwBibleManager.h"
+#include "KwBibleModule.h"
+
 #include "KwSongdb.h"
 #include "KwSongdbModel.h"
 #include "KwSongdbFilterNode.h"
@@ -324,6 +327,19 @@ kworship::kworship()
       m_mainDisplayAction->setChecked(true);
     }
   }
+
+  // Fill list of bibles
+  KwBibleManager* manager = KwBibleManager::self();
+  QList<KwBibleModule*> modules = manager->modules();
+  foreach (KwBibleModule* module, modules)
+  {
+    m_view->comboBibles->addItem(i18n("%1 - %2", module->name(), module->description()), QVariant(module->name()));
+  }
+
+  connect(m_view->comboBibles, SIGNAL(currentIndexChanged(int)),
+          this, SLOT(bibleSearch()));
+  connect(m_view->searchBible, SIGNAL(textEdited(const QString&)),
+          this, SLOT(bibleSearch()));
 }
 
 kworship::~kworship()
@@ -981,6 +997,32 @@ void kworship::songdbEdit()
 void kworship::songdbEditSongBooks()
 {
   KwSongdbSongBooksEditWidget::showDialog();
+}
+
+// Bibles
+
+void kworship::bibleSearch()
+{
+  // Search using the key
+  int index = m_view->comboBibles->currentIndex();
+  if (index >= 0)
+  {
+    QString modName = m_view->comboBibles->itemData(index).toString();
+    KwBibleModule* module = KwBibleManager::self()->module(modName);
+    if (0 != module)
+    {
+      QString key = m_view->searchBible->text();
+      m_view->textBible->document()->setHtml(module->renderText(key));
+    }
+    else
+    {
+      m_view->textBible->document()->setPlainText(QString());
+    }
+  }
+  else
+  {
+    m_view->textBible->document()->setPlainText(QString());
+  }
 }
 
 #include "kworship.moc"

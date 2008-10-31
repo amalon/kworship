@@ -128,6 +128,9 @@ private slots:
     void songdbEdit();
     void songdbEditSongBooks();
 
+    // Bibles
+    void bibleSearch();
+
 private:
     void setupActions();
     int getCorrectDisplayScreen();

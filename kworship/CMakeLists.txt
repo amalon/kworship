@@ -1,6 +1,7 @@
 project(kworship)
 
 find_package(UNO REQUIRED)
+find_package(Sword REQUIRED)
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
 set(QT_USE_QTSQL 1)
@@ -15,6 +16,7 @@ include_directories(${KDE4_INCLUDES}
                     display
                     css
                     songdb
+                    bible
                     playlist
                     archive
 )
@@ -22,6 +24,7 @@ add_subdirectory (media)
 add_subdirectory (display)
 add_subdirectory (css)
 add_subdirectory (songdb)
+add_subdirectory (bible)
 add_subdirectory (playlist)
 add_subdirectory (archive)
 
@@ -53,6 +56,7 @@ target_link_libraries(kworship
                       ${KDE4_KIO_LIBS}
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
+                      ${SWORD_LIBS}
                       unipresent
                       unipresentkpresenter1
                       unipresentkpresenter2
@@ -60,6 +64,7 @@ target_link_libraries(kworship
                       kworshiparchive
                       kworshipplaylist
                       kworshipcss
+                      kworshipbible
                       kworshipsongdb
                       kworshipdisplay
                       kworshipmedia

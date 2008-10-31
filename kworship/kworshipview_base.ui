@@ -169,10 +169,27 @@
      <widget class="QWidget" name="dockWidgetContents_7" >
       <layout class="QVBoxLayout" name="verticalLayout_6" >
        <item>
-        <widget class="QLineEdit" name="searchBible" />
+        <layout class="QHBoxLayout" name="layoutBibleToolBar" />
        </item>
        <item>
-        <widget class="QListView" name="listBible" />
+        <widget class="QComboBox" name="comboBibles" />
+       </item>
+       <item>
+        <widget class="QLineEdit" name="searchBible" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+           <horstretch>10</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="textBible" >
+         <property name="textInteractionFlags" >
+          <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
