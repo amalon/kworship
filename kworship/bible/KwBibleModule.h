@@ -76,6 +76,9 @@ class KwBibleModule
     Key createKey(const QString& text);
 
     /// Create a key from individual values.
+    Key createKey(int book, int chapter, int verse = -1);
+
+    /// Create a key from individual values.
     Key createKey(const QString& book, int chapter, int verse = -1);
 
     /// Create a range key between two verses in the same chapter.

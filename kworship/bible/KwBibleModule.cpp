@@ -56,6 +56,14 @@ KwBibleModule::Key KwBibleModule::createKey(const QString& text)
 }
 
 /// Create a key from individual values.
+KwBibleModule::Key KwBibleModule::createKey(int book, int chapter, int verse)
+{
+  Key key = { { book, chapter, verse },
+              { -1,   -1,      -1    } };
+  return key;
+}
+
+/// Create a key from individual values.
 KwBibleModule::Key KwBibleModule::createKey(const QString& book, int chapter, int verse)
 {
   int bookId = bookIndex(book);

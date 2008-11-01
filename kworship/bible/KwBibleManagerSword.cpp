@@ -28,6 +28,7 @@
 
 #include <swmgr.h>
 #include <swmodule.h>
+#include <swtext.h>
 #include <markupfiltmgr.h>
 
 /*
@@ -48,7 +49,11 @@ KwBibleManagerSword::KwBibleManagerSword()
   {
     sword::SWBuf modName = (*modIterator).first;
     sword::SWModule* module = (*modIterator).second;
-    m_modules[QLatin1String(modName)] = new KwBibleModuleSword(module);
+    sword::SWText* text = dynamic_cast<sword::SWText*>(module);
+    if (0 != text)
+    {
+      m_modules[QLatin1String(modName)] = new KwBibleModuleSword(text);
+    }
   }
 }
 

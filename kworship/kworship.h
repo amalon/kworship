@@ -131,6 +131,9 @@ private slots:
 
     // Bibles
     void bibleConnect();
+    void bibleChanged();
+    void bibleBookChanged();
+    void bibleChapterChanged();
     void bibleSearch();
 
 private:

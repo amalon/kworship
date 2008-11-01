@@ -337,6 +337,8 @@ kworship::kworship()
 
   m_bibleTabs = new QTabWidget();
   m_bibleTabs->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+  connect(m_bibleTabs, SIGNAL(currentChanged(int)),
+          this, SLOT(bibleChanged()));
   m_view->layoutBibleTabs->addWidget(m_bibleTabs);
 
   foreach (KwBibleManager* manager, managers)
@@ -349,6 +351,8 @@ kworship::kworship()
     QHBoxLayout* layout = new QHBoxLayout(tabWidget);
 
     mgr.comboBibles = new QComboBox();
+    connect(mgr.comboBibles, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(bibleChanged()));
 
     // Only fill the module list if the manager is local
     // Otherwise we should wait until the user requests it
@@ -389,19 +393,12 @@ kworship::kworship()
     m_bibleTabs->addTab(tabWidget, name);
     m_bibles.push_back(mgr);
   }
-
-  /*
-  QList<KwBibleModule*> modules = manager->modules();
-  foreach (KwBibleModule* module, modules)
-  {
-    m_view->comboSwordBibles->addItem(i18n("%1 - %2", module->name(), module->description()), QVariant(module->name()));
-  }
-
-  connect(m_view->comboSwordBibles, SIGNAL(currentIndexChanged(int)),
-          this, SLOT(bibleSearch()));
-  connect(m_view->searchBible, SIGNAL(textEdited(const QString&)),
-          this, SLOT(bibleSearch()));
-  */
+  // Ensure widgets are apropriately modified
+  connect(m_view->comboBibleBook, SIGNAL(currentIndexChanged(int)),
+          this, SLOT(bibleBookChanged()));
+  connect(m_view->comboBibleChapter, SIGNAL(currentIndexChanged(int)),
+          this, SLOT(bibleChapterChanged()));
+  bibleChanged();
 }
 
 kworship::~kworship()
@@ -1085,6 +1082,121 @@ void kworship::bibleConnect()
       mgr.comboBibles->addItem(module, QVariant(module));
     }
   }
+}
+
+void kworship::bibleChanged()
+{
+  // Get the current bible manager
+  int tab = m_bibleTabs->currentIndex();
+  if (tab >= 0 && tab < m_bibles.size())
+  {
+    BibleManager& mgr = m_bibles[tab];
+    bool enabled = mgr.comboBibles->isEnabled();
+
+    // Is a bible selected?
+    QString bible = mgr.comboBibles->currentText();
+    KwBibleModule* module = mgr.manager->module(bible);
+
+    // Update the list of books
+    QString book = m_view->comboBibleBook->currentText();
+    int chapter = m_view->comboBibleChapter->currentIndex();
+    m_view->comboBibleBook->clear();
+    if (0 != module)
+    {
+      QStringList bookNames = module->books();
+      for (int i = 0; i < bookNames.size(); ++i)
+      {
+        const QString& bookName = bookNames[i];
+        m_view->comboBibleBook->addItem(bookName, QVariant(i));
+      }
+      int index = m_view->comboBibleBook->findText(book);
+      bool canPreserveBook = (index >= 0);
+      if (!canPreserveBook && bookNames.size() > 0)
+      {
+        index = 0;
+      }
+      m_view->comboBibleBook->setCurrentIndex(index);
+      if (canPreserveBook && chapter >= 0)
+      {
+        // If we can restore book, also restore chapter
+        m_view->comboBibleChapter->setCurrentIndex(chapter);
+      }
+    }
+    else
+    {
+      enabled = false;
+    }
+    
+    //bibleBookChanged();
+    m_view->comboBibleBook->setEnabled(enabled);
+    m_view->comboBibleChapter->setEnabled(enabled);
+    m_view->searchBible->setEnabled(enabled);
+    m_view->textBible->setEnabled(enabled);
+
+    m_view->searchBible->setText(QString());
+
+  }
+}
+
+void kworship::bibleBookChanged()
+{
+  m_view->comboBibleChapter->clear();
+
+  // Get the current bible manager
+  int tab = m_bibleTabs->currentIndex();
+  if (tab >= 0 && tab < m_bibles.size())
+  {
+    BibleManager& mgr = m_bibles[tab];
+
+    // Is a bible selected?
+    QString bible = mgr.comboBibles->currentText();
+    KwBibleModule* module = mgr.manager->module(bible);
+    if (0 != module)
+    {
+      // Is a book selected?
+      int index = m_view->comboBibleBook->currentIndex();
+      if (index >= 0)
+      {
+        int bookIndex = m_view->comboBibleBook->itemData(index).toInt();
+        int numChapters = module->numChapters(bookIndex);
+        for (int i = 0; i < numChapters; ++i)
+        {
+          m_view->comboBibleChapter->addItem(QString("%1").arg(i+1), QVariant(i));
+        }
+      }
+    }
+  }
+}
+
+void kworship::bibleChapterChanged()
+{
+  // Get the current bible manager
+  int tab = m_bibleTabs->currentIndex();
+  if (tab >= 0 && tab < m_bibles.size())
+  {
+    BibleManager& mgr = m_bibles[tab];
+
+    // Is a bible selected?
+    QString bible = mgr.comboBibles->currentText();
+    KwBibleModule* module = mgr.manager->module(bible);
+    if (0 != module)
+    {
+      // Is a book selected?
+      int bookIndex = m_view->comboBibleBook->currentIndex();
+      if (bookIndex >= 0)
+      {
+        // Is a chapter selected?
+        int chapterIndex = m_view->comboBibleChapter->currentIndex();
+        if (chapterIndex >= 0)
+        {
+          KwBibleModule::Key key = module->createKey(bookIndex, chapterIndex);
+          m_view->textBible->document()->setHtml(module->renderText(key));
+          return;
+        }
+      }
+    }
+  }
+  m_view->textBible->document()->setPlainText(QString());
 }
 
 void kworship::bibleSearch()

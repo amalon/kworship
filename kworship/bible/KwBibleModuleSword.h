@@ -30,7 +30,7 @@
 
 namespace sword
 {
-  class SWModule;
+  class SWText;
 }
 
 /// A SWORD bible module.
@@ -43,7 +43,7 @@ class KwBibleModuleSword : public KwBibleModule
      */
 
     /// Default constructor.
-    KwBibleModuleSword(sword::SWModule* module);
+    KwBibleModuleSword(sword::SWText* module);
 
     /// Destructor.
     virtual ~KwBibleModuleSword();
@@ -76,6 +76,19 @@ class KwBibleModuleSword : public KwBibleModule
     // Reimplemented
     virtual void obtainBooks();
 
+    /*
+     * Internal functions
+     */
+
+    /// Find whether the module has a given testament.
+    bool hasTestament(int testament);
+
+    /// Find the testament and index of the book within the testament.
+    int bookInTestament(int& book);
+
+    /// Find the book index from testament and book id.
+    int toBookIndex(int testament, int book);
+
   private:
 
     /*
@@ -83,7 +96,10 @@ class KwBibleModuleSword : public KwBibleModule
      */
     
     /// SWORD module object.
-    sword::SWModule* m_module;
+    sword::SWText* m_module;
+
+    /// Whether the module has each testament.
+    int m_hasTestament[2];
 };
 
 #endif // _KwBibleModuleSword_h_
