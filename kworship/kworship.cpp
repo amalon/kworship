@@ -43,8 +43,10 @@
 #include "KwMediaManager.h"
 #include "KwMediaControlWidget.h"
 
-#include "KwBibleManager.h"
-#include "KwBibleModule.h"
+#include <KwBibleManager.h>
+#include <KwBibleManagerSword.h>
+#include <KwBibleManagerBibleGateway.h>
+#include <KwBibleModule.h>
 
 #include "KwSongdb.h"
 #include "KwSongdbModel.h"
@@ -329,7 +331,66 @@ kworship::kworship()
   }
 
   // Fill list of bibles
-  KwBibleManager* manager = KwBibleManager::self();
+  QList<KwBibleManager*> managers;
+  managers.push_back(new KwBibleManagerSword);
+  managers.push_back(new KwBibleManagerBibleGateway);
+
+  m_bibleTabs = new QTabWidget();
+  m_bibleTabs->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+  m_view->layoutBibleTabs->addWidget(m_bibleTabs);
+
+  foreach (KwBibleManager* manager, managers)
+  {
+    QString name = manager->name();
+    BibleManager mgr;
+    mgr.manager = manager;
+
+    QWidget* tabWidget = new QWidget();
+    QHBoxLayout* layout = new QHBoxLayout(tabWidget);
+
+    mgr.comboBibles = new QComboBox();
+
+    // Only fill the module list if the manager is local
+    // Otherwise we should wait until the user requests it
+    if (manager->isRemote())
+    {
+      mgr.comboBibles->setEnabled(false);
+
+      mgr.toolBar = new QToolBar();
+      KAction* connectToBible = new KAction(KIcon("network-connect"), i18n("Connect to %1", name), mgr.toolBar);
+      connect(connectToBible, SIGNAL(triggered(bool)),
+              this, SLOT(bibleConnect()));
+      mgr.toolBar->addAction(connectToBible);
+      layout->addWidget(mgr.toolBar);
+
+      // Toolbar should be as small as possible
+      QSizePolicy policy;
+
+      policy = mgr.toolBar->sizePolicy();
+      policy.setHorizontalStretch(1);
+      mgr.toolBar->setSizePolicy(policy);
+
+      policy = mgr.comboBibles->sizePolicy();
+      policy.setHorizontalStretch(10);
+      mgr.comboBibles->setSizePolicy(policy);
+    }
+    else
+    {
+      mgr.toolBar = 0;
+      QStringList modules = manager->moduleNames();
+      foreach (QString module, modules)
+      {
+        mgr.comboBibles->addItem(module, QVariant(module));
+      }
+    }
+
+    layout->addWidget(mgr.comboBibles);
+
+    m_bibleTabs->addTab(tabWidget, name);
+    m_bibles.push_back(mgr);
+  }
+
+  /*
   QList<KwBibleModule*> modules = manager->modules();
   foreach (KwBibleModule* module, modules)
   {
@@ -340,6 +401,7 @@ kworship::kworship()
           this, SLOT(bibleSearch()));
   connect(m_view->searchBible, SIGNAL(textEdited(const QString&)),
           this, SLOT(bibleSearch()));
+  */
 }
 
 kworship::~kworship()
@@ -1001,8 +1063,33 @@ void kworship::songdbEditSongBooks()
 
 // Bibles
 
+void kworship::bibleConnect()
+{
+  // Get the current bible manager
+  int tab = m_bibleTabs->currentIndex();
+  Q_ASSERT(tab >= 0 && tab < m_bibles.size());
+  BibleManager& mgr = m_bibles[tab];
+
+  // This will force the connection
+  QStringList modules = mgr.manager->moduleNames();
+  mgr.comboBibles->clear();
+  if (modules.isEmpty())
+  {
+    KMessageBox::information(this, i18n("No bibles found"));
+  }
+  else
+  {
+    mgr.comboBibles->setEnabled(true);
+    foreach (QString module, modules)
+    {
+      mgr.comboBibles->addItem(module, QVariant(module));
+    }
+  }
+}
+
 void kworship::bibleSearch()
 {
+  /*
   // Search using the key
   int index = m_view->comboSwordBibles->currentIndex();
   if (index >= 0)
@@ -1017,6 +1104,7 @@ void kworship::bibleSearch()
     }
   }
   m_view->textBible->document()->setPlainText(QString());
+  */
 }
 
 #include "kworship.moc"

@@ -36,6 +36,7 @@ Icon todo list
         [t] next slide
     [t] toggle slideshow (view-presentation)
 [ ] bible
+    [t] connect to remote bible manager
     [ ] select works (bibletime)
     [ ] select commentaries (bibletime)
     [ ] book/chapter/verse selector

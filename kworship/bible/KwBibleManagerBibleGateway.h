@@ -17,23 +17,21 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwBibleManager_h_
-#define _KwBibleManager_h_
+#ifndef _KwBibleManagerBibleGateway_h_
+#define _KwBibleManagerBibleGateway_h_
 
 /**
- * @file KwBibleManager.h
- * @brief A bible manager (analagous to a SWORD manager).
+ * @file KwBibleManagerBibleGateway.h
+ * @brief A bible manager for BibleGateway.com.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QString>
-#include <QList>
-#include <QMap>
+#include "KwBibleManager.h"
 
-class KwBibleModule;
+#include <QStringList>
 
-/// A bible manager (analagous to a SWORD manager).
-class KwBibleManager
+/// A bible manager for BibleGateway.com.
+class KwBibleManagerBibleGateway : public KwBibleManager
 {
   public:
     
@@ -42,36 +40,45 @@ class KwBibleManager
      */
 
     /// Default constructor.
-    KwBibleManager();
+    KwBibleManagerBibleGateway();
 
     /// Destructor.
-    virtual ~KwBibleManager();
+    virtual ~KwBibleManagerBibleGateway();
 
     /*
      * Main interface
      */
 
-    /// Get the name of the manager.
-    virtual QString name() const = 0;
+    // Reimplemented
+    virtual QString name() const;
 
-    /** Get whether the manager is remote.
-     * This means the modules should not be accessed unless they are requested
-     * explicitly by the user.
+    // Reimplemented
+    virtual bool isRemote() const;
+
+    // Reimplemented
+    virtual KwBibleModule* module(const QString& name);
+
+    // Reimplemented
+    virtual QStringList moduleNames();
+
+    // Reimplemented
+    virtual QStringList moduleNamesInLanguage(const QString& lang);
+
+    // Reimplemented
+    virtual QStringList languages();
+
+  private:
+
+    /*
+     * Variables
      */
-    virtual bool isRemote() const = 0;
 
-    /// Get a module by name.
-    virtual KwBibleModule* module(const QString& name) = 0;
+    /// Cached module names.
+    QStringList m_moduleNames;
 
-    /// Get the list of module names.
-    virtual QStringList moduleNames() = 0;
-
-    /// Get the list of module names in a specific language.
-    virtual QStringList moduleNamesInLanguage(const QString& lang) = 0;
-
-    /// Get a list of module languages.
-    virtual QStringList languages() = 0;
+    /// Modules managed by this manager.
+    QMap<QString, KwBibleModule*> m_modules;
 };
 
-#endif // _KwBibleManager_h_
+#endif // _KwBibleManagerBibleGateway_h_
 

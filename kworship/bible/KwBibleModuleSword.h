@@ -17,23 +17,24 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwBibleManager_h_
-#define _KwBibleManager_h_
+#ifndef _KwBibleModuleSword_h_
+#define _KwBibleModuleSword_h_
 
 /**
- * @file KwBibleManager.h
- * @brief A bible manager (analagous to a SWORD manager).
+ * @file KwBibleModuleSword.h
+ * @brief A SWORD bible module.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QString>
-#include <QList>
-#include <QMap>
+#include "KwBibleModule.h"
 
-class KwBibleModule;
+namespace sword
+{
+  class SWModule;
+}
 
-/// A bible manager (analagous to a SWORD manager).
-class KwBibleManager
+/// A SWORD bible module.
+class KwBibleModuleSword : public KwBibleModule
 {
   public:
     
@@ -42,36 +43,48 @@ class KwBibleManager
      */
 
     /// Default constructor.
-    KwBibleManager();
+    KwBibleModuleSword(sword::SWModule* module);
 
     /// Destructor.
-    virtual ~KwBibleManager();
+    virtual ~KwBibleModuleSword();
 
     /*
      * Main interface
      */
 
-    /// Get the name of the manager.
-    virtual QString name() const = 0;
+    // Reimplemented
+    virtual QString name();
 
-    /** Get whether the manager is remote.
-     * This means the modules should not be accessed unless they are requested
-     * explicitly by the user.
+    // Reimplemented
+    virtual QString description();
+
+    // Reimplemented
+    virtual int numChapters(int book);
+
+    // Reimplemented
+    virtual int numVerses(int book, int chapter);
+
+    // Reimplemented
+    virtual QString renderText(const KwBibleModule::Key& key);
+
+  protected:
+
+    /*
+     * Protected virtual interface
      */
-    virtual bool isRemote() const = 0;
 
-    /// Get a module by name.
-    virtual KwBibleModule* module(const QString& name) = 0;
+    // Reimplemented
+    virtual void obtainBooks();
 
-    /// Get the list of module names.
-    virtual QStringList moduleNames() = 0;
+  private:
 
-    /// Get the list of module names in a specific language.
-    virtual QStringList moduleNamesInLanguage(const QString& lang) = 0;
-
-    /// Get a list of module languages.
-    virtual QStringList languages() = 0;
+    /*
+     * Variables
+     */
+    
+    /// SWORD module object.
+    sword::SWModule* m_module;
 };
 
-#endif // _KwBibleManager_h_
+#endif // _KwBibleModuleSword_h_
 

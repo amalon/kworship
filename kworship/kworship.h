@@ -39,6 +39,7 @@ class KwPlaylistModel;
 class KwMediaManager;
 class KwSongdbModel;
 class KwSongdbTree;
+class KwBibleManager;
 class KwDocument;
 
 class UpManager;
@@ -129,6 +130,7 @@ private slots:
     void songdbEditSongBooks();
 
     // Bibles
+    void bibleConnect();
     void bibleSearch();
 
 private:
@@ -163,6 +165,15 @@ private:
     KAction* m_addSongAction;
     KAction* m_editSongAction;
     KAction* m_editSongBooksAction;
+
+    struct BibleManager
+    {
+      KwBibleManager* manager;
+      QComboBox* comboBibles;
+      QToolBar* toolBar;
+    };
+    QTabWidget* m_bibleTabs;
+    QList<BibleManager> m_bibles;
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;

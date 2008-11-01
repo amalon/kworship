@@ -17,61 +17,77 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwBibleManager_h_
-#define _KwBibleManager_h_
-
 /**
- * @file KwBibleManager.h
- * @brief A bible manager (analagous to a SWORD manager).
+ * @file KwBibleManagerBibleGateway.cpp
+ * @brief A bible manager for BibleGateway.com.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QString>
-#include <QList>
-#include <QMap>
+#include "KwBibleManagerBibleGateway.h"
+#include "KwBibleModuleBibleGateway.h"
 
-class KwBibleModule;
+/*
+ * Constructors + destructor
+ */
 
-/// A bible manager (analagous to a SWORD manager).
-class KwBibleManager
+/// Default constructor.
+KwBibleManagerBibleGateway::KwBibleManagerBibleGateway()
+: KwBibleManager()
+, m_moduleNames()
+, m_modules()
 {
-  public:
-    
-    /*
-     * Constructors + destructor
-     */
+}
 
-    /// Default constructor.
-    KwBibleManager();
+/// Destructor.
+KwBibleManagerBibleGateway::~KwBibleManagerBibleGateway()
+{
+  foreach (KwBibleModule* module, m_modules)
+  {
+    delete module;
+  }
+}
 
-    /// Destructor.
-    virtual ~KwBibleManager();
+/*
+ * Main interface
+ */
 
-    /*
-     * Main interface
-     */
+QString KwBibleManagerBibleGateway::name() const
+{
+  return "BibleGateway.com";
+}
 
-    /// Get the name of the manager.
-    virtual QString name() const = 0;
+bool KwBibleManagerBibleGateway::isRemote() const
+{
+  return true;
+}
 
-    /** Get whether the manager is remote.
-     * This means the modules should not be accessed unless they are requested
-     * explicitly by the user.
-     */
-    virtual bool isRemote() const = 0;
+KwBibleModule* KwBibleManagerBibleGateway::module(const QString& name)
+{
+  QMap<QString, KwBibleModule*>::const_iterator it = m_modules.constFind(name);
+  if (it != m_modules.constEnd())
+  {
+    return *it;
+  }
+  else
+  {
+    return 0;
+  }
+}
 
-    /// Get a module by name.
-    virtual KwBibleModule* module(const QString& name) = 0;
+QStringList KwBibleManagerBibleGateway::moduleNames()
+{
+  // Connect now
+  
+  return m_moduleNames;
+}
 
-    /// Get the list of module names.
-    virtual QStringList moduleNames() = 0;
+QStringList KwBibleManagerBibleGateway::moduleNamesInLanguage(const QString& lang)
+{
+  return QStringList();
+}
 
-    /// Get the list of module names in a specific language.
-    virtual QStringList moduleNamesInLanguage(const QString& lang) = 0;
-
-    /// Get a list of module languages.
-    virtual QStringList languages() = 0;
-};
-
-#endif // _KwBibleManager_h_
+QStringList KwBibleManagerBibleGateway::languages()
+{
+  return QStringList();
+}
 
