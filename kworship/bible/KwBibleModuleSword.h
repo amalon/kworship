@@ -33,7 +33,9 @@ namespace sword
   class SWText;
 }
 
-/// A SWORD bible module.
+/** A SWORD bible module.
+ * @todo Only show books that are actually there (e.g. OxfordTR which is only John's gospel)
+ */
 class KwBibleModuleSword : public KwBibleModule
 {
   public:
