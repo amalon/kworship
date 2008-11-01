@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>584</width>
-    <height>596</height>
+    <height>667</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -172,7 +172,58 @@
         <layout class="QHBoxLayout" name="layoutBibleToolBar" />
        </item>
        <item>
-        <widget class="QComboBox" name="comboBibles" />
+        <widget class="QTabWidget" name="tabWidget_2" >
+         <property name="currentIndex" >
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab" >
+          <attribute name="title" >
+           <string>SWORD</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_2" >
+           <item>
+            <widget class="QComboBox" name="comboSwordBibles" />
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_2" >
+          <attribute name="title" >
+           <string>BibleGateway.com</string>
+          </attribute>
+          <layout class="QHBoxLayout" name="horizontalLayout_10" >
+           <item>
+            <widget class="QComboBox" name="comboBiblesBiblegateway" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+               <horstretch>10</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" native="1" name="layoutBibleGatewayToolBar" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_9" >
+         <item>
+          <widget class="QComboBox" name="comboBibleBook" />
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBibleVerse" />
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QLineEdit" name="searchBible" >
@@ -192,6 +243,13 @@
         </widget>
        </item>
       </layout>
+      <zorder>textBible</zorder>
+      <zorder>tabWidget_2</zorder>
+      <zorder>searchBible</zorder>
+      <zorder>toolBox</zorder>
+      <zorder>horizontalLayoutWidget</zorder>
+      <zorder>tabWidget_2</zorder>
+      <zorder>comboSwordBibles</zorder>
      </widget>
     </widget>
    </item>

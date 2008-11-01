@@ -7,6 +7,7 @@ find_package(Sword REQUIRED)
 set(kworshipbible_SRCS
     KwBibleManager.cpp
     KwBibleModule.cpp
+    KwBibleModuleSword.cpp
 )
 
 include_directories(${SWORD_INCLUDE_DIR})

@@ -24,7 +24,7 @@
  */
 
 #include "KwBibleManager.h"
-#include "KwBibleModule.h"
+#include "KwBibleModuleSword.h"
 
 #include <swmgr.h>
 #include <swmodule.h>
@@ -68,7 +68,7 @@ KwBibleManager::KwBibleManager()
   {
     sword::SWBuf modName = (*modIterator).first;
     sword::SWModule* module = (*modIterator).second;
-    m_modules[QLatin1String(modName)] = new KwBibleModule(module);
+    m_modules[QLatin1String(modName)] = new KwBibleModuleSword(module);
   }
 }
 

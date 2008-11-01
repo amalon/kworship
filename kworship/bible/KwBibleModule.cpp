@@ -19,24 +19,19 @@
 
 /**
  * @file KwBibleModule.cpp
- * @brief A bible module (analagous to a SWORD module).
+ * @brief An abstract bible module (analagous to a SWORD module).
  * @author James Hogan <james@albanarts.com>
  */
 
 #include "KwBibleModule.h"
-
-#include <QStringList>
-
-#include <swmodule.h>
-#include <versekey.h>
 
 /*
  * Constructors + destructor
  */
 
 /// Default constructor.
-KwBibleModule::KwBibleModule(sword::SWModule* module)
-: m_module(module)
+KwBibleModule::KwBibleModule()
+: m_books()
 {
 }
 
@@ -49,56 +44,110 @@ KwBibleModule::~KwBibleModule()
  * Main interface
  */
 
-/// Get the name of the module.
-QString KwBibleModule::name() const
+/// Create a key from a string.
+KwBibleModule::Key KwBibleModule::createKey(const QString& text)
 {
-  return m_module->Name();
+  // parse the key
+  //Key key = { { -1, -1, -1 },
+  //            { -1, -1, -1 } };
+  Key key = { { 0, 1, 1 },
+              { 0, 1, 6 } };
+  return key;
 }
 
-/// Get the description of the module.
-QString KwBibleModule::description() const
+/// Create a key from individual values.
+KwBibleModule::Key KwBibleModule::createKey(const QString& book, int chapter, int verse)
 {
-  return m_module->Description();
+  int bookId = bookIndex(book);
+  Key key = { { bookId, chapter, verse },
+              { -1,     -1,      -1    } };
+  return key;
 }
 
-/// Get rendered text for a given passage.
-QString KwBibleModule::renderText(const QString& key) const
+/// Create a range key between two verses in the same chapter.
+KwBibleModule::Key KwBibleModule::createKey(const QString& book, int chapter, int verseStart,
+                                                  int verseEnd)
 {
-  QStringList bits = key.split('-');
-  sword::VerseKey vkey;
-  if (bits.size() >= 2)
+  int bookId = bookIndex(book);
+  Key key = { { bookId, chapter, verseStart },
+              { bookId, chapter, verseEnd   } };
+  return key;
+}
+
+/// Create a range key between two verses in different chapters.
+KwBibleModule::Key KwBibleModule::createKey(const QString& book, int chapterStart, int verseStart,
+                                                  int chapterEnd,   int verseEnd)
+{
+  int bookId = bookIndex(book);
+  Key key = { { bookId, chapterStart, verseStart },
+              { bookId, chapterEnd,   verseEnd   } };
+  return key;
+}
+
+/// Create a range key between two verses in different books.
+KwBibleModule::Key KwBibleModule::createKey(const QString& bookStart, int chapterStart, int verseStart,
+                             const QString& bookEnd,   int chapterEnd,   int verseEnd)
+{
+  int bookIdStart = bookIndex(bookStart);
+  int bookIdEnd = bookIndex(bookEnd);
+  Key key = { { bookIdStart, chapterStart, verseStart },
+              { bookIdEnd,   chapterEnd,   verseEnd   } };
+  return key;
+}
+
+/// List the books in this module.
+const QStringList& KwBibleModule::books()
+{
+  if (m_books.isEmpty())
   {
-    vkey = sword::VerseKey(bits[0].toAscii(), bits[1].toAscii());
+    obtainBooks();
+  }
+  return m_books;
+}
+
+/// Get the index of a book from it's name.
+int KwBibleModule::bookIndex(const QString& name)
+{
+  if (m_books.isEmpty())
+  {
+    obtainBooks();
+  }
+  return m_books.indexOf(name);
+}
+
+/// Get the name of a book from it's index.
+QString KwBibleModule::bookName(int book)
+{
+  if (m_books.isEmpty())
+  {
+    obtainBooks();
+  }
+  if (book >= 0 && book < m_books.size())
+  {
+    return m_books[book];
   }
   else
   {
-    vkey = sword::VerseKey(key.toAscii(), key.toAscii());
+    return QString();
   }
+}
 
-  QString result;
-  sword::VerseKey verse = vkey.LowerBound();
-  verse.Headings(1);
-  sword::VerseKey last = vkey.UpperBound();
-  Q_ASSERT(verse.isTraversable());
+/*
+ * Protected virtual interface
+ */
 
-  int limit = 100;
-  for (; verse.compare(last) <= 0; verse.increment(1))
-  {
-    m_module->setKey(&verse);
-    m_module->RenderText();
-    const char* preverse = m_module->getEntryAttributes()["Heading"]["Preverse"]["0"];
-    result += " ";
-    if (preverse[0] != '\0')
-    {
-      result += QString("<h1>%1</h1>").arg(QString::fromUtf8(preverse));
-    }
-    result += QString("<sup>%1</sup>").arg(verse.Verse()) + QString::fromUtf8(m_module->RenderText());
-    if (0 == --limit)
-    {
-      break;
-    }
-  }
+/// Ensure that the book list is up to date.
+void KwBibleModule::obtainBooks()
+{
+}
 
-  return result;
+/*
+ * Protected interface
+ */
+
+/// Update the list of books.
+void KwBibleModule::setBooks(const QStringList& books)
+{
+  m_books = books;
 }
 

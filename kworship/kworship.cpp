@@ -333,10 +333,10 @@ kworship::kworship()
   QList<KwBibleModule*> modules = manager->modules();
   foreach (KwBibleModule* module, modules)
   {
-    m_view->comboBibles->addItem(i18n("%1 - %2", module->name(), module->description()), QVariant(module->name()));
+    m_view->comboSwordBibles->addItem(i18n("%1 - %2", module->name(), module->description()), QVariant(module->name()));
   }
 
-  connect(m_view->comboBibles, SIGNAL(currentIndexChanged(int)),
+  connect(m_view->comboSwordBibles, SIGNAL(currentIndexChanged(int)),
           this, SLOT(bibleSearch()));
   connect(m_view->searchBible, SIGNAL(textEdited(const QString&)),
           this, SLOT(bibleSearch()));
@@ -1004,19 +1004,16 @@ void kworship::songdbEditSongBooks()
 void kworship::bibleSearch()
 {
   // Search using the key
-  int index = m_view->comboBibles->currentIndex();
+  int index = m_view->comboSwordBibles->currentIndex();
   if (index >= 0)
   {
-    QString modName = m_view->comboBibles->itemData(index).toString();
+    QString modName = m_view->comboSwordBibles->itemData(index).toString();
     KwBibleModule* module = KwBibleManager::self()->module(modName);
     if (0 != module)
     {
-      QString key = m_view->searchBible->text();
-      if (!key.isEmpty())
-      {
-        m_view->textBible->document()->setHtml(module->renderText(key));
-        return;
-      }
+      KwBibleModule::Key key = module->createKey(m_view->searchBible->text());
+      m_view->textBible->document()->setHtml(module->renderText(key));
+      return;
     }
   }
   m_view->textBible->document()->setPlainText(QString());
