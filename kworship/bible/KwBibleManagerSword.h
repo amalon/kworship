@@ -28,6 +28,9 @@
 
 #include "KwBibleManager.h"
 
+#include <QHash>
+#include <QStringList>
+
 namespace sword
 {
   class SWMgr;
@@ -80,7 +83,13 @@ class KwBibleManagerSword : public KwBibleManager
     sword::SWMgr* m_manager;
 
     /// Modules managed by this manager.
-    QMap<QString, KwBibleModule*> m_modules;
+    QHash<QString, KwBibleModule*> m_modules;
+
+    /// Languages.
+    QStringList m_languages;
+
+    /// Modules by language.
+    QHash<QString, QStringList> m_modulesByLanguage;
 };
 
 #endif // _KwBibleManagerSword_h_

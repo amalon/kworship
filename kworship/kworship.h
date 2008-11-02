@@ -146,6 +146,15 @@ private:
     // Presentations
     void setPresentation(UpPresentation* presentation, bool alreadyDestroyed = false);
 
+    // Bibles
+    struct BibleManager
+    {
+      KwBibleManager* manager;
+      QComboBox* comboBibles;
+      QToolBar* toolBar;
+    };
+    void fillBiblesList(BibleManager* mgr);
+
 private:
     Ui::prefs_base ui_prefs_base ;
     Ui::prefsPresentations_base ui_prefsPresentations_base ;
@@ -169,12 +178,6 @@ private:
     KAction* m_editSongAction;
     KAction* m_editSongBooksAction;
 
-    struct BibleManager
-    {
-      KwBibleManager* manager;
-      QComboBox* comboBibles;
-      QToolBar* toolBar;
-    };
     QTabWidget* m_bibleTabs;
     QList<BibleManager> m_bibles;
 

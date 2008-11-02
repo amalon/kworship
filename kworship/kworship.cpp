@@ -381,11 +381,7 @@ kworship::kworship()
     else
     {
       mgr.toolBar = 0;
-      QStringList modules = manager->moduleNames();
-      foreach (QString module, modules)
-      {
-        mgr.comboBibles->addItem(module, QVariant(module));
-      }
+      fillBiblesList(&mgr);
     }
 
     layout->addWidget(mgr.comboBibles);
@@ -1060,30 +1056,44 @@ void kworship::songdbEditSongBooks()
 
 // Bibles
 
+void kworship::fillBiblesList(BibleManager* mgr)
+{
+  QStringList languages = mgr->manager->languages();
+  mgr->comboBibles->clear();
+  foreach (QString language, languages)
+  {
+    QStringList modules = mgr->manager->moduleNamesInLanguage(language);
+    if (!modules.isEmpty())
+    {
+      mgr->comboBibles->addItem(language, QVariant(modules.first()));
+      foreach (QString module, modules)
+      {
+        mgr->comboBibles->addItem("    " + module, QVariant(module));
+      }
+    }
+  }
+}
+
 void kworship::bibleConnect()
 {
   // Get the current bible manager
   int tab = m_bibleTabs->currentIndex();
   Q_ASSERT(tab >= 0 && tab < m_bibles.size());
-  BibleManager& mgr = m_bibles[tab];
+  BibleManager* mgr = &m_bibles[tab];
 
   // This will force the connection
-  QStringList modules = mgr.manager->moduleNames();
-  mgr.comboBibles->clear();
-  if (modules.isEmpty())
+  fillBiblesList(mgr);
+  if (mgr->comboBibles->count() == 0)
   {
     KMessageBox::information(this, i18n("No bibles found"));
   }
   else
   {
-    mgr.comboBibles->setEnabled(true);
-    foreach (QString module, modules)
-    {
-      mgr.comboBibles->addItem(module, QVariant(module));
-    }
+    mgr->comboBibles->setEnabled(true);
   }
 }
 
+#include <iostream>
 void kworship::bibleChanged()
 {
   // Get the current bible manager
@@ -1094,8 +1104,14 @@ void kworship::bibleChanged()
     bool enabled = mgr.comboBibles->isEnabled();
 
     // Is a bible selected?
-    QString bible = mgr.comboBibles->currentText();
-    KwBibleModule* module = mgr.manager->module(bible);
+    int bibleInd = mgr.comboBibles->currentIndex();
+    QString bible;
+    KwBibleModule* module = 0;
+    if (bibleInd >= 0)
+    {
+      QString bible = mgr.comboBibles->itemData(bibleInd).toString();
+      module = mgr.manager->module(bible);
+    }
 
     // Update the list of books
     QString book = m_view->comboBibleBook->currentText();
@@ -1149,8 +1165,14 @@ void kworship::bibleBookChanged()
     BibleManager& mgr = m_bibles[tab];
 
     // Is a bible selected?
-    QString bible = mgr.comboBibles->currentText();
-    KwBibleModule* module = mgr.manager->module(bible);
+    int bibleInd = mgr.comboBibles->currentIndex();
+    QString bible;
+    KwBibleModule* module = 0;
+    if (bibleInd >= 0)
+    {
+      QString bible = mgr.comboBibles->itemData(bibleInd).toString();
+      module = mgr.manager->module(bible);
+    }
     if (0 != module)
     {
       // Is a book selected?
@@ -1177,8 +1199,14 @@ void kworship::bibleChapterChanged()
     BibleManager& mgr = m_bibles[tab];
 
     // Is a bible selected?
-    QString bible = mgr.comboBibles->currentText();
-    KwBibleModule* module = mgr.manager->module(bible);
+    int bibleInd = mgr.comboBibles->currentIndex();
+    QString bible;
+    KwBibleModule* module = 0;
+    if (bibleInd >= 0)
+    {
+      QString bible = mgr.comboBibles->itemData(bibleInd).toString();
+      module = mgr.manager->module(bible);
+    }
     if (0 != module)
     {
       // Is a book selected?

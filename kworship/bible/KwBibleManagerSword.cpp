@@ -40,6 +40,8 @@ KwBibleManagerSword::KwBibleManagerSword()
 : KwBibleManager()
 , m_manager(new sword::SWMgr(new sword::MarkupFilterMgr(sword::FMT_HTMLHREF)))
 , m_modules()
+, m_languages()
+, m_modulesByLanguage()
 {
   m_manager->setGlobalOption("Headings", "On");
 
@@ -52,7 +54,14 @@ KwBibleManagerSword::KwBibleManagerSword()
     sword::SWText* text = dynamic_cast<sword::SWText*>(module);
     if (0 != text)
     {
-      m_modules[QLatin1String(modName)] = new KwBibleModuleSword(text);
+      QString name = QString::fromUtf8(modName);
+      m_modules[name] = new KwBibleModuleSword(text);
+      QString lang = QString::fromUtf8(module->Lang());
+      if (-1 == m_languages.indexOf(lang))
+      {
+        m_languages << lang;
+      }
+      m_modulesByLanguage[lang] << name;
     }
   }
 }
@@ -83,7 +92,7 @@ bool KwBibleManagerSword::isRemote() const
 
 KwBibleModule* KwBibleManagerSword::module(const QString& name)
 {
-  QMap<QString, KwBibleModule*>::const_iterator it = m_modules.constFind(name);
+  QHash<QString, KwBibleModule*>::const_iterator it = m_modules.constFind(name);
   if (it != m_modules.constEnd())
   {
     return *it;
@@ -101,11 +110,19 @@ QStringList KwBibleManagerSword::moduleNames()
 
 QStringList KwBibleManagerSword::moduleNamesInLanguage(const QString& lang)
 {
-  return QStringList();
+  QHash<QString, QStringList>::const_iterator it = m_modulesByLanguage.constFind(lang);
+  if (it != m_modulesByLanguage.constEnd())
+  {
+    return *it;
+  }
+  else
+  {
+    return QStringList();
+  }
 }
 
 QStringList KwBibleManagerSword::languages()
 {
-  return QStringList();
+  return m_languages;
 }
 
