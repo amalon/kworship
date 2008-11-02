@@ -40,7 +40,23 @@ KwBibleModuleSword::KwBibleModuleSword(sword::SWText* module)
 : KwBibleModule()
 , m_module(module)
 {
-  m_hasTestament[0] = m_hasTestament[1] = -1;
+  // Get the range of books.
+  bool oldSCL = module->getSkipConsecutiveLinks();
+  module->setSkipConsecutiveLinks(true);
+
+  {
+    module->setPosition(sword::TOP);
+    sword::VerseKey key = module->KeyText();
+    m_firstBibleBookIndex = testamentBookToBible(key.Testament()-1, key.Book()-1);
+  }
+
+  {
+    module->setPosition(sword::BOTTOM);
+    sword::VerseKey key = module->KeyText();
+    m_lastBibleBookIndex = testamentBookToBible(key.Testament()-1, key.Book()-1);
+  }
+
+  module->setSkipConsecutiveLinks(oldSCL);
 }
 
 /// Destructor.
@@ -64,38 +80,40 @@ QString KwBibleModuleSword::description()
 
 int KwBibleModuleSword::numChapters(int book)
 {
-  int result = 0;
-  int testament = bookInTestament(book); // book gets changed
+  int testamentBook;
+  int testament = localToTestamentBook(book, &testamentBook);
   if (testament >= 0)
   {
     sword::VerseKey key = m_module->getKey();
-    result = key.books[testament][book].chapmax;
+    return key.books[testament][testamentBook].chapmax;
   }
-  return result;
+  return 0;
 }
 
 int KwBibleModuleSword::numVerses(int book, int chapter)
 {
-  int result = 0;
-  int testament = bookInTestament(book); // book gets changed
-  if (testament >= 0)
+  if (book >= 0 && chapter >= 0)
   {
-    sword::VerseKey key = m_module->getKey();
-    if (chapter < key.books[testament][book].chapmax)
+    int testamentBook;
+    int testament = localToTestamentBook(book, &testamentBook);
+    if (testament >= 0)
     {
-      result = key.books[testament][book].versemax[chapter];
+      sword::VerseKey key = m_module->getKey();
+      if (chapter < key.books[testament][testamentBook].chapmax)
+      {
+        return key.books[testament][testamentBook].versemax[chapter];
+      }
     }
   }
-  return result;
+  return 0;
 }
 
 QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
 {
   QString result;
-  int startBook = key.start.book;
-  int endBook = key.start.book;
-  int startTestament = bookInTestament(startBook); // book gets changed
-  int endTestament = bookInTestament(endBook); // book gets changed
+  int startBook, endBook;
+  int startTestament = localToTestamentBook(key.start.book, &startBook);
+  int endTestament   = localToTestamentBook(key.end.book,   &endBook);
   if (startTestament >= 0)
   {
     if (endTestament == -1)
@@ -108,7 +126,7 @@ QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
     if (startChapter < 0)
     {
       startChapter = 0;
-      endChapter = numChapters(toBookIndex(endTestament, endBook))-1;
+      endChapter = numChapters(testamentBookToLocal(endTestament, endBook))-1;
     }
     else if (endChapter < 0)
     {
@@ -120,7 +138,7 @@ QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
     if (startVerse < 0)
     {
       startVerse = 0;
-      endVerse = numVerses(toBookIndex(endTestament, endBook), endChapter)-1;
+      endVerse = numVerses(testamentBookToLocal(endTestament, endBook), endChapter)-1;
     }
     else if (endVerse < 0)
     {
@@ -158,7 +176,10 @@ QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
         {
           result += QString("<h1>%1</h1>").arg(QString::fromUtf8(preverse));
         }
-        result += QString("<sup>%1</sup>").arg(verse.Verse()) + QString::fromUtf8(text);
+        if (QLatin1String(text) != QLatin1String(""))
+        {
+          result += QString("<sup>%1</sup>").arg(verse.Verse()) + QString::fromUtf8(text);
+        }
         if (verse.equals(last))
         {
           break;
@@ -180,15 +201,12 @@ void KwBibleModuleSword::obtainBooks()
   // List books
   QStringList books; 
   sword::VerseKey key = m_module->getKey();
-  for (int testament = 0; testament < 2; ++testament)
+  for (int bibleIndex = m_firstBibleBookIndex; bibleIndex <= m_lastBibleBookIndex; ++bibleIndex)
   {
-    if (hasTestament(testament))
-    {
-      for (int book = 0; book < key.BMAX[testament]; ++book)
-      {
-        books << QString::fromUtf8(key.books[testament][book].name);
-      }
-    }
+    int testamentBook;
+    int testament = bibleToTestamentBook(bibleIndex, &testamentBook);
+    Q_ASSERT(testament >= 0);
+    books << QString::fromUtf8(key.books[testament][testamentBook].name);
   }
   setBooks(books);
 }
@@ -197,63 +215,80 @@ void KwBibleModuleSword::obtainBooks()
  * Internal functions
  */
 
-/// Find whether the module has a given testament.
-bool KwBibleModuleSword::hasTestament(int testament)
+/// Convert a local book index to a bible book index.
+int KwBibleModuleSword::localToBible(int localIndex) const
 {
-  Q_ASSERT(testament >= 0 && testament < 2);
-  if (m_hasTestament[testament] < 0)
+  int result = -1;
+  if (localIndex >= 0 && m_firstBibleBookIndex + localIndex <= m_lastBibleBookIndex)
   {
-    bool oldSCL = m_module->getSkipConsecutiveLinks();
-    m_module->setSkipConsecutiveLinks(true);
-
-    m_module->setPosition((testament == 0) ? sword::TOP : sword::BOTTOM);
-    sword::VerseKey key = m_module->KeyText();
-    m_hasTestament[testament] = (key.Testament() == (testament+1)) ? 1 : 0;
-
-    m_module->setSkipConsecutiveLinks(oldSCL);
+    result = m_firstBibleBookIndex + localIndex;
   }
-  return m_hasTestament[testament] != 0;
+  return result;
 }
 
-/// Find the index of the book within the testament.
-int KwBibleModuleSword::bookInTestament(int& book)
+/// Convert a bible book index to a local book index.
+int KwBibleModuleSword::bibleToLocal(int bibleIndex) const
 {
-  sword::VerseKey key = m_module->getKey();
-  if (book >= 0)
+  int result = -1;
+  if (bibleIndex >= m_firstBibleBookIndex && bibleIndex <= m_lastBibleBookIndex)
   {
-    // Old testament?
-    if (book < key.BMAX[0] && hasTestament(0))
+    result = bibleIndex - m_firstBibleBookIndex;
+  }
+  return result;
+}
+
+/// Convert a testament & book number to a bible book index.
+int KwBibleModuleSword::testamentBookToBible(int testament, int book) const
+{
+  if (testament >= 0 && book >= 0)
+  {
+    sword::VerseKey key = m_module->getKey();
+    if (book < key.BMAX[testament])
     {
+      if (testament == 0)
+      {
+        return book;
+      }
+      else if (testament == 1)
+      {
+        return key.BMAX[0] + book;
+      }
+    }
+  }
+  return -1;
+}
+
+/// Convert a bible book index into a testament and book number.
+int KwBibleModuleSword::bibleToTestamentBook(int bibleIndex, int* book) const
+{
+  if (bibleIndex >= 0)
+  {
+    sword::VerseKey key = m_module->getKey();
+    // Old testament?
+    if (bibleIndex < key.BMAX[0])
+    {
+      *book = bibleIndex;
       return 0;
     }
-    // New testament with old testament?
-    else if ( book < key.BMAX[0]+key.BMAX[1] && hasTestament(0) && hasTestament(1))
+    // New testament?
+    else if (bibleIndex < key.BMAX[0] + key.BMAX[1])
     {
-      book -= key.BMAX[0];
-      return 1;
-    }
-    // New testament without old testament?
-    else if ( book < key.BMAX[1] && !hasTestament(0) && hasTestament(1))
-    {
+      *book = bibleIndex - key.BMAX[0];
       return 1;
     }
   }
   return -1;
 }
 
-/// Find the book index from testament and book id.
-int KwBibleModuleSword::toBookIndex(int testament, int book)
+/// Convert a testament & book number to a local book index.
+int KwBibleModuleSword::testamentBookToLocal(int testament, int book) const
 {
-  Q_ASSERT(testament >= 0 && testament < 2);
-  if (0 == testament || !hasTestament(0))
-  {
-    return book;
-  }
-  else
-  {
-    sword::VerseKey key = m_module->getKey();
-    return key.BMAX[0] + book;
-  }
-  
+  return bibleToLocal(testamentBookToBible(testament, book));
+}
+
+/// Convert a local book index into a testament and book number.
+int KwBibleModuleSword::localToTestamentBook(int localIndex, int* book) const
+{
+  return bibleToTestamentBook(localToBible(localIndex), book);
 }
 

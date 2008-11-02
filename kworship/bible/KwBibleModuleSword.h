@@ -33,9 +33,7 @@ namespace sword
   class SWText;
 }
 
-/** A SWORD bible module.
- * @todo Only show books that are actually there (e.g. OxfordTR which is only John's gospel)
- */
+/// A SWORD bible module.
 class KwBibleModuleSword : public KwBibleModule
 {
   public:
@@ -82,14 +80,45 @@ class KwBibleModuleSword : public KwBibleModule
      * Internal functions
      */
 
-    /// Find whether the module has a given testament.
-    bool hasTestament(int testament);
+    /** Convert a local book index to a bible book index.
+     * @param localIndex Local index of book in module.
+     * @returns Index of the book in the bible.
+     */
+    int localToBible(int localIndex) const;
 
-    /// Find the testament and index of the book within the testament.
-    int bookInTestament(int& book);
+    /** Convert a bible book index to a local book index.
+     * @param bibleIndex Index of book in bible.
+     * @returns Local index of book in module.
+     */
+    int bibleToLocal(int bibleIndex) const;
 
-    /// Find the book index from testament and book id.
-    int toBookIndex(int testament, int book);
+    /** Convert a testament & book number to a bible book index.
+     * @param testament Testament number [0,1].
+     * @param book Book number [0,..].
+     * @returns Bible book index.
+     */
+    int testamentBookToBible(int testament, int book) const;
+
+    /** Convert a bible book index into a testament and book number.
+     * @param bibleIndex Bible book index.
+     * @param book[out] Points to int in which to write book number.
+     * @returns Which testament [0,1].
+     */
+    int bibleToTestamentBook(int bibleIndex, int* book) const;
+
+    /** Convert a testament & book number to a local book index.
+     * @param testament Testament number [0,1].
+     * @param book Book number [0,..].
+     * @returns Local book index.
+     */
+    int testamentBookToLocal(int testament, int book) const;
+
+    /** Convert a local book index into a testament and book number.
+     * @param localIndex Local book index.
+     * @param book[out] Points to int in which to write book number.
+     * @returns Which testament [0,1].
+     */
+    int localToTestamentBook(int localIndex, int* book) const;
 
   private:
 
@@ -100,8 +129,11 @@ class KwBibleModuleSword : public KwBibleModule
     /// SWORD module object.
     sword::SWText* m_module;
 
-    /// Whether the module has each testament.
-    int m_hasTestament[2];
+    /// First book of the bible in this module.
+    int m_firstBibleBookIndex;
+
+    /// Last book of the bible in this module.
+    int m_lastBibleBookIndex;
 };
 
 #endif // _KwBibleModuleSword_h_
