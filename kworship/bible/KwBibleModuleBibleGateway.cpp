@@ -27,17 +27,13 @@
 
 #include <QStringList>
 
-#include <swmodule.h>
-#include <versekey.h>
-
 /*
  * Constructors + destructor
  */
 
 /// Default constructor.
-KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(sword::SWModule* module)
+KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(int id)
 : KwBibleModule()
-, m_module(module)
 {
 }
 
@@ -52,12 +48,12 @@ KwBibleModuleBibleGateway::~KwBibleModuleBibleGateway()
 
 QString KwBibleModuleBibleGateway::name()
 {
-  return m_module->Name();
+  return QString();
 }
 
 QString KwBibleModuleBibleGateway::description()
 {
-  return m_module->Description();
+  return QString();
 }
 
 int KwBibleModuleBibleGateway::numChapters(int book)
@@ -72,39 +68,7 @@ int KwBibleModuleBibleGateway::numVerses(int book, int chapter)
 
 QString KwBibleModuleBibleGateway::renderText(const KwBibleModule::Key& key)
 {
-  sword::VerseKey vkey;
-  vkey.LowerBound().Book(key.start.book);
-  vkey.LowerBound().Chapter(key.start.chapter);
-  vkey.LowerBound().Verse(key.start.verse);
-  vkey.UpperBound().Book(key.end.book);
-  vkey.UpperBound().Chapter(key.end.chapter);
-  vkey.UpperBound().Verse(key.end.verse);
-
-  QString result;
-  sword::VerseKey verse = vkey.LowerBound();
-  verse.Headings(1);
-  sword::VerseKey last = vkey.UpperBound();
-  Q_ASSERT(verse.isTraversable());
-
-  int limit = 100;
-  for (; verse.compare(last) <= 0; verse.increment(1))
-  {
-    m_module->setKey(&verse);
-    m_module->RenderText();
-    const char* preverse = m_module->getEntryAttributes()["Heading"]["Preverse"]["0"];
-    result += " ";
-    if (preverse[0] != '\0')
-    {
-      result += QString("<h1>%1</h1>").arg(QString::fromUtf8(preverse));
-    }
-    result += QString("<sup>%1</sup>").arg(verse.Verse()) + QString::fromUtf8(m_module->RenderText());
-    if (0 == --limit)
-    {
-      break;
-    }
-  }
-
-  return result;
+  return QString();
 }
 
 /*

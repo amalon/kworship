@@ -43,7 +43,7 @@ class KwBibleModuleBibleGateway : public KwBibleModule
      */
 
     /// Default constructor.
-    KwBibleModuleBibleGateway(sword::SWModule* module);
+    KwBibleModuleBibleGateway(int id);
 
     /// Destructor.
     virtual ~KwBibleModuleBibleGateway();
@@ -75,15 +75,6 @@ class KwBibleModuleBibleGateway : public KwBibleModule
 
     // Reimplemented
     virtual void obtainBooks();
-
-  private:
-
-    /*
-     * Variables
-     */
-    
-    /// SWORD module object.
-    sword::SWModule* m_module;
 };
 
 #endif // _KwBibleModuleBibleGateway_h_

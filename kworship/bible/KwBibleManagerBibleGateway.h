@@ -28,7 +28,12 @@
 
 #include "KwBibleManager.h"
 
+#include <QString>
 #include <QStringList>
+#include <QList>
+#include <QHash>
+
+class KwBibleModuleBibleGateway;
 
 /// A bible manager for BibleGateway.com.
 class KwBibleManagerBibleGateway : public KwBibleManager
@@ -70,14 +75,42 @@ class KwBibleManagerBibleGateway : public KwBibleManager
   private:
 
     /*
+     * Private functions
+     */
+
+    /// Ensure the version information is cached.
+    void ensureCached();
+
+    /// Clear all modules.
+    void clear();
+
+    /*
      * Variables
      */
 
-    /// Cached module names.
-    QStringList m_moduleNames;
+    /// Whether the versions have already been cached.
+    bool m_cached;
 
-    /// Modules managed by this manager.
-    QMap<QString, KwBibleModule*> m_modules;
+    /// Language names.
+    QStringList m_languages;
+
+    /// Per version data.
+    struct Version
+    {
+      QString name;
+      int id;
+      int lang;
+      KwBibleModuleBibleGateway* module;
+    };
+
+    /// Versions by id.
+    QHash<int, Version*> m_versionsById;
+
+    /// Versions by name.
+    QHash<QString, Version*> m_versionsByName;
+
+    /// Version ids by language id.
+    QHash<int, QList<int> > m_versionsByLanguage;
 };
 
 #endif // _KwBibleManagerBibleGateway_h_
