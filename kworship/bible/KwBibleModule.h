@@ -73,7 +73,10 @@ class KwBibleModule
      */
 
     /// Create a key from a string.
-    Key createKey(const QString& text);
+    Key createKey(const QString& text, bool* valid = 0);
+
+    /// Create a key from a string relative to another key.
+    Key createKey(const Key& other, const QString& text, bool* valid = 0);
 
     /// Create a key from individual values.
     Key createKey(int book, int chapter, int verse = -1);

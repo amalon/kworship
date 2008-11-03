@@ -185,14 +185,28 @@
         </layout>
        </item>
        <item>
-        <widget class="QLineEdit" name="searchBible" >
-         <property name="sizePolicy" >
-          <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-           <horstretch>10</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_10" >
+         <item>
+          <widget class="QLabel" name="labelBibleVerses" >
+           <property name="text" >
+            <string>&amp;Verses</string>
+           </property>
+           <property name="buddy" >
+            <cstring>searchBible</cstring>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="searchBible" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+             <horstretch>10</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTextEdit" name="textBible" >

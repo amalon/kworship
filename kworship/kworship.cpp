@@ -393,7 +393,9 @@ kworship::kworship()
   connect(m_view->comboBibleBook, SIGNAL(currentIndexChanged(int)),
           this, SLOT(bibleBookChanged()));
   connect(m_view->comboBibleChapter, SIGNAL(currentIndexChanged(int)),
-          this, SLOT(bibleChapterChanged()));
+          this, SLOT(bibleSearch()));
+  connect(m_view->searchBible, SIGNAL(textChanged(const QString&)),
+          this, SLOT(bibleSearch()));
   bibleChanged();
 }
 
@@ -1093,7 +1095,6 @@ void kworship::bibleConnect()
   }
 }
 
-#include <iostream>
 void kworship::bibleChanged()
 {
   // Get the current bible manager
@@ -1143,14 +1144,10 @@ void kworship::bibleChanged()
       enabled = false;
     }
     
-    //bibleBookChanged();
     m_view->comboBibleBook->setEnabled(enabled);
     m_view->comboBibleChapter->setEnabled(enabled);
     m_view->searchBible->setEnabled(enabled);
     m_view->textBible->setEnabled(enabled);
-
-    m_view->searchBible->setText(QString());
-
   }
 }
 
@@ -1188,9 +1185,10 @@ void kworship::bibleBookChanged()
       }
     }
   }
+  bibleSearch();
 }
 
-void kworship::bibleChapterChanged()
+void kworship::bibleSearch()
 {
   // Get the current bible manager
   int tab = m_bibleTabs->currentIndex();
@@ -1211,40 +1209,34 @@ void kworship::bibleChapterChanged()
     {
       // Is a book selected?
       int bookIndex = m_view->comboBibleBook->currentIndex();
+      int chapterIndex = -1;
       if (bookIndex >= 0)
       {
         // Is a chapter selected?
-        int chapterIndex = m_view->comboBibleChapter->currentIndex();
-        if (chapterIndex >= 0)
-        {
-          KwBibleModule::Key key = module->createKey(bookIndex, chapterIndex);
-          m_view->textBible->document()->setHtml(module->renderText(key));
-          return;
-        }
+        chapterIndex = m_view->comboBibleChapter->currentIndex();
       }
-    }
-  }
-  m_view->textBible->document()->setPlainText(QString());
-}
 
-void kworship::bibleSearch()
-{
-  /*
-  // Search using the key
-  int index = m_view->comboSwordBibles->currentIndex();
-  if (index >= 0)
-  {
-    QString modName = m_view->comboSwordBibles->itemData(index).toString();
-    KwBibleModule* module = KwBibleManager::self()->module(modName);
-    if (0 != module)
-    {
-      KwBibleModule::Key key = module->createKey(m_view->searchBible->text());
+      bool valid;
+      KwBibleModule::Key relativeKey = module->createKey(bookIndex, chapterIndex);
+      KwBibleModule::Key key = module->createKey(relativeKey, m_view->searchBible->text(), &valid);
+      // Update book and chapter
+      m_view->comboBibleBook->setCurrentIndex(key.start.book);
+      m_view->comboBibleChapter->setCurrentIndex(key.start.chapter);
       m_view->textBible->document()->setHtml(module->renderText(key));
+
+      // Update color of search box
+      static QPalette p = m_view->searchBible->palette();
+      QPalette changedPal = p;
+      if (!valid)
+      {
+        changedPal.setColor( QPalette::Normal, QPalette::Base, QColor(255, 127, 127) );
+      }
+      m_view->searchBible->setPalette(changedPal);
+
       return;
     }
   }
   m_view->textBible->document()->setPlainText(QString());
-  */
 }
 
 #include "kworship.moc"

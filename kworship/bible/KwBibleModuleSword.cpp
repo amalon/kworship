@@ -122,7 +122,7 @@ QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
       endBook = startBook;
     }
     int startChapter = key.start.chapter;
-    int endChapter = key.start.chapter;
+    int endChapter = key.end.chapter;
     if (startChapter < 0)
     {
       startChapter = 0;
@@ -134,7 +134,7 @@ QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
     }
 
     int startVerse = key.start.verse;
-    int endVerse = key.start.verse;
+    int endVerse = key.end.verse;
     if (startVerse < 0)
     {
       startVerse = 0;

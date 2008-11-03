@@ -25,6 +25,8 @@
 
 #include "KwBibleModule.h"
 
+#include <QRegExp>
+
 /*
  * Constructors + destructor
  */
@@ -45,13 +47,138 @@ KwBibleModule::~KwBibleModule()
  */
 
 /// Create a key from a string.
-KwBibleModule::Key KwBibleModule::createKey(const QString& text)
+KwBibleModule::Key KwBibleModule::createKey(const QString& text, bool* valid)
 {
-  // parse the key
-  //Key key = { { -1, -1, -1 },
-  //            { -1, -1, -1 } };
-  Key key = { { 0, 1, 1 },
-              { 0, 1, 6 } };
+  // Find the key relative to the first chapter of the first book.
+  return createKey(createKey(0, 0), text);
+}
+
+/// Create a key from a string relative to another key.
+KwBibleModule::Key KwBibleModule::createKey(const Key& other, const QString& text, bool* valid)
+{
+  Key key = other;
+  static QRegExp re("^\\s*"                       // Must from beginning (ignore whitespace)
+                    // 1( 2( 3() 4() ) )
+                    "(((\\S+)|\"([^\"]+)\")\\s+)?" // Optional book name followed by spaces
+                    // 5( 6() )
+                    "((\\d+)[:.])?"               // Optional chapter number followed by [:.]
+                    // 7()
+                    "(\\d+)?"                     // Optional verse number
+                    // 8(
+                    "(\\s*-\\s*"                  // Optionally start matching dash followed by end of the range
+                      // 9( 10() )
+                      "((\\d+)[:.])?"               // Optional chapter number followed by [:.]
+                      // 11()
+                      "(\\d+)?"                   // Optional verse number
+                    // )
+                    ")?"                          // End of matching end of range
+                    "\\s*$"                       // Must match to end (ignore whitespace)
+                    );
+  Q_ASSERT(re.isValid());
+  bool isValid = true;
+  if (re.exactMatch(text))
+  {
+    QStringList cap = re.capturedTexts();
+    // Get book name
+    QString bookName;
+    if (!cap[3].isEmpty())
+    {
+      bookName = cap[3];
+    }
+    else if (!cap[4].isEmpty())
+    {
+      bookName = cap[4];
+    }
+    if (!bookName.isEmpty())
+    {
+      int book = bookIndex(bookName);
+      if (book >= 0)
+      {
+        key.start.book = book;
+      }
+      else
+      {
+        isValid = false;
+      }
+    }
+    // Get chapter
+    QString chapterName = cap[6];
+    if (!chapterName.isEmpty())
+    {
+      int chapter = chapterName.toInt() - 1;
+      if (chapter >= 0 && chapter < numChapters(key.start.book))
+      {
+        key.start.chapter = chapter;
+      }
+      else
+      {
+        isValid = false;
+      }
+    }
+    // Get verse
+    QString verseName = cap[7];
+    if (!verseName.isEmpty())
+    {
+      int verse = verseName.toInt() - 1;
+      if (verse >= 0 && verse < numVerses(key.start.book, key.start.chapter))
+      {
+        key.start.verse = verse;
+      }
+      else
+      {
+        isValid = false;
+      }
+    }
+    // End of range
+    if (!cap[8].isEmpty())
+    {
+      key.end.book = key.start.book;
+      key.end.chapter = key.start.chapter;
+      key.end.verse = -1;
+      // Get chapter
+      QString chapterName = cap[10];
+      if (!chapterName.isEmpty())
+      {
+        int chapter = chapterName.toInt() - 1;
+        if (chapter >= 0 && chapter < numChapters(key.start.book))
+        {
+          key.end.chapter = chapter;
+        }
+        else
+        {
+          isValid = false;
+        }
+      }
+      // Get verse
+      QString verseName = cap[11];
+      if (!verseName.isEmpty())
+      {
+        int verse = verseName.toInt() - 1;
+        if (verse >= 0 && verse < numVerses(key.start.book, key.start.chapter))
+        {
+          key.end.verse = verse;
+        }
+        else
+        {
+          isValid = false;
+        }
+      }
+      if (key.end.verse < 0)
+      {
+        key.end.verse = numVerses(key.end.book, key.end.chapter)-1;
+      }
+    }
+  }
+  else
+  {
+    isValid = false;
+  }
+  //std::cout << "result: " << key.start.book << "." << key.start.chapter << ":" << key.start.verse << " - "
+  //                        << key.end.book << "." << key.end.chapter << ":" << key.end.verse << std::endl;
+  if (0 != valid)
+  {
+    *valid = isValid;
+  }
   return key;
 }
 
