@@ -156,6 +156,7 @@ void KwBibleManagerBibleGateway::ensureCached()
       {
         QByteArray rawPage = file.readAll();
         file.close();
+        /// @todo Convert to use KDE DOM as its a bit more flexible of invalid XML
         QString page = QString::fromUtf8(rawPage);
         QRegExp rx("<select\\s+name=\"qs_version\">.*</select>");
         if (-1 != rx.indexIn(page))

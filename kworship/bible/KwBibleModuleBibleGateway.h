@@ -28,10 +28,9 @@
 
 #include "KwBibleModule.h"
 
-namespace sword
-{
-  class SWModule;
-}
+#include <KUrl>
+
+#include <QList>
 
 /// A BibleGateway bible module.
 class KwBibleModuleBibleGateway : public KwBibleModule
@@ -75,6 +74,56 @@ class KwBibleModuleBibleGateway : public KwBibleModule
 
     // Reimplemented
     virtual void obtainBooks();
+
+  private:
+
+    /*
+     * Private functions
+     */
+
+    struct Chapter;
+
+    /// Ensure chapter contents are fetched and return the chapter object.
+    struct Chapter* fetchChapter(int book, int chapter);
+
+    /*
+     * Variables
+     */
+
+    /// The name of the publisher.
+    QString m_publisher;
+
+    /// The long version information.
+    QString m_versionInfo;
+
+    /// The long copyright information.
+    QString m_copyrightInfo;
+
+    /// Chapter data.
+    struct Chapter
+    {
+      /// BibleGateway.com URL for this chapter.
+      KUrl url;
+
+      /// Whether the verses have been fetched.
+      bool fetched;
+
+      /// List of verse contents.
+      QStringList verses;
+    };
+
+    /// Book data.
+    struct Book
+    {
+      /// Name of the book.
+      QString name;
+
+      /// List of chapter information.
+      QList<Chapter> chapters;
+    };
+
+    /// List of books.
+    QList<Book> m_bookList;
 };
 
 #endif // _KwBibleModuleBibleGateway_h_

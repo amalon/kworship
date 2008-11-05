@@ -25,7 +25,15 @@
 
 #include "KwBibleModuleBibleGateway.h"
 
+#include <KIO/NetAccess>
+#include <KMessageBox>
+#include <KLocale>
+#include <dom/html_document.h>
+#include <dom/html_element.h>
+#include <dom/html_block.h>
+
 #include <QStringList>
+#include <QFile>
 
 /*
  * Constructors + destructor
@@ -35,6 +43,80 @@
 KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(int id)
 : KwBibleModule()
 {
+  KUrl url(QString("http://www.biblegateway.com/versions/index.php?action=getVersionInfo&vid=%1").arg(id));
+
+  QString tmpFile;
+  if (KIO::NetAccess::download(url, tmpFile, 0))
+  {
+    QFile file(tmpFile);
+    if (file.open(QFile::ReadOnly | QFile::Text))
+    {
+      QByteArray rawPage = file.readAll();
+      file.close();
+
+      DOM::HTMLDocument doc;
+      doc.loadXML((QString)rawPage);
+      DOM::Element bookList = doc.getElementById("booklist");
+      bool tableFound = false;
+      if (!bookList.isNull())
+      {
+        // Get the next table
+        DOM::Node sibling = bookList.nextSibling();
+        while (!sibling.isNull() && sibling.nodeType() != DOM::Node::ELEMENT_NODE)
+        {
+          sibling = sibling.nextSibling();
+        }
+        DOM::Element tableElement(sibling);
+        if (!tableElement.isNull() && tableElement.tagName() == "table")
+        {
+          tableFound = true;
+          // Each row except header is a book
+          DOM::NodeList rows = tableElement.getElementsByTagName("tr");
+          for (unsigned int row = 0; row < rows.length(); ++row)
+          {
+            DOM::NodeList cells = DOM::Element(rows.item(row)).getElementsByTagName("td");
+            if (cells.length() == 2)
+            {
+              // First cell is the name
+              m_bookList.push_back(Book());
+              Book* book = &m_bookList[m_bookList.size()-1];
+              book->name = DOM::HTMLElement(cells.item(0)).innerText().string();
+              // Second cell is the chapter links
+              DOM::NodeList chapterLinks = DOM::Element(cells.item(1)).getElementsByTagName("a");
+              for (unsigned int chapter = 0; chapter < chapterLinks.length(); ++chapter)
+              {
+                // Check the chapter number is right
+                DOM::HTMLElement link = chapterLinks.item(chapter);
+                bool numeric;
+                int check = link.innerText().string().toInt(&numeric);
+                if (!numeric || check != (int)chapter+1)
+                {
+                  KMessageBox::error(0, i18n("Error parsing webpage: %1", i18n("Non sequential chapter list in book '%1'", book->name)));
+                  break;
+                }
+                // Get the link
+                book->chapters.push_back(Chapter());
+                Chapter* chapter = &book->chapters[book->chapters.size()-1];
+                chapter->url = "http://www.biblegateway.com" + link.getAttribute("href").string();
+                chapter->fetched = false;
+              }
+            }
+          }
+        }
+      }
+      if (!tableFound)
+      {
+        // Book list reference node not found
+        KMessageBox::error(0, i18n("Error parsing webpage: %1", i18n("Book list table not found")));
+      }
+    }
+
+    KIO::NetAccess::removeTempFile(tmpFile);
+  }
+  else
+  {
+    KMessageBox::error(0, KIO::NetAccess::lastErrorString());
+  }
 }
 
 /// Destructor.
@@ -58,17 +140,42 @@ QString KwBibleModuleBibleGateway::description()
 
 int KwBibleModuleBibleGateway::numChapters(int book)
 {
+  if (book >= 0 && book < m_bookList.size())
+  {
+    return m_bookList[book].chapters.size();
+  }
   return 0;
 }
 
 int KwBibleModuleBibleGateway::numVerses(int book, int chapter)
 {
-  return 0;
+  Chapter* chap = fetchChapter(book, chapter);
+  if (0 != chap)
+  {
+    return chap->verses.size();
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 QString KwBibleModuleBibleGateway::renderText(const KwBibleModule::Key& key)
 {
-  return QString();
+  QString result;
+  Chapter* chapter = fetchChapter(key.start.book, key.start.chapter);
+  if (0 != chapter)
+  {
+    if (key.start.verse >= 0 && key.start.verse < chapter->verses.size())
+    {
+      return chapter->verses[key.start.verse];
+    }
+    else
+    {
+      return chapter->verses.join("");
+    }
+  }
+  return result;
 }
 
 /*
@@ -77,6 +184,133 @@ QString KwBibleModuleBibleGateway::renderText(const KwBibleModule::Key& key)
 
 void KwBibleModuleBibleGateway::obtainBooks()
 {
-  setBooks(QStringList());
+  QStringList list;
+  for (int book = 0; book < m_bookList.size(); ++book)
+  {
+    list << m_bookList[book].name;
+  }
+  setBooks(list);
+}
+
+/*
+ * Private functions
+ */
+
+/// Ensure chapter contents are fetched.
+KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int book, int chapter)
+{
+  if (book >= 0 && book < m_bookList.size())
+  {
+    Book* bookObj = &m_bookList[book];
+    if (chapter >= 0 && chapter < m_bookList[book].chapters.size())
+    {
+      Chapter* chap = &bookObj->chapters[chapter];
+      if (!chap->fetched)
+      {
+        QString tmpFile;
+        if (KIO::NetAccess::download(chap->url, tmpFile, 0))
+        {
+          QFile file(tmpFile);
+          if (file.open(QFile::ReadOnly | QFile::Text))
+          {
+            QByteArray rawPage = file.readAll();
+            file.close();
+
+            DOM::HTMLDocument doc;
+            doc.loadXML((QString)rawPage);
+
+            // Find all spans with class="sup"
+            DOM::NodeList sups = doc.body().getElementsByClassName("sup");
+            int verse = 0;
+            for (unsigned int i = 0; i < sups.length(); ++i)
+            {
+              DOM::HTMLElement span = sups.item(i);
+              if (span.tagName() == "span")
+              {
+                // Get the verse number and validate
+                bool numeric;
+                QString verseNumber = span.innerText().string();
+                int check = verseNumber.toInt(&numeric);
+                if (!numeric)
+                {
+                  // Its not going to be a verse if it isn't numeric
+                  KMessageBox::error(0, i18n("Error parsing webpage: %1", i18n("Non numeric superscript encountered: '%1'. It may correspond to a verse range.", verseNumber)));
+                  continue;
+                }
+                ++verse;
+                if (check != verse)
+                {
+                  KMessageBox::error(0, i18n("Error parsing webpage: %1", i18n("Non sequential verse list in chapter %1 of book '%2'. Expected verse %3 but got verse %4.", (chapter+1), bookObj->name, verse, check)));
+                  break;
+                }
+                QString content;
+
+                // Get any headers before it
+                DOM::Node sibling;
+                sibling = span.previousSibling();
+                while (!sibling.isNull())
+                {
+                  DOM::Element siblingElement = sibling;
+                  if (!siblingElement.isNull())
+                  {
+                    // Stop at a span class="sup"
+                    if (siblingElement.tagName() == "span" && siblingElement.getAttribute("class") == "sup")
+                    {
+                      break;
+                    }
+                    // See if its an interesting heading
+                    DOM::HTMLHeadingElement heading = siblingElement;
+                    if (!heading.isNull())
+                    {
+                      content = heading.toHTML() + content;
+                    }
+                  }
+                  sibling = sibling.previousSibling();
+                }
+
+                // Add verse number
+                content += QString("<sup>%1</sup>").arg(verse);
+
+                // Get any text after it until the next span
+                sibling = span.nextSibling();
+                while (!sibling.isNull())
+                {
+                  DOM::Element siblingElement = sibling;
+                  if (!siblingElement.isNull())
+                  {
+                    // Stop at a span class="sup"
+                    if (siblingElement.tagName() == "span" && siblingElement.getAttribute("class") == "sup")
+                    {
+                      break;
+                    }
+                    // Also stop at headings
+                    DOM::HTMLHeadingElement heading = siblingElement;
+                    if (!heading.isNull())
+                    {
+                      break;
+                    }
+                  }
+                  content += sibling.toHTML();
+                  sibling = sibling.nextSibling();
+                }
+
+                chap->verses.push_back(content);
+              }
+            }
+          }
+
+          KIO::NetAccess::removeTempFile(tmpFile);
+        }
+        else
+        {
+          KMessageBox::error(0, KIO::NetAccess::lastErrorString());
+        }
+        chap->fetched = true;
+      }
+
+      return chap;
+    }
+  }
+  return 0;
 }
 

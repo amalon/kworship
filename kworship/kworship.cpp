@@ -1062,6 +1062,7 @@ void kworship::fillBiblesList(BibleManager* mgr)
 {
   QStringList languages = mgr->manager->languages();
   mgr->comboBibles->clear();
+  mgr->comboBibles->addItem(i18n("-- select a translation --"));
   foreach (QString language, languages)
   {
     QStringList modules = mgr->manager->moduleNamesInLanguage(language);

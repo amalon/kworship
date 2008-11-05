@@ -54,6 +54,7 @@ kde4_add_executable(kworship ${kworship_SRCS})
 target_link_libraries(kworship
                       ${KDE4_KDEUI_LIBS}
                       ${KDE4_KIO_LIBS}
+                      ${KDE4_KHTML_LIBS}
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
                       ${SWORD_LIBS}
