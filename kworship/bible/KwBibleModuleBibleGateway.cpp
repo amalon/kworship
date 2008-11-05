@@ -55,7 +55,7 @@ KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(int id)
       file.close();
 
       DOM::HTMLDocument doc;
-      doc.loadXML((QString)rawPage);
+      doc.loadXML(QString::fromUtf8(rawPage));
       DOM::Element bookList = doc.getElementById("booklist");
       bool tableFound = false;
       if (!bookList.isNull())
@@ -217,7 +217,7 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
             file.close();
 
             DOM::HTMLDocument doc;
-            doc.loadXML((QString)rawPage);
+            doc.loadXML(QString::fromUtf8(rawPage));
 
             // Find all spans with class="sup"
             DOM::NodeList sups = doc.body().getElementsByClassName("sup");
