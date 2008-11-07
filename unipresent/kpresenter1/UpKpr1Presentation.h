@@ -46,7 +46,7 @@ class UpKpr1Presentation : public UpPresentation
      */
 
     /// Primary constructor.
-    UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, UpKpr1Backend* parent = 0);
+    UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, const UpKpr1ViewDcop& dcopView, UpKpr1Backend* parent = 0);
 
     /// Destructor.
     virtual ~UpKpr1Presentation();

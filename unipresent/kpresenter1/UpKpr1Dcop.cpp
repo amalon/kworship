@@ -68,6 +68,12 @@ bool UpKpr1Dcop::isValid() const
   return m_valid;
 }
 
+/// Get the dcop reference.
+const QStringList& UpKpr1Dcop::reference() const
+{
+  return m_reference;
+}
+
 /*
  * Helper methods
  */

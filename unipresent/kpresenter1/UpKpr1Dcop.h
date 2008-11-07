@@ -56,6 +56,9 @@ class UpKpr1Dcop
     /// Find whether its valid.
     bool isValid() const;
 
+    /// Get the dcop reference.
+    const QStringList& reference() const;
+
     /*
      * Helper methods
      */

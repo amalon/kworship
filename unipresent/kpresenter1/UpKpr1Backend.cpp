@@ -31,6 +31,8 @@
 
 #include <KLocale>
 
+#include <QTimer>
+
 /*
  * Constructors + destructor
  */
@@ -39,7 +41,10 @@
 UpKpr1Backend::UpKpr1Backend(QObject* parent)
 : UpBackend(parent)
 , m_presentations()
+, m_refreshTimer(new QTimer(this))
 {
+  connect(m_refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
+  m_refreshTimer->start(15000);
   activate();
 }
 
@@ -93,19 +98,7 @@ bool UpKpr1Backend::isActive()
 
 bool UpKpr1Backend::activate()
 {
-  if (m_presentations.empty())
-  {
-    UpKpr1AppsDcop apps;
-    QList<UpKpr1KpresenterDcop> kprs = apps.kpresenters();
-    foreach(UpKpr1KpresenterDcop kpr, kprs)
-    {
-      QList<UpKpr1PresentationDcop> docs = kpr.documents();
-      foreach (UpKpr1PresentationDcop doc, docs)
-      {
-        m_presentations << new UpKpr1Presentation(doc, this);
-      }
-    }
-  }
+  refresh();
   return true;
 }
 
@@ -125,5 +118,68 @@ QList<UpPresentation*> UpKpr1Backend::presentations()
 bool UpKpr1Backend::openPresentation(const QUrl& url)
 {
   return false;
+}
+
+/*
+ * Private slots
+ */
+
+/// Hit at intervals to refresh presentation list.
+void UpKpr1Backend::refresh()
+{
+  QList<UpPresentation*> lostPresentations = m_presentations;
+
+  UpKpr1AppsDcop apps;
+  QList<UpKpr1KpresenterDcop> kprs = apps.kpresenters();
+  foreach(UpKpr1KpresenterDcop kpr, kprs)
+  {
+    QList<UpKpr1PresentationDcop> docs = kpr.documents();
+    foreach (UpKpr1PresentationDcop doc, docs)
+    {
+      // Must have a view to be useful
+      UpKpr1ViewDcop view = doc.view();
+      if (view.isValid())
+      {
+        UpPresentation* presentation = presentationByDcop(doc.reference());
+        if (0 != presentation)
+        {
+          // Already exists, remove from lost list
+          lostPresentations.removeOne(presentation);
+        }
+        else
+        {
+          // New, create
+          presentation = new UpKpr1Presentation(doc, view, this);
+          m_presentations << presentation;
+          loadedPresentation(presentation);
+        }
+      }
+    }
+  }
+
+  // Anything left in lost list needs removing
+  foreach (UpPresentation* presentation, lostPresentations)
+  {
+    unloadedPresentation(presentation);
+    delete presentation;
+    m_presentations.removeOne(presentation);
+  }
+}
+
+/*
+ * Private functions
+ */
+
+/// Find a presentation identified by a dcop reference.
+UpPresentation* UpKpr1Backend::presentationByDcop(const QStringList& dcopRef) const
+{
+  foreach (UpPresentation* presentation, m_presentations)
+  {
+    if (static_cast<UpKpr1Presentation*>(presentation)->dcop().reference() == dcopRef)
+    {
+      return presentation;
+    }
+  }
+  return 0;
 }
 

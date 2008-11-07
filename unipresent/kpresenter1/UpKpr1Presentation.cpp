@@ -27,20 +27,18 @@
 #include "UpKpr1Slide.h"
 #include "UpKpr1Backend.h"
 
-#include <cassert>
-
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-UpKpr1Presentation::UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, UpKpr1Backend* parent)
+UpKpr1Presentation::UpKpr1Presentation(const UpKpr1PresentationDcop& dcop, const UpKpr1ViewDcop& dcopView, UpKpr1Backend* parent)
 : UpPresentation(parent, parent)
 , m_dcop(dcop)
-, m_dcopView(dcop.view())
+, m_dcopView(dcopView)
 , m_url(dcop.url())
 {
-  assert(m_dcopView.isValid());
+  Q_ASSERT(m_dcopView.isValid());
 }
 
 /// Destructor.

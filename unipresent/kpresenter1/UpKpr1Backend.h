@@ -28,11 +28,16 @@
 
 #include "UpBackend.h"
 
+class QTimer;
+class QStringList;
+
 /** KPresenter 1 presentation manager.
  * This is a messy backend to use the DCOP interface.
  */
 class UpKpr1Backend : public UpBackend
 {
+    Q_OBJECT
+
   public:
 
     /*
@@ -70,7 +75,23 @@ class UpKpr1Backend : public UpBackend
     virtual QList<UpPresentation*> presentations();
     virtual bool openPresentation(const QUrl& url);
 
+  private slots:
+
+    /*
+     * Private slots
+     */
+
+    /// Hit at intervals to refresh presentation list.
+    void refresh();
+
   private:
+
+    /*
+     * Private functions
+     */
+
+    /// Find a presentation identified by a dcop reference.
+    UpPresentation* presentationByDcop(const QStringList& dcopRef) const;
 
     /*
      * Variables
@@ -79,6 +100,8 @@ class UpKpr1Backend : public UpBackend
     /// List of presentations.
     QList<UpPresentation*> m_presentations;
 
+    /// Refresh timer.
+    QTimer* m_refreshTimer;
 };
 
 #endif // _UpKpr1Backend_h_
