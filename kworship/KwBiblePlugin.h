@@ -30,6 +30,8 @@
 
 class KwBibleManager;
 
+class KAction;
+
 class QDockWidget;
 class QTabWidget;
 class QComboBox;
@@ -72,6 +74,12 @@ class KwBiblePlugin : public KwPlugin
     /// Fired when the bible text needs to be retrieved.
     void slotVerseRange();
 
+    /// Fired by the insert into playlist action.
+    void slotInsertIntoPlaylist();
+
+    /// Fired by the show now action.
+    void slotShowNow();
+
   protected:
 
     /*
@@ -110,6 +118,16 @@ class KwBiblePlugin : public KwPlugin
 
     /// The list of bible managers.
     QList<BibleManager> m_managers;
+
+    /*
+     * Actions
+     */
+
+    /// Action for inserting the current passage into the playlist.
+    KAction* m_insertIntoPlaylistAction;
+
+    /// Action for showing the current passage on the screen.
+    KAction* m_showNowAction;
 
     /*
      * Widgets

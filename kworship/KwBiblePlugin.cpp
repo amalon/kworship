@@ -55,6 +55,8 @@ KwBiblePlugin::KwBiblePlugin()
            i18n("The bible plugin allows for the navigation and display of "
                 "bible extracts from SWORD and BibleGateway.com."))
 , m_managers()
+, m_insertIntoPlaylistAction(0)
+, m_showNowAction(0)
 , m_docker(0)
 , m_managerTabs(0)
 , m_comboBook(0)
@@ -226,6 +228,9 @@ void KwBiblePlugin::slotVerseRange()
       m_comboChapter->setCurrentIndex(key.start.chapter);
       m_textPassage->document()->setHtml(module->renderText(key));
 
+      m_insertIntoPlaylistAction->setEnabled(true);
+      m_showNowAction->setEnabled(true);
+
       // Update color of search box
       static QPalette p = m_editRange->palette();
       QPalette changedPal = p;
@@ -239,6 +244,18 @@ void KwBiblePlugin::slotVerseRange()
     }
   }
   m_textPassage->document()->setPlainText(QString());
+  m_insertIntoPlaylistAction->setEnabled(false);
+  m_showNowAction->setEnabled(false);
+}
+
+/// Fired by the insert into playlist action.
+void KwBiblePlugin::slotInsertIntoPlaylist()
+{
+}
+
+/// Fired by the show now action.
+void KwBiblePlugin::slotShowNow()
+{
 }
 
 /*
@@ -291,7 +308,23 @@ void KwBiblePlugin::_load(QMainWindow* mainWindow)
   m_textPassage->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
   dockLayout->addWidget(m_textPassage);
 
+  // Toolbar
+  QToolBar* bibleToolBar = new QToolBar("bibleToolBar");
+  bibleToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+  dockLayout->addWidget(bibleToolBar);
 
+  m_insertIntoPlaylistAction = new KAction(KIcon("player_playlist"), i18n("Insert Into Playlist"), bibleToolBar);
+  m_insertIntoPlaylistAction->setEnabled(false);
+  connect(m_insertIntoPlaylistAction, SIGNAL(triggered(bool)),
+          this, SLOT(slotInsertIntoPlaylist()));
+  bibleToolBar->addAction(m_insertIntoPlaylistAction);
+
+  m_showNowAction = new KAction(KIcon("player_playlist"), i18n("Show Now"), bibleToolBar);
+  m_showNowAction->setEnabled(false);
+  connect(m_showNowAction, SIGNAL(triggered(bool)),
+          this, SLOT(slotShowNow()));
+  bibleToolBar->addAction(m_showNowAction);
+    
   // Fill out tabs and manager data
   foreach (KwBibleManager* manager, managers)
   {
