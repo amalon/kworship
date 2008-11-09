@@ -37,6 +37,9 @@ set(kworship_SRCS
     DesktopView.cpp
     KwDatabaseSetup.cpp
     KwDocument.cpp
+    KwPlugin.cpp
+    KwPluginManager.cpp
+    KwBiblePlugin.cpp
 )
 
 kde4_add_ui_files(kworship_SRCS

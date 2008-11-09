@@ -37,10 +37,10 @@ class KwDisplayManager;
 class KwPlaylistList;
 class KwPlaylistModel;
 class KwMediaManager;
+class KwDocument;
+class KwPluginManager;
 class KwSongdbModel;
 class KwSongdbTree;
-class KwBibleManager;
-class KwDocument;
 
 class UpManager;
 class UpPresentation;
@@ -98,6 +98,10 @@ private slots:
     void optionsPreferences();
     void playlist_doubleClicked(QModelIndex);
     void playlistReset();
+
+    /// Add the new docker to the interface.
+    void newDocker(QDockWidget* docker);
+
     void presentationDelete();
     void presentationSelected(int);
     void presentationToggled(bool);
@@ -129,12 +133,6 @@ private slots:
     void songdbEdit();
     void songdbEditSongBooks();
 
-    // Bibles
-    void bibleConnect();
-    void bibleChanged();
-    void bibleBookChanged();
-    void bibleSearch();
-
 private:
     void setupActions();
     int getCorrectDisplayScreen();
@@ -144,15 +142,6 @@ private:
     void setDocument(KUrl url = KUrl());
     // Presentations
     void setPresentation(UpPresentation* presentation, bool alreadyDestroyed = false);
-
-    // Bibles
-    struct BibleManager
-    {
-      KwBibleManager* manager;
-      QComboBox* comboBibles;
-      QToolBar* toolBar;
-    };
-    void fillBiblesList(BibleManager* mgr);
 
 private:
     Ui::prefs_base ui_prefs_base ;
@@ -168,6 +157,9 @@ private:
     KwDocument* m_document;
     KwPlaylistModel* m_playlistModel;
 
+    // Plugins
+    KwPluginManager* m_plugins;
+
     KwSongdbModel* m_songDbModel;
     KwSongdbTree* m_songDbTree;
     KAction* m_unlockSongDbAction;
@@ -176,9 +168,6 @@ private:
     KAction* m_addSongAction;
     KAction* m_editSongAction;
     KAction* m_editSongBooksAction;
-
-    QTabWidget* m_bibleTabs;
-    QList<BibleManager> m_bibles;
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;
