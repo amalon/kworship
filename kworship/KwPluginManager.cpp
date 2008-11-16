@@ -26,16 +26,13 @@
 #include "KwPluginManager.h"
 #include "KwPlugin.h"
 
-#include <QMainWindow>
-
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-KwPluginManager::KwPluginManager(QMainWindow* mainWindow)
-: m_mainWindow(mainWindow)
-, m_plugins()
+KwPluginManager::KwPluginManager()
+: m_plugins()
 {
 }
 
@@ -56,7 +53,7 @@ bool KwPluginManager::loadPlugin(KwPlugin* plugin)
   if (!m_plugins.contains(id))
   {
     m_plugins[id] = plugin;
-    plugin->load(m_mainWindow);
+    plugin->load();
     return true;
   }
   return false;

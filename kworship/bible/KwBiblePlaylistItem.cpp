@@ -17,4 +17,59 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+/**
+ * @file KwBiblePlaylistItem.cpp
+ * @brief A playlist item for bible passages.
+ * @author James Hogan <james@albanarts.com>
+ */
+
+#include "KwBiblePlaylistItem.h"
+#include "KwBiblePlaylistItemNode.h"
+
+KW_REGISTER_PLAYLIST_ITEM(KwBiblePlaylistItem, "bible")
+
+/*
+ * Constructors + destructor.
+ */
+
+/// Default constructor.
+KwBiblePlaylistItem::KwBiblePlaylistItem()
+: KwPlaylistItem()
+{
+}
+
+/// Construct from a DOM element.
+KwBiblePlaylistItem::KwBiblePlaylistItem(const QDomElement& element, KwResourceManager* resourceManager)
+: KwPlaylistItem()
+{
+  /// @todo Implement bible passage import.
+}
+
+/// Destructor.
+KwBiblePlaylistItem::~KwBiblePlaylistItem()
+{
+}
+
+/*
+ * DOM Translation.
+ */
+
+QString KwBiblePlaylistItem::itemType() const
+{
+  return "bible";
+}
+
+void KwBiblePlaylistItem::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+  /// @todo Implement bible passage export.
+}
+
+/*
+ * Main interface
+ */
+
+KwPlaylistNode* KwBiblePlaylistItem::getNode(KwPlaylistNode* parent)
+{
+  return new KwBiblePlaylistItemNode(parent, this);
+}
 

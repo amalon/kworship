@@ -87,7 +87,7 @@ class KwBiblePlugin : public KwPlugin
      */
 
     // Reimplemented
-    virtual void _load(QMainWindow* mainWindow);
+    virtual void _load();
 
     // Reimplemented
     virtual void _unload();

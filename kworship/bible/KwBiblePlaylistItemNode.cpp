@@ -17,4 +17,53 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+/**
+ * @file KwBiblePlaylistItemNode.cpp
+ * @brief A playlist node for a bible passage item.
+ * @author James Hogan <james@albanarts.com>
+ */
+
+#include "KwBiblePlaylistItemNode.h"
+#include "KwBiblePlaylistItem.h"
+
+#include <KIcon>
+
+/*
+ * Constructors + destructor.
+ */
+
+/// Primary constructor.
+KwBiblePlaylistItemNode::KwBiblePlaylistItemNode(KwPlaylistNode* parent, KwBiblePlaylistItem* item)
+: KwPlaylistNode(parent)
+, m_item(item)
+{
+}
+
+/// Destructor.
+KwBiblePlaylistItemNode::~KwBiblePlaylistItemNode()
+{
+}
+
+/*
+ * Main interface
+ */
+
+QVariant KwBiblePlaylistItemNode::getData(int role, int column)
+{
+  if (role == Qt::DisplayRole)
+  {
+    if (column == 0)
+    {
+      return "Bible Passage";
+    }
+  }
+  else if (role == Qt::DecorationRole)
+  {
+    if (column == 0)
+    {
+      return KIcon("bible");
+    }
+  }
+  return QVariant();
+}
 

@@ -17,88 +17,50 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwBiblePlaylistItemNode_h_
+#define _KwBiblePlaylistItemNode_h_
+
 /**
- * @file KwPlugin.cpp
- * @brief An abstract KWorship plugin.
+ * @file KwBiblePlaylistItemNode.h
+ * @brief A playlist node for a bible passage item.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlugin.h"
-#include "KwPluginManager.h"
+#include "KwPlaylistNode.h"
 
-/*
- * Constructors + destructor
- */
+class KwBiblePlaylistItem;
 
-/// Primary constructor.
-KwPlugin::KwPlugin(const QString& id, const QString& name, const QString& description)
-: m_id(id)
-, m_name(name)
-, m_description(description)
-, m_manager(0)
-, m_loaded(false)
+/// A playlist node for a text.
+class KwBiblePlaylistItemNode : public KwPlaylistNode
 {
-}
+  public:
+    
+    /*
+     * Constructors + destructor.
+     */
 
-/// Destructor.
-KwPlugin::~KwPlugin()
-{
-}
+    /// Primary constructor.
+    KwBiblePlaylistItemNode(KwPlaylistNode* parent, KwBiblePlaylistItem* item);
 
-/*
- * Basic information accessors
- */
+    /// Destructor.
+    virtual ~KwBiblePlaylistItemNode();
 
-/// Get the id.
-const QString& KwPlugin::id() const
-{
-  return m_id;
-}
+    /*
+     * Main interface
+     */
 
-/// Get the name.
-const QString& KwPlugin::name() const
-{
-  return m_name;
-}
+    // Reimplemented
+    virtual QVariant getData(int role, int column);
 
-/// Get the description.
-const QString& KwPlugin::description() const
-{
-  return m_description;
-}
+  private:
 
-/// Get whether the plugin is loaded.
-bool KwPlugin::isLoaded() const
-{
-  return m_loaded;
-}
+    /*
+     * Variables
+     */
 
-/*
- * Loading and unloading
- */
+    /// Playlist item.
+    KwBiblePlaylistItem* m_item;
+};
 
-/// Set the manager.
-void KwPlugin::setManager(KwPluginManager* manager)
-{
-  Q_ASSERT(0 == m_manager);
-  m_manager = manager;
-}
-
-/// Load the plugin.
-void KwPlugin::load()
-{
-  if (!m_loaded)
-  {
-    _load();
-  }
-}
-
-/// Unload the plugin.
-void KwPlugin::unload()
-{
-  if (m_loaded)
-  {
-    _unload();
-  }
-}
+#endif // _KwBiblePlaylistItemNode_h_
 

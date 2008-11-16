@@ -43,9 +43,6 @@
 #include "KwMediaManager.h"
 #include "KwMediaControlWidget.h"
 
-#include "KwPluginManager.h"
-#include "KwBiblePlugin.h"
-
 #include "KwSongdb.h"
 #include "KwSongdbModel.h"
 #include "KwSongdbFilterNode.h"
@@ -93,16 +90,12 @@ kworship::kworship()
 , m_view(new kworshipView(this))
 , m_displayManager(0)
 , m_document(0)
-, m_plugins(new KwPluginManager(this))
 , m_presentationManager(new UpManager(this))
 , m_currentPresentation(0)
 , m_printer(0)
 {
   m_playlistModel = new KwPlaylistModel;
   setDocument();
-
-  // Load plugins
-  m_plugins->loadPlugin(new KwBiblePlugin());
 
   // set up presentation backends
   m_presentationManager->registerBackend<UpOoBackend>();
@@ -336,7 +329,6 @@ kworship::~kworship()
 {
   delete KwSongdb::self();
   delete m_slideNotes;
-  delete m_plugins;
 }
 
 /*
@@ -348,6 +340,28 @@ void kworship::loadPlaylist(const KUrl& url)
 {
   setDocument(url);
   m_document->reload();
+}
+
+/*
+ * Accessors
+ */
+
+/// Get the main display manager.
+KwDisplayManager* kworship::displayManager()
+{
+  return m_displayManager;
+}
+
+/// Get the current document.
+KwDocument* kworship::document()
+{
+  return m_document;
+}
+
+/// Get the playlist model.
+KwPlaylistModel* kworship::playlistModel()
+{
+  return m_playlistModel;
 }
 
 void kworship::setupActions()

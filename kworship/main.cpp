@@ -17,9 +17,8 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#include "kworship.h"
+#include "KwApplication.h"
 
-#include <kapplication.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
 #include <kconfigdialogmanager.h>
@@ -41,40 +40,12 @@ int main(int argc, char **argv)
   KCmdLineOptions options;
   options.add("+[URL]", ki18n( "Document to open" ));
   KCmdLineArgs::addCmdLineOptions(options);
-  KApplication app;
 
   // Screen number can be managed by a DesktopView widget
   KConfigDialogManager::changedMap()->insert("DesktopView", SIGNAL(screenChanged(int)));
   KConfigDialogManager::propertyMap()->insert("DesktopView", "selectedScreen");
 
-  kworship *widget = new kworship;
-
-  // see if we are starting with session management
-  if (app.isSessionRestored())
-  {
-    RESTORE(kworship);
-  }
-  else
-  {
-    widget->show();
-    // no session.. just start up normally
-    KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
-    if (args->count() > 0)
-    {
-      KUrl arg = args->arg(0);
-      KUrl url = KCmdLineArgs::cwd();
-      if (arg.isRelative())
-      {
-        url.addPath(arg.path());
-      }
-      else
-      {
-        url = arg;
-      }
-      widget->loadPlaylist(url);
-    }
-    args->clear();
-  }
+  KwApplication app;
 
   return app.exec();
 }

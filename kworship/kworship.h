@@ -38,7 +38,6 @@ class KwPlaylistList;
 class KwPlaylistModel;
 class KwMediaManager;
 class KwDocument;
-class KwPluginManager;
 class KwSongdbModel;
 class KwSongdbTree;
 
@@ -83,6 +82,19 @@ public:
 
     /// Load a specified playlist.
     void loadPlaylist(const KUrl& url);
+
+    /*
+     * Accessors
+     */
+
+    /// Get the main display manager.
+    KwDisplayManager* displayManager();
+
+    /// Get the current document.
+    KwDocument* document();
+
+    /// Get the playlist model.
+    KwPlaylistModel* playlistModel();
 
 private slots:
     void settingsChanged();
@@ -156,9 +168,6 @@ private:
 
     KwDocument* m_document;
     KwPlaylistModel* m_playlistModel;
-
-    // Plugins
-    KwPluginManager* m_plugins;
 
     KwSongdbModel* m_songDbModel;
     KwSongdbTree* m_songDbTree;

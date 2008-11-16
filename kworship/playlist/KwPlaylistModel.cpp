@@ -55,6 +55,25 @@ KwPlaylistModel::~KwPlaylistModel()
 }
 
 /*
+ * Modification interface
+ */
+
+/// Add an item to the list.
+void KwPlaylistModel::addItem(const QModelIndex& parent, KwPlaylistItem* item, int position)
+{
+  KwPlaylistListNode* list = dynamic_cast<KwPlaylistListNode*>(itemFromIndex(parent));
+  Q_ASSERT(0 != list);
+  if (position == -1)
+  {
+    position = list->getChildCount();
+  }
+  beginInsertRows(parent, position, position);
+  list->childrenAdded(position, position);
+  list->getItem()->addItem(item, position);
+  endInsertRows();
+}
+
+/*
  * Drag and drop
  */
 
@@ -125,10 +144,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
           if (ok)
           {
             KwPlaylistSong* newSong = new KwPlaylistSong(KwSongdb::self()->songVersionById(versionId));
-            beginInsertRows(parent, row, row);
-            list->childrenAdded(row, row);
-            list->getItem()->addItem(newSong, row);
-            endInsertRows();
+            addItem(parent, newSong, row);
             ++row;
           }
         }
@@ -166,10 +182,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
       {
         newItem = new KwPlaylistFile(file);
       }
-      beginInsertRows(parent, row, row);
-      list->childrenAdded(row, row);
-      list->getItem()->addItem(newItem, row);
-      endInsertRows();
+      addItem(parent, newItem, row);
       ++row;
     }
 

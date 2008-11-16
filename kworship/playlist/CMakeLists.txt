@@ -21,7 +21,6 @@ set(kworshipplaylist_SRCS
     KwPlaylistNote.cpp
     KwPlaylistNoteNode.cpp
     KwPlaylistPresentation.cpp
-    KwPlaylistReading.cpp
     KwPlaylistSong.cpp
     KwPlaylistSongNode.cpp
     KwPlaylistSongNodeVerse.cpp
@@ -31,3 +30,6 @@ set(kworshipplaylist_SRCS
 
 kde4_add_library(kworshipplaylist ${kworshipplaylist_SRCS})
 
+target_link_libraries(kworshipplaylist
+                      kworshiparchive
+)

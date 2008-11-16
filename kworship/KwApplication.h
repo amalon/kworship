@@ -17,88 +17,81 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwApplication_h_
+#define _KwApplication_h_
+
 /**
- * @file KwPlugin.cpp
- * @brief An abstract KWorship plugin.
+ * @file KwApplication.h
+ * @brief Application global data.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlugin.h"
-#include "KwPluginManager.h"
+#include <KApplication>
 
-/*
- * Constructors + destructor
- */
+class KwPluginManager;
+class kworship;
 
-/// Primary constructor.
-KwPlugin::KwPlugin(const QString& id, const QString& name, const QString& description)
-: m_id(id)
-, m_name(name)
-, m_description(description)
-, m_manager(0)
-, m_loaded(false)
+/// Application global data.
+class KwApplication
 {
-}
+  public:
 
-/// Destructor.
-KwPlugin::~KwPlugin()
-{
-}
+    /*
+     * Singletonhood
+     */
 
-/*
- * Basic information accessors
- */
+    /// Get the singleton application object.
+    static KwApplication* self();
 
-/// Get the id.
-const QString& KwPlugin::id() const
-{
-  return m_id;
-}
+    /*
+     * Constructors + destructor
+     */
 
-/// Get the name.
-const QString& KwPlugin::name() const
-{
-  return m_name;
-}
+    /// Primary constructor.
+    KwApplication();
 
-/// Get the description.
-const QString& KwPlugin::description() const
-{
-  return m_description;
-}
+    /// Destructor.
+    virtual ~KwApplication();
 
-/// Get whether the plugin is loaded.
-bool KwPlugin::isLoaded() const
-{
-  return m_loaded;
-}
+    /*
+     * Main interface
+     */
 
-/*
- * Loading and unloading
- */
+    /// Execute the application.
+    int exec();
 
-/// Set the manager.
-void KwPlugin::setManager(KwPluginManager* manager)
-{
-  Q_ASSERT(0 == m_manager);
-  m_manager = manager;
-}
+    /*
+     * Accessors
+     */
 
-/// Load the plugin.
-void KwPlugin::load()
-{
-  if (!m_loaded)
-  {
-    _load();
-  }
-}
+    /// Get the main window widget.
+    kworship* mainWindow();
 
-/// Unload the plugin.
-void KwPlugin::unload()
-{
-  if (m_loaded)
-  {
-    _unload();
-  }
-}
+    /// Get the plugin manager.
+    KwPluginManager* pluginManager();
+
+  private:
+
+    /*
+     * Static singleton data
+     */
+
+    /// Singleton application.
+    static KwApplication* s_self;
+
+    /*
+     * Variables
+     */
+
+    /// KApplication object.
+    KApplication m_app;
+
+    /// Main window widget.
+    kworship* m_mainWindow;
+
+    /// Plugin manager.
+    KwPluginManager* m_pluginManager;
+};
+
+#endif // _KwApplication_h_
 

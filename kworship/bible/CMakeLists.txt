@@ -7,6 +7,8 @@ find_package(Sword REQUIRED)
 set(kworshipbible_SRCS
     KwBibleManager.cpp
     KwBibleModule.cpp
+    KwBiblePlaylistItem.cpp
+    KwBiblePlaylistItemNode.cpp
     # SWORD
     KwBibleManagerSword.cpp
     KwBibleModuleSword.cpp

@@ -31,7 +31,6 @@
 
 class KwPluginManager;
 
-class QMainWindow;
 class QDockWidget;
 
 /// An abstract KWorship plugin.
@@ -85,7 +84,7 @@ class KwPlugin : public QObject
     /** Load the plugin.
      * @pre Manager must have been set.
      */
-    void load(QMainWindow* mainWindow);
+    void load();
 
     /// Unload the plugin.
     void unload();
@@ -99,7 +98,7 @@ class KwPlugin : public QObject
     /** Load the plugin.
      * @pre !isLoaded()
      */
-    virtual void _load(QMainWindow* mainWindow) = 0;
+    virtual void _load() = 0;
 
     /** Unload the plugin.
      * @pre isLoaded()

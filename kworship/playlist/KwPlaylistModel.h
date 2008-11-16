@@ -30,6 +30,8 @@
 
 #include "NodeBasedModel.h"
 
+class KwPlaylistItem;
+
 /// A Qt model for playlist items.
 class KwPlaylistModel : public NodeBasedModel<KwPlaylistNode>
 {
@@ -44,6 +46,13 @@ class KwPlaylistModel : public NodeBasedModel<KwPlaylistNode>
 
     /// Destructor.
     virtual ~KwPlaylistModel();
+
+    /*
+     * Modification interface
+     */
+
+    /// Add an item to the list.
+    void addItem(const QModelIndex& parent, KwPlaylistItem* item, int position = -1);
 
     /*
      * Drag and drop

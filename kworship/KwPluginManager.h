@@ -32,8 +32,6 @@
 
 class KwPlugin;
 
-class QMainWindow;
-
 /** Manages KWorship plugins.
  * @todo Dynamic loading/unloading of plugins.
  */
@@ -48,7 +46,7 @@ class KwPluginManager : public QObject
      */
 
     /// Primary constructor.
-    KwPluginManager(QMainWindow* mainWindow);
+    KwPluginManager();
 
     /// Destructor.
     virtual ~KwPluginManager();
@@ -68,9 +66,6 @@ class KwPluginManager : public QObject
     /*
      * Variables
      */
-
-    /// Main window.
-    QMainWindow* m_mainWindow;
 
     /// Plugins by id.
     QMap<QString, KwPlugin*> m_plugins;

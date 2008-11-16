@@ -29,8 +29,9 @@ add_subdirectory (playlist)
 add_subdirectory (archive)
 
 set(kworship_SRCS
-    kworship.cpp
     main.cpp
+    KwApplication.cpp
+    kworship.cpp
     kworshipview.cpp
     prefsDisplay.cpp
     prefsSongDB.cpp

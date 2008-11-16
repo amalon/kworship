@@ -17,88 +17,53 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwBiblePlaylistItem_h_
+#define _KwBiblePlaylistItem_h_
+
 /**
- * @file KwPlugin.cpp
- * @brief An abstract KWorship plugin.
+ * @file KwBiblePlaylistItem.h
+ * @brief A playlist item for bible passages.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlugin.h"
-#include "KwPluginManager.h"
+#include <KwPlaylistItem.h>
 
-/*
- * Constructors + destructor
- */
-
-/// Primary constructor.
-KwPlugin::KwPlugin(const QString& id, const QString& name, const QString& description)
-: m_id(id)
-, m_name(name)
-, m_description(description)
-, m_manager(0)
-, m_loaded(false)
+/// A playlist item for bible passages.
+class KwBiblePlaylistItem : public KwPlaylistItem
 {
-}
+    KW_PLAYLIST_ITEM
 
-/// Destructor.
-KwPlugin::~KwPlugin()
-{
-}
+  public:
+    
+    /*
+     * Constructors + destructor.
+     */
 
-/*
- * Basic information accessors
- */
+    /// Default constructor.
+    KwBiblePlaylistItem();
 
-/// Get the id.
-const QString& KwPlugin::id() const
-{
-  return m_id;
-}
+    /// Construct from a DOM element.
+    KwBiblePlaylistItem(const QDomElement& element, KwResourceManager* resourceManager);
 
-/// Get the name.
-const QString& KwPlugin::name() const
-{
-  return m_name;
-}
+    /// Destructor.
+    virtual ~KwBiblePlaylistItem();
 
-/// Get the description.
-const QString& KwPlugin::description() const
-{
-  return m_description;
-}
+    /*
+     * DOM Translation.
+     */
 
-/// Get whether the plugin is loaded.
-bool KwPlugin::isLoaded() const
-{
-  return m_loaded;
-}
+    // Reimplemented
+    virtual QString itemType() const;
 
-/*
- * Loading and unloading
- */
+    // Reimplemented
+    virtual void exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
 
-/// Set the manager.
-void KwPlugin::setManager(KwPluginManager* manager)
-{
-  Q_ASSERT(0 == m_manager);
-  m_manager = manager;
-}
+    /*
+     * Main interface
+     */
 
-/// Load the plugin.
-void KwPlugin::load()
-{
-  if (!m_loaded)
-  {
-    _load();
-  }
-}
+    virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
+};
 
-/// Unload the plugin.
-void KwPlugin::unload()
-{
-  if (m_loaded)
-  {
-    _unload();
-  }
-}
+#endif // _KwBiblePlaylistItem_h_
 

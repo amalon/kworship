@@ -24,11 +24,17 @@
  */
 
 #include "KwBiblePlugin.h"
+#include "KwApplication.h"
+#include "kworship.h"
+#include "KwDocument.h"
 
 #include <KwBibleManager.h>
 #include <KwBibleManagerSword.h>
 #include <KwBibleManagerBibleGateway.h>
 #include <KwBibleModule.h>
+#include <KwBiblePlaylistItem.h>
+
+#include <KwPlaylistModel.h>
 
 #include <KLocale>
 #include <KAction>
@@ -251,6 +257,9 @@ void KwBiblePlugin::slotVerseRange()
 /// Fired by the insert into playlist action.
 void KwBiblePlugin::slotInsertIntoPlaylist()
 {
+  KwBiblePlaylistItem* item = new KwBiblePlaylistItem();
+  KwPlaylistModel* model = KwApplication::self()->mainWindow()->playlistModel();
+  model->addItem(QModelIndex(), item);
 }
 
 /// Fired by the show now action.
@@ -262,7 +271,7 @@ void KwBiblePlugin::slotShowNow()
  * Loading and unloading virtual interface
  */
 
-void KwBiblePlugin::_load(QMainWindow* mainWindow)
+void KwBiblePlugin::_load()
 {
   // Construct the bible managers. 
   QList<KwBibleManager*> managers; 
@@ -382,7 +391,7 @@ void KwBiblePlugin::_load(QMainWindow* mainWindow)
   connect(m_editRange, SIGNAL(textChanged(const QString&)),
           this, SLOT(slotVerseRange()));
 
-  mainWindow->addDockWidget(Qt::LeftDockWidgetArea, m_docker);
+  KwApplication::self()->mainWindow()->addDockWidget(Qt::LeftDockWidgetArea, m_docker);
 
   slotBibleChanged();
 }
