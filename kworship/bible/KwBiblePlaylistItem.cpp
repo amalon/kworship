@@ -32,9 +32,10 @@ KW_REGISTER_PLAYLIST_ITEM(KwBiblePlaylistItem, "bible")
  * Constructors + destructor.
  */
 
-/// Default constructor.
-KwBiblePlaylistItem::KwBiblePlaylistItem()
+/// Construct from reference information.
+KwBiblePlaylistItem::KwBiblePlaylistItem(const QString& managerName, const QString& moduleName, const KwBibleModule::Key& moduleKey)
 : KwPlaylistItem()
+, m_passage(managerName, moduleName, moduleKey)
 {
 }
 
@@ -71,5 +72,15 @@ void KwBiblePlaylistItem::exportDetailsToDom(QDomDocument& document, QDomElement
 KwPlaylistNode* KwBiblePlaylistItem::getNode(KwPlaylistNode* parent)
 {
   return new KwBiblePlaylistItemNode(parent, this);
+}
+
+/*
+ * Accessors
+ */
+
+/// Get the bible passage.
+const KwBiblePassage& KwBiblePlaylistItem::passage() const
+{
+  return m_passage;
 }
 

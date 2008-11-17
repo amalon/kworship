@@ -26,7 +26,12 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "KwBibleModule.h"
+#include "KwBiblePassage.h"
+
 #include <KwPlaylistItem.h>
+
+#include <QString>
 
 /// A playlist item for bible passages.
 class KwBiblePlaylistItem : public KwPlaylistItem
@@ -39,8 +44,12 @@ class KwBiblePlaylistItem : public KwPlaylistItem
      * Constructors + destructor.
      */
 
-    /// Default constructor.
-    KwBiblePlaylistItem();
+    /** Construct from reference information.
+     * @param managerName Identifier of bible manager.
+     * @param moduleName Identifier of bible module.
+     * @param moduleKey Bible passage key.
+     */
+    KwBiblePlaylistItem(const QString& managerName, const QString& moduleName, const KwBibleModule::Key& moduleKey);
 
     /// Construct from a DOM element.
     KwBiblePlaylistItem(const QDomElement& element, KwResourceManager* resourceManager);
@@ -63,6 +72,22 @@ class KwBiblePlaylistItem : public KwPlaylistItem
      */
 
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
+
+    /*
+     * Accessors
+     */
+
+    /// Get the bible passage.
+    const KwBiblePassage& passage() const;
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// The bible passage.
+    KwBiblePassage m_passage;
 };
 
 #endif // _KwBiblePlaylistItem_h_

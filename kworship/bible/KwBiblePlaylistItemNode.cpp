@@ -25,6 +25,7 @@
 
 #include "KwBiblePlaylistItemNode.h"
 #include "KwBiblePlaylistItem.h"
+#include "KwBiblePassage.h"
 
 #include <KIcon>
 
@@ -54,7 +55,7 @@ QVariant KwBiblePlaylistItemNode::getData(int role, int column)
   {
     if (column == 0)
     {
-      return "Bible Passage";
+      return m_item->passage().textualKey();
     }
   }
   else if (role == Qt::DecorationRole)

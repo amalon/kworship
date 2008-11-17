@@ -80,6 +80,59 @@ KwBiblePlugin::~KwBiblePlugin()
 }
 
 /*
+ * Accessors
+ */
+
+/// Get the current bible passage information.
+bool KwBiblePlugin::resolvePassage(KwBibleManager** manager, KwBibleModule** module, KwBibleModule::Key* key, bool* usedSearch) const
+{
+  // Get the current bible manager
+  int tab = m_managerTabs->currentIndex();
+  if (tab >= 0 && tab < m_managers.size())
+  {
+    const BibleManager& mgr = m_managers[tab];
+    *manager = mgr.manager;
+
+    // Is a bible selected?
+    int bibleInd = mgr.comboBibles->currentIndex();
+    QString bible;
+    KwBibleModule* mod = 0;
+    if (bibleInd >= 0)
+    {
+      QString bible = mgr.comboBibles->itemData(bibleInd).toString();
+      mod = mgr.manager->module(bible);
+    }
+    if (0 != mod)
+    {
+      *module = mod;
+      // Is a book selected?
+      int bookIndex = m_comboBook->currentIndex();
+      int chapterIndex = -1;
+      if (bookIndex >= 0)
+      {
+        // Is a chapter selected?
+        chapterIndex = m_comboChapter->currentIndex();
+      }
+
+      bool valid;
+      KwBibleModule::Key relativeKey = mod->createKey(bookIndex, chapterIndex);
+      *key = mod->createKey(relativeKey, m_editRange->text(), &valid);
+
+      if (0 != usedSearch)
+      {
+        *usedSearch = true;
+      }
+      return valid;
+    }
+  }
+  if (0 != usedSearch)
+  {
+    *usedSearch = false;
+  }
+  return false;
+}
+
+/*
  * Private slots
  */
 
@@ -200,54 +253,30 @@ void KwBiblePlugin::slotBookChanged()
 /// Fired when the bible text needs to be retrieved.
 void KwBiblePlugin::slotVerseRange()
 {
-  // Get the current bible manager
-  int tab = m_managerTabs->currentIndex();
-  if (tab >= 0 && tab < m_managers.size())
+  KwBibleManager* manager;
+  KwBibleModule* module;
+  KwBibleModule::Key key;
+  bool usedSearch;
+  bool success = resolvePassage(&manager, &module, &key, &usedSearch);
+  if (usedSearch)
   {
-    BibleManager& mgr = m_managers[tab];
+    m_comboBook->setCurrentIndex(key.start.book);
+    m_comboChapter->setCurrentIndex(key.start.chapter);
+    m_textPassage->document()->setHtml(module->renderText(key));
 
-    // Is a bible selected?
-    int bibleInd = mgr.comboBibles->currentIndex();
-    QString bible;
-    KwBibleModule* module = 0;
-    if (bibleInd >= 0)
+    m_insertIntoPlaylistAction->setEnabled(true);
+    m_showNowAction->setEnabled(true);
+
+    // Update color of search box
+    static QPalette p = m_editRange->palette();
+    QPalette changedPal = p;
+    if (!success)
     {
-      QString bible = mgr.comboBibles->itemData(bibleInd).toString();
-      module = mgr.manager->module(bible);
+      changedPal.setColor( QPalette::Normal, QPalette::Base, QColor(255, 127, 127) );
     }
-    if (0 != module)
-    {
-      // Is a book selected?
-      int bookIndex = m_comboBook->currentIndex();
-      int chapterIndex = -1;
-      if (bookIndex >= 0)
-      {
-        // Is a chapter selected?
-        chapterIndex = m_comboChapter->currentIndex();
-      }
+    m_editRange->setPalette(changedPal);
 
-      bool valid;
-      KwBibleModule::Key relativeKey = module->createKey(bookIndex, chapterIndex);
-      KwBibleModule::Key key = module->createKey(relativeKey, m_editRange->text(), &valid);
-      // Update book and chapter
-      m_comboBook->setCurrentIndex(key.start.book);
-      m_comboChapter->setCurrentIndex(key.start.chapter);
-      m_textPassage->document()->setHtml(module->renderText(key));
-
-      m_insertIntoPlaylistAction->setEnabled(true);
-      m_showNowAction->setEnabled(true);
-
-      // Update color of search box
-      static QPalette p = m_editRange->palette();
-      QPalette changedPal = p;
-      if (!valid)
-      {
-        changedPal.setColor( QPalette::Normal, QPalette::Base, QColor(255, 127, 127) );
-      }
-      m_editRange->setPalette(changedPal);
-
-      return;
-    }
+    return;
   }
   m_textPassage->document()->setPlainText(QString());
   m_insertIntoPlaylistAction->setEnabled(false);
@@ -257,9 +286,17 @@ void KwBiblePlugin::slotVerseRange()
 /// Fired by the insert into playlist action.
 void KwBiblePlugin::slotInsertIntoPlaylist()
 {
-  KwBiblePlaylistItem* item = new KwBiblePlaylistItem();
-  KwPlaylistModel* model = KwApplication::self()->mainWindow()->playlistModel();
-  model->addItem(QModelIndex(), item);
+  KwBibleManager* manager;
+  KwBibleModule* module;
+  KwBibleModule::Key key;
+  bool success = resolvePassage(&manager, &module, &key);
+
+  if (success)
+  {
+    KwBiblePlaylistItem* item = new KwBiblePlaylistItem(manager->name(), module->name(), key);
+    KwPlaylistModel* model = KwApplication::self()->mainWindow()->playlistModel();
+    model->addItem(QModelIndex(), item);
+  }
 }
 
 /// Fired by the show now action.

@@ -28,6 +28,8 @@
 
 #include "KwPlugin.h"
 
+#include <KwBibleModule.h>
+
 class KwBibleManager;
 
 class KAction;
@@ -55,6 +57,13 @@ class KwBiblePlugin : public KwPlugin
 
     /// Destructor.
     virtual ~KwBiblePlugin();
+
+    /*
+     * Accessors
+     */
+
+    /// Get the current bible passage information.
+    bool resolvePassage(KwBibleManager** manager, KwBibleModule** module, KwBibleModule::Key* key, bool* usedSearch = 0) const;
 
   private slots:
 
