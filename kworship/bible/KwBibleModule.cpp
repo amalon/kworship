@@ -24,6 +24,7 @@
  */
 
 #include "KwBibleModule.h"
+#include "KwBiblePassage.h"
 
 #include <QRegExp>
 
@@ -265,6 +266,70 @@ QString KwBibleModule::bookName(int book)
   {
     return QString();
   }
+}
+
+bool KwBibleModule::fillPassage(const Key& key, KwBiblePassage* outPassage)
+{
+  Key range = key;
+
+  // Complete the range
+  if (range.start.book < 0)
+  {
+    // Start book must be specified
+    return false;
+  }
+  else if (range.end.book < 0)
+  {
+    range.end.book = range.start.book;
+  }
+
+  if (range.start.chapter < 0)
+  {
+    range.start.chapter = 0;
+    range.end.chapter = numChapters(range.end.book)-1;
+  }
+  else if (range.end.chapter < 0)
+  {
+    range.end.chapter = range.start.chapter;
+  }
+
+  if (range.start.verse < 0)
+  {
+    range.start.verse = 0;
+    range.end.verse = numVerses(range.end.book, range.end.chapter)-1;
+  }
+  else if (range.end.verse < 0)
+  {
+    range.end.verse = range.start.verse;
+  }
+
+  outPassage->setSource("MGR", name());
+  outPassage->initBooks(range.start.book, 1+range.end.book-range.start.book);
+  for (int book = range.start.book; book <= range.end.book; ++book)
+  {
+    bool isFirstBook = (book == range.start.book);
+    bool isLastBook = (book == range.end.book);
+    int maxChapters = numChapters(book);
+    int firstChapter = (isFirstBook ? range.start.chapter : 0);
+    int lastChapter = (isLastBook ? range.end.chapter : maxChapters-1);
+    Q_ASSERT(lastChapter >= firstChapter && lastChapter < maxChapters);
+    outPassage->initBook(book, bookName(book), 1+firstChapter, 1+lastChapter-firstChapter);
+    for (int chapter = firstChapter; chapter <= lastChapter; ++chapter)
+    {
+      bool isFirstChapter = isFirstBook && (chapter == firstChapter);
+      bool isLastChapter = isLastBook && (chapter == lastChapter);
+      int maxVerses = numVerses(book, chapter);
+      int firstVerse = (isFirstChapter ? range.start.verse : 0);
+      int lastVerse = (isLastChapter ? range.end.verse : maxVerses-1);
+      Q_ASSERT(lastVerse >= firstVerse && lastVerse < maxVerses);
+      outPassage->initChapter(book, 1+chapter, 1+firstVerse, 1+lastVerse-firstVerse);
+      for (int verse = firstVerse; verse <= lastVerse; ++verse)
+      {
+        outPassage->initVerse(book, 1+chapter, 1+verse, "heading", "content");
+      }
+    }
+  }
+  return true;
 }
 
 /*

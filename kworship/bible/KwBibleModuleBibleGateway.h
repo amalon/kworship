@@ -64,9 +64,6 @@ class KwBibleModuleBibleGateway : public KwBibleModule
     virtual int numVerses(int book, int chapter);
 
     // Reimplemented
-    virtual bool fillPassage(const Key& key, KwBiblePassage* outPassage) const;
-
-    // Reimplemented
     virtual QString renderText(const KwBibleModule::Key& key);
 
   protected:

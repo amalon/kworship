@@ -55,7 +55,17 @@ class KwBiblePassage
     /** Clear the passage.
      * Deletes all books.
      */
-    void clear();
+    void clearBooks();
+
+    /** Clear the chapters in a book.
+     * Deletes all chapters.
+     */
+    void clearChapters(int bookNumber);
+
+    /** Clear the verses in a chapter.
+     * Deletes all verses.
+     */
+    void clearVerses(int bookNumber, int chapterNumber);
 
     /** Set the source module.
      * @param managerId ID of the bible manager.

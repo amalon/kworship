@@ -45,18 +45,6 @@ KwBiblePassage::KwBiblePassage()
 /// Destructor.
 KwBiblePassage::~KwBiblePassage()
 {
-  // Deep cleanup operation
-  for (int bookIndex = 0; bookIndex < m_numBooks; ++bookIndex)
-  {
-    Book* book = &m_books[bookIndex];
-    for (int chapterIndex = 0; chapterIndex < book->numChapters; ++chapterIndex)
-    {
-      Chapter* chapter = &book->chapters[chapterIndex];
-      delete chapter->verses;
-    }
-    delete book->chapters;
-  }
-  delete m_books;
 }
 
 /*
@@ -64,36 +52,121 @@ KwBiblePassage::~KwBiblePassage()
  */
 
 /// Clear the passage.
-void KwBiblePassage::clear()
+void KwBiblePassage::clearBooks()
 {
+  // Deep cleanup operation
+  if (0 != m_books)
+  {
+    int lastBook = m_firstBook + m_numBooks;
+    for (int bookNumber = m_firstBook; bookNumber < lastBook; ++bookNumber)
+    {
+      clearChapters(bookNumber);
+    }
+    delete [] m_books;
+    m_books = 0;
+  }
+}
+
+/// Clear the chapters in a book.
+void KwBiblePassage::clearChapters(int bookNumber)
+{
+  Q_ASSERT(0 != m_books && bookNumber >= m_firstBook && bookNumber < m_firstBook+m_numBooks);
+  Book* book = &m_books[bookNumber-m_firstBook];
+  if (0 != book->chapters)
+  {
+    int maxChapter = book->firstChapter + book->numChapters;
+    for (int chapterNumber = book->firstChapter; chapterNumber < maxChapter; ++chapterNumber)
+    {
+      clearVerses(bookNumber, chapterNumber);
+    }
+    delete [] book->chapters;
+    book->chapters = 0;
+  }
+}
+
+/// Clear the verses in a chapter.
+void KwBiblePassage::clearVerses(int bookNumber, int chapterNumber)
+{
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+  chapterNumber -= m_books[bookNumber].firstChapter;
+  Q_ASSERT(0 != m_books[bookNumber].chapters && chapterNumber >= 0 && chapterNumber < m_books[bookNumber].numChapters);
+  Chapter* chapter = &m_books[bookNumber].chapters[chapterNumber];
+  if (0 != chapter->verses)
+  {
+    delete [] chapter->verses;
+    chapter->verses = 0;
+  }
 }
 
 /// Set the source module.
 void KwBiblePassage::setSource(const QString& managerId, const QString& moduleId)
 {
+  m_managerId = managerId;
+  m_moduleId = moduleId;
 }
 
 /// Initialise the books in the passage.
 void KwBiblePassage::initBooks(int firstBook, int numBooks)
 {
+  clearBooks();
+  m_firstBook = firstBook;
+  m_numBooks = numBooks;
+  m_books = new Book[numBooks];
+  for (int i = 0; i < numBooks; ++i)
+  {
+    m_books[i].firstChapter = -1;
+    m_books[i].numChapters = 0;
+    m_books[i].chapters = 0;
+  }
 }
 
 /// Initialise a book in the passage.
 void KwBiblePassage::initBook(int bookNumber,
                               const QString& name, int firstChapter, int numChapters)
 {
+  clearChapters(bookNumber);
+  bookNumber -= m_firstBook;
+  Book* book = &m_books[bookNumber];
+  book->name = name;
+  book->firstChapter = firstChapter;
+  book->numChapters = numChapters;
+  book->chapters = new Chapter[numChapters];
+  for (int i = 0; i < numChapters; ++i)
+  {
+    book->chapters[i].firstVerse = -1;
+    book->chapters[i].numVerses = 0;
+    book->chapters[i].verses = 0;
+  }
 }
 
 /// Initialise a chapter in the passage.
 void KwBiblePassage::initChapter(int bookNumber, int chapterNumber,
                                  int firstVerse, int numVerses)
 {
+  clearVerses(bookNumber, chapterNumber);
+  bookNumber -= m_firstBook;
+  chapterNumber -= m_books[bookNumber].firstChapter;
+  Chapter* chapter = &m_books[bookNumber].chapters[chapterNumber];
+  chapter->firstVerse = firstVerse;
+  chapter->numVerses = numVerses;
+  chapter->verses = new Verse[numVerses];
 }
 
 /// Initialise a verse in the passage.
 void KwBiblePassage::initVerse(int bookNumber, int chapterNumber, int verseNumber,
                                const QString& headings, const QString& content)
 {
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+  chapterNumber -= m_books[bookNumber].firstChapter;
+  Q_ASSERT(0 != m_books[bookNumber].chapters && chapterNumber >= 0 && chapterNumber < m_books[bookNumber].numChapters);
+  verseNumber -= m_books[bookNumber].chapters[chapterNumber].firstVerse;
+  Q_ASSERT(0 != m_books[bookNumber].chapters[chapterNumber].verses && verseNumber >= 0 && verseNumber < m_books[bookNumber].chapters[chapterNumber].numVerses);
+
+  Verse* verse = &m_books[bookNumber].chapters[chapterNumber].verses[verseNumber];
+  verse->headings = headings;
+  verse->content = content;
 }
 
 /*
@@ -103,6 +176,7 @@ void KwBiblePassage::initVerse(int bookNumber, int chapterNumber, int verseNumbe
 /// Find whether the passage is empty.
 bool KwBiblePassage::isEmpty() const
 {
+  return (m_books == 0);
 }
 
 /// Get textual key of this passage.
@@ -115,6 +189,16 @@ QString KwBiblePassage::textualKey() const
   }
   Q_ASSERT(m_books[0].numChapters > 0);
   Q_ASSERT(m_books[0].chapters[0].numVerses > 0);
+
+  /**
+   * @bug 2008-dec-22: There is a bug in Qt's handling of right-to-left scripts somewhere
+   *                   in QString::arg(QString) - in this case from m_books[i].name.
+   *                   It results in the substitutions taking place in the wrong order.
+   *                   There also appear to be similar problems rendering even if the
+   *                   substitutions appear to take place correctly.
+   *                   I haven't managed to find a satisfactory work-around for this problem
+   *                   so I'm ignoring it for the time being.
+   */
 
   QString result = i18nc("bible index (book, chapter:verse)", "%1 %2",
                          m_books[0].name,
@@ -155,29 +239,45 @@ QString KwBiblePassage::textualKey() const
 /// Get the first book number in the passage.
 int KwBiblePassage::firstBookNumber() const
 {
+  Q_ASSERT(false && "Unimplemented");
 }
 
 /// Get the last book number in the passage.
 int KwBiblePassage::lastBookNumber() const
 {
+  Q_ASSERT(false && "Unimplemented");
 }
 
 /// Get the first chapter number in a book of the passage.
 int KwBiblePassage::firstChapterNumber(int bookNumber) const
 {
+  Q_ASSERT(false && "Unimplemented");
 }
 
 /// Get the last chapter number in a book of the passage.
 int KwBiblePassage::lastChapterNumber(int bookNumber) const
 {
+  Q_ASSERT(false && "Unimplemented");
 }
 
 /// Get the first verse number in a chapter of the passage.
 int KwBiblePassage::firstVerseNumber(int bookNumber, int chapterNumber) const
 {
+  Q_ASSERT(false && "Unimplemented");
 }
 
 /// Get the last verse number in a chapter of the passage.
 int KwBiblePassage::lastVerseNumber(int bookNumber, int chapterNumber) const
 {
+  Q_ASSERT(false && "Unimplemented");
+}
+
+/*
+ * Text extraction
+ */
+
+/// Get the entire passaage rendered as HTML.
+QString KwBiblePassage::renderedText()
+{
+  return "TESTING";
 }

@@ -50,7 +50,7 @@ class KwBiblePlaylistItem : public KwPlaylistItem
      * @param module Bible module.
      * @param moduleKey Bible passage key.
      */
-    KwBiblePlaylistItem(const KwBibleModule* module, const KwBibleModule::Key& moduleKey);
+    KwBiblePlaylistItem(KwBibleModule* module, const KwBibleModule::Key& moduleKey);
 
     /// Construct from a DOM element.
     KwBiblePlaylistItem(const QDomElement& element, KwResourceManager* resourceManager);

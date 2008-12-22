@@ -123,7 +123,7 @@ class KwBibleModule
     virtual int numVerses(int book, int chapter) = 0;
 
     /// Fill a passage object.
-    virtual bool fillPassage(const Key& key, KwBiblePassage* outPassage) const = 0;
+    bool fillPassage(const Key& key, KwBiblePassage* outPassage);
 
     /// Get rendered text for a given passage.
     virtual QString renderText(const Key& key) = 0;
