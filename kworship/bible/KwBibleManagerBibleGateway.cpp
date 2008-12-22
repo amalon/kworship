@@ -34,6 +34,8 @@
 #include <QDomElement>
 #include <QDomNodeList>
 
+KW_REGISTER_BIBLE_MANAGER(KwBibleManagerBibleGateway)
+
 /*
  * Constructors + destructor
  */

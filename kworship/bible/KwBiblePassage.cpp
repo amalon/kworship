@@ -42,18 +42,6 @@ KwBiblePassage::KwBiblePassage()
 {
 }
 
-/// Fill the passage from a given module.
-KwBiblePassage::KwBiblePassage(const QString& managerId, const QString& moduleId, const KwBibleModule::Key& key)
-: m_managerId(managerId)
-, m_moduleId(moduleId)
-, m_key(key)
-, m_firstBook(0)
-, m_numBooks(0)
-, m_books(0)
-{
-  /// @todo Iterate through the verses getting the data.
-}
-
 /// Destructor.
 KwBiblePassage::~KwBiblePassage()
 {
@@ -74,6 +62,48 @@ KwBiblePassage::~KwBiblePassage()
 /*
  * Main interface
  */
+
+/// Clear the passage.
+void KwBiblePassage::clear()
+{
+}
+
+/// Set the source module.
+void KwBiblePassage::setSource(const QString& managerId, const QString& moduleId)
+{
+}
+
+/// Initialise the books in the passage.
+void KwBiblePassage::initBooks(int firstBook, int numBooks)
+{
+}
+
+/// Initialise a book in the passage.
+void KwBiblePassage::initBook(int bookNumber,
+                              const QString& name, int firstChapter, int numChapters)
+{
+}
+
+/// Initialise a chapter in the passage.
+void KwBiblePassage::initChapter(int bookNumber, int chapterNumber,
+                                 int firstVerse, int numVerses)
+{
+}
+
+/// Initialise a verse in the passage.
+void KwBiblePassage::initVerse(int bookNumber, int chapterNumber, int verseNumber,
+                               const QString& headings, const QString& content)
+{
+}
+
+/*
+ * Accessors
+ */
+
+/// Find whether the passage is empty.
+bool KwBiblePassage::isEmpty() const
+{
+}
 
 /// Get textual key of this passage.
 QString KwBiblePassage::textualKey() const
@@ -122,3 +152,32 @@ QString KwBiblePassage::textualKey() const
   return i18nc("bible index (range, version)", "%1 (%2)", result, m_moduleId);
 }
 
+/// Get the first book number in the passage.
+int KwBiblePassage::firstBookNumber() const
+{
+}
+
+/// Get the last book number in the passage.
+int KwBiblePassage::lastBookNumber() const
+{
+}
+
+/// Get the first chapter number in a book of the passage.
+int KwBiblePassage::firstChapterNumber(int bookNumber) const
+{
+}
+
+/// Get the last chapter number in a book of the passage.
+int KwBiblePassage::lastChapterNumber(int bookNumber) const
+{
+}
+
+/// Get the first verse number in a chapter of the passage.
+int KwBiblePassage::firstVerseNumber(int bookNumber, int chapterNumber) const
+{
+}
+
+/// Get the last verse number in a chapter of the passage.
+int KwBiblePassage::lastVerseNumber(int bookNumber, int chapterNumber) const
+{
+}

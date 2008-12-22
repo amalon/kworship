@@ -33,10 +33,11 @@ KW_REGISTER_PLAYLIST_ITEM(KwBiblePlaylistItem, "bible")
  */
 
 /// Construct from reference information.
-KwBiblePlaylistItem::KwBiblePlaylistItem(const QString& managerName, const QString& moduleName, const KwBibleModule::Key& moduleKey)
+KwBiblePlaylistItem::KwBiblePlaylistItem(const KwBibleModule* module, const KwBibleModule::Key& moduleKey)
 : KwPlaylistItem()
-, m_passage(managerName, moduleName, moduleKey)
+, m_passage()
 {
+  module->fillPassage(moduleKey, &m_passage);
 }
 
 /// Construct from a DOM element.

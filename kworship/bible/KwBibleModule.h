@@ -29,6 +29,8 @@
 #include <QString>
 #include <QStringList>
 
+class KwBiblePassage;
+
 /// A bible module (analagous to a SWORD module).
 class KwBibleModule
 {
@@ -119,6 +121,9 @@ class KwBibleModule
 
     /// Get the number of verses in a chapter of a book.
     virtual int numVerses(int book, int chapter) = 0;
+
+    /// Fill a passage object.
+    virtual bool fillPassage(const Key& key, KwBiblePassage* outPassage) const = 0;
 
     /// Get rendered text for a given passage.
     virtual QString renderText(const Key& key) = 0;

@@ -38,6 +38,8 @@ class KwBibleModuleBibleGateway;
 /// A bible manager for BibleGateway.com.
 class KwBibleManagerBibleGateway : public KwBibleManager
 {
+    KW_BIBLE_MANAGER(KwBibleManagerBibleGateway, "BibleGateway.com")
+
   public:
     
     /*

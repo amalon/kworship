@@ -39,6 +39,8 @@ namespace sword
 /// A bible manager (analagous to a SWORD manager).
 class KwBibleManagerSword : public KwBibleManager
 {
+    KW_BIBLE_MANAGER(KwBibleManagerSword, "SWORD");
+
   public:
     
     /*

@@ -26,6 +26,23 @@
 #include "KwBibleManager.h"
 
 /*
+ * Manager factory
+ */
+
+/// Get a factory object.
+KwBibleManager::Factory* KwBibleManager::factory()
+{
+  static Factory fac;
+  return &fac;
+}
+
+/// Get a singleton for a manager.
+KwBibleManager* KwBibleManager::singleton(const QString& key)
+{
+  return factory()->singleton(key);
+}
+
+/*
  * Constructors + destructor
  */
 

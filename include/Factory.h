@@ -77,21 +77,37 @@ class Factory
       return false;
     }
 
+    /** Remove a type from the factory.
+     * @param key Identifier used to construct.
+     */
+    bool removeType(const KEY& key)
+    {
+      
+      typename ConstructorHash::iterator it = m_constructors.find(key);
+      if (it != m_constructors.end())
+      {
+        delete *it;
+        m_constructors.erase(it);
+        return true;
+      }
+      return false;
+    }
+
     /*
      * Construction
      */
 
-    BASE* construct(KEY key)
+    BASE* construct(const KEY& key)
     {
       return constructFromPack(key, TUPLE::pack());
     }
     template <typename Param1>
-    BASE* construct(KEY key, const Param1& param1)
+    BASE* construct(const KEY& key, const Param1& param1)
     {
       return constructFromPack(key, TUPLE::pack(param1));
     }
     template <typename Param1, typename Param2>
-    BASE* construct(KEY key, const Param1& param1, const Param2& param2)
+    BASE* construct(const KEY& key, const Param1& param1, const Param2& param2)
     {
       return constructFromPack(key, TUPLE::pack(param1, param2));
     }
@@ -100,7 +116,7 @@ class Factory
      * @param key identifier of type to construct.
      * @param pack pack of arguments.
      */
-    BASE* constructFromPack(KEY key, const typename TUPLE::Pack& pack)
+    BASE* constructFromPack(const KEY& key, const typename TUPLE::Pack& pack)
     {
       typename ConstructorHash::const_iterator it = m_constructors.constFind(key);
       if (it != m_constructors.constEnd())
@@ -110,6 +126,57 @@ class Factory
       else
       {
         return 0;
+      }
+    }
+
+    BASE* singleton(const KEY& key)
+    {
+      return singletonFromPack(key, TUPLE::pack());
+    }
+    template <typename Param1>
+    BASE* singleton(const KEY& key, const Param1& param1)
+    {
+      return singletonFromPack(key, TUPLE::pack(param1));
+    }
+    template <typename Param1, typename Param2>
+    BASE* singleton(const KEY& key, const Param1& param1, const Param2& param2)
+    {
+      return singletonFromPack(key, TUPLE::pack(param1, param2));
+    }
+
+    /** Get a singleton of a type using a pack of arguments.
+     * @param key identifier of type to construct.
+     * @param pack pack of arguments.
+     */
+    BASE* singletonFromPack(const KEY& key, const typename TUPLE::Pack& pack)
+    {
+      typename ConstructorHash::const_iterator it = m_constructors.constFind(key);
+      if (it != m_constructors.constEnd())
+      {
+        return (*it)->singleton(pack);
+      }
+      else
+      {
+        return 0;
+      }
+    }
+
+    /// Delete any existing singleton of a type.
+    void deleteSingleton(const KEY& key)
+    {
+      typename ConstructorHash::const_iterator it = m_constructors.constFind(key);
+      if (it != m_constructors.constEnd())
+      {
+        (*it)->deleteSingleton();
+      }
+    }
+
+    /// Delete all singletons.
+    void deleteAllSingletons()
+    {
+      foreach (BaseConstructor* constructor, m_constructors)
+      {
+        constructor->deleteSingleton();
       }
     }
 
@@ -123,9 +190,37 @@ class Factory
     class BaseConstructor
     {
       public:
-        virtual ~BaseConstructor() {}
+        BaseConstructor()
+        : m_singleton(0)
+        {
+        }
+        virtual ~BaseConstructor()
+        {
+          delete m_singleton;
+        }
         /// Construct an instance of a dervied type.
         virtual BASE* construct(const typename TUPLE::Pack& pack) const = 0;
+        /// Get a singleton object, constructing if necessary.
+        BASE* singleton(const typename TUPLE::Pack& pack)
+        {
+          if (0 == m_singleton)
+          {
+            m_singleton = construct(pack);
+          }
+          return m_singleton;
+        }
+        /// Delete singleton if it exists.
+        void deleteSingleton()
+        {
+          delete m_singleton;
+          m_singleton = 0;
+        }
+
+      private:
+        // No copy construction
+        BaseConstructor(const BaseConstructor&);
+
+        BASE* m_singleton;
     };
 
     /** Type specific generic constructor.

@@ -26,16 +26,49 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <Factory.h>
+
 #include <QString>
 #include <QList>
 #include <QMap>
 
 class KwBibleModule;
 
+#define KW_BIBLE_MANAGER(X, KEY) \
+  private: \
+    /* \
+     * Static private variables \
+     */ \
+    static bool s_registered; \
+  public: \
+    static void registerManager() \
+    { \
+      if (!s_registered) \
+      { \
+        s_registered = KwBibleManager::factory()->addType< X >(KEY); \
+      } \
+    }
+
+#define KW_REGISTER_BIBLE_MANAGER(X) \
+  bool X::s_registered = false;
+
 /// A bible manager (analagous to a SWORD manager).
 class KwBibleManager
 {
   public:
+
+    /*
+     * Manager factory
+     */
+
+    /// Factory of managers identified by strings.
+    typedef ::Factory<QString, KwBibleManager, META_TUPLE(())> Factory;
+
+    /// Get a factory object.
+    static Factory* factory();
+
+    /// Get a singleton for a manager.
+    static KwBibleManager* singleton(const QString& key);
     
     /*
      * Constructors + destructor

@@ -33,6 +33,8 @@
 
 #include <QString>
 
+class KwBibleManager;
+
 /// A playlist item for bible passages.
 class KwBiblePlaylistItem : public KwPlaylistItem
 {
@@ -45,11 +47,10 @@ class KwBiblePlaylistItem : public KwPlaylistItem
      */
 
     /** Construct from reference information.
-     * @param managerName Identifier of bible manager.
-     * @param moduleName Identifier of bible module.
+     * @param module Bible module.
      * @param moduleKey Bible passage key.
      */
-    KwBiblePlaylistItem(const QString& managerName, const QString& moduleName, const KwBibleModule::Key& moduleKey);
+    KwBiblePlaylistItem(const KwBibleModule* module, const KwBibleModule::Key& moduleKey);
 
     /// Construct from a DOM element.
     KwBiblePlaylistItem(const QDomElement& element, KwResourceManager* resourceManager);

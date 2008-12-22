@@ -160,6 +160,11 @@ int KwBibleModuleBibleGateway::numVerses(int book, int chapter)
   }
 }
 
+bool KwBibleModuleBibleGateway::fillPassage(const Key& key, KwBiblePassage* outPassage) const
+{
+  return false;
+}
+
 QString KwBibleModuleBibleGateway::renderText(const KwBibleModule::Key& key)
 {
   QString result;

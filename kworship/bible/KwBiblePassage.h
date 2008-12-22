@@ -45,9 +45,6 @@ class KwBiblePassage
     /// Default constructor.
     KwBiblePassage();
 
-    /// Fill the passage from a given module.
-    KwBiblePassage(const QString& managerId, const QString& moduleId, const KwBibleModule::Key& key);
-
     /// Destructor.
     virtual ~KwBiblePassage();
 
@@ -55,8 +52,112 @@ class KwBiblePassage
      * Main interface
      */
 
+    /** Clear the passage.
+     * Deletes all books.
+     */
+    void clear();
+
+    /** Set the source module.
+     * @param managerId ID of the bible manager.
+     * @param moduleId ID of the bible module.
+     */
+    void setSource(const QString& managerId, const QString& moduleId);
+
+    /** Initialise the books in the passage.
+     * If books are already initialised they will be cleared first.
+     * @param firstBook Number of first book in passage.
+     * @param numBooks Number of books covered in this passage.
+     * @param numBooks > 0
+     */
+    void initBooks(int firstBook, int numBooks);
+
+    /** Initialise a book in the passage.
+     * If the book is already initialised it will be cleared first.
+     * @param bookNumber Number of the book to initialise.
+     * @param name Name of the book.
+     * @param firstChapter Number of first chapter in book.
+     * @param numChapters Number of chapters covered in this book.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     * @pre numChapters > 0
+     */
+    void initBook(int bookNumber,
+                  const QString& name, int firstChapter, int numChapters);
+
+    /** Initialise a chapter in the passage.
+     * If the chapter is already initialised it will be cleared first.
+     * @param bookNumber Number of the book with the chapter to initialise.
+     * @param chapterNumber Number of the chapter to initialise.
+     * @param firstVerse Number of first verse in chapter.
+     * @param numVerses Number of verses covered in this chapter.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     * @pre firstChapterNumber(bookNumber) <= chapterNumber <= lastChapterNumber(bookNumber)
+     * @pre numVerses > 0
+     */
+    void initChapter(int bookNumber, int chapterNumber,
+                     int firstVerse, int numVerses);
+
+    /** Initialise a verse in the passage.
+     * If the verse is already initialised it will be cleared first.
+     * @param bookNumber Number of the book with the chapter to initialise.
+     * @param chapterNumber Number of the chapter with the verse to initialise.
+     * @param verseNumber Number of the verse to initialise.
+     * @param headings Headings HTML preceeding this verse.
+     * @param content Main HTML in this verse.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     * @pre firstChapterNumber(bookNumber) <= chapterNumber <= lastChapterNumber(bookNumber)
+     * @pre firstVerseNumber(bookNumber) <= verseNumber <= lastVerseNumber(bookNumber)
+     */
+    void initVerse(int bookNumber, int chapterNumber, int verseNumber,
+                   const QString& headings, const QString& content);
+
+    /*
+     * Accessors
+     */
+
+    /// Find whether the passage is empty.
+    bool isEmpty() const;
+
     /// Get textual key of this passage.
     QString textualKey() const;
+
+    /// Get the first book number in the passage.
+    int firstBookNumber() const;
+    /// Get the last book number in the passage.
+    int lastBookNumber() const;
+
+    /** Get the first chapter number in a book of the passage.
+     * @param bookNumber The number of the book.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     */
+    int firstChapterNumber(int bookNumber) const;
+    /** Get the last chapter number in a book of the passage.
+     * @param bookNumber The number of the book.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     */
+    int lastChapterNumber(int bookNumber) const;
+
+    /** Get the first verse number in a chapter of the passage.
+     * @param bookNumber The number of the book.
+     * @param chapterNumber The number of the chapter within the book.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     * @pre firstChapterNumber(bookNumber) <= chapterNumber <= lastChapterNumber(bookNumber)
+     */
+    int firstVerseNumber(int bookNumber, int chapterNumber) const;
+    /** Get the last verse number in a chapter of the passage.
+     * @param bookNumber The number of the book.
+     * @param chapterNumber The number of the chapter within the book.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     * @pre firstChapterNumber(bookNumber) <= chapterNumber <= lastChapterNumber(bookNumber)
+     */
+    int lastVerseNumber(int bookNumber, int chapterNumber) const;
+
+    /*
+     * Text extraction
+     */
+
+    /// Get the entire passaage rendered as HTML.
+    /// @todo Needs some rendering options, headings, footnotes etc.
+    QString renderedText();
 
   private:
 

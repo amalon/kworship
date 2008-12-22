@@ -31,6 +31,8 @@
 #include <swtext.h>
 #include <markupfiltmgr.h>
 
+KW_REGISTER_BIBLE_MANAGER(KwBibleManagerSword)
+
 /*
  * Constructors + destructor
  */

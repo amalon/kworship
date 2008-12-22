@@ -29,8 +29,8 @@
 #include "KwDocument.h"
 
 #include <KwBibleManager.h>
-#include <KwBibleManagerSword.h>
-#include <KwBibleManagerBibleGateway.h>
+#include "KwBibleManagerSword.h"
+#include "KwBibleManagerBibleGateway.h"
 #include <KwBibleModule.h>
 #include <KwBiblePlaylistItem.h>
 
@@ -70,6 +70,8 @@ KwBiblePlugin::KwBiblePlugin()
 , m_editRange(0)
 , m_textPassage(0)
 {
+  KwBibleManagerSword::registerManager();
+  KwBibleManagerBibleGateway::registerManager();
 }
 
 /// Destructor.
@@ -293,7 +295,7 @@ void KwBiblePlugin::slotInsertIntoPlaylist()
 
   if (success)
   {
-    KwBiblePlaylistItem* item = new KwBiblePlaylistItem(manager->name(), module->name(), key);
+    KwBiblePlaylistItem* item = new KwBiblePlaylistItem(module, key);
     KwPlaylistModel* model = KwApplication::self()->mainWindow()->playlistModel();
     model->addItem(QModelIndex(), item);
   }
@@ -311,9 +313,18 @@ void KwBiblePlugin::slotShowNow()
 void KwBiblePlugin::_load()
 {
   // Construct the bible managers. 
-  QList<KwBibleManager*> managers; 
-  managers.push_back(new KwBibleManagerSword); 
-  managers.push_back(new KwBibleManagerBibleGateway); 
+  QStringList managerNames;
+  managerNames << "SWORD";
+  managerNames << "BibleGateway.com";
+  QList<KwBibleManager*> managers;
+  foreach (QString name, managerNames)
+  {
+    KwBibleManager* manager = KwBibleManagerSword::singleton(name); 
+    if (0 != manager)
+    {
+      managers += manager;
+    }
+  }
 
   // Set up the docker
   m_docker = new QDockWidget(i18n("Bible"));

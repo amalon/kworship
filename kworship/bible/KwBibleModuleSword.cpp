@@ -108,6 +108,11 @@ int KwBibleModuleSword::numVerses(int book, int chapter)
   return 0;
 }
 
+bool KwBibleModuleSword::fillPassage(const Key& key, KwBiblePassage* outPassage) const
+{
+  return false;
+}
+
 QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
 {
   QString result;

@@ -37,7 +37,7 @@
 /// Get a factory object.
 KwPlaylistItem::Factory* KwPlaylistItem::factory()
 {
-  static KwPlaylistItem::Factory fac;
+  static Factory fac;
   return &fac;
 }
 
