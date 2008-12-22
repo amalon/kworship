@@ -24,6 +24,7 @@
  */
 
 #include "KwBibleModuleSword.h"
+#include "KwBiblePassage.h"
 
 #include <QStringList>
 
@@ -106,6 +107,29 @@ int KwBibleModuleSword::numVerses(int book, int chapter)
     }
   }
   return 0;
+}
+
+bool KwBibleModuleSword::fillPassageVerse(int bookIndex, int chapterIndex, int verseIndex, KwBiblePassage* outPassage)
+{
+  int bookInTestament = -1;
+  int testament = localToTestamentBook(bookIndex, &bookInTestament);
+  if (testament >= 0)
+  {
+    sword::VerseKey verse;
+    verse.Testament(1+testament);
+    verse.Book(1+bookInTestament);
+    verse.Chapter(1+chapterIndex);
+    verse.Verse(1+verseIndex);
+
+    m_module->setKey(&verse);
+    const char* text = m_module->RenderText();
+    const char* preverse = m_module->getEntryAttributes()["Heading"]["Preverse"]["0"];
+    outPassage->initVerse(bookIndex, 1+chapterIndex, 1+verseIndex,
+                          QString::fromUtf8(preverse),
+                          QString::fromUtf8(text));
+    return true;
+  }
+  return false;
 }
 
 QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)

@@ -325,7 +325,7 @@ bool KwBibleModule::fillPassage(const Key& key, KwBiblePassage* outPassage)
       outPassage->initChapter(book, 1+chapter, 1+firstVerse, 1+lastVerse-firstVerse);
       for (int verse = firstVerse; verse <= lastVerse; ++verse)
       {
-        outPassage->initVerse(book, 1+chapter, 1+verse, "heading", "content");
+        fillPassageVerse(book, chapter, verse, outPassage);
       }
     }
   }

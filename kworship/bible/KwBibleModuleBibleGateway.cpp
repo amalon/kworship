@@ -24,6 +24,7 @@
  */
 
 #include "KwBibleModuleBibleGateway.h"
+#include "KwBiblePassage.h"
 
 #include <KIO/NetAccess>
 #include <KMessageBox>
@@ -158,6 +159,18 @@ int KwBibleModuleBibleGateway::numVerses(int book, int chapter)
   {
     return 0;
   }
+}
+
+bool KwBibleModuleBibleGateway::fillPassageVerse(int bookIndex, int chapterIndex, int verseIndex, KwBiblePassage* outPassage)
+{
+  Chapter* chapter = fetchChapter(bookIndex, chapterIndex);
+  if (0 != chapter)
+  {
+    outPassage->initVerse(bookIndex, 1+chapterIndex, 1+verseIndex,
+                          "",
+                          chapter->verses[verseIndex]);
+  }
+  return false;
 }
 
 QString KwBibleModuleBibleGateway::renderText(const KwBibleModule::Key& key)

@@ -279,5 +279,31 @@ int KwBiblePassage::lastVerseNumber(int bookNumber, int chapterNumber) const
 /// Get the entire passaage rendered as HTML.
 QString KwBiblePassage::renderedText()
 {
-  return "TESTING";
+  QString result;
+  Book* book = m_books;
+  for (int bookIndex = 0; bookIndex < m_numBooks; ++bookIndex)
+  {
+    Chapter* chapter = book->chapters;
+    for (int chapterIndex = 0; chapterIndex < book->numChapters; ++chapterIndex)
+    {
+      Verse* verse = chapter->verses;
+      for (int verseIndex = 0; verseIndex < chapter->numVerses; ++verseIndex)
+      {
+        if (!verse->headings.isEmpty())
+        {
+          result += QString("<h1>%1</h1>").arg(verse->headings);
+        }
+        if (!verse->content.isEmpty())
+        {
+          result += QString("<sup>%1</sup>").arg(chapter->firstVerse + verseIndex);
+          result += verse->content;
+        }
+        result += "<hr />";
+        ++verse;
+      }
+      ++chapter;
+    }
+    ++book;
+  }
+  return result;
 }

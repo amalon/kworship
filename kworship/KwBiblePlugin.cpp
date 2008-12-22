@@ -264,7 +264,10 @@ void KwBiblePlugin::slotVerseRange()
   {
     m_comboBook->setCurrentIndex(key.start.book);
     m_comboChapter->setCurrentIndex(key.start.chapter);
-    m_textPassage->document()->setHtml(module->renderText(key));
+
+    KwBiblePassage passage;
+    module->fillPassage(key, &passage);
+    m_textPassage->document()->setHtml(passage.renderedText());
 
     m_insertIntoPlaylistAction->setEnabled(true);
     m_showNowAction->setEnabled(true);
