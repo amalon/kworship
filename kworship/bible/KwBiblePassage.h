@@ -167,7 +167,7 @@ class KwBiblePassage
 
     /// Get the entire passaage rendered as HTML.
     /// @todo Needs some rendering options, headings, footnotes etc.
-    QString renderedText();
+    QString renderedText() const;
 
   private:
 

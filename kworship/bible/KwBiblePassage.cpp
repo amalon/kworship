@@ -277,7 +277,7 @@ int KwBiblePassage::lastVerseNumber(int bookNumber, int chapterNumber) const
  */
 
 /// Get the entire passaage rendered as HTML.
-QString KwBiblePassage::renderedText()
+QString KwBiblePassage::renderedText() const
 {
   QString result;
   Book* book = m_books;
