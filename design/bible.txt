@@ -1,10 +1,28 @@
 features
-  [ ] passage entry bar
+  [X] passage entry bar
   [ ] drag verses into playlist
   [ ] drop verses from bibletime
-  [ ] select works and commentaries
-  [ ] book/chaper/verse selecter
+  [X] select works and commentaries
+  [X] book/chaper/verse selecter
   [ ] next/previous chapter
+  [ ] go to selected bible passage in playlist
   [ ] extend passage
   [ ] quick access to bibletime bookmarks
-
+  [ ] save/load bible passages in playlist
+  [ ] "show now" button
+  [ ] different style during display
+  [ ] footnote extraction
+  [ ] render settings
+      [ ] widget to configure
+      [ ] bool: split verses onto separate lines
+      [ ] bool: extra chapter headings
+      [ ] bool: include pretext headings
+      [ ] bool: include footnotes
+      [ ] bool: highlight words of Jesus Christ
+  [ ] additional textual settings
+      [ ] citation position (none, above text, on edge of screen)
+      [ ] extra short notes ("Page 551")
+      [ ] highlighting / emphasis of parts of text
+          [ ] bold / underline / italic
+          [ ] flashy / fading / gradient
+          [ ] different outline

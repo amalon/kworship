@@ -1,0 +1,8 @@
+[ ] Text display
+    [ ] smooth scrolling from preview window
+        [ ] click to center
+        [ ] scroll with wheel
+        [ ] use arrows
+            [ ] e.g. by bible verse or song line
+    [ ] correct pagination calculation
+    [ ] interaction with preview should pass all events on to displays
