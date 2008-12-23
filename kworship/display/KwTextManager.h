@@ -31,6 +31,7 @@
 #include <QString>
 
 class KwCssScope;
+class KwTextLayer;
 
 /// Text manager.
 /**
@@ -65,6 +66,15 @@ class KwTextManager : public KwAbstractDisplayManager
 
     /// Set formatted text.
     void setHtml(const QString& html);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Current text layer.
+    KwTextLayer* m_currentLayer;
 };
 
 #endif // _KwTextManager_h_

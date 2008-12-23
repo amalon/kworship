@@ -33,12 +33,14 @@
 
 /// Default constructor.
 KwTextManager::KwTextManager()
+: m_currentLayer(0)
 {
 }
 
 /// Destructor.
 KwTextManager::~KwTextManager()
 {
+  delete m_currentLayer;
 }
 
 /*
@@ -63,7 +65,9 @@ void KwTextManager::setText(const QString& text)
   KwTextLayer* lyrics = new KwTextLayer(text);
   m_display.clearLayers();
   m_display.setLayer(0, lyrics, true);
-  /// @todo Delete previous layer
+
+  delete m_currentLayer;
+  m_currentLayer = lyrics;
 }
 
 /// Set formatted text.
@@ -72,6 +76,8 @@ void KwTextManager::setHtml(const QString& html)
   KwTextLayer* lyrics = new KwTextLayer(html, true);
   m_display.clearLayers();
   m_display.setLayer(0, lyrics, true);
-  /// @todo Delete previous layer
+
+  delete m_currentLayer;
+  m_currentLayer = lyrics;
 }
 
