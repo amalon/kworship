@@ -116,6 +116,7 @@ bool KwBibleModuleSword::fillPassageVerse(int bookIndex, int chapterIndex, int v
   if (testament >= 0)
   {
     sword::VerseKey verse;
+    verse.Headings(0);
     verse.Testament(1+testament);
     verse.Book(1+bookInTestament);
     verse.Chapter(1+chapterIndex);
@@ -124,96 +125,17 @@ bool KwBibleModuleSword::fillPassageVerse(int bookIndex, int chapterIndex, int v
     m_module->setKey(&verse);
     const char* text = m_module->RenderText();
     const char* preverse = m_module->getEntryAttributes()["Heading"]["Preverse"]["0"];
+    QString headings;
+    if (preverse[0] != '\0')
+    {
+      headings = QString("<h4>%1</h4>").arg(QString::fromUtf8(preverse));
+    }
     outPassage->initVerse(bookIndex, 1+chapterIndex, 1+verseIndex,
-                          QString::fromUtf8(preverse),
+                          headings,
                           QString::fromUtf8(text));
     return true;
   }
   return false;
-}
-
-QString KwBibleModuleSword::renderText(const KwBibleModule::Key& key)
-{
-  QString result;
-  int startBook, endBook;
-  int startTestament = localToTestamentBook(key.start.book, &startBook);
-  int endTestament   = localToTestamentBook(key.end.book,   &endBook);
-  if (startTestament >= 0)
-  {
-    if (endTestament == -1)
-    {
-      endTestament = startTestament;
-      endBook = startBook;
-    }
-    int startChapter = key.start.chapter;
-    int endChapter = key.end.chapter;
-    if (startChapter < 0)
-    {
-      startChapter = 0;
-      endChapter = numChapters(testamentBookToLocal(endTestament, endBook))-1;
-    }
-    else if (endChapter < 0)
-    {
-      endChapter = startChapter;
-    }
-
-    int startVerse = key.start.verse;
-    int endVerse = key.end.verse;
-    if (startVerse < 0)
-    {
-      startVerse = 0;
-      endVerse = numVerses(testamentBookToLocal(endTestament, endBook), endChapter)-1;
-    }
-    else if (endVerse < 0)
-    {
-      endVerse = startVerse;
-    }
-
-    sword::VerseKey vkey;
-    vkey.LowerBound().Testament(1+startTestament);
-    vkey.LowerBound().Book(1+startBook);
-    vkey.LowerBound().Chapter(1+startChapter);
-    vkey.LowerBound().Verse(1+startVerse);
-    vkey.UpperBound().Testament(1+endTestament);
-    vkey.UpperBound().Book(1+endBook);
-    vkey.UpperBound().Chapter(1+endChapter);
-    vkey.UpperBound().Verse(1+endVerse);
-    //std::cout << startTestament << " " << startBook << " " << startChapter << ":" << startVerse << std::endl;
-    //std::cout << endTestament << " " << endBook << " " << endChapter << ":" << endVerse << std::endl;
-
-    sword::VerseKey verse = vkey.LowerBound();
-    verse.Headings(1);
-    sword::VerseKey last = vkey.UpperBound();
-    Q_ASSERT(verse.isTraversable());
-
-    // verse must be before last
-    if (verse.compare(last) <= 0)
-    {
-      int limit = 500;
-      while (--limit > 0)
-      {
-        m_module->setKey(&verse);
-        const char* text = m_module->RenderText();
-        const char* preverse = m_module->getEntryAttributes()["Heading"]["Preverse"]["0"];
-        result += " ";
-        if (preverse[0] != '\0')
-        {
-          result += QString("<h1>%1</h1>").arg(QString::fromUtf8(preverse));
-        }
-        if (QLatin1String(text) != QLatin1String(""))
-        {
-          result += QString("<sup>%1</sup>").arg(verse.Verse()) + QString::fromUtf8(text);
-        }
-        if (verse.equals(last))
-        {
-          break;
-        }
-        verse.increment(1);
-      }
-    }
-  }
-
-  return result;
 }
 
 /*

@@ -167,28 +167,10 @@ bool KwBibleModuleBibleGateway::fillPassageVerse(int bookIndex, int chapterIndex
   if (0 != chapter)
   {
     outPassage->initVerse(bookIndex, 1+chapterIndex, 1+verseIndex,
-                          "",
-                          chapter->verses[verseIndex]);
+                          chapter->verses[verseIndex].heading,
+                          chapter->verses[verseIndex].content);
   }
   return false;
-}
-
-QString KwBibleModuleBibleGateway::renderText(const KwBibleModule::Key& key)
-{
-  QString result;
-  Chapter* chapter = fetchChapter(key.start.book, key.start.chapter);
-  if (0 != chapter)
-  {
-    if (key.start.verse >= 0 && key.start.verse < chapter->verses.size())
-    {
-      return chapter->verses[key.start.verse];
-    }
-    else
-    {
-      return chapter->verses.join("");
-    }
-  }
-  return result;
 }
 
 /*
@@ -243,6 +225,7 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                 // Get the verse number and validate
                 bool numeric;
                 QString verseNumber = span.innerText().string();
+                Verse verseInfo;
                 int check = verseNumber.toInt(&numeric);
                 if (!numeric)
                 {
@@ -256,7 +239,6 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                   KMessageBox::error(0, i18n("Error parsing webpage: %1", i18n("Non sequential verse list in chapter %1 of book '%2'. Expected verse %3 but got verse %4.", (chapter+1), bookObj->name, verse, check)));
                   break;
                 }
-                QString content;
 
                 // Get any headers before it
                 DOM::Node sibling;
@@ -275,14 +257,11 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                     DOM::HTMLHeadingElement heading = siblingElement;
                     if (!heading.isNull())
                     {
-                      content = heading.toHTML() + content;
+                      verseInfo.heading = heading.toHTML() + verseInfo.heading;
                     }
                   }
                   sibling = sibling.previousSibling();
                 }
-
-                // Add verse number
-                content += QString("<sup>%1</sup>").arg(verse);
 
                 // Get any text after it until the next span
                 sibling = span.nextSibling();
@@ -303,11 +282,11 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                       break;
                     }
                   }
-                  content += sibling.toHTML();
+                  verseInfo.content += sibling.toHTML();
                   sibling = sibling.nextSibling();
                 }
 
-                chap->verses.push_back(content);
+                chap->verses.push_back(verseInfo);
               }
             }
           }

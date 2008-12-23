@@ -67,9 +67,6 @@ class KwBibleModuleSword : public KwBibleModule
     // Reimplemented
     virtual bool fillPassageVerse(int bookIndex, int chapterIndex, int verseIndex, KwBiblePassage* outPassage);
 
-    // Reimplemented
-    virtual QString renderText(const KwBibleModule::Key& key);
-
   protected:
 
     /*

@@ -66,9 +66,6 @@ class KwBibleModuleBibleGateway : public KwBibleModule
     // Reimplemented
     virtual bool fillPassageVerse(int bookIndex, int chapterIndex, int verseIndex, KwBiblePassage* outPassage);
 
-    // Reimplemented
-    virtual QString renderText(const KwBibleModule::Key& key);
-
   protected:
 
     /*
@@ -102,6 +99,16 @@ class KwBibleModuleBibleGateway : public KwBibleModule
     /// The long copyright information.
     QString m_copyrightInfo;
 
+    /// Verse data.
+    struct Verse
+    {
+      /// Headings preceeding verse.
+      QString heading;
+
+      /// Content of verse.
+      QString content;
+    };
+
     /// Chapter data.
     struct Chapter
     {
@@ -112,7 +119,7 @@ class KwBibleModuleBibleGateway : public KwBibleModule
       bool fetched;
 
       /// List of verse contents.
-      QStringList verses;
+      QList<Verse> verses;
     };
 
     /// Book data.

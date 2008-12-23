@@ -128,9 +128,6 @@ class KwBibleModule
     /// Fill a single verse with data.
     virtual bool fillPassageVerse(int bookIndex, int chapterIndex, int verseIndex, KwBiblePassage* outPassage) = 0;
 
-    /// Get rendered text for a given passage.
-    virtual QString renderText(const Key& key) = 0;
-
   protected:
 
     /*

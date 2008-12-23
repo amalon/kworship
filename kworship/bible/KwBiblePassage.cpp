@@ -291,14 +291,13 @@ QString KwBiblePassage::renderedText()
       {
         if (!verse->headings.isEmpty())
         {
-          result += QString("<h1>%1</h1>").arg(verse->headings);
+          result += verse->headings;
         }
         if (!verse->content.isEmpty())
         {
           result += QString("<sup>%1</sup>").arg(chapter->firstVerse + verseIndex);
           result += verse->content;
         }
-        result += "<hr />";
         ++verse;
       }
       ++chapter;
