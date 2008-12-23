@@ -146,6 +146,11 @@ QString KwBibleModuleBibleGateway::description()
   return QString();
 }
 
+QString KwBibleModuleBibleGateway::managerId()
+{
+  return "BibleGateway.com";
+}
+
 int KwBibleModuleBibleGateway::numChapters(int book)
 {
   if (book >= 0 && book < m_bookList.size())

@@ -104,6 +104,9 @@ class KwBibleModule
     /// Get the description of the module.
     virtual QString description() = 0;
 
+    /// Get the id of the manager for this module.
+    virtual QString managerId() = 0;
+
     /// Is the text right to left?
     bool isRightToLeft() const;
 

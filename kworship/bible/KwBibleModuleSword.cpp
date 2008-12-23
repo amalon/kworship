@@ -79,6 +79,11 @@ QString KwBibleModuleSword::description()
   return m_module->Description();
 }
 
+QString KwBibleModuleSword::managerId()
+{
+  return "SWORD";
+}
+
 int KwBibleModuleSword::numChapters(int book)
 {
   int testamentBook;

@@ -310,7 +310,7 @@ bool KwBibleModule::fillPassage(const Key& key, KwBiblePassage* outPassage)
     range.end.verse = range.start.verse;
   }
 
-  outPassage->setSource("MGR", name(), m_rightToLeft);
+  outPassage->setSource(managerId(), name(), m_rightToLeft);
   outPassage->initBooks(range.start.book, 1+range.end.book-range.start.book);
   for (int book = range.start.book; book <= range.end.book; ++book)
   {

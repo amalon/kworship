@@ -58,6 +58,9 @@ class KwBibleModuleBibleGateway : public KwBibleModule
     virtual QString description();
 
     // Reimplemented
+    virtual QString managerId();
+
+    // Reimplemented
     virtual int numChapters(int book);
 
     // Reimplemented
