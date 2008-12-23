@@ -36,6 +36,7 @@ KwBiblePassage::KwBiblePassage()
 : m_managerId()
 , m_moduleId()
 , m_key()
+, m_rightToLeft(false)
 , m_firstBook(0)
 , m_numBooks(0)
 , m_books(0)
@@ -100,10 +101,11 @@ void KwBiblePassage::clearVerses(int bookNumber, int chapterNumber)
 }
 
 /// Set the source module.
-void KwBiblePassage::setSource(const QString& managerId, const QString& moduleId)
+void KwBiblePassage::setSource(const QString& managerId, const QString& moduleId, bool rightToLeft)
 {
   m_managerId = managerId;
   m_moduleId = moduleId;
+  m_rightToLeft = rightToLeft;
 }
 
 /// Initialise the books in the passage.
@@ -280,6 +282,8 @@ int KwBiblePassage::lastVerseNumber(int bookNumber, int chapterNumber) const
 QString KwBiblePassage::renderedText() const
 {
   QString result;
+  result += QString("<div dir=\"%1\">").arg(m_rightToLeft ? "rtl" : "ltr");
+
   Book* book = m_books;
   for (int bookIndex = 0; bookIndex < m_numBooks; ++bookIndex)
   {
@@ -304,5 +308,7 @@ QString KwBiblePassage::renderedText() const
     }
     ++book;
   }
+
+  result += "</div>";
   return result;
 }

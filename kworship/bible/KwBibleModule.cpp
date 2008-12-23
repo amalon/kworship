@@ -35,6 +35,7 @@
 /// Default constructor.
 KwBibleModule::KwBibleModule()
 : m_books()
+, m_rightToLeft(false)
 {
 }
 
@@ -231,6 +232,12 @@ KwBibleModule::Key KwBibleModule::createKey(const QString& bookStart, int chapte
   return key;
 }
 
+/// Is the text right to left?
+bool KwBibleModule::isRightToLeft() const
+{
+  return m_rightToLeft;
+}
+
 /// List the books in this module.
 const QStringList& KwBibleModule::books()
 {
@@ -303,7 +310,7 @@ bool KwBibleModule::fillPassage(const Key& key, KwBiblePassage* outPassage)
     range.end.verse = range.start.verse;
   }
 
-  outPassage->setSource("MGR", name());
+  outPassage->setSource("MGR", name(), m_rightToLeft);
   outPassage->initBooks(range.start.book, 1+range.end.book-range.start.book);
   for (int book = range.start.book; book <= range.end.book; ++book)
   {
@@ -349,5 +356,11 @@ void KwBibleModule::obtainBooks()
 void KwBibleModule::setBooks(const QStringList& books)
 {
   m_books = books;
+}
+
+/// Set whether the module has text right-to-left.
+void KwBibleModule::setRightToLeft(bool rightToLeft)
+{
+  m_rightToLeft = rightToLeft;
 }
 

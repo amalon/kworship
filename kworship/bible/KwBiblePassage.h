@@ -70,8 +70,9 @@ class KwBiblePassage
     /** Set the source module.
      * @param managerId ID of the bible manager.
      * @param moduleId ID of the bible module.
+     * @param rightToLeft Whether the text is right-to-left.
      */
-    void setSource(const QString& managerId, const QString& moduleId);
+    void setSource(const QString& managerId, const QString& moduleId, bool rightToLeft);
 
     /** Initialise the books in the passage.
      * If books are already initialised they will be cleared first.
@@ -219,6 +220,9 @@ class KwBiblePassage
     QString m_moduleId;
     /// Original module key.
     KwBibleModule::Key m_key;
+
+    /// Whether the text is right-to-left.
+    bool m_rightToLeft;
 
     /// The number of the first book.
     int m_firstBook;

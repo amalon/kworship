@@ -104,6 +104,9 @@ class KwBibleModule
     /// Get the description of the module.
     virtual QString description() = 0;
 
+    /// Is the text right to left?
+    bool isRightToLeft() const;
+
     /// List the books in this module.
     const QStringList& books();
 
@@ -144,6 +147,9 @@ class KwBibleModule
     /// Update the list of books.
     void setBooks(const QStringList& books);
 
+    /// Set whether the module has text right-to-left.
+    void setRightToLeft(bool rightToLeft);
+
   private:
 
     /*
@@ -152,6 +158,9 @@ class KwBibleModule
 
     /// List of book names.
     QStringList m_books;
+
+    /// Whether the module has text right to left.
+    bool m_rightToLeft;
 
 };
 

@@ -73,6 +73,7 @@ KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(int id)
           tableFound = true;
           // Each row except header is a book
           DOM::NodeList rows = tableElement.getElementsByTagName("tr");
+          bool firstRow = true;
           for (unsigned int row = 0; row < rows.length(); ++row)
           {
             DOM::NodeList cells = DOM::Element(rows.item(row)).getElementsByTagName("td");
@@ -82,6 +83,12 @@ KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(int id)
               m_bookList.push_back(Book());
               Book* book = &m_bookList[m_bookList.size()-1];
               book->name = DOM::HTMLElement(cells.item(0)).innerText().string();
+              // Also check if text is right-to-left
+              if (firstRow)
+              {
+                setRightToLeft(DOM::HTMLElement(cells.item(0)).className().string().toLower().contains("rtl"));
+                firstRow = false;
+              }
               // Second cell is the chapter links
               DOM::NodeList chapterLinks = DOM::Element(cells.item(1)).getElementsByTagName("a");
               for (unsigned int chapter = 0; chapter < chapterLinks.length(); ++chapter)
