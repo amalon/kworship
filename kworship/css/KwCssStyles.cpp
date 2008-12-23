@@ -85,7 +85,7 @@ bool KwCssStyles::isEmpty() const
 /// Convert to CSS-like format.
 QString KwCssStyles::toString() const
 {
-  return "/* KwCssStyle::toString() unimplemented */";
+  return "/* KwCssStyles::toString() unimplemented */\n";
 }
 
 /*

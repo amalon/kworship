@@ -97,6 +97,9 @@ class KwCssStyleRule
     /// Get the styles.
     const ReferenceCountedExtension<KwCssStyles>* getStyles() const;
 
+    /// Convert to CSS-like format.
+    QString toString() const;
+
   private:
 
     /*

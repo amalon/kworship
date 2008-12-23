@@ -93,3 +93,37 @@ const ReferenceCountedExtension<KwCssStyles>* KwCssStyleRule::getStyles() const
   return m_styles;
 }
 
+/// Convert to CSS-like format.
+QString KwCssStyleRule::toString() const
+{
+  QString result;
+  /// @todo Share styles among multiple rules
+  foreach (const KwCssScopeKey& key, m_criteriaKeys)
+  {
+    if (key.isTypeSpecified())
+    {
+      result += key.getTypeName();
+    }
+    if (key.isNameSpecified())
+    {
+      result += "#" + key.getName();
+    }
+    result += " ";
+  }
+  foreach (const QString& className, m_criteriaClasses)
+  {
+    result += QString(".%1 ").arg(className);
+  }
+  if (!m_includedStyles.isEmpty())
+  {
+    result += ": ";
+    foreach (const QString& className, m_includedStyles)
+    {
+      result += QString(".%1 ").arg(className);
+    }
+  }
+  result += "{\n";
+  result += m_styles->toString();
+  result += "}\n";
+  return result;
+}

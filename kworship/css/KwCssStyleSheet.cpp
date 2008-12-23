@@ -95,5 +95,11 @@ const KwCssStyleSheet::RuleList& KwCssStyleSheet::getRules() const
 /// Convert to CSS-like format.
 QString KwCssStyleSheet::toString() const
 {
-  return "/* KwCssStyleSheet::toString() unimplemented */";
+  /// @todo Take into account of shared styles in rules!
+  QString result = "/* Doesn't take shared styles into account */\n";
+  foreach (const KwCssStyleRule& rule, m_rules)
+  {
+    result += rule.toString();
+  }
+  return result;
 }
