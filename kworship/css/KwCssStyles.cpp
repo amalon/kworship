@@ -85,7 +85,14 @@ bool KwCssStyles::isEmpty() const
 /// Convert to CSS-like format.
 QString KwCssStyles::toString() const
 {
-  return "/* KwCssStyles::toString() unimplemented */\n";
+  static const QString tmplt = "%1 : %2;\n";
+  QString result;
+  StyleDictionary::const_iterator it;
+  for (it = m_styles.constBegin(); it != m_styles.constEnd(); ++it)
+  {
+    result += tmplt.arg(it.key()).arg((*it)->toString());
+  }
+  return result;
 }
 
 /*

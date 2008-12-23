@@ -26,6 +26,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <QString>
+
 class KwCssAbstractStyle;
 class KwCssAbstractStyleState;
 
@@ -53,6 +55,9 @@ class KwCssAbstractStyle
 
     /// Duplicate this style.
     virtual KwCssAbstractStyle* duplicate() const = 0;
+
+    /// Convert to CSS-like format.
+    virtual QString toString() const = 0;
 
 };
 

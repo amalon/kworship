@@ -95,13 +95,19 @@ class KwCssStyle : public KwCssAbstractStyle
      * Main interface
      */
 
-    /// Get a new state.
+    // Reimplemented
     virtual KwCssAbstractStyleState* getNewState() const;
 
-    /// Duplicate this style.
+    // Reimplemented
     virtual KwCssAbstractStyle* duplicate() const
     {
       return new KwCssStyle<T>(*this);
+    }
+
+    // Reimplemented
+    virtual QString toString() const
+    {
+      return "/* unimplemented KwCssStyle<T>::toString() */";
     }
 
     /*
