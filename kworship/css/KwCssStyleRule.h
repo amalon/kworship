@@ -65,6 +65,9 @@ class KwCssStyleRule
      * Main interface.
      */
 
+    /// Set the set of critieria keys.
+    void setCriteriaKeys(const KeyList& keys);
+
     /// Set the set of required classes.
     void setCriteriaClasses(const StringSet& classes);
 

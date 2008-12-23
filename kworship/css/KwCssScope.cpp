@@ -203,17 +203,6 @@ void KwCssScope::recalculateStyles()
 }
 
 /*
- * Virtual interface
- */
-
-/// Get the type id corresponding to this type.
-KwCssScopeKey::ScopeTypeId KwCssScope::getTypeId() const
-{
-  /// @todo optimise by caching type id
-  return KwCssScopeKey::registerScopeType("scope");
-}
-
-/*
  * Accessors
  */
 

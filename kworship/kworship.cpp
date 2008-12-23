@@ -33,6 +33,8 @@
 #include "KwPlaylistVideo.h"
 #include "KwPlaylistModel.h"
 
+#include <KwBiblePlaylistItem.h>
+
 #include "KwCssStyleSheet.h"
 #include "KwCssStyleRule.h"
 
@@ -165,6 +167,12 @@ kworship::kworship()
   beachyTheme.setStyle<QBrush>("background.brush", Qt::black);
   beachyTheme.setStyle<QPixmap>("background.image.pixmap", QPixmap("/home/james/media/images/projector/misc/love-god-light.jpg"));
   styleRules->addRule(beachyTheme);
+
+  KwCssStyleRule bibleTheme;
+  bibleTheme.setCriteriaKeys(KwCssStyleRule::KeyList() << KwCssScopeKey(KwBiblePlaylistItem::scopeTypeId()));
+  bibleTheme.setStyle<QBrush>("background.brush", Qt::black);
+  bibleTheme.setStyle<QPixmap>("background.image.pixmap", QPixmap("/home/james/media/images/projector/misc/bible.jpg"));
+  styleRules->addRule(bibleTheme);
 
   m_document->playlist()->addStyleSheet(styleRules);
 

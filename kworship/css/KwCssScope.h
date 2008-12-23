@@ -38,9 +38,25 @@
 
 class KwCssStyleSheet;
 
+#define KW_CSS_SCOPE(TYPE_NAME) \
+  public: \
+    /** Get the type id corresponding to this type statically. */ \
+    static KwCssScopeKey::ScopeTypeId scopeTypeId() \
+    { \
+      static KwCssScopeKey::ScopeTypeId id = KwCssScopeKey::registerScopeType(TYPE_NAME); \
+      return id; \
+    } \
+    /** Get the type id corresponding to this type virtually. */ \
+    virtual KwCssScopeKey::ScopeTypeId getTypeId() const \
+    { \
+      return scopeTypeId(); \
+    }
+
 /// Cascading style scope.
 class KwCssScope
 {
+    KW_CSS_SCOPE("scope")
+
   public:
 
     /*
@@ -76,13 +92,6 @@ class KwCssScope
 
     /// Recalculate all styles.
     void recalculateStyles();
-
-    /*
-     * Virtual interface
-     */
-
-    /// Get the type id corresponding to this type.
-    virtual KwCssScopeKey::ScopeTypeId getTypeId() const;
 
     /*
      * Accessors

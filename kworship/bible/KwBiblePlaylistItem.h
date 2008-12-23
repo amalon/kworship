@@ -39,6 +39,7 @@ class KwBibleManager;
 class KwBiblePlaylistItem : public KwPlaylistItem
 {
     KW_PLAYLIST_ITEM
+    KW_CSS_SCOPE("bible")
 
   public:
     
