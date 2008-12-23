@@ -65,6 +65,12 @@ class KwCssStyles
       setRawStyle(name, new KwCssStyle<T>(value));
     }
 
+    /// Return whether the styles container is empty.
+    bool isEmpty() const;
+
+    /// Convert to CSS-like format.
+    QString toString() const;
+
     /*
      * Operators
      */

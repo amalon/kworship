@@ -37,6 +37,9 @@
 #include <QList>
 
 class KwCssStyleSheet;
+class KwResourceManager;
+class QDomDocument;
+class QDomElement;
 
 #define KW_CSS_SCOPE(TYPE_NAME) \
   public: \
@@ -70,6 +73,16 @@ class KwCssScope
     virtual ~KwCssScope();
 
     /*
+     * DOM filters
+     */
+
+    /// Import the style information from a DOM.
+    void importStylesFromDom(const QDomElement& element, KwResourceManager* resourceManager);
+
+    /// Export the style information to a DOM.
+    void exportStylesToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const;
+
+    /*
      * Main interface
      */
 
@@ -96,6 +109,9 @@ class KwCssScope
     /*
      * Accessors
      */
+
+    /// Find whether the scope is effectively empty.
+    bool isScopeEmpty() const;
 
     /// Get explicit styles.
     const KwCssStyles& getExplicitStyles() const;

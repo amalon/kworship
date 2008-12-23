@@ -91,3 +91,9 @@ const KwCssStyleSheet::RuleList& KwCssStyleSheet::getRules() const
 {
   return m_rules;
 }
+
+/// Convert to CSS-like format.
+QString KwCssStyleSheet::toString() const
+{
+  return "/* KwCssStyleSheet::toString() unimplemented */";
+}

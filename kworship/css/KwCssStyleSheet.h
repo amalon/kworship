@@ -91,6 +91,9 @@ class KwCssStyleSheet
     /// Get the constant rules.
     const RuleList& getRules() const;
 
+    /// Convert to CSS-like format.
+    QString toString() const;
+
   private:
 
     /*

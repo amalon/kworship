@@ -76,6 +76,18 @@ void KwCssStyles::setRawStyle(QString name, KwCssAbstractStyle* style)
   m_styles[name] = style;
 }
 
+/// Return whether the styles container is empty.
+bool KwCssStyles::isEmpty() const
+{
+  return m_styles.isEmpty();
+}
+
+/// Convert to CSS-like format.
+QString KwCssStyles::toString() const
+{
+  return "/* KwCssStyle::toString() unimplemented */";
+}
+
 /*
  * Operators
  */

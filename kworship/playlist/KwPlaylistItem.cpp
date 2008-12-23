@@ -77,6 +77,11 @@ KwPlaylistItem::KwPlaylistItem(const QDomElement& element, KwResourceManager* re
           continue;
         }
       }
+      else if (childElement.tagName() == "style")
+      {
+        importStylesFromDom(childElement, resourceManager);
+        continue;
+      }
     }
     QDomNode preserved = m_domDocument.importNode(child, true); // deep copy
     m_domPreserve.appendChild(preserved);
@@ -119,6 +124,13 @@ void KwPlaylistItem::exportToDom(QDomDocument& document, QDomElement& element, K
   element.appendChild(itemElement);
   QString type = itemType();
   itemElement.setAttribute("type", type);
+
+  if (!isScopeEmpty())
+  {
+    QDomElement styleElem = document.createElement("style");
+    itemElement.appendChild(styleElem);
+    exportStylesToDom(document, styleElem, resourceManager);
+  }
 
   exportDetailsToDom(document, itemElement, resourceManager);
 

@@ -27,6 +27,9 @@
 #include "KwCssStyleRule.h"
 #include "KwCssStyleSheet.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+
 /*
  * Constructors + destructors
  */
@@ -67,12 +70,48 @@ KwCssScope::~KwCssScope()
 
   // Clean style sheets
   {
-    StyleSheetList::iterator it;
-    for (it = m_styleSheets.begin(); it != m_styleSheets.end(); ++it)
+    foreach (KwCssStyleSheet* stylesheet, m_styleSheets)
     {
       /// @todo reference count
-      delete *it;
+      delete stylesheet;
     }
+  }
+}
+
+/*
+ * DOM filters
+ */
+
+/// Import the style information from a DOM.
+void KwCssScope::importStylesFromDom(const QDomElement& element, KwResourceManager* resourceManager)
+{
+}
+
+/// Export the style information to a DOM.
+void KwCssScope::exportStylesToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
+{
+  // Start with the classes
+  foreach (QString className, m_classes)
+  {
+    QDomElement classElem = document.createElement("class");
+    element.appendChild(classElem);
+    classElem.appendChild(document.createTextNode(className));
+  }
+
+  // Now for the stylesheets
+  foreach (KwCssStyleSheet* stylesheet, m_styleSheets)
+  {
+    QDomElement sheetElem = document.createElement("sheet");
+    element.appendChild(sheetElem);
+    sheetElem.appendChild(document.createTextNode(stylesheet->toString()));
+  }
+
+  // And finally the explicit styles
+  if (!m_styles.isEmpty())
+  {
+    QDomElement explicitElem = document.createElement("explicit");
+    element.appendChild(explicitElem);
+    explicitElem.appendChild(document.createTextNode(m_styles.toString()));
   }
 }
 
@@ -205,6 +244,12 @@ void KwCssScope::recalculateStyles()
 /*
  * Accessors
  */
+
+/// Find whether the scope is effectively empty.
+bool KwCssScope::isScopeEmpty() const
+{
+  return m_classes.isEmpty() && m_styleSheets.isEmpty() && m_styles.isEmpty();
+}
 
 /// Get explicit styles.
 const KwCssStyles& KwCssScope::getExplicitStyles() const
