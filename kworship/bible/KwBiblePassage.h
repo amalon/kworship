@@ -30,6 +30,9 @@
 
 #include <QString>
 
+class QDomDocument;
+class QDomElement;
+
 /** A passage of rendered bible text.
  * Stores enough information to adjust settings.
  * Can be used as a cache.
@@ -47,6 +50,16 @@ class KwBiblePassage
 
     /// Destructor.
     virtual ~KwBiblePassage();
+
+    /*
+     * DOM filters
+     */
+
+    /// Import the passage in a DOM.
+    void importFromDom(const QDomElement& element);
+
+    /// Export the passage using DOM.
+    void exportToDom(QDomDocument& document, QDomElement& element) const;
 
     /*
      * Main interface
@@ -218,8 +231,6 @@ class KwBiblePassage
     QString m_managerId;
     /// Bible module id.
     QString m_moduleId;
-    /// Original module key.
-    KwBibleModule::Key m_key;
 
     /// Whether the text is right-to-left.
     bool m_rightToLeft;

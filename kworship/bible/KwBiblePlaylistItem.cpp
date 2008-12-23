@@ -42,9 +42,15 @@ KwBiblePlaylistItem::KwBiblePlaylistItem(KwBibleModule* module, const KwBibleMod
 
 /// Construct from a DOM element.
 KwBiblePlaylistItem::KwBiblePlaylistItem(const QDomElement& element, KwResourceManager* resourceManager)
-: KwPlaylistItem()
+: KwPlaylistItem(element, resourceManager)
+, m_passage()
 {
-  /// @todo Implement bible passage import.
+  QDomElement passageElem = element.firstChildElement("passage");
+  if (!passageElem.isNull())
+  {
+    elementHandled("passage");
+    m_passage.importFromDom(passageElem);
+  }
 }
 
 /// Destructor.
@@ -63,7 +69,9 @@ QString KwBiblePlaylistItem::itemType() const
 
 void KwBiblePlaylistItem::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
-  /// @todo Implement bible passage export.
+  QDomElement passageElem = document.createElement("passage");
+  element.appendChild(passageElem);
+  m_passage.exportToDom(document, passageElem);
 }
 
 /*

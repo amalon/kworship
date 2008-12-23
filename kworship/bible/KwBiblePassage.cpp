@@ -27,6 +27,9 @@
 
 #include <KLocale>
 
+#include <QDomDocument>
+#include <QDomElement>
+
 /*
  * Constructors + destructor
  */
@@ -35,7 +38,6 @@
 KwBiblePassage::KwBiblePassage()
 : m_managerId()
 , m_moduleId()
-, m_key()
 , m_rightToLeft(false)
 , m_firstBook(0)
 , m_numBooks(0)
@@ -46,6 +48,238 @@ KwBiblePassage::KwBiblePassage()
 /// Destructor.
 KwBiblePassage::~KwBiblePassage()
 {
+}
+
+/*
+ * DOM filters
+ */
+
+/// Import the passage in a DOM.
+void KwBiblePassage::importFromDom(const QDomElement& element)
+{
+  // Manager id element
+  QDomElement managerElem = element.firstChildElement("manager");
+  if (!managerElem.isNull())
+  {
+    m_managerId = managerElem.text();
+  }
+  else
+  {
+    m_managerId = QString();
+  }
+
+  // Module id element
+  QDomElement moduleElem = element.firstChildElement("module");
+  if (!moduleElem.isNull())
+  {
+    m_moduleId = moduleElem.text();
+  }
+  else
+  {
+    m_moduleId = QString();
+  }
+
+  // Text direction element
+  QDomElement directionElem = element.firstChildElement("direction");
+  if (!directionElem.isNull())
+  {
+    m_rightToLeft = (directionElem.text().toLower() == "rtl");
+  }
+  else
+  {
+    m_rightToLeft = false;
+  }
+
+  bool success;
+
+  // Books element
+  QDomElement booksElem = element.firstChildElement("books");
+  if (!booksElem.isNull())
+  {
+    int firstBook = booksElem.attribute("first").toInt(&success);
+    if (!success)
+    {
+      firstBook = 0;
+    }
+    int numBooks = booksElem.attribute("count").toInt(&success);
+    if (!success)
+    {
+      numBooks = 0;
+    }
+    initBooks(firstBook, numBooks);
+
+    // Book elements
+    QDomNodeList books = booksElem.elementsByTagName("book");
+    for (int book = 0; book < books.count(); ++book)
+    {
+      QDomElement bookElem = books.at(book).toElement();
+
+      int bookId = bookElem.attribute("num").toInt(&success);
+      if (success && bookId >= m_firstBook && bookId < m_firstBook+m_numBooks)
+      {
+        // Chapters element
+        QDomElement chaptersElem = bookElem.firstChildElement("chapters");
+        if (!chaptersElem.isNull())
+        {
+          int firstChapter = chaptersElem.attribute("first").toInt(&success);
+          if (!success)
+          {
+            firstChapter = 0;
+          }
+          int numChapters = chaptersElem.attribute("count").toInt(&success);
+          if (!success)
+          {
+            numChapters = 0;
+          }
+          initBook(bookId, bookElem.attribute("name", "unknown"), firstChapter, numChapters);
+
+          // Chapter elements
+          QDomNodeList chapters = chaptersElem.elementsByTagName("chapter");
+          for (int chapter = 0; chapter < chapters.count(); ++chapter)
+          {
+            QDomElement chapterElem = chapters.at(chapter).toElement();
+
+            int chapterId = chapterElem.attribute("num").toInt(&success);
+            if (success && chapterId >= firstChapter && chapterId < firstChapter+numChapters)
+            {
+              // Verses element
+              QDomElement versesElem = chapterElem.firstChildElement("verses");
+              if (!versesElem.isNull())
+              {
+                int firstVerse = versesElem.attribute("first").toInt(&success);
+                if (!success)
+                {
+                  firstVerse = 0;
+                }
+                int numVerses = versesElem.attribute("count").toInt(&success);
+                if (!success)
+                {
+                  numVerses = 0;
+                }
+                initChapter(bookId, chapterId, firstVerse, numVerses);
+
+                // Verse elements
+                QDomNodeList verses = versesElem.elementsByTagName("verse");
+                for (int verse = 0; verse < verses.count(); ++verse)
+                {
+                  QDomElement verseElem = verses.at(verse).toElement();
+
+                  int verseId = verseElem.attribute("num").toInt(&success);
+                  if (success && verseId >= firstVerse && verseId < firstVerse+numVerses)
+                  {
+                    QString headings, content;
+
+                    // Headings element
+                    QDomElement headingsElem = verseElem.firstChildElement("headings");
+                    if (!headingsElem.isNull())
+                    {
+                      headings = headingsElem.text();
+                    }
+
+                    // Content element
+                    QDomElement contentElem = verseElem.firstChildElement("content");
+                    if (!contentElem.isNull())
+                    {
+                      content = contentElem.text();
+                    }
+
+                    initVerse(bookId, chapterId, verseId, headings, content);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/// Export the passage using DOM.
+void KwBiblePassage::exportToDom(QDomDocument& document, QDomElement& element) const
+{
+  // Manager id element
+  QDomElement managerElem = document.createElement("manager");
+  element.appendChild(managerElem);
+  managerElem.appendChild(document.createTextNode(m_managerId));
+
+  // Module id element
+  QDomElement moduleElem = document.createElement("module");
+  element.appendChild(moduleElem);
+  moduleElem.appendChild(document.createTextNode(m_moduleId));
+
+  // Text direction element
+  QDomElement directionElem = document.createElement("direction");
+  element.appendChild(directionElem);
+  directionElem.appendChild(document.createTextNode(m_rightToLeft ? "rtl" : "ltr"));
+
+  // Books element
+  QDomElement booksElem = document.createElement("books");
+  element.appendChild(booksElem);
+  booksElem.setAttribute("first", m_firstBook);
+  booksElem.setAttribute("count", m_numBooks);
+
+  Book* book = m_books;
+  for (int bookInd = 0; bookInd < m_numBooks; ++bookInd)
+  {
+    // Book element
+    QDomElement bookElem = document.createElement("book");
+    booksElem.appendChild(bookElem);
+    bookElem.setAttribute("num", m_firstBook + bookInd);
+    bookElem.setAttribute("name", book->name);
+
+    // Chapters element
+    QDomElement chaptersElem = document.createElement("chapters");
+    bookElem.appendChild(chaptersElem);
+    chaptersElem.setAttribute("first", book->firstChapter);
+    chaptersElem.setAttribute("count", book->numChapters);
+
+    Chapter* chapter = book->chapters;
+    for (int chapterInd = 0; chapterInd < book->numChapters; ++chapterInd)
+    {
+      // Chapter element
+      QDomElement chapterElem = document.createElement("chapter");
+      chaptersElem.appendChild(chapterElem);
+      chapterElem.setAttribute("num", book->firstChapter + chapterInd);
+
+      // Verses element
+      QDomElement versesElem = document.createElement("verses");
+      chapterElem.appendChild(versesElem);
+      versesElem.setAttribute("first", chapter->firstVerse);
+      versesElem.setAttribute("count", chapter->numVerses);
+
+      Verse* verse = chapter->verses;
+      for (int verseInd = 0; verseInd < chapter->numVerses; ++verseInd)
+      {
+        // Verse element
+        QDomElement verseElem = document.createElement("verse");
+        versesElem.appendChild(verseElem);
+        verseElem.setAttribute("num", chapter->firstVerse + verseInd);
+
+        // Headings
+        if (!verse->headings.isEmpty())
+        {
+          QDomElement headingsElem = document.createElement("headings");
+          verseElem.appendChild(headingsElem);
+          headingsElem.appendChild(document.createTextNode(verse->headings));
+        }
+
+        // Content
+        if (!verse->content.isEmpty())
+        {
+          QDomElement contentElem = document.createElement("content");
+          verseElem.appendChild(contentElem);
+          contentElem.appendChild(document.createTextNode(verse->content));
+        }
+
+        ++verse;
+      }
+
+      ++chapter;
+    }
+
+    ++book;
+  }
 }
 
 /*
@@ -114,12 +348,15 @@ void KwBiblePassage::initBooks(int firstBook, int numBooks)
   clearBooks();
   m_firstBook = firstBook;
   m_numBooks = numBooks;
-  m_books = new Book[numBooks];
-  for (int i = 0; i < numBooks; ++i)
+  if (m_numBooks > 0)
   {
-    m_books[i].firstChapter = -1;
-    m_books[i].numChapters = 0;
-    m_books[i].chapters = 0;
+    m_books = new Book[numBooks];
+    for (int i = 0; i < numBooks; ++i)
+    {
+      m_books[i].firstChapter = -1;
+      m_books[i].numChapters = 0;
+      m_books[i].chapters = 0;
+    }
   }
 }
 
@@ -133,12 +370,15 @@ void KwBiblePassage::initBook(int bookNumber,
   book->name = name;
   book->firstChapter = firstChapter;
   book->numChapters = numChapters;
-  book->chapters = new Chapter[numChapters];
-  for (int i = 0; i < numChapters; ++i)
+  if (numChapters > 0)
   {
-    book->chapters[i].firstVerse = -1;
-    book->chapters[i].numVerses = 0;
-    book->chapters[i].verses = 0;
+    book->chapters = new Chapter[numChapters];
+    for (int i = 0; i < numChapters; ++i)
+    {
+      book->chapters[i].firstVerse = -1;
+      book->chapters[i].numVerses = 0;
+      book->chapters[i].verses = 0;
+    }
   }
 }
 
@@ -152,7 +392,10 @@ void KwBiblePassage::initChapter(int bookNumber, int chapterNumber,
   Chapter* chapter = &m_books[bookNumber].chapters[chapterNumber];
   chapter->firstVerse = firstVerse;
   chapter->numVerses = numVerses;
-  chapter->verses = new Verse[numVerses];
+  if (numVerses > 0)
+  {
+    chapter->verses = new Verse[numVerses];
+  }
 }
 
 /// Initialise a verse in the passage.

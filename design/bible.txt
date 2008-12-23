@@ -8,7 +8,7 @@ features
   [ ] go to selected bible passage in playlist
   [ ] extend passage
   [ ] quick access to bibletime bookmarks
-  [ ] save/load bible passages in playlist
+  [X] save/load bible passages in playlist
   [ ] "show now" button
   [ ] different style during display
   [ ] footnote extraction
