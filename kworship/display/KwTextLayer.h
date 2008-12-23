@@ -45,7 +45,7 @@ class KwTextLayer : public KwAbstractLayer
     KwTextLayer();
 
     /// Primaryt constructor.
-    KwTextLayer(QString text);
+    KwTextLayer(QString text, bool formatted = false);
 
     /// Destructor.
     virtual ~KwTextLayer();
@@ -71,6 +71,9 @@ class KwTextLayer : public KwAbstractLayer
 
     /// The actual text.
     QString m_text;
+
+    /// Whether the text is formatted.
+    bool m_formatted;
 };
 
 #endif // _KwTextLayer_h_

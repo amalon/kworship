@@ -61,7 +61,10 @@ class KwTextManager : public KwAbstractDisplayManager
     void clear();
 
     /// Set the text.
-    void setText(QString text);
+    void setText(const QString& text);
+
+    /// Set formatted text.
+    void setHtml(const QString& html);
 };
 
 #endif // _KwTextManager_h_

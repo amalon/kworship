@@ -26,6 +26,7 @@
 #include "KwBiblePlaylistItemNode.h"
 #include "KwBiblePlaylistItem.h"
 #include "KwBiblePassage.h"
+#include <KwDisplayManager.h>
 
 #include <KIcon>
 
@@ -66,5 +67,12 @@ QVariant KwBiblePlaylistItemNode::getData(int role, int column)
     }
   }
   return QVariant();
+}
+
+void KwBiblePlaylistItemNode::activate(KwDisplayManager* manager)
+{
+  manager->applyStyles(m_item);
+  // Set html
+  manager->text.setHtml(m_item->passage().renderedText());
 }
 

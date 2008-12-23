@@ -58,9 +58,18 @@ void KwTextManager::clear()
 }
 
 /// Set the text.
-void KwTextManager::setText(QString text)
+void KwTextManager::setText(const QString& text)
 {
   KwTextLayer* lyrics = new KwTextLayer(text);
+  m_display.clearLayers();
+  m_display.setLayer(0, lyrics, true);
+  /// @todo Delete previous layer
+}
+
+/// Set formatted text.
+void KwTextManager::setHtml(const QString& html)
+{
+  KwTextLayer* lyrics = new KwTextLayer(html, true);
   m_display.clearLayers();
   m_display.setLayer(0, lyrics, true);
   /// @todo Delete previous layer

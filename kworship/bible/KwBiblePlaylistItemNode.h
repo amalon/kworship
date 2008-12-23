@@ -52,6 +52,9 @@ class KwBiblePlaylistItemNode : public KwPlaylistNode
     // Reimplemented
     virtual QVariant getData(int role, int column);
 
+    // Reimplemented
+    virtual void activate(KwDisplayManager* manager);
+
   private:
 
     /*

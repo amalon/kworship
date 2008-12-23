@@ -41,10 +41,11 @@ KwTextLayer::KwTextLayer()
 }
 
 /// Primaryt constructor.
-KwTextLayer::KwTextLayer(QString text)
+KwTextLayer::KwTextLayer(QString text, bool formatted)
 : KwAbstractLayer()
 , m_style()
 , m_text(text)
+, m_formatted(formatted)
 {
 }
 
@@ -76,28 +77,34 @@ void* KwTextLayer::addWidgets(QWidget* master) const
   data->textBrowser->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   data->textBrowser->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   data->textBrowser->viewport()->setAutoFillBackground(false);
+
+  // Set the content
+  QFont font = data->textBrowser->document()->defaultFont();
+  font.setPixelSize(64);
+  data->textBrowser->document()->setDefaultFont(font);
+  if (m_formatted)
   {
-    QTextCursor cursor = data->textBrowser->textCursor();
-    QTextCharFormat fmt;
-    fmt.setFontPointSize(64);
-
-#if 0
-    QLinearGradient gradient(0, 0, 500, 500);
-    gradient.setColorAt(0, Qt::red);
-    gradient.setColorAt(1, Qt::green);
-#endif
-
-    fmt.setForeground(QBrush(Qt::yellow));
-    fmt.setTextOutline(QPen(Qt::blue, 3));
-
-    cursor.insertText(m_text, fmt);
+    data->textBrowser->setHtml(m_text);
   }
+  else
+  {
+    data->textBrowser->setText(m_text);
+  }
+
+  // Select the content
+  QTextCursor cursor = data->textBrowser->textCursor();
+  cursor.select(QTextCursor::Document);
+
+  // Create a text character format with outline etc and apply
+  QTextCharFormat fmt;
+  fmt.setForeground(QBrush(Qt::cyan));
+  fmt.setTextOutline(QPen(Qt::blue, 2));
+  cursor.mergeCharFormat(fmt);
 
   QStackedLayout* layout = new QStackedLayout();
   layout->setStackingMode(QStackedLayout::StackAll);
   master->setLayout(layout);
   layout->addWidget(data->textBrowser);
-
 
   return (void*)data;
 }
