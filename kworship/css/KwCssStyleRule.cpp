@@ -60,7 +60,7 @@ void KwCssStyleRule::setCriteriaClasses(const StringSet& classes)
 }
 
 /// Set a style.
-void KwCssStyleRule::setRawStyle(QString name, KwCssAbstractStyle* style)
+void KwCssStyleRule::setRawStyle(const QString& name, KwCssAbstractStyle* style)
 {
   m_styles->setRawStyle(name, style);
 }

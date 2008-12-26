@@ -9,6 +9,7 @@ set(kworshipcss_SRCS
     KwCssScope.cpp
     KwCssScopeKey.cpp
     KwCssStyles.cpp
+    KwCssStyle.cpp
     KwCssStyleStates.cpp
     KwCssStyleRule.cpp
     KwCssStyleSheet.cpp

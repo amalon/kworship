@@ -27,6 +27,15 @@
  */
 
 #include "KwCssAbstractStyle.h"
+#include "KwCssUnprocessed.h"
+
+/// Stringify a type.
+template <typename T>
+KwCssUnprocessed KwCssStringify(const T& value);
+
+/// Unstringify a type.
+template <typename T>
+T KwCssUnstringify(const KwCssUnprocessed& value, bool* success);
 
 /// Typed cascading style property.
 /**
@@ -107,7 +116,30 @@ class KwCssStyle : public KwCssAbstractStyle
     // Reimplemented
     virtual QString toString() const
     {
-      return "/* unimplemented KwCssStyle<T>::toString() */";
+      switch (m_operation)
+      {
+        case revert:
+          {
+            return "revert";
+          }
+
+        case override:
+          {
+            return KwCssStringify(m_value);
+          }
+
+        case clear:
+          {
+            return "clear";
+          }
+
+        case none:
+        default:
+          {
+            return "inherit";
+          }
+
+      }
     }
 
     /*

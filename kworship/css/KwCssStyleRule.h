@@ -72,11 +72,11 @@ class KwCssStyleRule
     void setCriteriaClasses(const StringSet& classes);
 
     /// Set a style.
-    void setRawStyle(QString name, KwCssAbstractStyle* style);
+    void setRawStyle(const QString& name, KwCssAbstractStyle* style);
 
     /// Set a style of a particular type.
     template <typename T>
-    void setStyle(QString name, const T& value)
+    void setStyle(const QString& name, const T& value)
     {
       m_styles->setStyle<T>(name, value);
     }
