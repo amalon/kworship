@@ -85,6 +85,32 @@ KwCssScope::~KwCssScope()
 /// Import the style information from a DOM.
 void KwCssScope::importStylesFromDom(const QDomElement& element, KwResourceManager* resourceManager)
 {
+  // Classes
+  QDomNodeList elems = element.elementsByTagName("class");
+  for (int i = 0; i < elems.count(); ++i)
+  {
+    m_classes += elems.at(i).toElement().text();
+  }
+
+  // Stylesheets
+  elems = element.elementsByTagName("sheet");
+  for (int i = 0; i < elems.count(); ++i)
+  {
+    KwCssStyleSheet* newSheet = new KwCssStyleSheet;
+    newSheet->import(elems.at(i).toElement().text());
+    m_styleSheets.push_back(newSheet);
+  }
+  if (elems.count() > 0)
+  {
+    recalculateStyles();
+  }
+
+  // Explicit styles
+  elems = element.elementsByTagName("explicit");
+  for (int i = 0; i < elems.count(); ++i)
+  {
+    m_styles.import(elems.at(i).toElement().text());
+  }
 }
 
 /// Export the style information to a DOM.

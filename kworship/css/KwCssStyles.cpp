@@ -95,6 +95,13 @@ QString KwCssStyles::toString() const
   return result;
 }
 
+#include <iostream>
+/// Import from CSS-like format into the sheet.
+void KwCssStyles::import(const QString& sheet)
+{
+  std::cout << __PRETTY_FUNCTION__ << ": " << (const char*)sheet.toAscii() << std::endl;
+}
+
 /*
  * Operators
  */

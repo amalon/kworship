@@ -76,6 +76,13 @@ void KwCssStyleSheet::importStyleSheet(const KwCssStyleSheet* styleSheet)
   m_rules += styleSheet->m_rules;
 }
 
+#include <iostream>
+/// Import from CSS-like format into the sheet.
+void KwCssStyleSheet::import(const QString& sheet)
+{
+  std::cout << __PRETTY_FUNCTION__ << ": " << (const char*)sheet.toAscii() << std::endl;
+}
+
 /*
  * Accessors
  */

@@ -71,6 +71,9 @@ class KwCssStyles
     /// Convert to CSS-like format.
     QString toString() const;
 
+    /// Import from CSS-like format into the sheet.
+    void import(const QString& sheet);
+
     /*
      * Operators
      */

@@ -81,6 +81,9 @@ class KwCssStyleSheet
     /// Import another stylesheet.
     void importStyleSheet(const KwCssStyleSheet* styleSheet);
 
+    /// Import from CSS-like format into the sheet.
+    void import(const QString& sheet);
+
     /*
      * Accessors
      */
