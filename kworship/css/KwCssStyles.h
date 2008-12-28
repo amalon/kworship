@@ -71,8 +71,10 @@ class KwCssStyles
     /// Convert to CSS-like format.
     QString toString() const;
 
-    /// Import from CSS-like format into the sheet.
-    void import(const QString& sheet);
+    /** Import from CSS-like format into the sheet.
+     * @return position of first character after styles.
+     */
+    int import(const QString& sheet, int start = 0);
 
     /*
      * Operators

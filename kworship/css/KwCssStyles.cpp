@@ -28,6 +28,8 @@
 #include "KwCssAbstractStyle.h"
 #include "KwCssAbstractStyleState.h"
 
+#include <QRegExp>
+
 /*
  * Constructors + destructors
  */
@@ -95,11 +97,20 @@ QString KwCssStyles::toString() const
   return result;
 }
 
-#include <iostream>
 /// Import from CSS-like format into the sheet.
-void KwCssStyles::import(const QString& sheet)
+int KwCssStyles::import(const QString& sheet, int start)
 {
-  std::cout << __PRETTY_FUNCTION__ << ": " << (const char*)sheet.toAscii() << std::endl;
+  // Read the styles
+  static QRegExp reStyle("^([\\w.]+)\\s*:\\s*(\\S[^;]*);\\s*");
+  int last = start;
+  while (-1 != (start = reStyle.indexIn(sheet, last, QRegExp::CaretAtOffset)))
+  {
+    last = start + reStyle.matchedLength();
+    QString name = reStyle.cap(1);
+    KwCssUnprocessed value = reStyle.cap(2);
+    setStyle<KwCssUnprocessed>(name, value);
+  }
+  return last;
 }
 
 /*

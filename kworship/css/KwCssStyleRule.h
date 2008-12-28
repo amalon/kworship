@@ -71,6 +71,9 @@ class KwCssStyleRule
     /// Set the set of required classes.
     void setCriteriaClasses(const StringSet& classes);
 
+    /// Set the set of included classes.
+    void setIncludedStyles(const StringSet& includes);
+
     /// Set a style.
     void setRawStyle(const QString& name, KwCssAbstractStyle* style);
 
@@ -95,7 +98,7 @@ class KwCssStyleRule
     const StringSet& getIncludedStyles() const;
 
     /// Get the styles.
-    const ReferenceCountedExtension<KwCssStyles>* getStyles() const;
+    ReferenceCountedExtension<KwCssStyles>* getStyles() const;
 
     /// Convert to CSS-like format.
     QString toString() const;

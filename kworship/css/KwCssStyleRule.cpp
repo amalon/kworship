@@ -59,6 +59,12 @@ void KwCssStyleRule::setCriteriaClasses(const StringSet& classes)
   m_criteriaClasses = classes;
 }
 
+/// Set the set of included classes.
+void KwCssStyleRule::setIncludedStyles(const StringSet& includes)
+{
+  m_includedStyles = includes;
+}
+
 /// Set a style.
 void KwCssStyleRule::setRawStyle(const QString& name, KwCssAbstractStyle* style)
 {
@@ -88,7 +94,7 @@ const KwCssStyleRule::StringSet& KwCssStyleRule::getIncludedStyles() const
 }
 
 /// Get the styles.
-const ReferenceCountedExtension<KwCssStyles>* KwCssStyleRule::getStyles() const
+ReferenceCountedExtension<KwCssStyles>* KwCssStyleRule::getStyles() const
 {
   return m_styles;
 }
