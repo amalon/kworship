@@ -25,6 +25,8 @@
 
 #include "KwCssStyle.h"
 
+#include <QRegExp>
+
 #include "KwCssUnprocessed.h"
 template <>
 KwCssUnprocessed KwCssStringify<KwCssUnprocessed>(const KwCssUnprocessed& value)
@@ -87,6 +89,35 @@ KwCssUnprocessed KwCssStringify<KwResourceLink>(const KwResourceLink& value)
 template <>
 KwResourceLink KwCssUnstringify<KwResourceLink>(const KwCssUnprocessed& value, bool* success)
 {
+  if ("null" != value)
+  {
+    static QRegExp reFormat("((\\w*)\\s+)?\"((\\.|[^\\\"])*)\"");
+    static const QRegExp reUnescape("\\(.)");
+    static const QString unescapeReplace("\\1");
+    if (reFormat.exactMatch(value))
+    {
+      QString keyword = reFormat.cap(1);
+      QString file = reFormat.cap(3);
+      file.replace(reUnescape, unescapeReplace);
+      *success = true;
+      if (keyword.isEmpty())
+      {
+        return KwResourceLink(KUrl(file));
+      }
+      else if ("frel" == keyword)
+      {
+        return KwResourceLink(KwResourceLink::FileRelative, file);
+      }
+      else if ("aroot" == keyword)
+      {
+        return KwResourceLink(KwResourceLink::ArchiveRoot, file);
+      }
+      else if ("arel" == keyword)
+      {
+        return KwResourceLink(KwResourceLink::ArchiveRelative, file);
+      }
+    }
+  }
   *success = false;
   return KwResourceLink();
 }
@@ -102,17 +133,4 @@ QBrush KwCssUnstringify<QBrush>(const KwCssUnprocessed& value, bool* success)
 {
   *success = true; 
   return QBrush(Qt::black);
-}
-
-#include <QPixmap>
-template <>
-KwCssUnprocessed KwCssStringify<QPixmap>(const QPixmap& value)
-{
-  return "Pixmap()";
-}
-template <>
-QPixmap KwCssUnstringify<QPixmap>(const KwCssUnprocessed& value, bool* success)
-{
-  *success = true;
-  return QPixmap();
 }

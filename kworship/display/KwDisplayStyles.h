@@ -26,12 +26,10 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwCssStandardise.h"
+#include <KwCssStandardise.h>
+#include <KwResourceLink.h>
 
-#include <QString>
 #include <QBrush>
-#include <QFont>
-#include <QPen>
 
 // The cpp file defines this to declare static variables
 #ifdef KW_DISPLAY_STYLES_DECLARE
@@ -51,7 +49,7 @@ namespace KwDisplayStyles
     // Image backgrounds
     KWCSS_START_NAMESPACE(background, image)
       // Pixmap to display
-      KWCSS_DEFINE_PROPERTY(QPixmap, pixmap)
+      KWCSS_DEFINE_PROPERTY(KwResourceLink, src)
     KWCSS_END_NAMESPACE()
     /*
     // Video backgrounds

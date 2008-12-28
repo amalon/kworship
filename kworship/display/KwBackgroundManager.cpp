@@ -58,7 +58,7 @@ KwBackgroundManager::~KwBackgroundManager()
 /// Apply the styles in a scope.
 void KwBackgroundManager::applyStyles(KwCssScope* scope)
 {
-  QPixmap image = KwDisplayStyles::background::image::pixmap(scope);
+  KwResourceLink image = KwDisplayStyles::background::image::src(scope);
   if (image.isNull())
   {
     // Set background if applicable
@@ -66,7 +66,8 @@ void KwBackgroundManager::applyStyles(KwCssScope* scope)
   }
   else
   {
-    setImage(image);
+    /// @todo Get the actual file from resource link instead of assuming its a url.
+    setImage(QPixmap(image.url().toLocalFile()));
   }
 }
 
