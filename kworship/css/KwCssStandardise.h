@@ -27,6 +27,7 @@
  */
 
 #include "KwCssScope.h"
+#include "KwCssSchema.h"
 
 /// Simple class for accessing a style.
 template <typename T>
@@ -43,15 +44,31 @@ class KwCssStyleAccessor
     {
       return scope->getStyles().getStyle<T>(getName());
     }
+
+    void registerToSchema(KwCssSchema* schema) const
+    {
+      schema->registerProperty<T>(getName());
+    }
   protected:
     virtual QString getName() const = 0;
 };
+
+#define KWCSS_SCHEMA \
+  inline KwCssSchema* schema() \
+  { \
+    static KwCssSchema* s = 0; \
+    if (0 == s) \
+    { \
+      s = new KwCssSchema; \
+    } \
+    return s; \
+  }
 
 /// Start the root css namespace.
 #define KWCSS_ROOT_NAMESPACE(NAME) \
   namespace NAME \
   { \
-    QString _scopeName() \
+    inline QString _scopeName() \
     { \
       return #NAME; \
     }
@@ -60,7 +77,7 @@ class KwCssStyleAccessor
 #define KWCSS_START_NAMESPACE(PREV,NAME) \
   namespace NAME \
   { \
-    QString _scopeName() \
+    inline QString _scopeName() \
     { \
       return #PREV "." #NAME; \
     }
@@ -71,8 +88,13 @@ class KwCssStyleAccessor
 
 /// Define a property in a css namespace.
 #define KWCSS_DEFINE_PROPERTY(TYPE, LNAME) \
-  class Acc_##LNAME : public KwCssStyleAccessor< TYPE > \
+  KWCSS_EXTERN class Acc_##LNAME : public KwCssStyleAccessor< TYPE > \
   { \
+    public: \
+      Acc_##LNAME() \
+      { \
+        registerToSchema(schema()); \
+      } \
     protected: \
       virtual QString getName() const \
       { \
@@ -81,6 +103,8 @@ class KwCssStyleAccessor
         return name; \
       } \
   } LNAME;
+
+#define KWCSS_EXTERN extern
 
 #endif // _KwCssStandardise_h_
 

@@ -22,6 +22,7 @@ set(kworshipdisplay_SRCS
     KwBackgroundManager.cpp
     KwTextManager.cpp
     KwOverlayManager.cpp
+    KwDisplayStyles.cpp
 )
 
 kde4_add_library(kworshipdisplay ${kworshipdisplay_SRCS})

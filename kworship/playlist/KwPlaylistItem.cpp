@@ -26,6 +26,7 @@
 #include "KwPlaylistItem.h"
 #include "KwPlaylistUnknown.h"
 #include "KwResourceLink.h"
+#include <KwDisplayStyles.h>
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -47,7 +48,7 @@ KwPlaylistItem::Factory* KwPlaylistItem::factory()
 
 /// Default constructor.
 KwPlaylistItem::KwPlaylistItem()
-: KwCssScope()
+: KwCssScope(KwDisplayStyles::schema())
 , m_domDocument()
 , m_domPreserve(m_domDocument.createDocumentFragment())
 {
@@ -55,7 +56,7 @@ KwPlaylistItem::KwPlaylistItem()
 
 /// Construct from a DOM element.
 KwPlaylistItem::KwPlaylistItem(const QDomElement& element, KwResourceManager* resourceManager)
-: KwCssScope()
+: KwCssScope(KwDisplayStyles::schema())
 , m_domDocument()
 , m_domPreserve(m_domDocument.createDocumentFragment())
 {

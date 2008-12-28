@@ -17,90 +17,72 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwCssStyles_h_
-#define _KwCssStyles_h_
+#ifndef _KwCssSchema_h_
+#define _KwCssSchema_h_
 
 /**
- * @file KwCssStyles.h
- * @brief Set of cascading style properties.
+ * @file KwCssSchema.h
+ * @brief Schema of styles.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwCssStyle.h"
+#include "KwCssScope.h"
 
+#include <QString>
 #include <QHash>
 
-class KwCssAbstractStyle;
-class KwCssStyleStates;
-class KwCssSchema;
-
-/// Set of cascading style properties.
-class KwCssStyles
+#include <iostream>
+/// Schema of styles.
+class KwCssSchema
 {
   public:
 
     /*
-     * Constructors + destructors
+     * Constructors + destructor
      */
 
-    /// Default constructor.
-    KwCssStyles();
-
-    /// Copy constructor.
-    KwCssStyles(const KwCssStyles& other);
-
-    /// Destructor.
-    virtual ~KwCssStyles();
+    /// Default constructor
+    KwCssSchema()
+    {
+    }
 
     /*
      * Main interface
      */
 
-    /// Set a style.
-    void setRawStyle(QString name, KwCssAbstractStyle* style);
-
-    /// Set a style of a particular type.
+    /// Register a new property.
     template <typename T>
-    void setStyle(QString name, const T& value)
+    void registerProperty(const QString& name)
     {
-      setRawStyle(name, new KwCssStyle<T>(value));
+      m_constructors[name] = &KwCssConstruct<T>;
     }
 
-    /// Return whether the styles container is empty.
-    bool isEmpty() const;
-
-    /// Convert to CSS-like format.
-    QString toString() const;
-
-    /** Import from CSS-like format into the sheet.
-     * @return position of first character after styles.
-     */
-    int import(const KwCssSchema* schema, const QString& sheet, int start = 0);
-
-    /*
-     * Operators
-     */
-
-    /// Apply styles to states.
-    friend KwCssStyleStates& operator << (KwCssStyleStates& states, const KwCssStyles& styles);
+    /// Construct from an unprocessed string and a style name.
+    KwCssAbstractStyle* construct(const QString& name, const KwCssUnprocessed& value) const
+    {
+      KwCssAbstractStyle* result = 0;
+      if (m_constructors.contains(name))
+      {
+        result = m_constructors[name](value);
+      }
+      if (0 == result)
+      {
+        result = new KwCssStyle<KwCssUnprocessed>(value);
+      }
+      return result;
+    }
 
   private:
-
-    /*
-     * Types
-     */
-
-    /// Dictionary of strings to styles.
-    typedef QHash<QString, KwCssAbstractStyle*> StyleDictionary;
-
+    
     /*
      * Variables
      */
 
-    /// The style properties.
-    StyleDictionary m_styles;
-
+    /// Constructor function.
+    typedef KwCssAbstractStyle* Constructor(const KwCssUnprocessed& value);
+    /// Hash of style names to constructors.
+    QHash<QString, Constructor*> m_constructors;
 };
 
-#endif // _KwCssStyles_h_
+#endif // _KwCssSchema_h_
 

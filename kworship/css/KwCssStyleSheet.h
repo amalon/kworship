@@ -29,6 +29,7 @@
 #include <QList>
 
 class KwCssStyleRule;
+class KwCssSchema;
 
 /// Cascading style sheet.
 /**
@@ -82,7 +83,7 @@ class KwCssStyleSheet
     void importStyleSheet(const KwCssStyleSheet* styleSheet);
 
     /// Import from CSS-like format into the sheet.
-    void import(const QString& sheet);
+    void import(const KwCssSchema* schema, const QString& sheet);
 
     /*
      * Accessors

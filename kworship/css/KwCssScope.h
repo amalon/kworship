@@ -67,7 +67,7 @@ class KwCssScope
      */
 
     /// Primary constructor.
-    KwCssScope(KwCssScope* parent = 0);
+    KwCssScope(KwCssSchema* schema, KwCssScope* parent = 0);
 
     /// Destructor.
     virtual ~KwCssScope();
@@ -147,6 +147,9 @@ class KwCssScope
     /*
      * Basic data
      */
+
+    /// Style schema.
+    KwCssSchema* m_schema;
 
     /// Parent scope.
     KwCssScope* m_parentScope;

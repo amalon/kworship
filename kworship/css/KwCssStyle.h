@@ -171,6 +171,22 @@ class KwCssStyle : public KwCssAbstractStyle
     T m_value;
 };
 
+/// Construct a style of some type from an unprocessed string.
+template <typename T>
+KwCssAbstractStyle* KwCssConstruct(const KwCssUnprocessed& value)
+{
+  bool worked;
+  T val = KwCssUnstringify<T>(value, &worked);
+  if (worked)
+  {
+    return new KwCssStyle<T>(val);
+  }
+  else
+  {
+    return 0;
+  }
+}
+
 #include "KwCssStyleState.h"
 
 /// Get a new state.

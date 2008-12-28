@@ -113,6 +113,6 @@ KwCssUnprocessed KwCssStringify<QPixmap>(const QPixmap& value)
 template <>
 QPixmap KwCssUnstringify<QPixmap>(const KwCssUnprocessed& value, bool* success)
 {
-  *success = false;
+  *success = true;
   return QPixmap();
 }

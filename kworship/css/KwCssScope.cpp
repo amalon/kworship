@@ -35,8 +35,9 @@
  */
 
 /// Primary constructor.
-KwCssScope::KwCssScope(KwCssScope* parent)
-: m_parentScope(parent)
+KwCssScope::KwCssScope(KwCssSchema* schema, KwCssScope* parent)
+: m_schema(schema)
+, m_parentScope(parent)
 , m_childScopes()
 , m_name()
 , m_classes()
@@ -97,7 +98,7 @@ void KwCssScope::importStylesFromDom(const QDomElement& element, KwResourceManag
   for (int i = 0; i < elems.count(); ++i)
   {
     KwCssStyleSheet* newSheet = new KwCssStyleSheet;
-    newSheet->import(elems.at(i).toElement().text());
+    newSheet->import(m_schema, elems.at(i).toElement().text());
     m_styleSheets.push_back(newSheet);
   }
   if (elems.count() > 0)
@@ -110,7 +111,7 @@ void KwCssScope::importStylesFromDom(const QDomElement& element, KwResourceManag
   for (int i = 0; i < elems.count(); ++i)
   {
     QString styles = elems.at(i).toElement().text();
-    int last = m_styles.import(styles);
+    int last = m_styles.import(m_schema, styles);
     /// @todo Check it got to the end of the styles
   }
 }

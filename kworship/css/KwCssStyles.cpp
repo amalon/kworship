@@ -27,6 +27,7 @@
 #include "KwCssStyleStates.h"
 #include "KwCssAbstractStyle.h"
 #include "KwCssAbstractStyleState.h"
+#include "KwCssSchema.h"
 
 #include <QRegExp>
 
@@ -98,7 +99,7 @@ QString KwCssStyles::toString() const
 }
 
 /// Import from CSS-like format into the sheet.
-int KwCssStyles::import(const QString& sheet, int start)
+int KwCssStyles::import(const KwCssSchema* schema, const QString& sheet, int start)
 {
   // Read the styles
   static QRegExp reStyle("^([\\w.]+)\\s*:\\s*(\\S[^;]*);\\s*");
@@ -108,7 +109,7 @@ int KwCssStyles::import(const QString& sheet, int start)
     last = start + reStyle.matchedLength();
     QString name = reStyle.cap(1);
     KwCssUnprocessed value = reStyle.cap(2);
-    setStyle<KwCssUnprocessed>(name, value);
+    setRawStyle(name, schema->construct(name, value));
   }
   return last;
 }

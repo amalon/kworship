@@ -33,8 +33,17 @@
 #include <QFont>
 #include <QPen>
 
+// The cpp file defines this to declare static variables
+#ifdef KW_DISPLAY_STYLES_DECLARE
+#undef KWCSS_EXTERN
+#define KWCSS_EXTERN
+#endif
+
 namespace KwDisplayStyles
 {
+  // Define schema accessor
+  KWCSS_SCHEMA
+
   // Display background
   KWCSS_ROOT_NAMESPACE(background)
     // Brush to fill the background
@@ -44,6 +53,7 @@ namespace KwDisplayStyles
       // Pixmap to display
       KWCSS_DEFINE_PROPERTY(QPixmap, pixmap)
     KWCSS_END_NAMESPACE()
+    /*
     // Video backgrounds
     KWCSS_START_NAMESPACE(background, video)
       // Path of video file
@@ -51,8 +61,10 @@ namespace KwDisplayStyles
       // Whether to loop the video
       KWCSS_DEFINE_PROPERTY(bool, loop)
     KWCSS_END_NAMESPACE()
+    */
   KWCSS_END_NAMESPACE()
 
+  /*
   // Text
   KWCSS_ROOT_NAMESPACE(text)
     // Font display settings
@@ -69,6 +81,7 @@ namespace KwDisplayStyles
     KWCSS_END_NAMESPACE()
     // Text layout settings
   KWCSS_END_NAMESPACE()
+  */
 }
 
 #endif // _KwDisplayStyles_h_

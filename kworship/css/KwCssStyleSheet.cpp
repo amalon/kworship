@@ -77,7 +77,7 @@ void KwCssStyleSheet::importStyleSheet(const KwCssStyleSheet* styleSheet)
 }
 
 /// Import from CSS-like format into the sheet.
-void KwCssStyleSheet::import(const QString& sheet)
+void KwCssStyleSheet::import(const KwCssSchema* schema, const QString& sheet)
 {
   QString css = sheet;
 
@@ -146,7 +146,7 @@ void KwCssStyleSheet::import(const QString& sheet)
     }
 
     // Read the styles
-    lastRulesPos = rule.getStyles()->import(css, lastRulesPos);
+    lastRulesPos = rule.getStyles()->import(schema, css, lastRulesPos);
 
     // End of rule
     static QRegExp reRuleEnd("^\\}\\s*");
