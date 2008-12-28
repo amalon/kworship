@@ -109,7 +109,9 @@ void KwCssScope::importStylesFromDom(const QDomElement& element, KwResourceManag
   elems = element.elementsByTagName("explicit");
   for (int i = 0; i < elems.count(); ++i)
   {
-    m_styles.import(elems.at(i).toElement().text());
+    QString styles = elems.at(i).toElement().text();
+    int last = m_styles.import(styles);
+    /// @todo Check it got to the end of the styles
   }
 }
 
