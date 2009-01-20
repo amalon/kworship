@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=KPresenter1
-Comment=KPresenter 1.6 backend for UniPresent
+Comment=UniPresent backend for KPresenter 1.6
 X-KDE-ServiceTypes=UniPresent/Backend
 Type=Service
 X-KDE-Library=unipresent_kpresenter1
