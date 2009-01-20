@@ -20,5 +20,12 @@ set(unipresent_SRCS
     UpSlideEditWidget.cpp
 )
 
-kde4_add_library(unipresent ${unipresent_SRCS})
+kde4_add_library(unipresent SHARED ${unipresent_SRCS})
 
+target_link_libraries(unipresent
+                      ${KDE4_KDEUI_LIBS}
+                      ${QT_LIBRARIES}
+                      )
+
+install(TARGETS unipresent DESTINATION ${LIB_INSTALL_DIR} )
+install( FILES unipresentbackend.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )

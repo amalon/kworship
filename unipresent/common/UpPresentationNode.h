@@ -28,10 +28,12 @@
 
 #include "NodeBasedModel.h"
 
+#include <kdemacros.h>
+
 class UpPresentation;
 
 /// A presentations node for a presentation.
-class UpPresentationNode : public DefaultModelNode
+class KDE_EXPORT UpPresentationNode : public DefaultModelNode
 {
   public:
     

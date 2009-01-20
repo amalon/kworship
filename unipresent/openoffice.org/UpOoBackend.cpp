@@ -32,6 +32,7 @@
 #include <KRun>
 #include <KShell>
 #include <KLocale>
+#include <KGenericFactory>
 
 #include <QThread>
 
@@ -53,6 +54,8 @@ using namespace com::sun::star::lang;
 using namespace com::sun::star::presentation;
 using namespace com::sun::star::uno;
 using namespace rtl;
+
+K_EXPORT_COMPONENT_FACTORY( unipresent_openoffice, KGenericFactory<UpOoBackend>("unipresent_openoffice") )
 
 /*
  * Constructors + destructor

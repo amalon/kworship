@@ -26,6 +26,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 #include <QObject>
 #include <QUrl>
 #include <QHash>
@@ -37,7 +39,7 @@ class UpPresentation;
 class UpPresentationsModel;
 
 /// Overall unipresent manager.
-class UpManager : public QObject
+class KDE_EXPORT UpManager : public QObject
 {
     Q_OBJECT
 
@@ -100,6 +102,9 @@ class UpManager : public QObject
     {
       addBackend(new T(this));
     }
+
+    /// Load dynamic backends.
+    void loadBackends();
 
   signals:
 

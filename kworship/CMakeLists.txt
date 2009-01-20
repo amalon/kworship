@@ -1,6 +1,5 @@
 project(kworship)
 
-find_package(UNO REQUIRED)
 find_package(Sword REQUIRED)
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
@@ -9,9 +8,6 @@ include(${QT_USE_FILE})
 include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
                     ../unipresent/common
-                    ../unipresent/kpresenter1
-                    ../unipresent/kpresenter2
-                    ../unipresent/openoffice.org
                     media
                     display
                     css
@@ -63,9 +59,6 @@ target_link_libraries(kworship
                       ${PHONON_LIBS}
                       ${SWORD_LIBS}
                       unipresent
-                      unipresentkpresenter1
-                      unipresentkpresenter2
-                      unipresentopenoffice
                       kworshiparchive
                       kworshipplaylist
                       kworshipcss

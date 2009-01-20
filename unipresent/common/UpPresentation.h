@@ -26,6 +26,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 #include <QObject>
 #include <QUrl>
 
@@ -35,7 +37,7 @@ class UpBackend;
 /** An abstract presentation document.
  * Inherit from this class to implement each backend's presentation.
  */
-class UpPresentation : public QObject
+class KDE_EXPORT UpPresentation : public QObject
 {
   Q_OBJECT
   public:

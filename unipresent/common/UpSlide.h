@@ -29,12 +29,14 @@
 #include <QObject>
 #include <QPixmap>
 
+#include <kdemacros.h>
+
 class QTextDocument;
 
 /** An abstract presentation slide.
  * Inherit from this class to implement each backend's presentation slide.
  */
-class UpSlide : public QObject
+class KDE_EXPORT UpSlide : public QObject
 {
   Q_OBJECT
   public:

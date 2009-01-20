@@ -26,6 +26,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -37,7 +39,7 @@ class UpPresentation;
 /** An abstract presentation manager.
  * Inherit from this class to implement each backend.
  */
-class UpBackend : public QObject
+class KDE_EXPORT UpBackend : public QObject
 {
   Q_OBJECT
   public:
@@ -47,7 +49,7 @@ class UpBackend : public QObject
      */
 
     /// Primary constructor.
-    UpBackend(QObject* parent = 0);
+    UpBackend(QObject* parent = 0, const QStringList& params = QStringList());
 
     /// Destructor.
     virtual ~UpBackend();

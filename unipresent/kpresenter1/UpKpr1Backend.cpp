@@ -30,16 +30,19 @@
 #include "UpKpr1Presentation.h"
 
 #include <KLocale>
+#include <KGenericFactory>
 
 #include <QTimer>
+
+K_EXPORT_COMPONENT_FACTORY( unipresent_kpresenter1, KGenericFactory<UpKpr1Backend>("unipresent_kpresenter1") )
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-UpKpr1Backend::UpKpr1Backend(QObject* parent)
-: UpBackend(parent)
+UpKpr1Backend::UpKpr1Backend(QObject* parent, const QStringList& params)
+: UpBackend(parent, params)
 , m_presentations()
 , m_refreshTimer(new QTimer(this))
 {
@@ -182,4 +185,3 @@ UpPresentation* UpKpr1Backend::presentationByDcop(const QStringList& dcopRef) co
   }
   return 0;
 }
-

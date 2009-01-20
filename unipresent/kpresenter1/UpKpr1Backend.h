@@ -45,7 +45,7 @@ class UpKpr1Backend : public UpBackend
      */
 
     /// Primary constructor.
-    UpKpr1Backend(QObject* parent = 0);
+    UpKpr1Backend(QObject* parent = 0, const QStringList& params = QStringList());
 
     /// Destructor.
     virtual ~UpKpr1Backend();

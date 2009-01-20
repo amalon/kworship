@@ -29,6 +29,7 @@
 
 #include <KRun>
 #include <KLocale>
+#include <KGenericFactory>
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -37,13 +38,15 @@
 
 #include <cassert>
 
+K_EXPORT_COMPONENT_FACTORY( unipresent_kpresenter2, KGenericFactory<UpKpr2Backend>("unipresent_kpresenter2") )
+
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-UpKpr2Backend::UpKpr2Backend(QObject* parent)
-: UpBackend(parent)
+UpKpr2Backend::UpKpr2Backend(QObject* parent, const QStringList& params)
+: UpBackend(parent, params)
 , m_processes()
 , m_presentations()
 {

@@ -29,6 +29,7 @@
 #include "UpPresentationsModel.h"
 
 #include <KMimeType>
+#include <KServiceTypeTrader>
 
 #include <cassert>
 
@@ -204,3 +205,17 @@ void UpManager::addBackend(UpBackend* backend)
   backendAdded(backend);
 }
 
+/// Load dynamic backend.
+void UpManager::loadBackends()
+{
+  KService::List offers = KServiceTypeTrader::self()->query("UniPresent/Backend");
+
+  foreach (KService::Ptr service, offers)
+  {
+    UpBackend* backend = service->createInstance<UpBackend>(this);
+    if (backend)
+    {
+      addBackend(backend);
+    }
+  }
+}

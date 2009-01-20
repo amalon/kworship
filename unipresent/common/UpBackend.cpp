@@ -30,7 +30,7 @@
  */
 
 /// Primary constructor.
-UpBackend::UpBackend(QObject* parent)
+UpBackend::UpBackend(QObject* parent, const QStringList& params)
 : QObject(parent)
 {
 }

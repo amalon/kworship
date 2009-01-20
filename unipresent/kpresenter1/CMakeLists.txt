@@ -1,4 +1,4 @@
-project(unipresentkpresenter1)
+project(unipresent_kpresenter1)
 
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
@@ -6,7 +6,7 @@ include_directories(${KDE4_INCLUDES}
                     ${QT_INCLUDES}
 )
 
-set(unipresentkpresenter1_SRCS
+set(unipresent_kpresenter1_SRCS
     UpKpr1Dcop.cpp
     UpKpr1AppsDcop.cpp
     UpKpr1KpresenterDcop.cpp
@@ -18,5 +18,13 @@ set(unipresentkpresenter1_SRCS
     UpKpr1SlideDcop.cpp
 )
 
-kde4_add_library(unipresentkpresenter1 STATIC ${unipresentkpresenter1_SRCS})
+kde4_add_plugin(unipresent_kpresenter1 ${unipresent_kpresenter1_SRCS})
 
+target_link_libraries(unipresent_kpresenter1
+                      unipresent
+                      ${KDE4_KDECORE_LIBS}
+                      ${QT_LIBRARIES}
+                      )
+
+install(TARGETS unipresent_kpresenter1 DESTINATION ${PLUGIN_INSTALL_DIR} )
+install( FILES unipresent_kpresenter1.desktop  DESTINATION  ${SERVICES_INSTALL_DIR} )
