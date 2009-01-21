@@ -40,7 +40,7 @@ class UpOoBackend : public UpBackend
      */
 
     /// Primary constructor.
-    UpOoBackend(QObject* parent = 0);
+    UpOoBackend(QObject* parent = 0, const QStringList& = QStringList());
 
     /// Destructor.
     virtual ~UpOoBackend();

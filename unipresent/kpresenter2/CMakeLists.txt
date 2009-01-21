@@ -22,5 +22,5 @@ target_link_libraries(unipresent_kpresenter2
                       ${QT_LIBRARIES}
                       )
 
-install(TARGETS unipresent_kpresenter2 DESTINATION ${PLUGIN_INSTALL_DIR} )
+install( TARGETS unipresent_kpresenter2 DESTINATION ${PLUGIN_INSTALL_DIR} )
 install( FILES unipresent_kpresenter2.desktop  DESTINATION  ${SERVICES_INSTALL_DIR} )

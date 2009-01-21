@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=OpenOffice.org
+Comment=UniPresent backend for OpenOffice.org Impress
+X-KDE-ServiceTypes=UniPresent/Backend
+Type=Service
+X-KDE-Library=unipresent_openoffice

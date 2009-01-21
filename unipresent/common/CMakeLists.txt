@@ -27,5 +27,5 @@ target_link_libraries(unipresent
                       ${QT_LIBRARIES}
                       )
 
-install(TARGETS unipresent DESTINATION ${LIB_INSTALL_DIR} )
+install( TARGETS unipresent DESTINATION ${LIB_INSTALL_DIR} )
 install( FILES unipresentbackend.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )

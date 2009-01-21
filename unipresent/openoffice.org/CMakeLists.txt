@@ -1,6 +1,6 @@
-project(unipresentopenoffice)
+project(unipresent_openoffice)
 
-set(SHOULD_BUILD_OOO_PLUGIN NO)
+set(SHOULD_BUILD_OOO_PLUGIN YES)
 if (NOT SHOULD_BUILD_OOO_PLUGIN)
   message(STATUS "OpenOffice.org Impress integration plugin will not be built")
 else (NOT SHOULD_BUILD_OOO_PLUGIN)
@@ -34,7 +34,7 @@ else (NOT SHOULD_BUILD_OOO_PLUGIN)
 
     include_directories(${UNO_INCLUDES})
 
-    set(unipresentopenoffice_UNOTYPES
+    set(unipresent_openoffice_UNOTYPES
         com.sun.star.beans.XPropertySet
         com.sun.star.bridge.XUnoUrlResolver
         com.sun.star.container.XEnumeration
@@ -56,24 +56,31 @@ else (NOT SHOULD_BUILD_OOO_PLUGIN)
         com.sun.star.registry.XSimpleRegistry
     )
 
-    set(unipresentopenoffice_SRCS
+    set(unipresent_openoffice_SRCS
         UpOoBackend.cpp
         UpOoBridge.cpp
         UpOoPresentation.cpp
         UpOoSlide.cpp
     )
 
-    UNO_ADD_TYPES(unipresentopenoffice_SRCS
-                  ${unipresentopenoffice_UNOTYPES}
+    UNO_ADD_TYPES(unipresent_openoffice_SRCS
+                  ${unipresent_openoffice_UNOTYPES}
     )
 
-    kde4_add_library(unipresentopenoffice STATIC ${unipresentopenoffice_SRCS})
+    kde4_add_plugin(unipresent_openoffice ${unipresent_openoffice_SRCS})
 
-    target_link_libraries(unipresentopenoffice
+    target_link_libraries(unipresent_openoffice
+                          unipresent
+                          ${KDE4_KDECORE_LIBS}
+                          ${KDE4_KIO_LIBS}
+                          ${QT_LIBRARIES}
                           ${UNO_LIBS}
-    )
+                          )
 
     ########### install files ###############
+
+    install( TARGETS unipresent_openoffice DESTINATION ${PLUGIN_INSTALL_DIR} )
+    install( FILES unipresent_openoffice.desktop  DESTINATION  ${SERVICES_INSTALL_DIR} )
 
     install( FILES ${UNO_RDB}
              DESTINATION  ${DATA_INSTALL_DIR}/unipresent/openoffice.org

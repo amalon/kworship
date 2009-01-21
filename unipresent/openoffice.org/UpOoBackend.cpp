@@ -62,8 +62,8 @@ K_EXPORT_COMPONENT_FACTORY( unipresent_openoffice, KGenericFactory<UpOoBackend>(
  */
 
 /// Primary constructor.
-UpOoBackend::UpOoBackend(QObject* parent)
-: UpBackend(parent)
+UpOoBackend::UpOoBackend(QObject* parent, const QStringList& params)
+: UpBackend(parent, params)
 , m_bridge(0)
 , m_presentations()
 {
