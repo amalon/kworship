@@ -24,7 +24,7 @@
 #include <kconfigdialogmanager.h>
 #include <KDE/KLocale>
 
-int main(int argc, char **argv)
+int KDE_EXPORT main(int argc, char **argv)
 {
   KAboutData about("kworship", 0,
                    ki18n("KWorship"), "0.1",

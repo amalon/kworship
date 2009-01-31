@@ -27,12 +27,13 @@
  */
 
 #include <KApplication>
+#include <kdemacros.h>
 
 class KwPluginManager;
 class kworship;
 
 /// Application global data.
-class KwApplication
+class KDE_EXPORT KwApplication
 {
   public:
 

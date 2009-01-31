@@ -26,6 +26,8 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 #include <QObject>
 #include <QString>
 
@@ -34,7 +36,7 @@ class KwPluginManager;
 class QDockWidget;
 
 /// An abstract KWorship plugin.
-class KwPlugin : public QObject
+class KDE_EXPORT KwPlugin : public QObject
 {
     Q_OBJECT
 

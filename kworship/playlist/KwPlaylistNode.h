@@ -28,13 +28,15 @@
 
 #include "NodeBasedModel.h"
 
+#include <kdemacros.h>
+
 class KwDisplayManager;
 
 /// A node on a playlist tree.
 /**
  * Inherit from this class for each playlist node type.
  */
-class KwPlaylistNode : public DefaultModelNode
+class KDE_EXPORT KwPlaylistNode : public DefaultModelNode
 {
   public:
     

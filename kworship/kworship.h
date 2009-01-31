@@ -27,6 +27,7 @@
 #include "KwLocalDisplayController.h"
 
 #include <kxmlguiwindow.h>
+#include <kdemacros.h>
 
 #include <QModelIndex>
 
@@ -62,7 +63,7 @@ class QTextEdit;
  * @author Andreas Pakulat <apaku@gmx.de>
  * @version 0.1
  */
-class kworship : public KXmlGuiWindow
+class KDE_EXPORT kworship : public KXmlGuiWindow
 {
     Q_OBJECT
 public:

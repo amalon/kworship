@@ -29,6 +29,8 @@
 #include "KwCssScope.h"
 #include "Factory.h"
 
+#include <kdemacros.h>
+
 #include <QString>
 #include <QList>
 #include <QDomDocument>
@@ -53,7 +55,7 @@ class KwPlaylistNode;
 /**
  * Inherit from this class for each playlist item type.
  */
-class KwPlaylistItem : public KwCssScope
+class KDE_EXPORT KwPlaylistItem : public KwCssScope
 {
   public:
 

@@ -30,10 +30,12 @@
 
 #include "NodeBasedModel.h"
 
+#include <kdemacros.h>
+
 class KwPlaylistItem;
 
 /// A Qt model for playlist items.
-class KwPlaylistModel : public NodeBasedModel<KwPlaylistNode>
+class KDE_EXPORT KwPlaylistModel : public NodeBasedModel<KwPlaylistNode>
 {
   public:
     

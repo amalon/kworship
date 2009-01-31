@@ -24,21 +24,22 @@
  */
 
 #include "KwBiblePlugin.h"
-#include "KwApplication.h"
-#include "kworship.h"
-#include "KwDocument.h"
+#include <KwApplication.h>
+#include <kworship.h>
+#include <KwDocument.h>
 
-#include <KwBibleManager.h>
+#include "KwBibleManager.h"
 #include "KwBibleManagerSword.h"
 #include "KwBibleManagerBibleGateway.h"
-#include <KwBibleModule.h>
-#include <KwBiblePlaylistItem.h>
+#include "KwBibleModule.h"
+#include "KwBiblePlaylistItem.h"
 
 #include <KwPlaylistModel.h>
 
 #include <KLocale>
 #include <KAction>
 #include <KMessageBox>
+#include <KGenericFactory>
 
 #include <QMainWindow>
 #include <QDockWidget>
@@ -50,12 +51,14 @@
 #include <QTextEdit>
 #include <QToolBar>
 
+K_EXPORT_COMPONENT_FACTORY( kworship_bible, KGenericFactory<KwBiblePlugin>("kworship_bible") )
+
 /*
  * Constructors + destructor
  */
 
 /// Default constructor.
-KwBiblePlugin::KwBiblePlugin()
+KwBiblePlugin::KwBiblePlugin(const QObject* parent, const QStringList& params)
 : KwPlugin("bible",
            i18n("Bible"),
            i18n("The bible plugin allows for the navigation and display of "

@@ -61,6 +61,9 @@ class KwPluginManager : public QObject
      */
     bool loadPlugin(KwPlugin* plugin);
 
+    /// Load all plugins.
+    void loadPlugins();
+
   private:
 
     /*

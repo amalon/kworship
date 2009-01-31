@@ -26,6 +26,8 @@
 #include "KwPluginManager.h"
 #include "KwPlugin.h"
 
+#include <KServiceTypeTrader>
+
 /*
  * Constructors + destructor
  */
@@ -57,5 +59,20 @@ bool KwPluginManager::loadPlugin(KwPlugin* plugin)
     return true;
   }
   return false;
+}
+
+/// Load all plugins.
+void KwPluginManager::loadPlugins()
+{
+  KService::List offers = KServiceTypeTrader::self()->query("KWorship/Plugin");
+
+  foreach (KService::Ptr service, offers)
+  {
+    KwPlugin* plugin = service->createInstance<KwPlugin>(this);
+    if (plugin)
+    {
+      loadPlugin(plugin);
+    }
+  }
 }
 

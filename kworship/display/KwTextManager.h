@@ -28,6 +28,8 @@
 
 #include "KwAbstractDisplayManager.h"
 
+#include <kdemacros.h>
+
 #include <QString>
 
 class KwCssScope;
@@ -37,7 +39,7 @@ class KwTextLayer;
 /**
  * High level interface for controlling text on screen.
  */
-class KwTextManager : public KwAbstractDisplayManager
+class KDE_EXPORT KwTextManager : public KwAbstractDisplayManager
 {
   public:
 

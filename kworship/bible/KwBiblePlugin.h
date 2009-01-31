@@ -26,9 +26,9 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlugin.h"
+#include <KwPlugin.h>
 
-#include <KwBibleModule.h>
+#include "KwBibleModule.h"
 
 class KwBibleManager;
 
@@ -53,7 +53,7 @@ class KwBiblePlugin : public KwPlugin
      */
 
     /// Default constructor.
-    KwBiblePlugin();
+    KwBiblePlugin(const QObject* parent = 0, const QStringList& params = QStringList());
 
     /// Destructor.
     virtual ~KwBiblePlugin();

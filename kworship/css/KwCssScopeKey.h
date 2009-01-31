@@ -26,12 +26,14 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 #include <QString>
 #include <QHash>
 #include <QVector>
 
 /// Scope type and name pair.
-class KwCssScopeKey
+class KDE_EXPORT KwCssScopeKey
 {
   public:
 

@@ -26,7 +26,6 @@
 #include "KwApplication.h"
 #include "kworship.h"
 #include "KwPluginManager.h"
-#include "KwBiblePlugin.h"
 
 #include <KCmdLineArgs>
 
@@ -66,7 +65,7 @@ KwApplication::KwApplication()
   m_mainWindow = widget;
 
   // Set up the plugin manager
-  m_pluginManager->loadPlugin(new KwBiblePlugin());
+  m_pluginManager->loadPlugins();
 
   // see if we are starting with session management
   if (m_app.isSessionRestored())
