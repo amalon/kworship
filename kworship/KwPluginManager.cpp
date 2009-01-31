@@ -41,6 +41,11 @@ KwPluginManager::KwPluginManager()
 /// Destructor.
 KwPluginManager::~KwPluginManager()
 {
+  foreach (KwPlugin* plugin, m_plugins)
+  {
+    plugin->unload();
+    delete plugin;
+  }
 }
 
 /*
@@ -61,6 +66,7 @@ bool KwPluginManager::loadPlugin(KwPlugin* plugin)
   return false;
 }
 
+#include <QtDebug>
 /// Load all plugins.
 void KwPluginManager::loadPlugins()
 {
@@ -68,10 +74,24 @@ void KwPluginManager::loadPlugins()
 
   foreach (KService::Ptr service, offers)
   {
-    KwPlugin* plugin = service->createInstance<KwPlugin>(this);
+    qDebug() << "Found KWorship plugin: " << service->desktopEntryName();
+    QString err;
+    KwPlugin* plugin = service->createInstance<KwPlugin>(this, QVariantList(), &err);
     if (plugin)
     {
-      loadPlugin(plugin);
+      bool loaded = loadPlugin(plugin);
+      if (loaded)
+      {
+        qDebug() << "  Loaded successfully";
+      }
+      else
+      {
+        qDebug() << "  Could not be initialised";
+      }
+    }
+    else
+    {
+      qDebug() << "  Could not be loaded: " << err;
     }
   }
 }

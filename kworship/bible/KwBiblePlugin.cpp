@@ -29,8 +29,6 @@
 #include <KwDocument.h>
 
 #include "KwBibleManager.h"
-#include "KwBibleManagerSword.h"
-#include "KwBibleManagerBibleGateway.h"
 #include "KwBibleModule.h"
 #include "KwBiblePlaylistItem.h"
 
@@ -40,6 +38,7 @@
 #include <KAction>
 #include <KMessageBox>
 #include <KGenericFactory>
+#include <KServiceTypeTrader>
 
 #include <QMainWindow>
 #include <QDockWidget>
@@ -62,7 +61,7 @@ KwBiblePlugin::KwBiblePlugin(const QObject* parent, const QStringList& params)
 : KwPlugin("bible",
            i18n("Bible"),
            i18n("The bible plugin allows for the navigation and display of "
-                "bible extracts from SWORD and BibleGateway.com."))
+                "bible extracts from various sources."))
 , m_managers()
 , m_insertIntoPlaylistAction(0)
 , m_showNowAction(0)
@@ -73,15 +72,11 @@ KwBiblePlugin::KwBiblePlugin(const QObject* parent, const QStringList& params)
 , m_editRange(0)
 , m_textPassage(0)
 {
-  KwBibleManagerSword::registerManager();
-  KwBibleManagerBibleGateway::registerManager();
 }
 
 /// Destructor.
 KwBiblePlugin::~KwBiblePlugin()
 {
-  // Ensure all GUI stuff is cleaned up
-  KwBiblePlugin::_unload();
 }
 
 /*
@@ -316,21 +311,37 @@ void KwBiblePlugin::slotShowNow()
  * Loading and unloading virtual interface
  */
 
+#include <QtDebug>
 void KwBiblePlugin::_load()
 {
-  // Construct the bible managers. 
-  QStringList managerNames;
-  managerNames << "SWORD";
-  managerNames << "BibleGateway.com";
+  // Construct the bible managers and put into a list.
+  // Have the local bible managers first in the list.
+  KService::List offers = KServiceTypeTrader::self()->query("KWorship/Bible");
   QList<KwBibleManager*> managers;
-  foreach (QString name, managerNames)
+  QList<KwBibleManager*> remoteManagers;
+  foreach (KService::Ptr service, offers)
   {
-    KwBibleManager* manager = KwBibleManagerSword::singleton(name); 
-    if (0 != manager)
+    qDebug() << "  Found KWorship bible backend: " << service->desktopEntryName();
+    QString err;
+    KwBibleManager* backend = service->createInstance<KwBibleManager>(this, QVariantList(), &err);
+    if (backend)
     {
-      managers += manager;
+      qDebug() << "    Loaded successfully";
+      if (backend->isRemote())
+      {
+        remoteManagers += backend;
+      }
+      else
+      {
+        managers += backend;
+      }
+    }
+    else
+    {
+      qDebug() << "    Could not be loaded: " << err;
     }
   }
+  managers += remoteManagers;
 
   // Set up the docker
   m_docker = new QDockWidget(i18n("Bible"));
@@ -454,6 +465,12 @@ void KwBiblePlugin::_unload()
 {
   // Clean up the bible managers.
   /// @todo IMPLEMENT!!!
+  for (int i = 0; i < m_managers.size(); ++i)
+  {
+    BibleManager& mgr = m_managers[i];
+    delete mgr.manager;
+    mgr.manager = 0;
+  }
   delete m_docker;
 }
 

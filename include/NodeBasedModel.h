@@ -68,7 +68,7 @@ class DefaultModelNode
     /// Get a child node by index.
     DefaultModelNode* getChild(int index)
     {
-      if (unlikely(index >= getChildCount()))
+      if (unlikely(index < 0 || index >= getChildCount()))
       {
         return 0;
       }

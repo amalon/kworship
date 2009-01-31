@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=SWORD
+Comment=SWORD bible plugin for KWorship
+X-KDE-ServiceTypes=KWorship/Bible
+Type=Service
+X-KDE-Library=kworship_bible_sword

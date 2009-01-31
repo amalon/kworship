@@ -28,6 +28,7 @@
 
 #include <KIO/NetAccess>
 #include <KMessageBox>
+#include <KGenericFactory>
 
 #include <QFile>
 #include <QDomDocument>
@@ -36,19 +37,22 @@
 
 KW_REGISTER_BIBLE_MANAGER(KwBibleManagerBibleGateway)
 
+K_EXPORT_COMPONENT_FACTORY( kworship_bible_biblegateway, KGenericFactory<KwBibleManagerBibleGateway>("kworship_bible_biblegateway") )
+
 /*
  * Constructors + destructor
  */
 
 /// Default constructor.
-KwBibleManagerBibleGateway::KwBibleManagerBibleGateway()
-: KwBibleManager()
+KwBibleManagerBibleGateway::KwBibleManagerBibleGateway(QObject* parent, const QStringList& params)
+: KwBibleManager(parent, params)
 , m_cached(false)
 , m_languages()
 , m_versionsById()
 , m_versionsByName()
 , m_versionsByLanguage()
 {
+  registerManager();
 }
 
 /// Destructor.

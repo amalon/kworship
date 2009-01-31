@@ -28,6 +28,10 @@
 
 #include <Factory.h>
 
+#include <kdemacros.h>
+
+#include <QObject>
+#include <QStringList>
 #include <QString>
 #include <QList>
 #include <QMap>
@@ -53,8 +57,10 @@ class KwBibleModule;
   bool X::s_registered = false;
 
 /// A bible manager (analagous to a SWORD manager).
-class KwBibleManager
+class KDE_EXPORT KwBibleManager : public QObject
 {
+    Q_OBJECT
+
   public:
 
     /*
@@ -75,7 +81,7 @@ class KwBibleManager
      */
 
     /// Default constructor.
-    KwBibleManager();
+    KwBibleManager(QObject* parent = 0, const QStringList& params = QStringList());
 
     /// Destructor.
     virtual ~KwBibleManager();

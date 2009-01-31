@@ -17,29 +17,28 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwBibleManagerSword_h_
-#define _KwBibleManagerSword_h_
+#ifndef _KwBibleManagerBibleGateway_h_
+#define _KwBibleManagerBibleGateway_h_
 
 /**
- * @file KwBibleManagerSword.h
- * @brief A bible manager for SWORD.
+ * @file KwBibleManagerBibleGateway.h
+ * @brief A bible manager for BibleGateway.com.
  * @author James Hogan <james@albanarts.com>
  */
 
 #include "KwBibleManager.h"
 
-#include <QHash>
+#include <QString>
 #include <QStringList>
+#include <QList>
+#include <QHash>
 
-namespace sword
-{
-  class SWMgr;
-}
+class KwBibleModuleBibleGateway;
 
-/// A bible manager (analagous to a SWORD manager).
-class KwBibleManagerSword : public KwBibleManager
+/// A bible manager for BibleGateway.com.
+class KwBibleManagerBibleGateway : public KwBibleManager
 {
-    KW_BIBLE_MANAGER(KwBibleManagerSword, "SWORD");
+    KW_BIBLE_MANAGER(KwBibleManagerBibleGateway, "BibleGateway.com")
 
   public:
     
@@ -48,10 +47,10 @@ class KwBibleManagerSword : public KwBibleManager
      */
 
     /// Default constructor.
-    KwBibleManagerSword();
+    KwBibleManagerBibleGateway(QObject* parent = 0, const QStringList& params = QStringList());
 
     /// Destructor.
-    virtual ~KwBibleManagerSword();
+    virtual ~KwBibleManagerBibleGateway();
 
     /*
      * Main interface
@@ -78,21 +77,43 @@ class KwBibleManagerSword : public KwBibleManager
   private:
 
     /*
+     * Private functions
+     */
+
+    /// Ensure the version information is cached.
+    void ensureCached();
+
+    /// Clear all modules.
+    void clear();
+
+    /*
      * Variables
      */
 
-    /// SWORD manager object.
-    sword::SWMgr* m_manager;
+    /// Whether the versions have already been cached.
+    bool m_cached;
 
-    /// Modules managed by this manager.
-    QHash<QString, KwBibleModule*> m_modules;
-
-    /// Languages.
+    /// Language names.
     QStringList m_languages;
 
-    /// Modules by language.
-    QHash<QString, QStringList> m_modulesByLanguage;
+    /// Per version data.
+    struct Version
+    {
+      QString name;
+      int id;
+      int lang;
+      KwBibleModuleBibleGateway* module;
+    };
+
+    /// Versions by id.
+    QHash<int, Version*> m_versionsById;
+
+    /// Versions by name.
+    QHash<QString, Version*> m_versionsByName;
+
+    /// Version ids by language id.
+    QHash<int, QList<int> > m_versionsByLanguage;
 };
 
-#endif // _KwBibleManagerSword_h_
+#endif // _KwBibleManagerBibleGateway_h_
 

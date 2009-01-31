@@ -205,6 +205,7 @@ void UpManager::addBackend(UpBackend* backend)
   backendAdded(backend);
 }
 
+#include <QtDebug>
 /// Load dynamic backend.
 void UpManager::loadBackends()
 {
@@ -212,10 +213,17 @@ void UpManager::loadBackends()
 
   foreach (KService::Ptr service, offers)
   {
-    UpBackend* backend = service->createInstance<UpBackend>(this);
+    qDebug() << "Found UniPresent backend: " << service->desktopEntryName();
+    QString err;
+    UpBackend* backend = service->createInstance<UpBackend>(this, QVariantList(), &err);
     if (backend)
     {
+      qDebug() << "  Loaded successfully";
       addBackend(backend);
+    }
+    else
+    {
+      qDebug() << "  Could not be loaded: " << err;
     }
   }
 }

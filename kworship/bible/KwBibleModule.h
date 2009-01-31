@@ -26,13 +26,15 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 #include <QString>
 #include <QStringList>
 
 class KwBiblePassage;
 
 /// A bible module (analagous to a SWORD module).
-class KwBibleModule
+class KDE_EXPORT KwBibleModule
 {
   public:
 

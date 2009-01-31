@@ -2,7 +2,6 @@ project(kworship_bible)
 
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
-find_package(Sword REQUIRED)
 
 set(kworship_bible_SRCS
     KwBiblePlugin.cpp
@@ -11,13 +10,10 @@ set(kworship_bible_SRCS
     KwBiblePassage.cpp
     KwBiblePlaylistItem.cpp
     KwBiblePlaylistItemNode.cpp
-    # SWORD
-    KwBibleManagerSword.cpp
-    KwBibleModuleSword.cpp
-    # BibleGateway.com
-    KwBibleManagerBibleGateway.cpp
-    KwBibleModuleBibleGateway.cpp
 )
+
+add_subdirectory (sword)
+add_subdirectory (biblegateway)
 
 include_directories(${SWORD_INCLUDE_DIR}
                     ..)
@@ -34,3 +30,4 @@ target_link_libraries(kworship_bible
 
 install( TARGETS kworship_bible DESTINATION ${PLUGIN_INSTALL_DIR} )
 install( FILES kworship_bible.desktop  DESTINATION  ${SERVICES_INSTALL_DIR} )
+install( FILES kworship_bible_backend.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )

@@ -148,5 +148,5 @@ install(TARGETS kworship DESTINATION ${BIN_INSTALL_DIR} )
 install( FILES kworship.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
 install( FILES kworship.kcfg  DESTINATION  ${KCFG_INSTALL_DIR} )
 install( FILES kworshipui.rc  DESTINATION  ${DATA_INSTALL_DIR}/kworship )
-install( FILES kworshipplugin.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )
+install( FILES kworship_plugin.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )
 

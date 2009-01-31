@@ -47,7 +47,8 @@ KwBibleManager* KwBibleManager::singleton(const QString& key)
  */
 
 /// Default constructor.
-KwBibleManager::KwBibleManager()
+KwBibleManager::KwBibleManager(QObject* parent, const QStringList& params)
+: QObject(parent)
 {
 }
 

@@ -31,20 +31,26 @@
 #include <swtext.h>
 #include <markupfiltmgr.h>
 
+#include <KGenericFactory>
+
 KW_REGISTER_BIBLE_MANAGER(KwBibleManagerSword)
+
+K_EXPORT_COMPONENT_FACTORY( kworship_bible_sword, KGenericFactory<KwBibleManagerSword>("kworship_bible_sword") )
 
 /*
  * Constructors + destructor
  */
 
 /// Default constructor.
-KwBibleManagerSword::KwBibleManagerSword()
-: KwBibleManager()
+KwBibleManagerSword::KwBibleManagerSword(QObject* parent, const QStringList& params)
+: KwBibleManager(parent, params)
 , m_manager(new sword::SWMgr(new sword::MarkupFilterMgr(sword::FMT_HTMLHREF)))
 , m_modules()
 , m_languages()
 , m_modulesByLanguage()
 {
+  registerManager();
+
   m_manager->setGlobalOption("Headings", "On");
 
   sword::ModMap::iterator modIterator;

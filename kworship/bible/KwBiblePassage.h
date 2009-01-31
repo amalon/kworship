@@ -28,6 +28,8 @@
 
 #include "KwBibleModule.h"
 
+#include <kdemacros.h>
+
 #include <QString>
 
 class QDomDocument;
@@ -37,7 +39,7 @@ class QDomElement;
  * Stores enough information to adjust settings.
  * Can be used as a cache.
  */
-class KwBiblePassage
+class KDE_EXPORT KwBiblePassage
 {
   public:
     
