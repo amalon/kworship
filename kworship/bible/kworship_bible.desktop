@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Bibles
+Comment=Bibles plugin for KWorship
+X-KDE-ServiceTypes=KWorship/Plugin
+Type=Service
+X-KDE-Library=kworship_bible
