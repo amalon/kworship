@@ -1,9 +1,9 @@
-project(kworshipsongdb)
+project(kworship_songdb)
 
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
 
-set(kworshipsongdb_SRCS
+set(kworship_songdb_SRCS
     KwSongdb.cpp
     KwSongdbSong.cpp
     KwSongdbVersion.cpp
@@ -26,10 +26,15 @@ set(kworshipsongdb_SRCS
     KwSongdbSongBooksEditWidget.cpp
 )
 
-kde4_add_ui_files(kworshipsongdb_SRCS
+kde4_add_ui_files(kworship_songdb_SRCS
                   KwSongdbSongEditWidget_base.ui
                   KwSongdbSongBooksEditWidget_base.ui
 )
 
-kde4_add_library(kworshipsongdb ${kworshipsongdb_SRCS})
+kde4_add_library(kworship_songdb SHARED ${kworship_songdb_SRCS})
 
+target_link_libraries(kworship_songdb
+                      ${KDE4_KDEUI_LIBS}
+                      ${QT_LIBRARIES}
+                      kworshipmain
+                      )
