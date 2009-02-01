@@ -53,7 +53,7 @@ class KwBiblePlugin : public KwPlugin
      */
 
     /// Default constructor.
-    KwBiblePlugin(const QObject* parent = 0, const QStringList& params = QStringList());
+    KwBiblePlugin(QObject* parent = 0, const QStringList& params = QStringList());
 
     /// Destructor.
     virtual ~KwBiblePlugin();

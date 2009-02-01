@@ -31,6 +31,7 @@
 #include <QString>
 
 class KwPlugin;
+class KXmlGuiWindow;
 
 /** Manages KWorship plugins.
  * @todo Dynamic loading/unloading of plugins.
@@ -55,6 +56,9 @@ class KwPluginManager : public QObject
      * Plugin loading and unloading
      */
 
+    /// Set the main window.
+    void setMainWindow(KXmlGuiWindow* mainWindow);
+
     /** Directly load a plugin.
      * @param plugin The plugin object.
      * @returns True on success, false otherwise.
@@ -69,6 +73,9 @@ class KwPluginManager : public QObject
     /*
      * Variables
      */
+
+    /// Main window.
+    KXmlGuiWindow* m_mainWindow;
 
     /// Plugins by id.
     QMap<QString, KwPlugin*> m_plugins;

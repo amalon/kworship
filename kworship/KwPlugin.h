@@ -28,7 +28,8 @@
 
 #include <kdemacros.h>
 
-#include <QObject>
+#include <KParts/Plugin>
+
 #include <QString>
 
 class KwPluginManager;
@@ -36,7 +37,7 @@ class KwPluginManager;
 class QDockWidget;
 
 /// An abstract KWorship plugin.
-class KDE_EXPORT KwPlugin : public QObject
+class KDE_EXPORT KwPlugin : public KParts::Plugin
 {
     Q_OBJECT
 
@@ -51,7 +52,7 @@ class KDE_EXPORT KwPlugin : public QObject
      * @param name Translated name of plugin.
      * @param description Translated description of plugin.
      */
-    KwPlugin(const QString& id, const QString& name, const QString& description);
+    KwPlugin(QObject* parent, const QString& id, const QString& name, const QString& description);
 
     /// Destructor.
     virtual ~KwPlugin();

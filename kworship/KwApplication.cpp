@@ -65,6 +65,7 @@ KwApplication::KwApplication()
   m_mainWindow = widget;
 
   // Set up the plugin manager
+  m_pluginManager->setMainWindow(m_mainWindow);
   m_pluginManager->loadPlugins();
 
   // see if we are starting with session management

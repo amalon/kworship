@@ -27,6 +27,8 @@
 #include "KwPlugin.h"
 
 #include <KServiceTypeTrader>
+#include <KXmlGuiWindow>
+#include <KXMLGUIFactory>
 
 /*
  * Constructors + destructor
@@ -35,6 +37,7 @@
 /// Primary constructor.
 KwPluginManager::KwPluginManager()
 : m_plugins()
+, m_mainWindow(0)
 {
 }
 
@@ -52,6 +55,12 @@ KwPluginManager::~KwPluginManager()
  * Plugin loading and unloading
  */
 
+/// Set the main window.
+void KwPluginManager::setMainWindow(KXmlGuiWindow* mainWindow)
+{
+  m_mainWindow = mainWindow;
+}
+
 /// Directly load a plugin.
 bool KwPluginManager::loadPlugin(KwPlugin* plugin)
 {
@@ -60,6 +69,10 @@ bool KwPluginManager::loadPlugin(KwPlugin* plugin)
   if (!m_plugins.contains(id))
   {
     m_plugins[id] = plugin;
+    if (m_mainWindow)
+    {
+      m_mainWindow->guiFactory()->addClient(plugin);
+    }
     plugin->load();
     return true;
   }

@@ -57,8 +57,8 @@ K_EXPORT_COMPONENT_FACTORY( kworship_bible, KGenericFactory<KwBiblePlugin>("kwor
  */
 
 /// Default constructor.
-KwBiblePlugin::KwBiblePlugin(const QObject* parent, const QStringList& params)
-: KwPlugin("bible",
+KwBiblePlugin::KwBiblePlugin(QObject* parent, const QStringList& params)
+: KwPlugin(parent, "bible",
            i18n("Bible"),
            i18n("The bible plugin allows for the navigation and display of "
                 "bible extracts from various sources."))
@@ -72,6 +72,7 @@ KwBiblePlugin::KwBiblePlugin(const QObject* parent, const QStringList& params)
 , m_editRange(0)
 , m_textPassage(0)
 {
+  setXMLFile("bible/kworship_bibleui.rc");
 }
 
 /// Destructor.

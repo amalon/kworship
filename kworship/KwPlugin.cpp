@@ -31,8 +31,9 @@
  */
 
 /// Primary constructor.
-KwPlugin::KwPlugin(const QString& id, const QString& name, const QString& description)
-: m_id(id)
+KwPlugin::KwPlugin(QObject* parent, const QString& id, const QString& name, const QString& description)
+: KParts::Plugin(parent)
+, m_id(id)
 , m_name(name)
 , m_description(description)
 , m_manager(0)
