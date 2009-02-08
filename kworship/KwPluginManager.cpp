@@ -36,8 +36,8 @@
 
 /// Primary constructor.
 KwPluginManager::KwPluginManager()
-: m_plugins()
-, m_mainWindow(0)
+: m_mainWindow(0)
+, m_plugins()
 {
 }
 
@@ -77,6 +77,15 @@ bool KwPluginManager::loadPlugin(KwPlugin* plugin)
     return true;
   }
   return false;
+}
+
+/// Setup config dialog to include the plugin.
+void KwPluginManager::setupConfigDialog(KConfigDialog* dialog)
+{
+  foreach (KwPlugin* plugin, m_plugins)
+  {
+    plugin->setupConfigDialog(dialog);
+  }
 }
 
 #include <QtDebug>

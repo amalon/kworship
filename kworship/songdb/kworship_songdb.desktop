@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Song Database
+Comment=Song database plugin for KWorship
+X-KDE-ServiceTypes=KWorship/Plugin
+Type=Service
+X-KDE-Library=kworship_songdb

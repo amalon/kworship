@@ -139,13 +139,6 @@ private slots:
     void slideshowSlideChanged(int slide, int numSteps);
     void slideshowStepChanged(int step);
 
-    // Song DB
-    void songdbUnlock();
-    void songdbLock();
-    void songdbAdd();
-    void songdbEdit();
-    void songdbEditSongBooks();
-
 private:
     void setupActions();
     int getCorrectDisplayScreen();
@@ -169,15 +162,6 @@ private:
 
     KwDocument* m_document;
     KwPlaylistModel* m_playlistModel;
-
-    KwSongdbModel* m_songDbModel;
-    KwSongdbTree* m_songDbTree;
-    KAction* m_unlockSongDbAction;
-    KAction* m_lockSongDbAction;
-    KActionMenu* m_groupSongsByAction;
-    KAction* m_addSongAction;
-    KAction* m_editSongAction;
-    KAction* m_editSongBooksAction;
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;

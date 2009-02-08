@@ -1,7 +1,7 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="kworship_bible" version="1">
+<gui name="kworship_bible" version="1">
   <MenuBar>
     <Menu name="menuBible"><text>&amp;Bible</text>
     </Menu>
   </MenuBar>
-</kpartgui>
+</gui>

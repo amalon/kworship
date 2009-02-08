@@ -30,6 +30,5 @@ target_link_libraries(kworship_bible
 
 install( TARGETS kworship_bible DESTINATION ${PLUGIN_INSTALL_DIR} )
 install( FILES kworship_bible.desktop  DESTINATION  ${SERVICES_INSTALL_DIR} )
-install( FILES kworship_bibleui.rc  DESTINATION
-${DATA_INSTALL_DIR}/kworship/bible )
+install( FILES kworship_bibleui.rc  DESTINATION ${DATA_INSTALL_DIR}/kworship/bible )
 install( FILES kworship_bible_backend.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )

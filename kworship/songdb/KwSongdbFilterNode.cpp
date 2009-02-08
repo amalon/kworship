@@ -135,9 +135,23 @@ QVariant KwSongdbFilterNode::getData(int role, int column)
 /// Get the number of children.
 int KwSongdbFilterNode::getChildCount() const
 {
-  int rows = m_query->size();
-  /// @todo implement for db backends that don't support size
-  assert(rows != -1);
+  int rows = 0;
+  if (m_query->isActive())
+  {
+    rows = m_query->size();
+    if (rows == -1)
+    {
+      if (m_query->first())
+      {
+        rows = 1;
+        while (m_query->next())
+        {
+          ++rows;
+        }
+      }
+    }
+    assert(rows != -1);
+  }
   return rows;
 }
 

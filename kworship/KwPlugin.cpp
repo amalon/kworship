@@ -103,3 +103,8 @@ void KwPlugin::unload()
   }
 }
 
+/// Setup config dialog to include the plugin.
+void KwPlugin::setupConfigDialog(KConfigDialog* dialog)
+{
+  Q_UNUSED(dialog);
+}

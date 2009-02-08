@@ -26,6 +26,7 @@
 #include "KwApplication.h"
 #include "kworship.h"
 #include "KwPluginManager.h"
+#include "KwDatabaseSetup.h"
 
 #include <KCmdLineArgs>
 
@@ -55,10 +56,19 @@ KwApplication::KwApplication()
 : m_app()
 , m_mainWindow(0) // soon to be initialised
 , m_pluginManager(new KwPluginManager())
+, m_database()
 {
   // Application must be lone.
   Q_ASSERT(0 == s_self);
   s_self = this;
+
+  // Setup database
+  KwDatabaseSetup dbSetup;
+  bool databaseOk = dbSetup.initialiseFromConfig();
+  if (databaseOk)
+  {
+    m_database = dbSetup.database();
+  }
 
   // Set up the main window
   kworship *widget = new kworship;
@@ -125,3 +135,14 @@ kworship* KwApplication::mainWindow()
   return m_mainWindow;
 }
 
+/// Get the plugin manager.
+KwPluginManager* KwApplication::pluginManager()
+{
+  return m_pluginManager;
+}
+
+/// Get the database object.
+QSqlDatabase& KwApplication::database()
+{
+  return m_database;
+}

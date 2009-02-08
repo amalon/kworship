@@ -22,8 +22,8 @@
       <default>1</default>
     </entry>
   </group>
-  <group name="Song DB">
-    <entry name="songdbType" type="Enum">
+  <group name="Database">
+    <entry name="databaseType" type="Enum">
       <label>database type</label>
       <choices>
         <choice name="SQLite" />
@@ -32,30 +32,30 @@
       </choices>
       <default>SQLite</default>
     </entry>
-    <entry name="songdbLocationAuto" type="Int">
+    <entry name="databaseLocationAuto" type="Int">
       <label>auto database location</label>
       <default>1</default>
     </entry>
-    <entry name="songdbLocationCustom" type="Int">
+    <entry name="databaseLocationCustom" type="Int">
       <label>custom database location</label>
       <default>0</default>
     </entry>
-    <entry name="songdbLocation" type="Url">
+    <entry name="databaseLocation" type="Url">
       <label>database hostname</label>
     </entry>
-    <entry name="songdbHost">
+    <entry name="databaseHost">
       <label>database hostname</label>
       <default>localhost</default>
     </entry>
-    <entry name="songdbName">
+    <entry name="databaseName">
       <label>database name</label>
       <default>kworship</default>
     </entry>
-    <entry name="songdbUsername">
+    <entry name="databaseUsername">
       <label>database username</label>
       <default>kworship</default>
     </entry>
-    <entry name="songdbPassword">
+    <entry name="databasePassword">
       <label>database password</label>
       <default></default>
     </entry>

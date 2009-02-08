@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>prefsSongDB_base</class>
- <widget class="QWidget" name="prefsSongDB_base" >
+ <class>prefsDatabase_base</class>
+ <widget class="QWidget" name="prefsDatabase_base" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -32,7 +32,7 @@
       </widget>
      </item>
      <item row="0" column="1" >
-      <widget class="QComboBox" name="kcfg_songdbType" >
+      <widget class="QComboBox" name="kcfg_databaseType" >
        <property name="currentIndex" >
         <number>-1</number>
        </property>
@@ -73,14 +73,14 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3" >
         <item>
-         <widget class="QRadioButton" name="kcfg_songdbLocationAuto" >
+         <widget class="QRadioButton" name="kcfg_databaseLocationAuto" >
           <property name="text" >
            <string>Use the default database location.</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="kcfg_songdbLocationCustom" >
+         <widget class="QRadioButton" name="kcfg_databaseLocationCustom" >
           <property name="text" >
            <string>Use a custom database location.</string>
           </property>
@@ -106,7 +106,7 @@
             </widget>
            </item>
            <item row="0" column="1" >
-            <widget class="KUrlRequester" name="kcfg_songdbLocation" >
+            <widget class="KUrlRequester" name="kcfg_databaseLocation" >
              <property name="filter" >
               <string/>
              </property>
@@ -140,7 +140,7 @@
            </widget>
           </item>
           <item row="0" column="1" >
-           <widget class="QLineEdit" name="kcfg_songdbHost" />
+           <widget class="QLineEdit" name="kcfg_databaseHost" />
           </item>
           <item row="1" column="0" >
            <widget class="QLabel" name="label_3" >
@@ -150,7 +150,7 @@
            </widget>
           </item>
           <item row="1" column="1" >
-           <widget class="QLineEdit" name="kcfg_songdbName" />
+           <widget class="QLineEdit" name="kcfg_databaseName" />
           </item>
           <item row="2" column="0" >
            <widget class="QLabel" name="label_4" >
@@ -160,7 +160,7 @@
            </widget>
           </item>
           <item row="2" column="1" >
-           <widget class="QLineEdit" name="kcfg_songdbUsername" />
+           <widget class="QLineEdit" name="kcfg_databaseUsername" />
           </item>
           <item row="3" column="0" >
            <widget class="QLabel" name="label_5" >
@@ -170,7 +170,7 @@
            </widget>
           </item>
           <item row="3" column="1" >
-           <widget class="QLineEdit" name="kcfg_songdbPassword" >
+           <widget class="QLineEdit" name="kcfg_databasePassword" >
             <property name="echoMode" >
              <enum>QLineEdit::Password</enum>
             </property>
@@ -204,12 +204,12 @@
          </widget>
         </item>
        </layout>
-       <zorder>kcfg_songdbPassword</zorder>
+       <zorder>kcfg_databasePassword</zorder>
        <zorder>label_3</zorder>
-       <zorder>kcfg_songdbHost</zorder>
-       <zorder>kcfg_songdbUsername</zorder>
+       <zorder>kcfg_databaseHost</zorder>
+       <zorder>kcfg_databaseUsername</zorder>
        <zorder>label_4</zorder>
-       <zorder>kcfg_songdbName</zorder>
+       <zorder>kcfg_databaseName</zorder>
        <zorder>label_5</zorder>
        <zorder>buttonInitialise</zorder>
        <zorder>buttonTest</zorder>

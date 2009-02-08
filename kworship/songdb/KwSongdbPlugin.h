@@ -17,34 +17,36 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _prefsSongDB_h_
-#define _prefsSongDB_h_
+#ifndef _KwSongdbPlugin_h_
+#define _KwSongdbPlugin_h_
 
 /**
- * @file prefsSongDB.h
- * @brief SongDB preferences interface.
+ * @file KwSongdbPlugin.h
+ * @brief Song database plugin.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QtGui/QWidget>
+#include <KwPlugin.h>
 
-#include "ui_prefsSongDB_base.h"
+class KwSongdbTree;
+class KActionMenu;
 
-/// SongDB preferences interface.
-class prefsSongDB : public QWidget, public Ui::prefsSongDB_base
+/// Song database plugin.
+class KwSongdbPlugin : public KwPlugin
 {
-  Q_OBJECT
+    Q_OBJECT
+
   public:
 
     /*
      * Constructors + destructor
      */
 
-    /// Primary constructor.
-    prefsSongDB(QWidget *parent);
+    /// Default constructor.
+    KwSongdbPlugin(QObject* parent = 0, const QStringList& params = QStringList());
 
     /// Destructor.
-    virtual ~prefsSongDB();
+    virtual ~KwSongdbPlugin();
 
   private slots:
 
@@ -52,11 +54,41 @@ class prefsSongDB : public QWidget, public Ui::prefsSongDB_base
      * Slots
      */
 
-    /// Database type has changed.
-    void changeDatabaseType(QString newType);
+    void songdbUnlock();
+    void songdbLock();
+    void songdbAdd();
+    void songdbEdit();
+    void songdbEditSongBooks();
 
-    /// Test connection settings.
-    void testConnectionSettings();
+  protected:
+
+    /*
+     * Loading and unloading virtual interface
+     */
+
+    // Reimplemented
+    virtual void _load();
+
+    // Reimplemented
+    virtual void _unload();
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Song DB docker.
+    QDockWidget* m_docker;
+
+    KwSongdbTree* m_songDbTree;
+    KAction* m_unlockSongDbAction;
+    KAction* m_lockSongDbAction;
+    KActionMenu* m_groupSongsByAction;
+    KAction* m_addSongAction;
+    KAction* m_editSongAction;
+    KAction* m_editSongBooksAction;
 };
 
-#endif // _prefsSongDB_h_
+#endif // _KwSongdbPlugin_h_
+

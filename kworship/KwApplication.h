@@ -29,6 +29,8 @@
 #include <KApplication>
 #include <kdemacros.h>
 
+#include <QSqlDatabase>
+
 class KwPluginManager;
 class kworship;
 
@@ -71,6 +73,9 @@ class KDE_EXPORT KwApplication
     /// Get the plugin manager.
     KwPluginManager* pluginManager();
 
+    /// Get the database object.
+    QSqlDatabase& database();
+
   private:
 
     /*
@@ -92,6 +97,9 @@ class KDE_EXPORT KwApplication
 
     /// Plugin manager.
     KwPluginManager* m_pluginManager;
+
+    /// Database object.
+    QSqlDatabase m_database;
 };
 
 #endif // _KwApplication_h_

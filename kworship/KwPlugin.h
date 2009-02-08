@@ -34,6 +34,8 @@
 
 class KwPluginManager;
 
+class KConfigDialog;
+
 class QDockWidget;
 
 /// An abstract KWorship plugin.
@@ -91,6 +93,9 @@ class KDE_EXPORT KwPlugin : public KParts::Plugin
 
     /// Unload the plugin.
     void unload();
+
+    /// Setup config dialog to include the plugin.
+    virtual void setupConfigDialog(KConfigDialog* dialog);
 
   protected:
 

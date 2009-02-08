@@ -86,9 +86,6 @@ set(kworshipplaylist_SRCS
     playlist/KwPlaylistNote.cpp
     playlist/KwPlaylistNoteNode.cpp
     playlist/KwPlaylistPresentation.cpp
-    playlist/KwPlaylistSong.cpp
-    playlist/KwPlaylistSongNode.cpp
-    playlist/KwPlaylistSongNodeVerse.cpp
     playlist/KwPlaylistText.cpp
     playlist/KwPlaylistTextNode.cpp
 )
@@ -99,7 +96,7 @@ set(kworshipmain_SRCS
     kworship.cpp
     kworshipview.cpp
     prefsDisplay.cpp
-    prefsSongDB.cpp
+    prefsDatabase.cpp
     DesktopView.cpp
     KwDatabaseSetup.cpp
     KwDocument.cpp
@@ -116,7 +113,7 @@ kde4_add_ui_files(kworshipmain_SRCS
                   kworshipview_base.ui
                   prefs_base.ui
                   prefsDisplay_base.ui
-                  prefsSongDB_base.ui
+                  prefsDatabase_base.ui
                   prefsPresentations_base.ui
 )
 

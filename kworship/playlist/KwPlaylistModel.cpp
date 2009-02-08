@@ -80,7 +80,7 @@ void KwPlaylistModel::addItem(const QModelIndex& parent, KwPlaylistItem* item, i
 QStringList KwPlaylistModel::mimeTypes() const
 {
   QStringList mimes;
-  mimes << "application/x.kworship.song.list";
+  //mimes << "application/x.kworship.song.list";
   mimes << "text/uri-list";
   return mimes;
 }
@@ -123,7 +123,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
     row = list->getChildCount();
   }
 
-  if (data->hasFormat("application/x.kworship.song.list"))
+  if (0 && data->hasFormat("application/x.kworship.song.list"))
   {
     QByteArray encodedData = data->data("application/x.kworship.song.list");
     QDataStream stream(&encodedData, QIODevice::ReadOnly);

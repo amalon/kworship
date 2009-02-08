@@ -21,9 +21,11 @@
 #include "kworshipview.h"
 #include "settings.h"
 #include "prefsDisplay.h"
-#include "prefsSongDB.h"
+#include "prefsDatabase.h"
 #include "KwDatabaseSetup.h"
 #include "KwDocument.h"
+#include "KwApplication.h"
+#include "KwPluginManager.h"
 
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -42,14 +44,6 @@
 
 #include "KwMediaManager.h"
 #include "KwMediaControlWidget.h"
-
-#include "KwSongdb.h"
-#include "KwSongdbModel.h"
-#include "KwSongdbFilterNode.h"
-#include "KwSongdbTree.h"
-#include "KwSongdbSong.h"
-#include "KwSongdbSongEditDialog.h"
-#include "KwSongdbSongBooksEditWidget.h"
 
 #include "UpManager.h"
 #include "UpPresentationsModel.h"
@@ -121,7 +115,6 @@ kworship::kworship()
 
   // Setup the dockers
   addDockWidget(Qt::LeftDockWidgetArea, m_view->dockPresentation);
-  tabifyDockWidget(m_view->dockPresentation, m_view->dockSongs);
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockPreview);
   addDockWidget(Qt::RightDockWidgetArea, m_view->dockLyrics);
   addDockWidget(Qt::BottomDockWidgetArea, m_view->dockThemes);
@@ -140,15 +133,6 @@ kworship::kworship()
 
 #undef TREE_ITEM
 #endif
-
-  // Setup song db
-
-  KwDatabaseSetup dbSetup;
-  bool databaseOk = dbSetup.initialiseFromConfig();
-  if (databaseOk)
-  {
-    new KwSongdb(dbSetup.database());
-  }
 
   // Playlist
   m_document->playlist()->addClass("beachy");
@@ -185,36 +169,6 @@ kworship::kworship()
 
   KwMediaControlWidget* mediaWidget = new KwMediaControlWidget(m_mediaManager, m_view->dockNowPlaying);
   m_view->layoutNowPlaying->addWidget(mediaWidget);
-
-  // Small toolbar for group by action
-  QToolBar* songTextToolBar = new QToolBar("Songs");
-  songTextToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-  songTextToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
-  m_view->layoutSongsToolbar->layout()->addWidget(songTextToolBar);
-
-  songTextToolBar->addAction(m_groupSongsByAction);
-
-  // Rest of the toolbar
-  QToolBar* songToolBar = new QToolBar("Songs");
-  songToolBar->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum));
-  m_view->layoutSongsToolbar->layout()->addWidget(songToolBar);
-
-  songToolBar->addAction(m_addSongAction);
-  songToolBar->addAction(m_editSongAction);
-  songToolBar->addAction(m_editSongBooksAction);
-  KAction* insertIntoPlaylistAction = new KAction(KIcon("player_playlist"), i18n("Insert Into Playlist"), songToolBar);
-  songToolBar->addAction(insertIntoPlaylistAction);
-
-  KMenu* groupByMenu = new KMenu(songToolBar);
-  m_groupSongsByAction->setMenu(groupByMenu);
-
-  if (databaseOk)
-  {
-    m_songDbTree = new KwSongdbTree(m_view);
-    m_view->layoutSongsTree->addWidget(m_songDbTree);
-    groupByMenu->addActions(m_songDbTree->groupByActions()->actions());
-  }
-
 
   /*
    * Presentation
@@ -328,7 +282,6 @@ kworship::kworship()
 
 kworship::~kworship()
 {
-  delete KwSongdb::self();
   delete m_slideNotes;
 }
 
@@ -387,32 +340,6 @@ void kworship::setupActions()
   KAction* clearDisplayAction = new KAction(KIcon("clear"), i18n("Clear display"), this);
   actionCollection()->addAction( QLatin1String("display_clear"), clearDisplayAction);
   connect(clearDisplayAction, SIGNAL(triggered()), this, SLOT(displayClear()));
-
-  // Song database
-  m_unlockSongDbAction = new KAction(KIcon("document-decrypt"), i18n("Unlock Song Database"), this);
-  actionCollection()->addAction( QLatin1String("unlock_song_database"), m_unlockSongDbAction);
-  connect(m_unlockSongDbAction, SIGNAL(triggered(bool)), this, SLOT(songdbUnlock()));
-
-  m_lockSongDbAction = new KAction(KIcon("document-encrypt"), i18n("Lock Song Database"), this);
-  m_lockSongDbAction->setVisible(false);
-  actionCollection()->addAction( QLatin1String("lock_song_database"), m_lockSongDbAction);
-  connect(m_lockSongDbAction, SIGNAL(triggered(bool)), this, SLOT(songdbLock()));
-
-  m_groupSongsByAction = new KActionMenu(KIcon("view-filter"), i18n("Group By"), this);
-  m_groupSongsByAction->setDelayed(false);
-  actionCollection()->addAction( QLatin1String("group_songs_by"), m_groupSongsByAction);
-
-  m_addSongAction = new KAction(KIcon("list-add"), i18n("Add Song"), this);
-  actionCollection()->addAction( QLatin1String("add_song"), m_addSongAction);
-  connect(m_addSongAction, SIGNAL(triggered(bool)), this, SLOT(songdbAdd()));
-
-  m_editSongAction = new KAction(KIcon("view-media-lyrics"), i18n("Edit Song"), this);
-  actionCollection()->addAction( QLatin1String("edit_song"), m_editSongAction);
-  connect(m_editSongAction, SIGNAL(triggered(bool)), this, SLOT(songdbEdit()));
-
-  m_editSongBooksAction = new KAction(KIcon("format-list-ordered"), i18n("Edit Song Books"), this);
-  actionCollection()->addAction( QLatin1String("edit_song_books"), m_editSongBooksAction);
-  connect(m_editSongBooksAction, SIGNAL(triggered(bool)), this, SLOT(songdbEditSongBooks()));
 }
 
 void kworship::settingsChanged()
@@ -635,12 +562,15 @@ void kworship::optionsPreferences()
   prefsDisplay *displaySettingsDlg = new prefsDisplay(dialog);
   dialog->addPage(displaySettingsDlg, i18n("Display"), "video-projector", i18n("Display and Screen"));
 
-  prefsSongDB *songdbSettingsDlg = new prefsSongDB(dialog);
-  dialog->addPage(songdbSettingsDlg, i18n("Song DB"), "applications-multimedia", i18n("Song Database"));
+  prefsDatabase *songdbSettingsDlg = new prefsDatabase(dialog);
+  dialog->addPage(songdbSettingsDlg, i18n("Database"), "applications-multimedia", i18n("Database"));
 
   QWidget *presentationSettingsDlg = new QWidget(dialog);
   ui_prefsPresentations_base.setupUi(presentationSettingsDlg);
   dialog->addPage(presentationSettingsDlg, i18n("Presentations"), "view-presentation", i18n("Presentations and Slideshows"));
+
+  // Let the plugins have their say
+  KwApplication::self()->pluginManager()->setupConfigDialog(dialog);
 
   connect(dialog, SIGNAL(settingsChanged(QString)), m_view, SLOT(settingsChanged()));
   connect(dialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
@@ -967,50 +897,5 @@ void kworship::slideshowStepChanged(int step)
   m_slideshowNextStepAction->setEnabled(!lastStep);
 }
 
-// Song DB
-
-void kworship::songdbUnlock()
-{
-  m_unlockSongDbAction->setVisible(false);
-  m_lockSongDbAction->setVisible(true);
-}
-
-void kworship::songdbLock()
-{
-  m_unlockSongDbAction->setVisible(true);
-  m_lockSongDbAction->setVisible(false);
-}
-
-void kworship::songdbAdd()
-{
-  KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog(0);
-  dialog->setCaption(i18n("Add Song"));
-  dialog->setAttribute(Qt::WA_DeleteOnClose, true);
-  dialog->show();
-}
-
-void kworship::songdbEdit()
-{
-  /// @todo Ensure the same song isn't open twice
-  KwSongdbSong* song = m_songDbTree->currentSong();
-  if (0 != song)
-  {
-    KwSongdbVersion* version = m_songDbTree->currentSongVersion();
-    // version may be 0
-    KwSongdbSongEditDialog* dialog = new KwSongdbSongEditDialog(song, version);
-    dialog->setCaption(i18n("Edit Song - %1", song->name()));
-    dialog->setAttribute(Qt::WA_DeleteOnClose, true);
-    dialog->show();
-  }
-  else
-  {
-    KMessageBox::information(this, i18n("Please select a song."));
-  }
-}
-
-void kworship::songdbEditSongBooks()
-{
-  KwSongdbSongBooksEditWidget::showDialog();
-}
 
 #include "kworship.moc"

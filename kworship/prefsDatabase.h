@@ -17,30 +17,23 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwPluginManager_h_
-#define _KwPluginManager_h_
+#ifndef _prefsDatabase_h_
+#define _prefsDatabase_h_
 
 /**
- * @file KwPluginManager.h
- * @brief Manages KWorship plugins.
+ * @file prefsDatabase.h
+ * @brief Database preferences interface.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <QObject>
-#include <QMap>
-#include <QString>
+#include <QtGui/QWidget>
 
-class KwPlugin;
-class KXmlGuiWindow;
-class KConfigDialog;
+#include "ui_prefsDatabase_base.h"
 
-/** Manages KWorship plugins.
- * @todo Dynamic loading/unloading of plugins.
- */
-class KwPluginManager : public QObject
+/// Database preferences interface.
+class prefsDatabase : public QWidget, public Ui::prefsDatabase_base
 {
-    Q_OBJECT
-
+  Q_OBJECT
   public:
 
     /*
@@ -48,42 +41,22 @@ class KwPluginManager : public QObject
      */
 
     /// Primary constructor.
-    KwPluginManager();
+    prefsDatabase(QWidget *parent);
 
     /// Destructor.
-    virtual ~KwPluginManager();
+    virtual ~prefsDatabase();
+
+  private slots:
 
     /*
-     * Plugin loading and unloading
+     * Slots
      */
 
-    /// Set the main window.
-    void setMainWindow(KXmlGuiWindow* mainWindow);
+    /// Database type has changed.
+    void changeDatabaseType(QString newType);
 
-    /** Directly load a plugin.
-     * @param plugin The plugin object.
-     * @returns True on success, false otherwise.
-     */
-    bool loadPlugin(KwPlugin* plugin);
-
-    /// Load all plugins.
-    void loadPlugins();
-
-    /// Setup config dialog to include the plugin.
-    void setupConfigDialog(KConfigDialog* dialog);
-
-  private:
-
-    /*
-     * Variables
-     */
-
-    /// Main window.
-    KXmlGuiWindow* m_mainWindow;
-
-    /// Plugins by id.
-    QMap<QString, KwPlugin*> m_plugins;
+    /// Test connection settings.
+    void testConnectionSettings();
 };
 
-#endif // _KwPluginManager_h_
-
+#endif // _prefsDatabase_h_

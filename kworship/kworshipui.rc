@@ -1,21 +1,11 @@
 <!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
-<kpartgui name="KApp4" version="1">
+<gui name="KWorship" version="1">
   <MenuBar>
     <Menu name="menuDisplay"><text>&amp;Display</text>
       <Action name="show_main_display" />
       <Action name="display_clear" />
     </Menu>
     <Menu name="menuPresentation"><text>&amp;Presentation</text>
-    </Menu>
-    <Menu name="menuSongs"><text>&amp;Song DB</text>
-      <Action name="unlock_song_database" />
-      <Action name="lock_song_database" />
-      <Action name="group_songs_by" />
-      <Action name="add_song" />
-      <Action name="edit_song" />
-      <Action name="delete_song" />
-      <Action name="edit_song_books" />
-      <Action name="song_add_to_playlist" />
     </Menu>
     <Menu name="menuPlaylist"><text>&amp;Playlist</text>
       <Action name="playlist_move_up" />
@@ -26,4 +16,4 @@
   <ToolBar fullWidth="false" name="displayToolBar" newline="true"><text>Display Toolbar</text>
     <Action name="display_clear"/>
   </ToolBar>
-</kpartgui>
+</gui>

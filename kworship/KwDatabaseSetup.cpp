@@ -19,7 +19,7 @@
 
 /**
  * @file KwDatabaseSetup.cpp
- * @brief A song database manager class.
+ * @brief Database setup manager.
  * @author James Hogan <james@albanarts.com>
  */
 
@@ -49,14 +49,14 @@ KwDatabaseSetup::~KwDatabaseSetup()
 /// Initialise from configuration.
 bool KwDatabaseSetup::initialiseFromConfig()
 {
-  int type = Settings::songdbType();
+  int type = Settings::databaseType();
   switch (type)
   {
-    case Settings::EnumSongdbType::MySQL:
-    case Settings::EnumSongdbType::PostgreSQL:
+    case Settings::EnumDatabaseType::MySQL:
+    case Settings::EnumDatabaseType::PostgreSQL:
       {
         QString strType;
-        if (type == Settings::EnumSongdbType::MySQL)
+        if (type == Settings::EnumDatabaseType::MySQL)
         {
           strType = "QMYSQL";
         }
@@ -65,19 +65,19 @@ bool KwDatabaseSetup::initialiseFromConfig()
           strType = "QPSQL";
         }
         return initialiseConnection(strType,
-                                    Settings::songdbHost(),
-                                    Settings::songdbName(),
-                                    Settings::songdbUsername(),
-                                    Settings::songdbPassword());
+                                    Settings::databaseHost(),
+                                    Settings::databaseName(),
+                                    Settings::databaseUsername(),
+                                    Settings::databasePassword());
       }
       break;
-    case Settings::EnumSongdbType::SQLite:
+    case Settings::EnumDatabaseType::SQLite:
       {
         QString strType = "QSQLITE";
         QUrl url;
-        if (Settings::songdbLocationCustom())
+        if (Settings::databaseLocationCustom())
         {
-          url = Settings::songdbLocation();
+          url = Settings::databaseLocation();
         }
         else
         {
@@ -139,10 +139,17 @@ bool KwDatabaseSetup::initialiseFile(QString type, QUrl url)
     return false;
   }
 
-  /// @todo Implement
-  Q_UNUSED(url)
+  m_database = QSqlDatabase::addDatabase(type);
+  m_database.setDatabaseName(url.toLocalFile());
+  bool connected = m_database.open();
 
-  return false;
+  if (connected)
+  {
+    // Ensure database is setup ok
+    /// @todo implement
+  }
+
+  return connected;
 }
 
 /*

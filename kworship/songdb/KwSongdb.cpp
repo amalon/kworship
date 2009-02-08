@@ -54,6 +54,8 @@ KwSongdb::KwSongdb(QSqlDatabase& db)
 {
   Q_ASSERT(0 == s_singleton);
   s_singleton = this;
+
+  // If any tables are missing, set them up
 }
 
 /// Destructor.
