@@ -227,16 +227,16 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
             doc.loadXML(QString::fromUtf8(rawPage));
 
             // Find all spans with class="sup"
-            DOM::NodeList sups = doc.body().getElementsByClassName("sup");
+            DOM::NodeList sups = doc.body().getElementsByClassName("versenum");
             int verse = 0;
             for (unsigned int i = 0; i < sups.length(); ++i)
             {
-              DOM::HTMLElement span = sups.item(i);
-              if (span.tagName() == "span")
+              DOM::HTMLElement sup = sups.item(i);
+              if (sup.tagName() == "sup")
               {
                 // Get the verse number and validate
                 bool numeric;
-                QString verseNumber = span.innerText().string();
+                QString verseNumber = sup.getAttribute("value").string();
                 Verse verseInfo;
                 int check = verseNumber.toInt(&numeric);
                 if (!numeric)
@@ -254,14 +254,14 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
 
                 // Get any headers before it
                 DOM::Node sibling;
-                sibling = span.previousSibling();
+                sibling = sup.previousSibling();
                 while (!sibling.isNull())
                 {
                   DOM::Element siblingElement = sibling;
                   if (!siblingElement.isNull())
                   {
-                    // Stop at a span class="sup"
-                    if (siblingElement.tagName() == "span" && siblingElement.getAttribute("class") == "sup")
+                    // Stop at a sup class="versenum"
+                    if (siblingElement.tagName() == "sup" && siblingElement.getAttribute("class") == "versenum")
                     {
                       break;
                     }
@@ -275,15 +275,15 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                   sibling = sibling.previousSibling();
                 }
 
-                // Get any text after it until the next span
-                sibling = span.nextSibling();
+                // Get any text after it until the next sup
+                sibling = sup.nextSibling();
                 while (!sibling.isNull())
                 {
                   DOM::Element siblingElement = sibling;
                   if (!siblingElement.isNull())
                   {
-                    // Stop at a span class="sup"
-                    if (siblingElement.tagName() == "span" && siblingElement.getAttribute("class") == "sup")
+                    // Stop at a sup class="versenum"
+                    if (siblingElement.tagName() == "sup" && siblingElement.getAttribute("class") == "versenum")
                     {
                       break;
                     }
