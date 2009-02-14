@@ -33,7 +33,7 @@
 #include <QStringList>
 
 class KwDocument;
-class QString;
+class KUrl;
 
 /// Import file filter.
 class KDE_EXPORT KwImportFilter : public virtual KwFilter
@@ -55,7 +55,7 @@ class KDE_EXPORT KwImportFilter : public virtual KwFilter
      */
     
     /// Load the document from a file.
-    virtual KwDocument* load(const QString& filename) = 0;
+    virtual KwDocument* load(const KUrl& url) = 0;
 
     /*
      * Accessors

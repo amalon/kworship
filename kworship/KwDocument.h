@@ -66,14 +66,18 @@ class KwDocument : public QObject
     /// Get the main playlist.
     KwPlaylistList* playlist();
 
+    /*
+     * Mutators
+     */
+
+    /// Set the main playlist.
+    void setPlaylist(KwPlaylistList* playlist);
+
   public slots:
 
     /*
      * Saving and loading actions
      */
-
-    /// Load the file.
-    void reload();
 
     /// Save the file.
     void save();

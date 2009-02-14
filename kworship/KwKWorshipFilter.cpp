@@ -24,6 +24,13 @@
  */
 
 #include "KwKWorshipFilter.h"
+#include "KwDocument.h"
+#include "KwArchive.h"
+#include "KwPlaylistList.h"
+
+#include <KUrl>
+#include <KMessageBox>
+#include <KLocale>
 
 /*
  * Constructors + destructor
@@ -48,13 +55,36 @@ KwKWorshipFilter::~KwKWorshipFilter()
  * Main interface
  */
 
-KwDocument* KwKWorshipFilter::load(const QString& filename)
+KwDocument* KwKWorshipFilter::load(const KUrl& url)
 {
-  /// @todo Implement KwKWorshipFilter::load
-  Q_ASSERT(false);
+  // Start off by opening the archive file
+  if (!url.isLocalFile())
+  {
+    KMessageBox::error(0,
+        i18n("Non-local loads not yet supported"),
+        i18n("KWorship"));
+    return 0;
+  }
+
+  KwDocument* doc = new KwDocument(url);
+  // Open archive object and fill it
+  KwArchive* archive = new KwArchive(url.toLocalFile(), false);
+  Q_ASSERT(archive->isReading());
+
+  KwPlaylistList* playlist = archive->extractPlaylist("0");
+  if (0 != playlist)
+  {
+    doc->setPlaylist(playlist);
+  }
+
+  delete archive;
+
+  doc->setModified(false);
+
+  return doc;
 }
 
-bool KwKWorshipFilter::save(KwDocument* doc, const QString& filename)
+bool KwKWorshipFilter::save(KwDocument* doc, const KUrl& url)
 {
   /// @todo Implement KwKWorshipFilter::save
   Q_ASSERT(false);

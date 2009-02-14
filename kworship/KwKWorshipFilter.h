@@ -48,10 +48,10 @@ class KwKWorshipFilter : public KwLoadSaveFilter
      */
     
     /// Reimplemented.
-    virtual KwDocument* load(const QString& filename);
+    virtual KwDocument* load(const KUrl& url);
 
     /// Reimplemented.
-    virtual bool save(KwDocument* doc, const QString& filename);
+    virtual bool save(KwDocument* doc, const KUrl& url);
 
   protected:
 

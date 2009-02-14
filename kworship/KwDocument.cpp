@@ -79,28 +79,20 @@ KwPlaylistList* KwDocument::playlist()
 }
 
 /*
- * Saving and loading actions
+ * Mutators
  */
 
-/// Load the file.
-void KwDocument::reload()
+/// Set the main playlist.
+void KwDocument::setPlaylist(KwPlaylistList* playlist)
 {
-  // Start off by opening the archive file
-  if (!m_url.isLocalFile())
-  {
-    KMessageBox::error(0,
-        i18n("Non-local loads not yet supported"),
-        i18n("KWorship"));
-    return;
-  }
-
-  // Create a new archive object and fill it
-  KwArchive* archive = new KwArchive(m_url.toLocalFile(), false);
-  loadFromArchive(archive);
-  delete archive;
-
-  setModified(false);
+  delete m_playlist;
+  m_playlist = playlist;
+  emit playlistReset();
 }
+
+/*
+ * Saving and loading actions
+ */
 
 /// Save the file.
 void KwDocument::save()
@@ -169,20 +161,6 @@ void KwDocument::setModified(bool modified)
 /*
  * Archive interface.
  */
-
-/// Load from an archive.
-void KwDocument::loadFromArchive(KwArchive* archive)
-{
-  Q_ASSERT(archive->isReading());
-
-  KwPlaylistList* playlist = archive->extractPlaylist("0");
-  if (0 != playlist)
-  {
-    delete m_playlist;
-    m_playlist = playlist;
-    playlistReset();
-  }
-}
 
 /// Save to an archive.
 void KwDocument::saveToArchive(KwArchive* archive) const

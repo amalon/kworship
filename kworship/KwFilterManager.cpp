@@ -36,6 +36,10 @@ KwFilterManager::KwFilterManager()
 , m_loadSaveFilters()
 , m_importFilters()
 , m_exportFilters()
+, m_loadMimeFilters()
+, m_saveMimeFilters()
+, m_importMimeFilters()
+, m_exportMimeFilters()
 {
 }
 
@@ -69,60 +73,118 @@ void KwFilterManager::addLoadSaveFilter(KwLoadSaveFilter* loadSaveFilter, bool m
   {
     m_defaultLoadSaveFilter = loadSaveFilter;
   }
+
+  // Update hashes of filters for each mime type
+  QStringList mimes = loadSaveFilter->importMimeTypes();
+  foreach (QString mime, mimes)
+  {
+    m_loadMimeFilters[mime] = loadSaveFilter;
+  }
+  mimes = loadSaveFilter->exportMimeTypes();
+  foreach (QString mime, mimes)
+  {
+    m_saveMimeFilters[mime] = loadSaveFilter;
+  }
 }
 
 /// Add an import filter.
 void KwFilterManager::addImportFilter(KwImportFilter* importFilter)
 {
   m_importFilters += importFilter;
+
+  // Update hash of import filters for each mime type
+  QStringList mimes = importFilter->importMimeTypes();
+  foreach (QString mime, mimes)
+  {
+    m_importMimeFilters[mime] = importFilter;
+  }
 }
 
 /// Add an export filter.
 void KwFilterManager::addExportFilter(KwExportFilter* exportFilter)
 {
   m_exportFilters += exportFilter;
+
+  // Update hash of export filters for each mime type
+  QStringList mimes = exportFilter->exportMimeTypes();
+  foreach (QString mime, mimes)
+  {
+    m_exportMimeFilters[mime] = exportFilter;
+  }
 }
 
 /// Get load mime types.
 QStringList KwFilterManager::loadMimeTypes() const
 {
-  QStringList result;
-  foreach (KwLoadSaveFilter* filter, m_loadSaveFilters)
-  {
-    result += filter->importMimeTypes();
-  }
-  return result;
+  return m_loadMimeFilters.keys();
 }
 
 /// Get save mime types.
 QStringList KwFilterManager::saveMimeTypes() const
 {
-  QStringList result;
-  foreach (KwLoadSaveFilter* filter, m_loadSaveFilters)
-  {
-    result += filter->exportMimeTypes();
-  }
-  return result;
+  return m_saveMimeFilters.keys();
 }
 
 /// Get import mime types.
 QStringList KwFilterManager::importMimeTypes() const
 {
-  QStringList result;
-  foreach (KwImportFilter* filter, m_importFilters)
-  {
-    result += filter->importMimeTypes();
-  }
-  return result;
+  return m_importMimeFilters.keys();
 }
 
 /// Get export mime types.
 QStringList KwFilterManager::exportMimeTypes() const
 {
-  QStringList result;
-  foreach (KwExportFilter* filter, m_exportFilters)
+  return m_exportMimeFilters.keys();
+}
+
+/// Get the load filter for a mime type.
+KwLoadSaveFilter* KwFilterManager::loadFilterFromMimeType(const QString& mimeType)
+{
+  if (m_loadMimeFilters.contains(mimeType))
   {
-    result += filter->exportMimeTypes();
+    return m_loadMimeFilters[mimeType];
   }
-  return result;
+  else
+  {
+    return 0;
+  }
+}
+
+/// Get the save filter for a mime type.
+KwLoadSaveFilter* KwFilterManager::saveFilterFromMimeType(const QString& mimeType)
+{
+  if (m_saveMimeFilters.contains(mimeType))
+  {
+    return m_saveMimeFilters[mimeType];
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+/// Get the import filter for a mime type.
+KwImportFilter* KwFilterManager::importFilterFromMimeType(const QString& mimeType)
+{
+  if (m_importMimeFilters.contains(mimeType))
+  {
+    return m_importMimeFilters[mimeType];
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+/// Get the export filter for a mime type.
+KwExportFilter* KwFilterManager::exportFilterFromMimeType(const QString& mimeType)
+{
+  if (m_exportMimeFilters.contains(mimeType))
+  {
+    return m_exportMimeFilters[mimeType];
+  }
+  else
+  {
+    return 0;
+  }
 }

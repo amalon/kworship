@@ -30,11 +30,12 @@
 
 #include <kdemacros.h>
 
-#include <QList>
 #include <QStringList>
+#include <QString>
+#include <QList>
 
 class KwDocument;
-class QString;
+class KUrl;
 
 /// Export file filter.
 class KDE_EXPORT KwExportFilter : public virtual KwFilter
@@ -114,7 +115,7 @@ class KDE_EXPORT KwExportFilter : public virtual KwFilter
     void saveLimitations(KwDocument* doc, Limitations* o_limitations);
 
     /// Save the document to file.
-    virtual bool save(KwDocument* doc, const QString& filename) = 0;
+    virtual bool save(KwDocument* doc, const KUrl& url) = 0;
 
     /*
      * Accessors

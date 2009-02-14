@@ -29,6 +29,7 @@
 #include <kdemacros.h>
 
 #include <QList>
+#include <QHash>
 #include <QStringList>
 
 class KwImportFilter;
@@ -75,6 +76,18 @@ class KDE_EXPORT KwFilterManager
     /// Get export mime types.
     QStringList exportMimeTypes() const;
 
+    /// Get the load filter for a mime type.
+    KwLoadSaveFilter* loadFilterFromMimeType(const QString& mimeType);
+
+    /// Get the save filter for a mime type.
+    KwLoadSaveFilter* saveFilterFromMimeType(const QString& mimeType);
+
+    /// Get the import filter for a mime type.
+    KwImportFilter* importFilterFromMimeType(const QString& mimeType);
+
+    /// Get the export filter for a mime type.
+    KwExportFilter* exportFilterFromMimeType(const QString& mimeType);
+
   private:
 
     /*
@@ -92,6 +105,18 @@ class KDE_EXPORT KwFilterManager
 
     /// List of export filters.
     QList<KwExportFilter*> m_exportFilters;
+
+    /// Hash of filters for each load mime type.
+    QHash<QString, KwLoadSaveFilter*> m_loadMimeFilters;
+
+    /// Hash of filters for each save mime type.
+    QHash<QString, KwLoadSaveFilter*> m_saveMimeFilters;
+
+    /// Hash of filters for each import mime type.
+    QHash<QString, KwImportFilter*> m_importMimeFilters;
+
+    /// Hash of filters for each export mime type.
+    QHash<QString, KwExportFilter*> m_exportMimeFilters;
 };
 
 #endif // _KwFilterManager_h_

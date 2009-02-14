@@ -27,6 +27,7 @@
 #include "KwApplication.h"
 #include "KwPluginManager.h"
 #include "KwFilterManager.h"
+#include "KwLoadSaveFilter.h"
 
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -293,8 +294,39 @@ kworship::~kworship()
 /// Load a specified playlist.
 void kworship::loadPlaylist(const KUrl& url)
 {
-  setDocument(url);
-  m_document->reload();
+  // Find mime type
+  KMimeType::Ptr mimeType = KMimeType::findByUrl(url);
+  QString mime = mimeType->name();
+
+  // Use the appropriate filter
+  KwLoadSaveFilter* filter = KwApplication::self()->filterManager()->loadFilterFromMimeType(mime);
+  if (filter)
+  {
+    KwDocument* newDoc = filter->load(url);
+    if (0 != newDoc)
+    {
+      delete m_document;
+      m_document = newDoc;
+
+      // Playlist will have changed
+      playlistReset();
+
+      // Wire up signals
+      connect(m_document, SIGNAL(playlistReset()), this, SLOT(playlistReset()));
+    }
+    else
+    {
+      KMessageBox::error(this,
+          i18n("Loading of \"%1\" failed.").arg(url.url()),
+          i18n("KWorship"));
+    }
+  }
+  else
+  {
+    KMessageBox::error(this,
+        i18n("No load filter exists for the mime type \"%1\"").arg(mime),
+        i18n("KWorship"));
+  }
 }
 
 /*
