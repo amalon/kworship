@@ -110,9 +110,6 @@ class KwDocument : public QObject
      * Archive interface.
      */
 
-    /// Load from an archive.
-    void loadFromArchive(KwArchive* archive);
-
     /// Save to an archive.
     void saveToArchive(KwArchive* archive) const;
 
