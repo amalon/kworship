@@ -102,6 +102,10 @@ set(kworshipmain_SRCS
     KwDocument.cpp
     KwPlugin.cpp
     KwPluginManager.cpp
+    KwFilter.cpp
+    KwImportFilter.cpp
+    KwExportFilter.cpp
+    KwLoadSaveFilter.cpp
     ${kworshiparchive_SRCS}
     ${kworshipcss_SRCS}
     ${kworshipdisplay_SRCS}
