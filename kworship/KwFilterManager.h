@@ -17,97 +17,81 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwApplication_h_
-#define _KwApplication_h_
+#ifndef _KwFilterManager_h_
+#define _KwFilterManager_h_
 
 /**
- * @file KwApplication.h
- * @brief Application global data.
+ * @file KwFilterManager.h
+ * @brief Manages file filters.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <KApplication>
 #include <kdemacros.h>
 
-#include <QSqlDatabase>
+#include <QList>
+#include <QStringList>
 
-class KwPluginManager;
-class KwFilterManager;
-class kworship;
+class KwImportFilter;
+class KwExportFilter;
+class KwLoadSaveFilter;
 
-/// Application global data.
-class KDE_EXPORT KwApplication
+/// Manages file filter.
+class KDE_EXPORT KwFilterManager
 {
   public:
-
-    /*
-     * Singletonhood
-     */
-
-    /// Get the singleton application object.
-    static KwApplication* self();
 
     /*
      * Constructors + destructor
      */
 
     /// Primary constructor.
-    KwApplication();
+    KwFilterManager();
 
     /// Destructor.
-    virtual ~KwApplication();
+    virtual ~KwFilterManager();
 
     /*
      * Main interface
      */
 
-    /// Execute the application.
-    int exec();
+    /// Add a load save filter.
+    void addLoadSaveFilter(KwLoadSaveFilter* loadSaveFilter, bool makeDefault = false);
 
-    /*
-     * Accessors
-     */
+    /// Add an import filter.
+    void addImportFilter(KwImportFilter* importFilter);
 
-    /// Get the main window widget.
-    kworship* mainWindow();
+    /// Add an export filter.
+    void addExportFilter(KwExportFilter* exportFilter);
 
-    /// Get the plugin manager.
-    KwPluginManager* pluginManager();
+    /// Get load mime types.
+    QStringList loadMimeTypes() const;
 
-    /// Get the filter manager.
-    KwFilterManager* filterManager();
+    /// Get save mime types.
+    QStringList saveMimeTypes() const;
 
-    /// Get the database object.
-    QSqlDatabase& database();
+    /// Get import mime types.
+    QStringList importMimeTypes() const;
+
+    /// Get export mime types.
+    QStringList exportMimeTypes() const;
 
   private:
-
-    /*
-     * Static singleton data
-     */
-
-    /// Singleton application.
-    static KwApplication* s_self;
 
     /*
      * Variables
      */
 
-    /// KApplication object.
-    KApplication m_app;
+    /// Default load save filter.
+    KwLoadSaveFilter* m_defaultLoadSaveFilter;
 
-    /// Main window widget.
-    kworship* m_mainWindow;
+    /// List of load save filters.
+    QList<KwLoadSaveFilter*> m_loadSaveFilters;
 
-    /// Plugin manager.
-    KwPluginManager* m_pluginManager;
+    /// List of import filters.
+    QList<KwImportFilter*> m_importFilters;
 
-    /// Filter manager.
-    KwFilterManager* m_filterManager;
-
-    /// Database object.
-    QSqlDatabase m_database;
+    /// List of export filters.
+    QList<KwExportFilter*> m_exportFilters;
 };
 
-#endif // _KwApplication_h_
-
+#endif // _KwFilterManager_h_

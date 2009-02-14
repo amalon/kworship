@@ -30,6 +30,8 @@
 
 #include <kdemacros.h>
 
+#include <QStringList>
+
 class KwDocument;
 class QString;
 
@@ -54,6 +56,22 @@ class KDE_EXPORT KwImportFilter : public virtual KwFilter
     
     /// Load the document from a file.
     virtual KwDocument* load(const QString& filename) = 0;
+
+    /*
+     * Accessors
+     */
+
+    /// Get a list of importable mime types.
+    QStringList importMimeTypes() const;
+
+  protected:
+
+    /*
+     * Variables
+     */
+
+    /// List of import mime types.
+    QStringList m_importMimeTypes;
 };
 
 #endif // _KwImportFilter_h_

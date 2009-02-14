@@ -17,36 +17,42 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwFilterObject_h_
+#define _KwFilterObject_h_
+
 /**
- * @file KwImportFilter.cpp
- * @brief Import file filter.
+ * @file KwFilterObject.h
+ * @brief An object which can be stored and loaded by filters.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwImportFilter.h"
+#include <kdemacros.h>
 
-/*
- * Constructors + destructor
- */
+class KwFilterData;
 
-/// Primary constructor.
-KwImportFilter::KwImportFilter()
-: KwFilter()
-, m_importMimeTypes()
+/// Export file filter.
+class KDE_EXPORT KwFilterObject
 {
-}
+  public:
 
-/// Destructor.
-KwImportFilter::~KwImportFilter()
-{
-}
+    /*
+     * Constructors + destructor
+     */
 
-/*
- * Accessors
- */
+    /// Primary constructor.
+    KwFilterObject();
 
-/// Get a list of importable mime types.
-QStringList KwImportFilter::importMimeTypes() const
-{
-  return m_importMimeTypes;
-}
+    /// Destructor.
+    virtual ~KwFilterObject();
+
+  protected:
+
+    /*
+     * Variables
+     */
+
+    /// Filter data.
+    KwFilterData* m_filterData;
+};
+
+#endif // _KwFilterObject_h_

@@ -18,35 +18,54 @@
  ***************************************************************************/
 
 /**
- * @file KwImportFilter.cpp
- * @brief Import file filter.
+ * @file KwKWorshipFilter.cpp
+ * @brief Main KWorship archive load and save filter.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwImportFilter.h"
+#include "KwKWorshipFilter.h"
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-KwImportFilter::KwImportFilter()
-: KwFilter()
-, m_importMimeTypes()
+KwKWorshipFilter::KwKWorshipFilter()
+: KwLoadSaveFilter()
 {
+  m_importMimeTypes += "application/x-kworship+xml";
+  m_exportMimeTypes += "application/x-kworship+xml";
+  m_importMimeTypes += "application/x-kworship-archive";
+  m_exportMimeTypes += "application/x-kworship-archive";
 }
 
 /// Destructor.
-KwImportFilter::~KwImportFilter()
+KwKWorshipFilter::~KwKWorshipFilter()
 {
 }
 
 /*
- * Accessors
+ * Main interface
  */
 
-/// Get a list of importable mime types.
-QStringList KwImportFilter::importMimeTypes() const
+KwDocument* KwKWorshipFilter::load(const QString& filename)
 {
-  return m_importMimeTypes;
+  /// @todo Implement KwKWorshipFilter::load
+  Q_ASSERT(false);
+}
+
+bool KwKWorshipFilter::save(KwDocument* doc, const QString& filename)
+{
+  /// @todo Implement KwKWorshipFilter::save
+  Q_ASSERT(false);
+}
+
+/*
+ * Virtual interface
+ */
+
+void KwKWorshipFilter::v_saveLimitations(KwDocument* doc, Limitations* o_limitations)
+{
+  /// @todo Implement KwKWorshipFilter::v_saveLimitations
+  Q_ASSERT(false);
 }

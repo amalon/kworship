@@ -31,6 +31,7 @@
 #include <kdemacros.h>
 
 #include <QList>
+#include <QStringList>
 
 class KwDocument;
 class QString;
@@ -108,13 +109,20 @@ class KDE_EXPORT KwExportFilter : public virtual KwFilter
     /*
      * Main interface
      */
-    
+
     /// Obtain information about any data that can not be saved.
     void saveLimitations(KwDocument* doc, Limitations* o_limitations);
 
     /// Save the document to file.
     virtual bool save(KwDocument* doc, const QString& filename) = 0;
 
+    /*
+     * Accessors
+     */
+
+    /// Get a list of export mime types.
+    QStringList exportMimeTypes() const;
+    
   protected:
 
     /*
@@ -123,6 +131,13 @@ class KDE_EXPORT KwExportFilter : public virtual KwFilter
 
     /// Obtain information about any data that can not be saved.
     virtual void v_saveLimitations(KwDocument* doc, Limitations* o_limitations) = 0;
+
+    /*
+     * Variables
+     */
+
+    /// List of export mime types.
+    QStringList m_exportMimeTypes;
 };
 
 #endif // _KwExportFilter_h_

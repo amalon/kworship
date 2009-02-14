@@ -17,36 +17,31 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwFilterData_h_
+#define _KwFilterData_h_
+
 /**
- * @file KwImportFilter.cpp
- * @brief Import file filter.
+ * @file KwFilterData.h
+ * @brief Additional data stored by the import filter.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwImportFilter.h"
+#include <kdemacros.h>
 
-/*
- * Constructors + destructor
- */
-
-/// Primary constructor.
-KwImportFilter::KwImportFilter()
-: KwFilter()
-, m_importMimeTypes()
+/// Additional data stored by the import filter.
+class KDE_EXPORT KwFilterData
 {
-}
+  public:
 
-/// Destructor.
-KwImportFilter::~KwImportFilter()
-{
-}
+    /*
+     * Constructors + destructor
+     */
 
-/*
- * Accessors
- */
+    /// Primary constructor.
+    KwFilterData();
 
-/// Get a list of importable mime types.
-QStringList KwImportFilter::importMimeTypes() const
-{
-  return m_importMimeTypes;
-}
+    /// Destructor.
+    virtual ~KwFilterData();
+};
+
+#endif // _KwFilterData_h_

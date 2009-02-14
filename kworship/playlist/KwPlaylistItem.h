@@ -27,6 +27,7 @@
  */
 
 #include "KwCssScope.h"
+#include "KwFilterObject.h"
 #include "Factory.h"
 
 #include <kdemacros.h>
@@ -55,7 +56,7 @@ class KwPlaylistNode;
 /**
  * Inherit from this class for each playlist item type.
  */
-class KDE_EXPORT KwPlaylistItem : public KwCssScope
+class KDE_EXPORT KwPlaylistItem : public KwFilterObject, public KwCssScope
 {
   public:
 

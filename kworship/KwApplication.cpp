@@ -26,6 +26,8 @@
 #include "KwApplication.h"
 #include "kworship.h"
 #include "KwPluginManager.h"
+#include "KwFilterManager.h"
+#include "KwKWorshipFilter.h"
 #include "KwDatabaseSetup.h"
 
 #include <KCmdLineArgs>
@@ -56,6 +58,7 @@ KwApplication::KwApplication()
 : m_app()
 , m_mainWindow(0) // soon to be initialised
 , m_pluginManager(new KwPluginManager())
+, m_filterManager(new KwFilterManager())
 , m_database()
 {
   // Application must be lone.
@@ -69,6 +72,9 @@ KwApplication::KwApplication()
   {
     m_database = dbSetup.database();
   }
+
+  // Set the default load save filter
+  m_filterManager->addLoadSaveFilter(new KwKWorshipFilter(), true);
 
   // Set up the main window
   kworship *widget = new kworship;
@@ -113,6 +119,7 @@ KwApplication::~KwApplication()
   s_self = 0;
 
   delete m_pluginManager;
+  delete m_filterManager;
 }
 
 /*
@@ -139,6 +146,12 @@ kworship* KwApplication::mainWindow()
 KwPluginManager* KwApplication::pluginManager()
 {
   return m_pluginManager;
+}
+
+/// Get the filter manager.
+KwFilterManager* KwApplication::filterManager()
+{
+  return m_filterManager;
 }
 
 /// Get the database object.

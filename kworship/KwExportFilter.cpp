@@ -61,6 +61,7 @@ KwExportFilter::Limitations::~Limitations()
 /// Primary constructor.
 KwExportFilter::KwExportFilter()
 : KwFilter()
+, m_exportMimeTypes()
 {
 }
 
@@ -77,4 +78,14 @@ KwExportFilter::~KwExportFilter()
 void KwExportFilter::saveLimitations(KwDocument* doc, Limitations* o_limitations)
 {
   v_saveLimitations(doc, o_limitations);
+}
+
+/*
+ * Accessors
+ */
+
+/// Get a list of export mime types.
+QStringList KwExportFilter::exportMimeTypes() const
+{
+  return m_exportMimeTypes;
 }

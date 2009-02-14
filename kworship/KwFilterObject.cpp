@@ -18,35 +18,26 @@
  ***************************************************************************/
 
 /**
- * @file KwImportFilter.cpp
- * @brief Import file filter.
+ * @file KwFilterObject.cpp
+ * @brief An object which can be stored and loaded by filters.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwImportFilter.h"
+#include "KwFilterObject.h"
+#include "KwFilterData.h"
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-KwImportFilter::KwImportFilter()
-: KwFilter()
-, m_importMimeTypes()
+KwFilterObject::KwFilterObject()
+: m_filterData(0)
 {
 }
 
 /// Destructor.
-KwImportFilter::~KwImportFilter()
+KwFilterObject::~KwFilterObject()
 {
-}
-
-/*
- * Accessors
- */
-
-/// Get a list of importable mime types.
-QStringList KwImportFilter::importMimeTypes() const
-{
-  return m_importMimeTypes;
+  delete m_filterData;
 }

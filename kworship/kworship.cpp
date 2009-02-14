@@ -26,6 +26,7 @@
 #include "KwDocument.h"
 #include "KwApplication.h"
 #include "KwPluginManager.h"
+#include "KwFilterManager.h"
 
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -505,13 +506,22 @@ void kworship::fileOpen()
   if (askToSave())
   {
     // Do the open operation
-    QString filter = "*.kwz *.kw|" + i18n("All KWorship playlists");
+    QStringList mimes = KwApplication::self()->filterManager()->loadMimeTypes();
+
     KUrl defaultUrl("kfiledialog:///playlist");
     if (m_document->isSaved())
     {
       defaultUrl = m_document->url();
     }
-    KUrl url = KFileDialog::getOpenUrl(defaultUrl, filter, this);
+
+    KFileDialog dlg(defaultUrl, QString(), this);
+    dlg.setMimeFilter(mimes);
+    dlg.setOperationMode(KFileDialog::Opening);
+    dlg.setCaption(i18n("Save As"));
+    dlg.setMode(KFile::File);
+    dlg.exec();
+    
+    KUrl url = dlg.selectedUrl();
     if (!url.isEmpty())
     {
       loadPlaylist(url);
@@ -533,14 +543,22 @@ void kworship::fileSave()
 
 void kworship::fileSaveAs()
 {
-  QString filter = "*.kwz|" + i18n("KWorship playlists") + "\n"
-                   "*.kw|" + i18n("KWorship uncompressed playlists");
+  QStringList mimes = KwApplication::self()->filterManager()->saveMimeTypes();
+
   KUrl defaultUrl("kfiledialog:///playlist");
   if (m_document->isSaved())
   {
     defaultUrl = m_document->url();
   }
-  KUrl url = KFileDialog::getSaveUrl(defaultUrl, filter, this);
+
+  KFileDialog dlg(defaultUrl, QString(), this);
+  dlg.setMimeFilter(mimes);
+  dlg.setOperationMode(KFileDialog::Opening);
+  dlg.setCaption(i18n("Save As"));
+  dlg.setMode(KFile::File);
+  dlg.exec();
+  
+  KUrl url = dlg.selectedUrl();
   if (!url.isEmpty())
   {
     m_document->saveAs(url);

@@ -48,7 +48,8 @@ KwPlaylistItem::Factory* KwPlaylistItem::factory()
 
 /// Default constructor.
 KwPlaylistItem::KwPlaylistItem()
-: KwCssScope(KwDisplayStyles::schema())
+: KwFilterObject()
+, KwCssScope(KwDisplayStyles::schema())
 , m_domDocument()
 , m_domPreserve(m_domDocument.createDocumentFragment())
 {

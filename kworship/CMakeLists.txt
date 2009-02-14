@@ -14,6 +14,7 @@ include_directories(${KDE4_INCLUDES}
                     playlist
                     archive
 )
+add_subdirectory (mimetypes)
 add_subdirectory (songdb)
 add_subdirectory (bible)
 
@@ -106,6 +107,11 @@ set(kworshipmain_SRCS
     KwImportFilter.cpp
     KwExportFilter.cpp
     KwLoadSaveFilter.cpp
+    KwFilterManager.cpp
+    KwFilterData.cpp
+    KwFilterObject.cpp
+    KwKWorshipFilter.cpp
+    KwKWorshipFilterData.cpp
     ${kworshiparchive_SRCS}
     ${kworshipcss_SRCS}
     ${kworshipdisplay_SRCS}

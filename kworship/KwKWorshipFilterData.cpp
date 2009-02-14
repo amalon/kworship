@@ -18,35 +18,49 @@
  ***************************************************************************/
 
 /**
- * @file KwImportFilter.cpp
- * @brief Import file filter.
+ * @file KwKWorshipFilterData.cpp
+ * @brief Additional KWorship import data.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwImportFilter.h"
+#include "KwKWorshipFilterData.h"
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-KwImportFilter::KwImportFilter()
-: KwFilter()
-, m_importMimeTypes()
+KwKWorshipFilterData::KwKWorshipFilterData()
+: KwFilterData()
 {
 }
 
 /// Destructor.
-KwImportFilter::~KwImportFilter()
+KwKWorshipFilterData::~KwKWorshipFilterData()
 {
 }
 
 /*
- * Accessors
+ * Import filter interface
  */
 
-/// Get a list of importable mime types.
-QStringList KwImportFilter::importMimeTypes() const
+/// Indicate that elements of a particular tag name have been handled.
+void KwKWorshipFilterData::elementsHandled(const QString& tagName)
 {
-  return m_importMimeTypes;
+  QDomElement current = m_domPreserve.firstChildElement(tagName);
+  while (!current.isNull())
+  {
+    m_domPreserve.removeChild(current);
+    current = current.nextSiblingElement(tagName);
+  }
+}
+
+/// Indicate that the first elements of a particular tag name have been handled.
+void KwKWorshipFilterData::elementHandled(const QString& tagName)
+{
+  QDomElement current = m_domPreserve.firstChildElement(tagName);
+  if (!current.isNull())
+  {
+    m_domPreserve.removeChild(current);
+  }
 }

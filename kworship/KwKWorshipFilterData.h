@@ -17,36 +17,57 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
+#ifndef _KwKWorshipFilterData_h_
+#define _KwKWorshipFilterData_h_
+
 /**
- * @file KwImportFilter.cpp
- * @brief Import file filter.
+ * @file KwKWorshipFilterData.h
+ * @brief Additional KWorship import data.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwImportFilter.h"
+#include "KwFilterData.h"
 
-/*
- * Constructors + destructor
- */
+#include <QDomDocumentFragment>
+#include <QString>
 
-/// Primary constructor.
-KwImportFilter::KwImportFilter()
-: KwFilter()
-, m_importMimeTypes()
+/// Additional KWorship import data.
+class KwKWorshipFilterData : public KwFilterData
 {
-}
+  public:
 
-/// Destructor.
-KwImportFilter::~KwImportFilter()
-{
-}
+    /*
+     * Constructors + destructor
+     */
 
-/*
- * Accessors
- */
+    /// Primary constructor.
+    KwKWorshipFilterData();
 
-/// Get a list of importable mime types.
-QStringList KwImportFilter::importMimeTypes() const
-{
-  return m_importMimeTypes;
-}
+    /// Destructor.
+    virtual ~KwKWorshipFilterData();
+
+    /*
+     * Import filter interface
+     */
+
+    /** Indicate that elements of a particular tag name have been handled.
+     * This clears the specified elements from the DOM preserve.
+     */
+    void elementsHandled(const QString& tagName);
+
+    /** Indicate that the first elements of a particular tag name have been handled.
+     * This clears the specified element from the DOM preserve.
+     */
+    void elementHandled(const QString& tagName);
+
+  private:
+
+    /*
+     * Variables
+     */
+
+    /// Fragment of DOM from save file which needs preserving.
+    QDomDocumentFragment m_domPreserve;
+};
+
+#endif // _KwKWorshipFilterData_h_
