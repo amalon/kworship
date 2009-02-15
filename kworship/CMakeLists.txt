@@ -23,6 +23,8 @@ set(kworshiparchive_SRCS
     archive/KwResourceManager.cpp
     archive/KwDataFile.cpp
     archive/KwArchive.cpp
+    archive/KwKWorshipFilter.cpp
+    archive/KwKWorshipFilterData.cpp
 )
 set(kworshipcss_SRCS
     css/KwCssAbstractStyle.cpp
@@ -110,8 +112,6 @@ set(kworshipmain_SRCS
     KwFilterManager.cpp
     KwFilterData.cpp
     KwFilterObject.cpp
-    KwKWorshipFilter.cpp
-    KwKWorshipFilterData.cpp
     ${kworshiparchive_SRCS}
     ${kworshipcss_SRCS}
     ${kworshipdisplay_SRCS}
