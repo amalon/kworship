@@ -145,7 +145,7 @@ private:
     int getCurrentDisplayScreen();
 
     // Documents
-    void setDocument(KUrl url = KUrl());
+    void clearDocument();
     // Presentations
     void setPresentation(UpPresentation* presentation, bool alreadyDestroyed = false);
 

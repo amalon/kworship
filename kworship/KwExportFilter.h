@@ -112,10 +112,10 @@ class KDE_EXPORT KwExportFilter : public virtual KwFilter
      */
 
     /// Obtain information about any data that can not be saved.
-    void saveLimitations(KwDocument* doc, Limitations* o_limitations);
+    void saveLimitations(KwDocument* doc, const QString& mimeType, Limitations* o_limitations);
 
     /// Save the document to file.
-    virtual bool save(KwDocument* doc, const KUrl& url) = 0;
+    virtual bool save(KwDocument* doc, const KUrl& url, const QString& mimeType) = 0;
 
     /*
      * Accessors
@@ -131,7 +131,7 @@ class KDE_EXPORT KwExportFilter : public virtual KwFilter
      */
 
     /// Obtain information about any data that can not be saved.
-    virtual void v_saveLimitations(KwDocument* doc, Limitations* o_limitations) = 0;
+    virtual void v_saveLimitations(KwDocument* doc, const QString& mimeType, Limitations* o_limitations) = 0;
 
     /*
      * Variables

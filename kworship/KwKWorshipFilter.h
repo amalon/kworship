@@ -48,10 +48,10 @@ class KwKWorshipFilter : public KwLoadSaveFilter
      */
     
     /// Reimplemented.
-    virtual KwDocument* load(const KUrl& url);
+    virtual KwDocument* load(const KUrl& url, const QString& mimeType);
 
     /// Reimplemented.
-    virtual bool save(KwDocument* doc, const KUrl& url);
+    virtual bool save(KwDocument* doc, const KUrl& url, const QString& mimeType);
 
   protected:
 
@@ -60,7 +60,7 @@ class KwKWorshipFilter : public KwLoadSaveFilter
      */
 
     /// Reimplemented.
-    virtual void v_saveLimitations(KwDocument* doc, Limitations* o_limitations);
+    virtual void v_saveLimitations(KwDocument* doc, const QString& mimeType, Limitations* o_limitations);
 };
 
 #endif // _KwKWorshipFilter_h_

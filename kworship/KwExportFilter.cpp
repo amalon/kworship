@@ -75,9 +75,9 @@ KwExportFilter::~KwExportFilter()
  */
 
 /// Obtain information about any data that can not be saved.
-void KwExportFilter::saveLimitations(KwDocument* doc, Limitations* o_limitations)
+void KwExportFilter::saveLimitations(KwDocument* doc, const QString& mimeType, Limitations* o_limitations)
 {
-  v_saveLimitations(doc, o_limitations);
+  v_saveLimitations(doc, mimeType, o_limitations);
 }
 
 /*

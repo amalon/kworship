@@ -31,7 +31,7 @@
 #include <QObject>
 
 class KwPlaylistList;
-class KwArchive;
+class KwLoadSaveFilter;
 
 /// A KWorship document (anything saved in a KWorship data file).
 class KwDocument : public QObject
@@ -45,7 +45,7 @@ class KwDocument : public QObject
      */
 
     /// Primary constructor.
-    KwDocument(KUrl url, QObject* parent = 0);
+    KwDocument(KwLoadSaveFilter* filter = 0, const QString& mimeType = QString(), KUrl url = KUrl(), QObject* parent = 0);
 
     /// Destructor.
     virtual ~KwDocument();
@@ -66,6 +66,9 @@ class KwDocument : public QObject
     /// Get the main playlist.
     KwPlaylistList* playlist();
 
+    /// Get the current mime type.
+    const QString& mimeType() const;
+
     /*
      * Mutators
      */
@@ -83,7 +86,7 @@ class KwDocument : public QObject
     void save();
 
     /// Save the file to a different URL.
-    void saveAs(const KUrl& url);
+    void saveAs(KwLoadSaveFilter* filter, const QString& mimeType, const KUrl& url);
 
     /*
      * Other slots
@@ -104,15 +107,6 @@ class KwDocument : public QObject
     /// Emitted when the document modified status changes.
     void modifiedChanged(bool modified);
 
-  protected:
-
-    /*
-     * Archive interface.
-     */
-
-    /// Save to an archive.
-    void saveToArchive(KwArchive* archive) const;
-
   private:
 
     /*
@@ -121,6 +115,12 @@ class KwDocument : public QObject
 
     /// The URL of the saved file.
     KUrl m_url;
+
+    /// Active mime type.
+    QString m_mimeType;
+
+    /// Active save filter.
+    KwLoadSaveFilter* m_activeFilter;
 
     /// Whether the document has been modified.
     bool m_modified;

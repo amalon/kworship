@@ -88,7 +88,7 @@ kworship::kworship()
 , m_printer(0)
 {
   m_playlistModel = new KwPlaylistModel;
-  setDocument();
+  clearDocument();
 
   // set up presentation backends
   m_presentationManager->loadBackends();
@@ -302,7 +302,7 @@ void kworship::loadPlaylist(const KUrl& url)
   KwLoadSaveFilter* filter = KwApplication::self()->filterManager()->loadFilterFromMimeType(mime);
   if (filter)
   {
-    KwDocument* newDoc = filter->load(url);
+    KwDocument* newDoc = filter->load(url, mime);
     if (0 != newDoc)
     {
       delete m_document;
@@ -529,7 +529,7 @@ void kworship::fileNew()
 {
   if (askToSave())
   {
-    setDocument();
+    clearDocument();
   }
 }
 
@@ -549,8 +549,8 @@ void kworship::fileOpen()
     KFileDialog dlg(defaultUrl, QString(), this);
     dlg.setMimeFilter(mimes);
     dlg.setOperationMode(KFileDialog::Opening);
-    dlg.setCaption(i18n("Save As"));
-    dlg.setMode(KFile::File);
+    dlg.setCaption(i18n("Open Playlist"));
+    dlg.setMode(KFile::File | KFile::ExistingOnly);
     dlg.exec();
     
     KUrl url = dlg.selectedUrl();
@@ -583,17 +583,44 @@ void kworship::fileSaveAs()
     defaultUrl = m_document->url();
   }
 
+  QString defaultMime = m_document->mimeType();
+  if (defaultMime.isEmpty())
+  {
+    defaultMime = KwApplication::self()->filterManager()->defaultSaveMimeType();
+  }
+
   KFileDialog dlg(defaultUrl, QString(), this);
-  dlg.setMimeFilter(mimes);
-  dlg.setOperationMode(KFileDialog::Opening);
-  dlg.setCaption(i18n("Save As"));
+  dlg.setMimeFilter(mimes, defaultMime);
+  dlg.setOperationMode(KFileDialog::Saving);
+  dlg.setConfirmOverwrite(true);
+  dlg.setCaption(i18n("Save Playlist As"));
   dlg.setMode(KFile::File);
   dlg.exec();
   
   KUrl url = dlg.selectedUrl();
   if (!url.isEmpty())
   {
-    m_document->saveAs(url);
+    // Find mime type
+    QString mime = dlg.currentMimeFilter();
+
+    // Use the appropriate filter
+    KwLoadSaveFilter* filter = KwApplication::self()->filterManager()->saveFilterFromMimeType(mime);
+    if (filter)
+    {
+      m_document->saveAs(filter, mime, url);
+      if (m_document->isModified())
+      {
+        KMessageBox::error(this,
+            i18n("Saving to \"%1\" failed.").arg(url.url()),
+            i18n("KWorship"));
+      }
+    }
+    else
+    {
+      KMessageBox::error(this,
+          i18n("No save filter exists for the mime type \"%1\"").arg(mime),
+          i18n("KWorship"));
+    }
   }
 }
 
@@ -753,10 +780,10 @@ void kworship::slide_doubleClicked(QModelIndex index)
 }
 
 // Documents
-void kworship::setDocument(KUrl url)
+void kworship::clearDocument()
 {
   delete m_document;
-  m_document = new KwDocument(url, this);
+  m_document = new KwDocument(0, QString(), KUrl(), this);
 
   // Playlist will have changed
   playlistReset();

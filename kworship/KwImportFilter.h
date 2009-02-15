@@ -55,7 +55,7 @@ class KDE_EXPORT KwImportFilter : public virtual KwFilter
      */
     
     /// Load the document from a file.
-    virtual KwDocument* load(const KUrl& url) = 0;
+    virtual KwDocument* load(const KUrl& url, const QString& mimeType) = 0;
 
     /*
      * Accessors

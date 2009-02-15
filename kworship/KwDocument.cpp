@@ -24,21 +24,19 @@
  */
 
 #include "KwDocument.h"
-#include "KwArchive.h"
 #include "KwPlaylistList.h"
-
-#include <KSaveFile>
-#include <KLocale>
-#include <KMessageBox>
+#include "KwLoadSaveFilter.h"
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-KwDocument::KwDocument(KUrl url, QObject* parent)
+KwDocument::KwDocument(KwLoadSaveFilter* filter, const QString& mimeType, KUrl url, QObject* parent)
 : QObject(parent)
 , m_url(url)
+, m_mimeType(mimeType)
+, m_activeFilter(filter)
 , m_modified(false)
 , m_playlist(new KwPlaylistList())
 {
@@ -78,6 +76,12 @@ KwPlaylistList* KwDocument::playlist()
   return m_playlist;
 }
 
+/// Get the current mime type.
+const QString& KwDocument::mimeType() const
+{
+  return m_mimeType;
+}
+
 /*
  * Mutators
  */
@@ -97,51 +101,24 @@ void KwDocument::setPlaylist(KwPlaylistList* playlist)
 /// Save the file.
 void KwDocument::save()
 {
-  Q_ASSERT(isSaved());
-
-  // Start off by opening the archive file
-  if (!m_url.isLocalFile())
+  Q_ASSERT(0 != m_activeFilter);
+  bool success = m_activeFilter->save(this, m_url, m_mimeType);
+  if (success)
   {
-    KMessageBox::error(0,
-        i18n("Non-local saves not yet supported"),
-        i18n("KWorship"));
-    return;
+    setModified(false);
   }
-  KSaveFile file;
-  file.setFileName(m_url.toLocalFile());
-  if (!file.open(QFile::WriteOnly))
-  {
-    KMessageBox::error(0,
-        i18n("Cannot write file %1:\n%2.")
-          .arg(file.fileName())
-          .arg(file.errorString()),
-        i18n("KWorship"));
-    return;
-  }
-
-  // Create a new archive object and fill it
-  KwArchive* archive = new KwArchive(&file, true);
-  saveToArchive(archive);
-  delete archive;
-
-  if (!file.finalize())
-  {
-    KMessageBox::error(0,
-        i18n("Cannot finalize file %1:\n%2.")
-          .arg(file.fileName())
-          .arg(file.errorString()),
-        i18n("KWorship"));
-    return;
-  }
-
-  setModified(false);
 }
 
 /// Save the file to a different URL.
-void KwDocument::saveAs(const KUrl& url)
+void KwDocument::saveAs(KwLoadSaveFilter* filter, const QString& mimeType, const KUrl& url)
 {
-  m_url = url;
-  save();
+  bool success = filter->save(this, url, mimeType);
+  if (success)
+  {
+    m_activeFilter = filter;
+    m_mimeType = mimeType;
+    m_url = url;
+  }
 }
 
 /*
@@ -157,16 +134,3 @@ void KwDocument::setModified(bool modified)
     modifiedChanged(modified);
   }
 }
-
-/*
- * Archive interface.
- */
-
-/// Save to an archive.
-void KwDocument::saveToArchive(KwArchive* archive) const
-{
-  Q_ASSERT(archive->isWriting());
-
-  archive->addPlaylist(m_playlist);
-}
-

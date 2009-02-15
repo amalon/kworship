@@ -76,6 +76,9 @@ class KDE_EXPORT KwFilterManager
     /// Get export mime types.
     QStringList exportMimeTypes() const;
 
+    /// Get the default save mime type.
+    const QString& defaultSaveMimeType() const;
+
     /// Get the load filter for a mime type.
     KwLoadSaveFilter* loadFilterFromMimeType(const QString& mimeType);
 
@@ -117,6 +120,9 @@ class KDE_EXPORT KwFilterManager
 
     /// Hash of filters for each export mime type.
     QHash<QString, KwExportFilter*> m_exportMimeFilters;
+
+    /// Default save mime type.
+    QString m_defaultSaveMimeType;
 };
 
 #endif // _KwFilterManager_h_

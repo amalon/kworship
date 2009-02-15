@@ -40,6 +40,7 @@ KwFilterManager::KwFilterManager()
 , m_saveMimeFilters()
 , m_importMimeFilters()
 , m_exportMimeFilters()
+, m_defaultSaveMimeType()
 {
 }
 
@@ -85,6 +86,8 @@ void KwFilterManager::addLoadSaveFilter(KwLoadSaveFilter* loadSaveFilter, bool m
   {
     m_saveMimeFilters[mime] = loadSaveFilter;
   }
+  Q_ASSERT(mimes.size() >= 1);
+  m_defaultSaveMimeType = mimes[0];
 }
 
 /// Add an import filter.
@@ -135,6 +138,12 @@ QStringList KwFilterManager::importMimeTypes() const
 QStringList KwFilterManager::exportMimeTypes() const
 {
   return m_exportMimeFilters.keys();
+}
+
+/// Get the default save mime type.
+const QString& KwFilterManager::defaultSaveMimeType() const
+{
+  return m_defaultSaveMimeType;
 }
 
 /// Get the load filter for a mime type.
