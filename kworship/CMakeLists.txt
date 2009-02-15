@@ -14,6 +14,7 @@ include_directories(${KDE4_INCLUDES}
                     playlist
                     archive
 )
+add_subdirectory (filters)
 add_subdirectory (mimetypes)
 add_subdirectory (songdb)
 add_subdirectory (bible)

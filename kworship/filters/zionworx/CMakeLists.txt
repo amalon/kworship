@@ -2,18 +2,22 @@ project(kworship_zionworx)
 
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
-set(QT_USE_QTSQL 1)
-include(${QT_USE_FILE})
-include_directories(${KDE4_INCLUDES}
-                    ${QT_INCLUDES}
-)
 
 set(kworship_zionworx_SRCS
-    main.cpp
-    KwZwStringList.cpp
+    KwZionworxPlugin.cpp
+    KwZionworxFilter.cpp
 )
-kde4_add_executable(kworship_zionworx ${kworship_zionworx_SRCS})
+
+include_directories(../..)
+add_subdirectory(mimetypes)
+
+kde4_add_plugin(kworship_zionworx ${kworship_zionworx_SRCS})
+
 target_link_libraries(kworship_zionworx
-                      ${KDE4_KDEUI_LIBS}
+                      ${KDE4_KPARTS_LIBS}
                       ${QT_LIBRARIES}
-)
+                      kworshipmain
+                      )
+
+install( TARGETS kworship_zionworx DESTINATION ${PLUGIN_INSTALL_DIR} )
+install( FILES kworship_zionworx.desktop  DESTINATION  ${SERVICES_INSTALL_DIR} )

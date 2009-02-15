@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+It comes with ABSOLUTELY NO WARRANTY, to the extent permitted by law. You may
+redistribute copies of update-mime-database under the terms of the GNU General
+Public License. For more information about these matters, see the file named
+COPYING.
+-->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-zionworx+xml">
+    <sub-class-of type="application/xml"/>
+    <comment>Zionworx playlist</comment>
+    <glob pattern="*.xml"/>
+    <magic priority="100">
+      <match value="&lt;ZionWorx " type="string" offset="20:140"/>
+    </magic>
+  </mime-type>
+</mime-info>

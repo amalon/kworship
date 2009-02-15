@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Zionworx
+Comment=Zionworx filters for KWorship
+X-KDE-ServiceTypes=KWorship/Plugin
+Type=Service
+X-KDE-Library=kworship_zionworx

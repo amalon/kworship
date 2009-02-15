@@ -70,10 +70,6 @@ KwFilterManager::~KwFilterManager()
 void KwFilterManager::addLoadSaveFilter(KwLoadSaveFilter* loadSaveFilter, bool makeDefault)
 {
   m_loadSaveFilters += loadSaveFilter;
-  if (makeDefault)
-  {
-    m_defaultLoadSaveFilter = loadSaveFilter;
-  }
 
   // Update hashes of filters for each mime type
   QStringList mimes = loadSaveFilter->importMimeTypes();
@@ -86,8 +82,13 @@ void KwFilterManager::addLoadSaveFilter(KwLoadSaveFilter* loadSaveFilter, bool m
   {
     m_saveMimeFilters[mime] = loadSaveFilter;
   }
-  Q_ASSERT(mimes.size() >= 1);
-  m_defaultSaveMimeType = mimes[0];
+
+  if (makeDefault)
+  {
+    m_defaultLoadSaveFilter = loadSaveFilter;
+    Q_ASSERT(mimes.size() >= 1);
+    m_defaultSaveMimeType = mimes[0];
+  }
 }
 
 /// Add an import filter.

@@ -27,6 +27,7 @@
  */
 
 #include <KUrl>
+#include <kdemacros.h>
 
 #include <QObject>
 
@@ -34,7 +35,7 @@ class KwPlaylistList;
 class KwLoadSaveFilter;
 
 /// A KWorship document (anything saved in a KWorship data file).
-class KwDocument : public QObject
+class KDE_EXPORT KwDocument : public QObject
 {
     Q_OBJECT
 
