@@ -61,7 +61,7 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
   {
     KMessageBox::error(0,
         i18n("Non-local loads not yet supported"),
-        i18n("Zionworx"));
+        i18n("KWorship"));
     return 0;
   }
 
@@ -81,7 +81,7 @@ bool KwZionworxFilter::save(KwDocument* doc, const KUrl& url, const QString& mim
   {
     KMessageBox::error(0,
         i18n("Non-local loads not yet supported"),
-        i18n("Zionworx"));
+        i18n("KWorship"));
     return false;
   }
   KSaveFile file;
@@ -92,7 +92,7 @@ bool KwZionworxFilter::save(KwDocument* doc, const KUrl& url, const QString& mim
         i18n("Cannot write file %1:\n%2.")
           .arg(file.fileName())
           .arg(file.errorString()),
-        i18n("Zionworx"));
+        i18n("KWorship"));
     return false;
   }
 
@@ -104,7 +104,7 @@ bool KwZionworxFilter::save(KwDocument* doc, const KUrl& url, const QString& mim
         i18n("Cannot finalize file %1:\n%2.")
         .arg(file.fileName())
         .arg(file.errorString()),
-        i18n("Zionworx"));
+        i18n("KWorship"));
     return false;
   }
 
