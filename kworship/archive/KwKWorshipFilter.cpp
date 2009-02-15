@@ -67,9 +67,10 @@ KwDocument* KwKWorshipFilter::load(const KUrl& url, const QString& mimeType)
     return 0;
   }
 
-  KwDocument* doc = new KwDocument(this, mimeType, url);
+  KwDocument* doc = 0;
   if (mimeType == "application/x-kworship-archive")
   {
+    doc = new KwDocument(this, mimeType, url);
     // Open archive object and read it
     KwArchive archive(url.toLocalFile(), false);
     Q_ASSERT(archive.isReading());
@@ -79,18 +80,20 @@ KwDocument* KwKWorshipFilter::load(const KUrl& url, const QString& mimeType)
     {
       doc->setPlaylist(playlist);
     }
+
+    doc->setModified(false);
   }
   else if (mimeType == "application/x-kworship+xml")
   {
     /// @todo Implement non-archived load
-    Q_ASSERT(!"Non archived load not implemented");
+    KMessageBox::error(0,
+        i18n("Non-archived loads not yet implemented"),
+        i18n("KWorship"));
   }
   else
   {
     Q_ASSERT(!"Unsupported mime type");
   }
-
-  doc->setModified(false);
 
   return doc;
 }
@@ -127,12 +130,18 @@ bool KwKWorshipFilter::save(KwDocument* doc, const KUrl& url, const QString& mim
   }
   else if (mimeType == "application/x-kworship+xml")
   {
+    file.abort();
     /// @todo Implement non-archived save
-    Q_ASSERT(!"Non archived save not implemented");
+    KMessageBox::error(0,
+        i18n("Non-archived saves not yet implemented"),
+        i18n("KWorship"));
+    return false;
   }
   else
   {
     Q_ASSERT(!"Unsupported mime type");
+    file.abort();
+    return false;
   }
 
   if (!file.finalize())
