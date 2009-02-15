@@ -32,6 +32,8 @@
 /// Primary constructor.
 KwKWorshipFilterData::KwKWorshipFilterData()
 : KwFilterData()
+, m_domDocument()
+, m_domPreserve(m_domDocument.createDocumentFragment())
 {
 }
 

@@ -66,6 +66,9 @@ class KwKWorshipFilterData : public KwFilterData
      * Variables
      */
 
+    /// Document to store fragment in.
+    QDomDocument m_domDocument;
+
     /// Fragment of DOM from save file which needs preserving.
     QDomDocumentFragment m_domPreserve;
 };
