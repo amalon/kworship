@@ -28,4 +28,4 @@ target_link_libraries(unipresent
                       )
 
 install( TARGETS unipresent DESTINATION ${LIB_INSTALL_DIR} )
-install( FILES unipresentbackend.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )
+install( FILES unipresent_backend.desktop  DESTINATION  ${SERVICETYPES_INSTALL_DIR} )

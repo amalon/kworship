@@ -22,7 +22,7 @@ kde4_add_plugin(unipresent_kpresenter1 ${unipresent_kpresenter1_SRCS})
 
 target_link_libraries(unipresent_kpresenter1
                       unipresent
-                      ${KDE4_KDECORE_LIBS}
+                      ${KDE4_KDEUI_LIBS}
                       ${QT_LIBRARIES}
                       )
 
