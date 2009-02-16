@@ -28,8 +28,10 @@
 
 #include "KwPlaylistPaged.h"
 
+#include <kdemacros.h>
+
 /// A plain text playlist item.
-class KwPlaylistText : public KwPlaylistPaged
+class KDE_EXPORT KwPlaylistText : public KwPlaylistPaged
 {
   public:
     

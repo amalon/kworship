@@ -24,6 +24,16 @@
 
 namespace meta
 {
+  // Pointer handling
+  template <typename T>
+  struct PointerInfo;
+
+  template <typename T>
+  struct PointerInfo<T*>
+  {
+    typedef T Type;
+  };
+
   template <typename F>
   struct Tuple;
 #define META_TUPLE(ARGS) ::meta::Tuple<void (*)ARGS>
@@ -63,11 +73,15 @@ namespace meta
 #define FUNCTION_INFO_UNPACK_ARGUMENT(P,B,N)   (P).param##N
 #define FUNCTION_INFO_UNPACK_ARGUMENTS(P,N) \
   ( REPEATB_LIST(FUNCTION_INFO_UNPACK_ARGUMENT,P,0,N) )
+  // Unpack Argument list with preceding comma, e.g. ", P.param0, P.param1"
+#define FUNCTION_INFO_UNPACK_ARGUMENT_PRECOMMA(P,B,N)   , (P).param##N
+#define FUNCTION_INFO_UNPACK_ARGUMENTS_PRECOMMA(P,N) \
+  REPEATB(FUNCTION_INFO_UNPACK_ARGUMENT_PRECOMMA,P,0,N)
 
   // Parameter template instantiation
 #define PARAMETER_INFO(T,N) \
-  template <FUNCTION_INFO_TEMPLATE_PARAMETERS(T) > \
-  struct ParameterInfo<void (*)FUNCTION_INFO_PARAMETERS(T),N> \
+  template <typename R, FUNCTION_INFO_TEMPLATE_PARAMETERS(T) > \
+  struct ParameterInfo<R (*)FUNCTION_INFO_PARAMETERS(T),N> \
   { \
     typedef Param##N Type; \
   };
@@ -121,17 +135,33 @@ namespace meta
     typedef Ret Return; \
     typedef Ret (*Pointer)FUNCTION_INFO_PARAMETERS(N); \
     typedef Tuple<void (*)FUNCTION_INFO_PARAMETERS(N)> Params; \
-    template <typename FUNCTOR> \
-    static Ret unpack(typename Params::Pack package) \
-    { \
-      return FUNCTOR::call FUNCTION_INFO_UNPACK_ARGUMENTS(package,N); \
-    } \
     template <typename NewArg> \
     struct Unshift \
     { \
       typedef Ret (*Pointer)(NewArg FUNCTION_INFO_PARAMETERS_TAIL(N)); \
       typedef FunctionInfo<Pointer> Info; \
     }; \
+    template <typename FUNCTOR> \
+    static Ret unpack(typename Params::Pack package) \
+    { \
+      return FUNCTOR::call FUNCTION_INFO_UNPACK_ARGUMENTS(package,N); \
+    } \
+    template <typename FUNCTOR, typename P0> \
+    static Ret unpack(P0 p0, typename Params::Pack package) \
+    { \
+      return FUNCTOR::call ( p0 FUNCTION_INFO_UNPACK_ARGUMENTS_PRECOMMA(package,N) ); \
+    } \
+    /* Call a pointer with a pack of arguments */ \
+    static Ret call(Pointer f, typename Params::Pack package) \
+    { \
+      return f FUNCTION_INFO_UNPACK_ARGUMENTS(package,N); \
+    } \
+    /* Call a pointer with one plus a pack of arguments */ \
+    template <typename P0> \
+    static Ret call(typename Unshift<P0>::Pointer f, P0 p0, typename Params::Pack package) \
+    { \
+      return f( p0 FUNCTION_INFO_UNPACK_ARGUMENTS_PRECOMMA(package,N) ); \
+    } \
   }; \
   REPEATA(PARAMETER_INFO, N, N)
 

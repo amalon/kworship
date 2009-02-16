@@ -6,6 +6,7 @@ include (KDE4Defaults)
 set(kworship_zionworx_SRCS
     KwZionworxPlugin.cpp
     KwZionworxFilter.cpp
+    KwPascalStream.cpp
 )
 
 include_directories(../..)

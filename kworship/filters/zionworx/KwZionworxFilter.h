@@ -28,6 +28,10 @@
 
 #include <KwLoadSaveFilter.h>
 
+#include <QStringList>
+
+class QDomElement;
+
 /// Main Zionworx load and save filter.
 class KwZionworxFilter : public KwLoadSaveFilter
 {
@@ -61,6 +65,15 @@ class KwZionworxFilter : public KwLoadSaveFilter
 
     /// Reimplemented.
     virtual void v_saveLimitations(KwDocument* doc, const QString& mimeType, Limitations* o_limitations);
+
+  private:
+
+    /*
+     * Private functions
+     */
+
+    /// Read a TTntStringList from DOM.
+    QStringList readStringList(const QDomElement& el) const;
 };
 
 #endif // _KwZionworxFilter_h_
