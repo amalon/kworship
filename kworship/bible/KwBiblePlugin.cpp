@@ -112,7 +112,11 @@ bool KwBiblePlugin::resolvePassage(KwBibleManager** manager, KwBibleModule** mod
       if (bookIndex >= 0)
       {
         // Is a chapter selected?
-        chapterIndex = m_comboChapter->currentIndex();
+        chapterIndex = m_comboChapter->currentIndex()-1;
+        if (chapterIndex < 0)
+        {
+          return false;
+        }
       }
 
       bool valid;
@@ -179,7 +183,7 @@ void KwBiblePlugin::slotBibleChanged()
 
     // Update the list of books
     QString book = m_comboBook->currentText();
-    int chapter = m_comboChapter->currentIndex();
+    int chapter = m_comboChapter->currentIndex()-1;
     m_comboBook->clear();
     if (0 != module)
     {
@@ -199,7 +203,7 @@ void KwBiblePlugin::slotBibleChanged()
       if (canPreserveBook && chapter >= 0)
       {
         // If we can restore book, also restore chapter
-        m_comboChapter->setCurrentIndex(chapter);
+        m_comboChapter->setCurrentIndex(chapter+1);
       }
     }
     else
@@ -217,6 +221,7 @@ void KwBiblePlugin::slotBibleChanged()
 void KwBiblePlugin::slotBookChanged()
 {
   m_comboChapter->clear();
+  m_comboChapter->addItem(QString(), QVariant(-1));
 
   // Get the current bible manager
   int tab = m_managerTabs->currentIndex();
@@ -262,7 +267,7 @@ void KwBiblePlugin::slotVerseRange()
   if (usedSearch)
   {
     m_comboBook->setCurrentIndex(key.start.book);
-    m_comboChapter->setCurrentIndex(key.start.chapter);
+    m_comboChapter->setCurrentIndex(key.start.chapter+1);
 
     KwBiblePassage passage;
     module->fillPassage(key, &passage);
