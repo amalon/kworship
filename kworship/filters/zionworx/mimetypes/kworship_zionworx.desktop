@@ -1,5 +1,6 @@
 [Desktop Entry]
 Version=1.0
+MimeType=application/x-zionworx+xml;
 Type=Application
 Name=KWorship
 GenericName=Church Projector Controller
@@ -7,5 +8,4 @@ Comment=The KDE church projector display system.
 TryExec=kworship
 Exec=kworship %f
 Icon=kworship
-MimeType=application/x-kworship+xml;application/x-kworship-archive;
 Categories=Qt;KDE;AudioVideo;
