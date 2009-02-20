@@ -297,7 +297,8 @@ void KwBiblePlugin::slotInsertIntoPlaylist()
 
   if (success)
   {
-    KwBiblePlaylistItem* item = new KwBiblePlaylistItem(module, key);
+    KwBiblePlaylistItem* item = new KwBiblePlaylistItem();
+    module->fillPassage(key, &item->passage());
     KwPlaylistModel* model = KwApplication::self()->mainWindow()->playlistModel();
     model->addItem(QModelIndex(), item);
   }

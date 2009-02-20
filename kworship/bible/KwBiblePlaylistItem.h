@@ -26,7 +26,6 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwBibleModule.h"
 #include "KwBiblePassage.h"
 
 #include <KwPlaylistItem.h>
@@ -49,11 +48,8 @@ class KDE_EXPORT KwBiblePlaylistItem : public KwPlaylistItem
      * Constructors + destructor.
      */
 
-    /** Construct from reference information.
-     * @param module Bible module.
-     * @param moduleKey Bible passage key.
-     */
-    KwBiblePlaylistItem(KwBibleModule* module, const KwBibleModule::Key& moduleKey);
+    /// Construct a blank bible item.
+    KwBiblePlaylistItem();
 
     /// Construct from a DOM element.
     KwBiblePlaylistItem(const QDomElement& element, KwResourceManager* resourceManager);
@@ -80,6 +76,9 @@ class KDE_EXPORT KwBiblePlaylistItem : public KwPlaylistItem
     /*
      * Accessors
      */
+
+    /// Get the bible passage.
+    KwBiblePassage& passage();
 
     /// Get the bible passage.
     const KwBiblePassage& passage() const;

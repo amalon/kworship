@@ -32,12 +32,11 @@ KW_REGISTER_PLAYLIST_ITEM(KwBiblePlaylistItem, "bible")
  * Constructors + destructor.
  */
 
-/// Construct from reference information.
-KwBiblePlaylistItem::KwBiblePlaylistItem(KwBibleModule* module, const KwBibleModule::Key& moduleKey)
+/// Construct a blank bible item.
+KwBiblePlaylistItem::KwBiblePlaylistItem()
 : KwPlaylistItem()
 , m_passage()
 {
-  module->fillPassage(moduleKey, &m_passage);
 }
 
 /// Construct from a DOM element.
@@ -88,8 +87,13 @@ KwPlaylistNode* KwBiblePlaylistItem::getNode(KwPlaylistNode* parent)
  */
 
 /// Get the bible passage.
-const KwBiblePassage& KwBiblePlaylistItem::passage() const
+KwBiblePassage& KwBiblePlaylistItem::passage()
 {
   return m_passage;
 }
 
+/// Get the bible passage.
+const KwBiblePassage& KwBiblePlaylistItem::passage() const
+{
+  return m_passage;
+}

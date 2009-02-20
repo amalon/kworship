@@ -117,6 +117,8 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
               QDomElement item = playlistNode.firstChildElement("PlayListItem");
               if (!item.isNull())
               {
+                QString biDiText = item.firstChildElement("BiDiMode").text();
+                bool rightToLeft = (biDiText == "bdRightToLeft");
                 QString itemType = item.firstChildElement("ItemType").text();
                 if (itemType == "siPowerPoint")
                 {
@@ -138,9 +140,83 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
                 }
                 else if (itemType == "siBible")
                 {
-                  KwPlaylistText* bible = new KwPlaylistText(item.firstChildElement("Title").text(),
-                                                             readStringList(item.firstChildElement("Verses")));
-                  list->addItem(bible);
+                  bool error = true;
+                  QStringList verses = readStringList(item.firstChildElement("Verses"));
+                  // Try and understand the passage referred to on the first line.
+                  static QRegExp rePassage("^(.*)\\s+(\\d+)(:(\\d+)(-(\\d+))?)?\\s+\\(([^\\)]*)\\).*");
+                  if (verses.size() >= 1 && rePassage.exactMatch(verses[0]))
+                  {
+                    error = false;
+                    QString bookName = rePassage.cap(1);
+                    QString moduleName = rePassage.cap(7);
+                    /// @todo Try and get a more accurate set of book ids
+                    int bookNum = 0;
+                    int chapterNum = rePassage.cap(2).toInt();
+                    bool validVerse;
+                    int firstVerse = rePassage.cap(4).toInt(&validVerse);
+                    if (!validVerse)
+                    {
+                      firstVerse = 1;
+                    }
+                    int nextVerse = firstVerse;
+                    QStringList verseHeadings;
+                    QStringList verseContents;
+                    QStringList tempHeadings;
+                    for (int i = 1; i < verses.size(); ++i)
+                    {
+                      const QString& verse = verses[i];
+                      // See if it starts with a number, otherwise its a heading
+                      static QRegExp reVerseLine("^(\\d+)\\.\\s*(\\S.*)$");
+                      if (reVerseLine.exactMatch(verse))
+                      {
+                        int verseNum = reVerseLine.cap(1).toInt();
+                        if (verseNum != nextVerse)
+                        {
+                          error = true;
+                        }
+                        nextVerse++;
+
+                        if (!tempHeadings.isEmpty())
+                        {
+                          verseHeadings += QString("<h4>%1</h4>").arg(tempHeadings.join("<br />\n"));
+                        }
+                        else
+                        {
+                          verseHeadings += QString();
+                        }
+                        verseContents += reVerseLine.cap(2);
+                        tempHeadings = QStringList();
+                      }
+                      else
+                      {
+                        tempHeadings += verse;
+                      }
+                    }
+                    if (error)
+                    {
+                      KMessageBox::error(0,
+                          i18n("Problems were encountered reading numbered verses in bible passage %1").arg(item.firstChildElement("Title").text()),
+                          i18n("KWorship"));
+                    }
+
+                    KwBiblePlaylistItem* bible = new KwBiblePlaylistItem();
+                    KwBiblePassage& passage = bible->passage();
+                    passage.setSource(QString(), moduleName, rightToLeft);
+                    passage.initBooks(bookNum,1);
+                    passage.initBook(bookNum, bookName, chapterNum, 1);
+                    passage.initChapter(bookNum, chapterNum, firstVerse, verseContents.size());
+                    for (int i = 0; i < verseContents.size(); ++i)
+                    {
+                      passage.initVerse(bookNum, chapterNum, firstVerse+i, verseHeadings[i], verseContents[i]);
+                    }
+                    list->addItem(bible);
+                  }
+                  if (error)
+                  {
+                    KwPlaylistText* bible = new KwPlaylistText(item.firstChildElement("Title").text(),
+                                                               verses);
+                    list->addItem(bible);
+                  }
                 }
                 else
                 {
@@ -204,7 +280,7 @@ class KwZionworxFilter::ExportToDom
       }
       {
         QDomElement biDiEl = document.createElement("BiDiMode");
-        biDiEl.appendChild(document.createTextNode(rightToLeft ? "btRightToLeft" : "bdLeftToRight"));
+        biDiEl.appendChild(document.createTextNode(rightToLeft ? "bdRightToLeft" : "bdLeftToRight"));
         item.appendChild(biDiEl);
       }
       element.appendChild(item);
