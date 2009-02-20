@@ -39,6 +39,7 @@ KW_REGISTER_PLAYLIST_ITEM(KwPlaylistFile, "file")
 /// Primary constructor.
 KwPlaylistFile::KwPlaylistFile(const QUrl& url)
 : KwPlaylistItem()
+, m_title(url.toLocalFile())
 , m_resource(setResource("file", new KwResourceLink(url)))
 {
 }
@@ -46,8 +47,10 @@ KwPlaylistFile::KwPlaylistFile(const QUrl& url)
 /// Construct from a DOM element.
 KwPlaylistFile::KwPlaylistFile(const QDomElement& element, KwResourceManager* resourceManager)
 : KwPlaylistItem(element, resourceManager)
+, m_title()
 , m_resource(getResource("file"))
 {
+  m_title = m_resource->url().pathOrUrl();
 }
 
 /// Destructor.
@@ -92,3 +95,18 @@ QUrl KwPlaylistFile::getUrl() const
   return m_resource->url();
 }
 
+/// Get the title.
+const QString& KwPlaylistFile::title() const
+{
+  return m_title;
+}
+
+/*
+ * Mutators
+ */
+
+/// Set the title to display.
+void KwPlaylistFile::setTitle(const QString& title)
+{
+  m_title = title;
+}

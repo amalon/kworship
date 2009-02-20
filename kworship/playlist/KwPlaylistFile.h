@@ -29,12 +29,14 @@
 #include "KwPlaylistItem.h"
 #include "KwResourceLink.h"
 
+#include <kdemacros.h>
+
 #include <QUrl>
 
 class KwDisplayManager;
 
 /// A file based playlist item.
-class KwPlaylistFile : public KwPlaylistItem
+class KDE_EXPORT KwPlaylistFile : public KwPlaylistItem
 {
     KW_PLAYLIST_ITEM
 
@@ -76,11 +78,24 @@ class KwPlaylistFile : public KwPlaylistItem
     /// Get the image url.
     QUrl getUrl() const;
 
+    /// Get the title.
+    const QString& title() const;
+
+    /*
+     * Mutators
+     */
+
+    /// Set the title to display.
+    void setTitle(const QString& title) ;
+
   private:
     
     /*
      * Variables
      */
+
+    /// Title.
+    QString m_title;
 
     /// File resource.
     KwResourceLink* m_resource;

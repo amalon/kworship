@@ -55,7 +55,7 @@ QVariant KwPlaylistFileNode::getData(int role, int column)
   {
     if (column == 0)
     {
-      return m_item->getUrl().toString();
+      return m_item->title();
     }
   }
   else if (role == Qt::DecorationRole)

@@ -122,8 +122,8 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
                 QString itemType = item.firstChildElement("ItemType").text();
                 if (itemType == "siPowerPoint")
                 {
-                  KwPlaylistText* powerpoint = new KwPlaylistText(item.firstChildElement("Title").text(),
-                                                                  QStringList());
+                  KwPlaylistPresentation* powerpoint = new KwPlaylistPresentation(QUrl(item.firstChildElement("FilenameRelative").text()));
+                  powerpoint->setTitle(item.firstChildElement("Title").text());
                   list->addItem(powerpoint);
                 }
                 else if (itemType == "siSong")
@@ -353,6 +353,10 @@ class KwZionworxFilter::ExportToDom
     static int presentation(const KwPlaylistPresentation* self, QDomDocument& document, QDomElement& element)
     {
       QDomElement node = createPlaylistNode(document, element);
+      QDomElement item = createPlaylistItem(document, node,
+                                            "siPowerPoint", self->title(),
+                                            false);
+
       return 0;
     }
 
