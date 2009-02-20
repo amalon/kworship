@@ -146,6 +146,9 @@ class KDE_EXPORT KwBiblePassage
     /// Get textual key of this passage.
     QString textualKey() const;
 
+    /// Find whether the text is right to left.
+    bool isRightToLeft() const;
+
     /// Get the first book number in the passage.
     int firstBookNumber() const;
     /// Get the last book number in the passage.
@@ -176,6 +179,30 @@ class KDE_EXPORT KwBiblePassage
      * @pre firstChapterNumber(bookNumber) <= chapterNumber <= lastChapterNumber(bookNumber)
      */
     int lastVerseNumber(int bookNumber, int chapterNumber) const;
+
+    /** Get the headings before a verse.
+     * @param bookNumber The number of the book.
+     * @param chapterNumber The number of the chapter within the book.
+     * @param verseNumber The number of the verse within the chapter.
+     * @param plain Whether to return plain text instead of HTML.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     * @pre firstChapterNumber(bookNumber) <= chapterNumber <= lastChapterNumber(bookNumber)
+     * @pre firstVerseNumber(bookNumber, chapterNumber) <= verseNumber <= lastVerseNumber(bookNumber, chapterNumber)
+     * @return Headings before verse.
+     */
+    QString verseHeadings(int bookNumber, int chapterNumber, int verseNumber, bool plain = false) const;
+
+    /** Get the content of a verse.
+     * @param bookNumber The number of the book.
+     * @param chapterNumber The number of the chapter within the book.
+     * @param verseNumber The number of the verse within the chapter.
+     * @param plain Whether to return plain text instead of HTML.
+     * @pre firstBookNumber() <= bookNumber <= lastBookNumber()
+     * @pre firstChapterNumber(bookNumber) <= chapterNumber <= lastChapterNumber(bookNumber)
+     * @pre firstVerseNumber(bookNumber, chapterNumber) <= verseNumber <= lastVerseNumber(bookNumber, chapterNumber)
+     * @return Content of verse.
+     */
+    QString verseContent(int bookNumber, int chapterNumber, int verseNumber, bool plain = false) const;
 
     /*
      * Text extraction

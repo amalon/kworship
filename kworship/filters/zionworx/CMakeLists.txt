@@ -9,7 +9,7 @@ set(kworship_zionworx_SRCS
     KwPascalStream.cpp
 )
 
-include_directories(../..)
+include_directories(../.. ../../playlist ../../bible)
 add_subdirectory(mimetypes)
 
 kde4_add_plugin(kworship_zionworx ${kworship_zionworx_SRCS})
@@ -18,6 +18,8 @@ target_link_libraries(kworship_zionworx
                       ${KDE4_KPARTS_LIBS}
                       ${QT_LIBRARIES}
                       kworshipmain
+                      kworship_bible
+                      kworship_songdb
                       )
 
 install( TARGETS kworship_zionworx DESTINATION ${PLUGIN_INSTALL_DIR} )

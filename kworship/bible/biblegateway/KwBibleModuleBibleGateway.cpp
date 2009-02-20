@@ -280,13 +280,23 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                 while (!sibling.isNull())
                 {
                   DOM::Element siblingElement = sibling;
+                  bool append = true;
                   if (!siblingElement.isNull())
                   {
                     // Stop at a sup class="versenum"
-                    if (siblingElement.tagName() == "sup" && siblingElement.getAttribute("class") == "versenum")
+                    if (siblingElement.tagName() == "sup")
                     {
-                      break;
+                      if (siblingElement.getAttribute("class") == "versenum")
+                      {
+                        break;
+                      }
+                      /// @todo Handle footnotes properly
+                      else if (siblingElement.getAttribute("class") == "footnote")
+                      {
+                        append = false;
+                      }
                     }
+
                     // Also stop at headings
                     DOM::HTMLHeadingElement heading = siblingElement;
                     if (!heading.isNull())
@@ -294,7 +304,10 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                       break;
                     }
                   }
-                  verseInfo.content += sibling.toHTML();
+                  if (append)
+                  {
+                    verseInfo.content += sibling.toHTML();
+                  }
                   sibling = sibling.nextSibling();
                 }
 

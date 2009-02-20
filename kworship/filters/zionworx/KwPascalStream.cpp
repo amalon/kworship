@@ -28,6 +28,7 @@
 #include <QtEndian>
 #include <QBuffer>
 #include <QVariant>
+#include <QStringList>
 
 /*
  * Constructors + destructor
@@ -218,6 +219,9 @@ KwPascalStream& KwPascalStream::operator << (const QVariant& var)
   {
     case QVariant::List:
       *this << var.toList();
+      break;
+    case QVariant::StringList:
+      *this << var.toStringList();
       break;
     case QVariant::String:
       *this << var.toString();

@@ -28,8 +28,10 @@
 
 #include "KwPlaylistFile.h"
 
+#include <kdemacros.h>
+
 /// A presentation document playlist item.
-class KwPlaylistPresentation : public KwPlaylistFile
+class KDE_EXPORT KwPlaylistPresentation : public KwPlaylistFile
 {
     KW_PLAYLIST_ITEM
 

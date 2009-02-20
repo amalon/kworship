@@ -481,40 +481,104 @@ QString KwBiblePassage::textualKey() const
   return i18nc("bible index (range, version)", "%1 (%2)", result, m_moduleId);
 }
 
+/// Find whether the text is right to left.
+bool KwBiblePassage::isRightToLeft() const
+{
+  return m_rightToLeft;
+}
+
 /// Get the first book number in the passage.
 int KwBiblePassage::firstBookNumber() const
 {
-  Q_ASSERT(false && "Unimplemented");
+  return m_firstBook;
 }
 
 /// Get the last book number in the passage.
 int KwBiblePassage::lastBookNumber() const
 {
-  Q_ASSERT(false && "Unimplemented");
+  return m_firstBook + m_numBooks - 1;
 }
 
 /// Get the first chapter number in a book of the passage.
 int KwBiblePassage::firstChapterNumber(int bookNumber) const
 {
-  Q_ASSERT(false && "Unimplemented");
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+
+  Book* book = &m_books[bookNumber];
+  return book->firstChapter;
 }
 
 /// Get the last chapter number in a book of the passage.
 int KwBiblePassage::lastChapterNumber(int bookNumber) const
 {
-  Q_ASSERT(false && "Unimplemented");
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+
+  Book* book = &m_books[bookNumber];
+  return book->firstChapter + book->numChapters - 1;
 }
 
 /// Get the first verse number in a chapter of the passage.
 int KwBiblePassage::firstVerseNumber(int bookNumber, int chapterNumber) const
 {
-  Q_ASSERT(false && "Unimplemented");
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+  chapterNumber -= m_books[bookNumber].firstChapter;
+  Q_ASSERT(0 != m_books[bookNumber].chapters && chapterNumber >= 0 && chapterNumber < m_books[bookNumber].numChapters);
+
+  Chapter* chapter = &m_books[bookNumber].chapters[chapterNumber];
+  return chapter->firstVerse;
 }
 
 /// Get the last verse number in a chapter of the passage.
 int KwBiblePassage::lastVerseNumber(int bookNumber, int chapterNumber) const
 {
-  Q_ASSERT(false && "Unimplemented");
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+  chapterNumber -= m_books[bookNumber].firstChapter;
+  Q_ASSERT(0 != m_books[bookNumber].chapters && chapterNumber >= 0 && chapterNumber < m_books[bookNumber].numChapters);
+
+  Chapter* chapter = &m_books[bookNumber].chapters[chapterNumber];
+  return chapter->firstVerse + chapter->numVerses - 1;
+}
+
+/// Get the headings before a verse.
+QString KwBiblePassage::verseHeadings(int bookNumber, int chapterNumber, int verseNumber, bool plain) const
+{
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+  chapterNumber -= m_books[bookNumber].firstChapter;
+  Q_ASSERT(0 != m_books[bookNumber].chapters && chapterNumber >= 0 && chapterNumber < m_books[bookNumber].numChapters);
+  verseNumber -= m_books[bookNumber].chapters[chapterNumber].firstVerse;
+  Q_ASSERT(0 != m_books[bookNumber].chapters[chapterNumber].verses && verseNumber >= 0 && verseNumber < m_books[bookNumber].chapters[chapterNumber].numVerses);
+
+  Verse* verse = &m_books[bookNumber].chapters[chapterNumber].verses[verseNumber];
+  QString result = verse->headings;
+  if (plain)
+  {
+    result.replace( QRegExp("<[^>]*>"), "" );
+  }
+  return result;
+}
+
+/// Get the content of a verse.
+QString KwBiblePassage::verseContent(int bookNumber, int chapterNumber, int verseNumber, bool plain) const
+{
+  bookNumber -= m_firstBook;
+  Q_ASSERT(0 != m_books && bookNumber >= 0 && bookNumber < m_numBooks);
+  chapterNumber -= m_books[bookNumber].firstChapter;
+  Q_ASSERT(0 != m_books[bookNumber].chapters && chapterNumber >= 0 && chapterNumber < m_books[bookNumber].numChapters);
+  verseNumber -= m_books[bookNumber].chapters[chapterNumber].firstVerse;
+  Q_ASSERT(0 != m_books[bookNumber].chapters[chapterNumber].verses && verseNumber >= 0 && verseNumber < m_books[bookNumber].chapters[chapterNumber].numVerses);
+
+  Verse* verse = &m_books[bookNumber].chapters[chapterNumber].verses[verseNumber];
+  QString result = verse->content;
+  if (plain)
+  {
+    result.replace( QRegExp("<[^>]*>"), "" );
+  }
+  return result;
 }
 
 /*

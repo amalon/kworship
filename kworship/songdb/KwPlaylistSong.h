@@ -29,10 +29,12 @@
 #include "KwPlaylistItem.h"
 #include "KwSongdbLyricsLayout.h"
 
+#include <kdemacros.h>
+
 class KwSongdbVersion;
 
 /// A song playlist item.
-class KwPlaylistSong : public KwPlaylistItem
+class KDE_EXPORT KwPlaylistSong : public KwPlaylistItem
 {
   public:
     

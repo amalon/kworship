@@ -29,6 +29,9 @@
 #include <KwArchive.h>
 #include <KwPlaylistList.h>
 #include <KwPlaylistText.h>
+#include <KwPlaylistSong.h>
+#include <KwBiblePlaylistItem.h>
+#include <KwPlaylistPresentation.h>
 
 #include <VTable.h>
 
@@ -168,6 +171,134 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
   return doc;
 }
 
+/// Contains implementations of export functions.
+class KwZionworxFilter::ExportToDom
+{
+  public:
+
+    static QDomElement createPlaylistNode(QDomDocument& document, QDomElement& element)
+    {
+      QDomElement node = document.createElement("TPlayListNode");
+      element.appendChild(node);
+      return node;
+    }
+    static QDomElement createOverlayStyle(QDomDocument& document, QDomElement& element)
+    {
+      QDomElement style = document.createElement("OverlayStyle");
+      element.appendChild(style);
+      return style;
+    }
+    static QDomElement createPlaylistItem(QDomDocument& document, QDomElement& element,
+                                          const QString& type, const QString& title, bool rightToLeft)
+    {
+      QDomElement item = document.createElement("PlayListItem");
+      {
+        QDomElement typeEl = document.createElement("ItemType");
+        typeEl.appendChild(document.createTextNode(type));
+        item.appendChild(typeEl);
+      }
+      {
+        QDomElement titleEl = document.createElement("Title");
+        titleEl.appendChild(document.createTextNode(title));
+        item.appendChild(titleEl);
+      }
+      {
+        QDomElement biDiEl = document.createElement("BiDiMode");
+        biDiEl.appendChild(document.createTextNode(rightToLeft ? "btRightToLeft" : "bdLeftToRight"));
+        item.appendChild(biDiEl);
+      }
+      element.appendChild(item);
+      return item;
+    }
+    static int list(const KwPlaylistList* self, QDomDocument& document, QDomElement& element)
+    {
+      for (int i = 0; i < self->getItemCount(); ++i)
+      {
+        call(self->getItem(i), document, element);
+      }
+      return 0;
+    }
+    static int song(const KwPlaylistSong* self, QDomDocument& document, QDomElement& element)
+    {
+      QDomElement node = createPlaylistNode(document, element);
+      return 0;
+    }
+    static int note(const KwPlaylistText* self, QDomDocument& document, QDomElement& element)
+    {
+      QDomElement node = createPlaylistNode(document, element);
+      return 0;
+    }
+    static int bible(const KwBiblePlaylistItem* self, QDomDocument& document, QDomElement& element)
+    {
+      QDomElement node = createPlaylistNode(document, element);
+      QDomElement style = createOverlayStyle(document, node);
+      const KwBiblePassage& passage = self->passage();
+      QDomElement item = createPlaylistItem(document, node,
+                                            "siBible", passage.textualKey(),
+                                            passage.isRightToLeft());
+
+      QDomElement versesEl = document.createElement("Verses");
+      versesEl.appendChild(document.createTextNode("(TTntStringList)"));
+      {
+        QDomElement definedPropsEl = document.createElement("DefinedProperties");
+        QByteArray propsData;
+        KwPascalStream data(&propsData, QIODevice::WriteOnly);
+
+        QStringList verses;
+        verses << passage.textualKey();
+        for (int book = passage.firstBookNumber(); book <= passage.lastBookNumber(); ++book)
+        {
+          for (int chap = passage.firstChapterNumber(book); chap <= passage.lastChapterNumber(book); ++chap)
+          {
+            for (int verse = passage.firstVerseNumber(book, chap); verse <= passage.lastVerseNumber(book, chap); ++verse)
+            {
+              const QString& headings = passage.verseHeadings(book, chap, verse, true);
+              if (!headings.isEmpty())
+              {
+                verses += headings;
+              }
+              const QString& content = passage.verseContent(book, chap, verse, true);
+              if (!content.isEmpty())
+              {
+                verses += i18nc("Verse number, bible verse, for zionworx export", "%1.  %2").arg(verse).arg(content);
+              }
+            }
+          }
+        }
+        data.writeProperty("Strings", verses);
+
+        propsData = propsData.toBase64();
+        definedPropsEl.appendChild(document.createTextNode(propsData));
+        versesEl.appendChild(definedPropsEl);
+      }
+      item.appendChild(versesEl);
+      return 0;
+    }
+    static int presentation(const KwPlaylistPresentation* self, QDomDocument& document, QDomElement& element)
+    {
+      QDomElement node = createPlaylistNode(document, element);
+      return 0;
+    }
+
+    static void init()
+    {
+      static bool done = false;
+      if (!done)
+      {
+        call.addImplementation(&list);
+        call.addImplementation(&song);
+        call.addImplementation(&note);
+        call.addImplementation(&bible);
+        call.addImplementation(&presentation);
+        done = true;
+      }
+    }
+
+    typedef VTable<const KwPlaylistItem, int (*)(QDomDocument& document, QDomElement& element)> ExportVTable;
+    static ExportVTable call;
+};
+KwZionworxFilter::ExportToDom::ExportVTable KwZionworxFilter::ExportToDom::call;
+
 bool KwZionworxFilter::save(KwDocument* doc, const KUrl& url, const QString& mimeType)
 {
   /// @todo Handle non-local files
@@ -190,9 +321,26 @@ bool KwZionworxFilter::save(KwDocument* doc, const KUrl& url, const QString& mim
     return false;
   }
 
-  /// @todo Implement KwZionworxFilter::save
-  file.abort();
-  return false;
+  // Create document
+  QDomDocument domDoc;
+  QDomElement root = domDoc.createElement("Root");
+  domDoc.appendChild(root);
+
+  // Version element
+  QDomElement version = domDoc.createElement("ZionWorx");
+  version.setAttribute("Version", 2.6);
+  version.setAttribute("FullFilename", url.toLocalFile());
+  root.appendChild(version);
+
+  // Playlist nodes element
+  QDomElement playlist = domDoc.createElement("PlayListNodes");
+  ExportToDom::init();
+  ExportToDom::call(doc->playlist(), domDoc, playlist);
+  root.appendChild(playlist);
+
+  // Write document to file
+  QByteArray xml = domDoc.toByteArray(2);
+  file.write(xml, xml.size());
 
   if (!file.finalize())
   {
@@ -252,36 +400,3 @@ QStringList KwZionworxFilter::readStringList(const QDomElement& el) const
   }
   return QStringList();
 }
-
-/*
- * Static functions
- */
-
-/*
-namespace exportToDom
-{
-  int list(const KwPlaylistList* self, QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager)
-  {
-    self->exportToDom(document, element, resourceManager);
-  }
-}
-
-/// Export a playlist item to a DOM.
-void KwDataFile::exportToDom(const KwPlaylistItem* item, QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager)
-{
-  static bool first = true;
-  static VTable<const KwPlaylistItem, int (*)(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager)> vExportToDom;
-  if (first)
-  {
-    vExportToDom.addImplementation(&exportToDom::list);
-    first = false;
-  }
-
-  if (!vExportToDom(item, document, element, resourceManager))
-  {
-    KMessageBox::error(0,
-        i18n("Unhandled playlist item export to DOM %1").arg(item->typeName()),
-        i18n("KWorship"));
-  }
-}
-*/

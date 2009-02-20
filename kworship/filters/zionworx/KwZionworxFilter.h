@@ -69,6 +69,13 @@ class KwZionworxFilter : public KwLoadSaveFilter
   private:
 
     /*
+     * Private classes
+     */
+
+    /// Contains implementations of export functions.
+    class ExportToDom;
+
+    /*
      * Private functions
      */
 
