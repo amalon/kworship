@@ -26,10 +26,12 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 class KwCssAbstractStyle;
 
 /// Abstract state of cascading style property.
-class KwCssAbstractStyleState
+class KDE_EXPORT KwCssAbstractStyleState
 {
   public:
 

@@ -31,6 +31,8 @@
 #include "KwCssStyles.h"
 #include "KwCssStyleStates.h"
 
+#include <kdemacros.h>
+
 #include <QStringList>
 #include <QString>
 #include <QSet>
@@ -56,7 +58,7 @@ class QDomElement;
     }
 
 /// Cascading style scope.
-class KwCssScope
+class KDE_EXPORT KwCssScope
 {
     KW_CSS_SCOPE("scope")
 

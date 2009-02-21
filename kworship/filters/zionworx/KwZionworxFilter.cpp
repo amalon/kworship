@@ -32,6 +32,7 @@
 #include <KwPlaylistSong.h>
 #include <KwBiblePlaylistItem.h>
 #include <KwPlaylistPresentation.h>
+#include <KwCssStyleRule.h>
 
 #include <VTable.h>
 
@@ -43,6 +44,9 @@
 #include <QFile>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QPen>
+
+#include <inttypes.h>
 
 /*
  * Constructors + destructor
@@ -117,6 +121,7 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
               QDomElement item = playlistNode.firstChildElement("PlayListItem");
               if (!item.isNull())
               {
+                KwPlaylistItem* newItem = 0;
                 QString biDiText = item.firstChildElement("BiDiMode").text();
                 bool rightToLeft = (biDiText == "bdRightToLeft");
                 QString itemType = item.firstChildElement("ItemType").text();
@@ -124,19 +129,19 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
                 {
                   KwPlaylistPresentation* powerpoint = new KwPlaylistPresentation(QUrl(item.firstChildElement("FilenameRelative").text()));
                   powerpoint->setTitle(item.firstChildElement("Title").text());
-                  list->addItem(powerpoint);
+                  newItem = powerpoint;
                 }
                 else if (itemType == "siSong")
                 {
                   KwPlaylistText* song = new KwPlaylistText(item.firstChildElement("Title").text(),
                                                             item.firstChildElement("Lyrics").text().split("\n\n"));
-                  list->addItem(song);
+                  newItem = song;
                 }
                 else if (itemType == "siQuickNote")
                 {
                   KwPlaylistText* note = new KwPlaylistText(item.firstChildElement("Title").text(),
                                                             readStringList(item.firstChildElement("QuickNote")));
-                  list->addItem(note);
+                  newItem = note;
                 }
                 else if (itemType == "siBible")
                 {
@@ -198,25 +203,213 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
                           i18n("Problems were encountered reading numbered verses in bible passage %1").arg(item.firstChildElement("Title").text()),
                           i18n("KWorship"));
                     }
-
-                    KwBiblePlaylistItem* bible = new KwBiblePlaylistItem();
-                    KwBiblePassage& passage = bible->passage();
-                    passage.setSource(QString(), moduleName, rightToLeft);
-                    passage.initBooks(bookNum,1);
-                    passage.initBook(bookNum, bookName, chapterNum, 1);
-                    passage.initChapter(bookNum, chapterNum, firstVerse, verseContents.size());
-                    for (int i = 0; i < verseContents.size(); ++i)
+                    else
                     {
-                      passage.initVerse(bookNum, chapterNum, firstVerse+i, verseHeadings[i], verseContents[i]);
+                      KwBiblePlaylistItem* bible = new KwBiblePlaylistItem();
+                      KwBiblePassage& passage = bible->passage();
+                      passage.setSource(QString(), moduleName, rightToLeft);
+                      passage.initBooks(bookNum,1);
+                      passage.initBook(bookNum, bookName, chapterNum, 1);
+                      passage.initChapter(bookNum, chapterNum, firstVerse, verseContents.size());
+                      for (int i = 0; i < verseContents.size(); ++i)
+                      {
+                        passage.initVerse(bookNum, chapterNum, firstVerse+i, verseHeadings[i], verseContents[i]);
+                      }
+                      newItem = bible;
                     }
-                    list->addItem(bible);
                   }
                   if (error)
                   {
                     KwPlaylistText* bible = new KwPlaylistText(item.firstChildElement("Title").text(),
                                                                verses);
-                    list->addItem(bible);
+                    newItem = bible;
                   }
+                }
+
+                if (0 != newItem)
+                {
+                  QDomElement overlayStyleEl = playlistNode.firstChildElement("OverlayStyle");
+                  if (!overlayStyleEl.isNull())
+                  {
+                    KwCssStyleSheet* styleRules = new KwCssStyleSheet;
+                    KwCssStyleRule overlayStyle;
+
+
+                    QDomElement fontEl           = overlayStyleEl.firstChildElement("Font");
+                    if (!fontEl.isNull())
+                    {
+                      QFont font;
+                      QDomElement fontHeightEl   = fontEl.firstChildElement("Height");
+                      if (!fontHeightEl.isNull())
+                      {
+                        bool ok;
+                        int height = fontHeightEl.text().toInt(&ok);
+                        if (ok)
+                        {
+                          font.setPointSize(abs(height));
+                        }
+                      }
+                      QDomElement fontNameEl     = fontEl.firstChildElement("Name");
+                      /// @todo Remember font name
+                      /// @todo Use font names
+                      QDomElement fontStyleEl    = fontEl.firstChildElement("Style");
+                      if (!fontStyleEl.isNull())
+                      {
+                        static QRegExp reFontStyleList("^\\s*\\[(.*)\\]\\s*$");
+                        if (reFontStyleList.exactMatch(fontStyleEl.text()))
+                        {
+                          QStringList styles = reFontStyleList.cap(1).split(",");
+                          foreach (QString style, styles)
+                          {
+                            style = style.trimmed();
+                            if (style == "fsBold")
+                            {
+                              font.setWeight(QFont::Bold);
+                            }
+                            else if (style == "fsItalic")
+                            {
+                              font.setStyle(QFont::StyleItalic);
+                            }
+                          }
+                        }
+                      }
+
+                      overlayStyle.setStyle<QFont>("text.character.font", font);
+
+                      QDomElement fontColorEl    = fontEl.firstChildElement("Color");
+                      if (!fontColorEl.isNull())
+                      {
+                        bool ok;
+                        QColor colour = readColour(fontColorEl, &ok);
+                        if (ok)
+                        {
+                          overlayStyle.setStyle<QBrush>("text.character.brush", QBrush(colour));
+                        }
+                      }
+                    }
+                    QDomElement textStyleEl      = overlayStyleEl.firstChildElement("TextStyle");
+                    if (!textStyleEl.isNull())
+                    {
+                      QString style = textStyleEl.text();
+                      if (style == "tsShadow")
+                      {
+                        overlayStyle.setStyle<bool>("text.character.shadow.enabled", true);
+                      }
+                      else if (style == "tsOutline")
+                      {
+                        overlayStyle.setStyle<bool>("text.character.outline.enabled", true);
+                      }
+                    }
+                    QDomElement textAlignmentEl  = overlayStyleEl.firstChildElement("TextAlignment");
+
+                    // Shadow
+                    QDomElement shadowWidthEl    = overlayStyleEl.firstChildElement("ShadowWidth");
+                    if (!shadowWidthEl.isNull())
+                    {
+                      bool ok;
+                      int offset = shadowWidthEl.text().toInt(&ok);
+                      if (ok)
+                      {
+                        overlayStyle.setStyle<int>("text.character.shadow.offset", offset);
+                      }
+                    }
+                    QDomElement shadowColorEl    = overlayStyleEl.firstChildElement("ShadowColor");
+                    if (!shadowColorEl.isNull())
+                    {
+                      bool ok;
+                      QColor colour = readColour(shadowColorEl, &ok);
+                      if (ok)
+                      {
+                        overlayStyle.setStyle<QBrush>("text.character.shadow.brush", QBrush(colour));
+                      }
+                    }
+
+                    // Outline
+                    QDomElement outlineWidthEl   = overlayStyleEl.firstChildElement("OutlineWidth");
+                    int outlineWidth = 1;
+                    if (!outlineWidthEl.isNull())
+                    {
+                      bool ok;
+                      int width = outlineWidthEl.text().toInt(&ok);
+                      if (ok)
+                      {
+                        outlineWidth = width;
+                      }
+                    }
+                    QDomElement outlineColorEl   = overlayStyleEl.firstChildElement("OutlineColor");
+                    QColor outlineColour = Qt::black;
+                    if (!outlineColorEl.isNull())
+                    {
+                      bool ok;
+                      QColor colour = readColour(outlineColorEl, &ok);
+                      if (ok)
+                      {
+                        outlineColour = colour;
+                      }
+                    }
+                    overlayStyle.setStyle<QPen>("text.character.outline.pen", QPen(outlineColour, outlineWidth));
+
+                    QDomElement fillColorEl      = overlayStyleEl.firstChildElement("FillColor");
+                    if (!fillColorEl.isNull())
+                    {
+                      bool ok;
+                      QColor colour = readColour(fillColorEl, &ok);
+                      if (ok)
+                      {
+                        overlayStyle.setStyle<QBrush>("background.brush", QBrush(colour));
+                      }
+                    }
+                    QDomElement imageFilenameEl  = overlayStyleEl.firstChildElement("ImageFilename");
+                    //overlayStyle.setStyle<KwResourceLink>("background.image.src", KUrl("file:///home/james/media/images/projector/misc/bible.jpg"));
+                    QDomElement imageAlignmentEl = overlayStyleEl.firstChildElement("ImageAlignment");
+
+                    // Margins
+                    QDomElement marginRightEl    = overlayStyleEl.firstChildElement("MarginRight");
+                    if (!marginRightEl.isNull())
+                    {
+                      bool ok;
+                      float margin = marginRightEl.text().toFloat(&ok);
+                      if (ok)
+                      {
+                        overlayStyle.setStyle<float>("text.layout.margins.right", margin);
+                      }
+                    }
+                    QDomElement marginLeftEl     = overlayStyleEl.firstChildElement("MarginLeft");
+                    if (!marginLeftEl.isNull())
+                    {
+                      bool ok;
+                      float margin = marginLeftEl.text().toFloat(&ok);
+                      if (ok)
+                      {
+                        overlayStyle.setStyle<float>("text.layout.margins.left", margin);
+                      }
+                    }
+                    QDomElement marginTopEl      = overlayStyleEl.firstChildElement("MarginTop");
+                    if (!marginTopEl.isNull())
+                    {
+                      bool ok;
+                      float margin = marginTopEl.text().toFloat(&ok);
+                      if (ok)
+                      {
+                        overlayStyle.setStyle<float>("text.layout.margins.top", margin);
+                      }
+                    }
+                    QDomElement marginBottomEl   = overlayStyleEl.firstChildElement("MarginBottom");
+                    if (!marginBottomEl.isNull())
+                    {
+                      bool ok;
+                      float margin = marginBottomEl.text().toFloat(&ok);
+                      if (ok)
+                      {
+                        overlayStyle.setStyle<float>("text.layout.margins.bottom", margin);
+                      }
+                    }
+
+                    styleRules->addRule(overlayStyle);
+                    newItem->addStyleSheet(styleRules);
+                  }
+
+                  list->addItem(newItem);
                 }
                 else
                 {
@@ -479,4 +672,67 @@ QStringList KwZionworxFilter::readStringList(const QDomElement& el) const
     }
   }
   return QStringList();
+}
+
+/// Read a colour from DOM.
+QColor KwZionworxFilter::readColour(const QDomElement& el, bool* ok) const
+{
+  bool isOk = false;
+
+  static QHash<QString, QColor> colours;
+  static bool inited = false;
+  if (!inited)
+  {
+    colours["clWhite"]       = Qt::white;
+    colours["clBlack"]       = Qt::black;
+    colours["clRed"]         = Qt::red;
+    colours["clDarkRed"]     = Qt::darkRed;
+    colours["clGreen"]       = Qt::green;
+    colours["clDarkGreen"]   = Qt::darkGreen;
+    colours["clBlue"]        = Qt::blue;
+    colours["clDarkBlue"]    = Qt::darkBlue;
+    colours["clCyan"]        = Qt::cyan;
+    colours["clDarkCyan"]    = Qt::darkCyan;
+    colours["clMagenta"]     = Qt::magenta;
+    colours["clDarkMagenta"] = Qt::darkMagenta;
+    colours["clYellow"]      = Qt::yellow;
+    colours["clDarkGray"]    = Qt::darkYellow;
+    colours["clGray"]        = Qt::gray;
+    colours["clDarkGray"]    = Qt::darkGray;
+    colours["clLightGray"]   = Qt::lightGray;
+    inited = true;
+  }
+
+  QString colourName = el.text();
+  QColor result;
+  uint32_t colourNum = colourName.toInt(&isOk);
+  if (isOk)
+  {
+    // 0xff in msb apparently changes byte order
+    if ((colourNum >> 24) & 0xFF == 0xFF)
+    {
+      // least significant byte is blue, followed by green and red
+      result.setRgb((colourNum >> 16) & 0xFF,
+                    (colourNum >> 8)  & 0xFF,
+                     colourNum        & 0xFF);
+    }
+    else
+    {
+      // least significant byte is red, followed by green and blue
+      result.setRgb( colourNum        & 0xFF,
+                    (colourNum >> 8)  & 0xFF,
+                    (colourNum >> 16) & 0xFF);
+    }
+  }
+  else if (colours.contains(colourName))
+  {
+    result = colours[colourName];
+    isOk = true;
+  }
+
+  if (0 != ok)
+  {
+    *ok = isOk;
+  }
+  return result;
 }

@@ -31,13 +31,15 @@
 
 #include "CountedReference.h"
 
+#include <kdemacros.h>
+
 #include <QString>
 #include <QStringList>
 #include <QSet>
 #include <QList>
 
 /// Rule for apply cascading styles.
-class KwCssStyleRule
+class KDE_EXPORT KwCssStyleRule
 {
   public:
 

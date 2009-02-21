@@ -29,6 +29,7 @@
 #include <KwLoadSaveFilter.h>
 
 #include <QStringList>
+#include <QColor>
 
 class QDomElement;
 
@@ -81,6 +82,9 @@ class KwZionworxFilter : public KwLoadSaveFilter
 
     /// Read a TTntStringList from DOM.
     QStringList readStringList(const QDomElement& el) const;
+
+    /// Read a colour from DOM.
+    QColor readColour(const QDomElement& el, bool* ok = 0) const;
 };
 
 #endif // _KwZionworxFilter_h_
