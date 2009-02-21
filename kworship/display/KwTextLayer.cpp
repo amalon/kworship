@@ -25,7 +25,8 @@
 
 #include "KwTextLayer.h"
 
-#include <QStackedLayout>
+#include <QGridLayout>
+#include <QSpacerItem>
 #include <QTextBrowser>
 
 /*
@@ -55,6 +56,16 @@ KwTextLayer::~KwTextLayer()
 }
 
 /*
+ * Mutators
+ */
+
+/// Set text styles.
+void KwTextLayer::setStyle(const KwTextStyle& style)
+{
+  m_style = style;
+}
+
+/*
  * Private structures
  */
 
@@ -67,6 +78,7 @@ struct KwTextLayerData
  * Methods
  */
 
+#include <QtDebug>
 void* KwTextLayer::addWidgets(QWidget* master) const
 {
   KwTextLayerData* data = new KwTextLayerData;
@@ -79,8 +91,7 @@ void* KwTextLayer::addWidgets(QWidget* master) const
   data->textBrowser->viewport()->setAutoFillBackground(false);
 
   // Set the content
-  QFont font = data->textBrowser->document()->defaultFont();
-  font.setPixelSize(64);
+  QFont font = m_style.character.font;
   data->textBrowser->document()->setDefaultFont(font);
   if (m_formatted)
   {
@@ -97,14 +108,25 @@ void* KwTextLayer::addWidgets(QWidget* master) const
 
   // Create a text character format with outline etc and apply
   QTextCharFormat fmt;
-  fmt.setForeground(QBrush(Qt::cyan));
-  fmt.setTextOutline(QPen(Qt::blue, 2));
+  fmt.setForeground(m_style.character.brush);
+  if (m_style.character.outline.enabled)
+  {
+    fmt.setTextOutline(m_style.character.outline.pen);
+  }
   cursor.mergeCharFormat(fmt);
 
-  QStackedLayout* layout = new QStackedLayout();
-  layout->setStackingMode(QStackedLayout::StackAll);
+  // Slightly hacky way of getting margins
+  QGridLayout* layout = new QGridLayout();
   master->setLayout(layout);
-  layout->addWidget(data->textBrowser);
+  layout->addWidget(data->textBrowser, 1, 1, 1, 1);
+  layout->addItem(new QSpacerItem(1, m_style.layout.margins.top * master->height(),
+                  QSizePolicy::Fixed, QSizePolicy::Fixed), 0, 1);
+  layout->addItem(new QSpacerItem(m_style.layout.margins.left * master->width(), 1,
+                  QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 0);
+  layout->addItem(new QSpacerItem(m_style.layout.margins.right * master->width(), 1,
+                  QSizePolicy::Fixed, QSizePolicy::Fixed), 1, 2);
+  layout->addItem(new QSpacerItem(1, m_style.layout.margins.bottom * master->height(),
+                  QSizePolicy::Fixed, QSizePolicy::Fixed), 2, 1);
 
   return (void*)data;
 }

@@ -29,7 +29,9 @@
 #include <KwCssStandardise.h>
 #include <KwResourceLink.h>
 
+#include <QFont>
 #include <QBrush>
+#include <QPen>
 
 // The cpp file defines this to declare static variables
 #ifdef KW_DISPLAY_STYLES_DECLARE
@@ -62,24 +64,33 @@ namespace KwDisplayStyles
     */
   KWCSS_END_NAMESPACE()
 
-  /*
   // Text
   KWCSS_ROOT_NAMESPACE(text)
-    // Font display settings
-    KWCSS_START_NAMESPACE(text, font)
+    // Character styles
+    KWCSS_START_NAMESPACE(text, character)
       KWCSS_DEFINE_PROPERTY(QFont, font)
       KWCSS_DEFINE_PROPERTY(QBrush, brush)
-      KWCSS_START_NAMESPACE(text.font, outline)
+      KWCSS_START_NAMESPACE(text.character, outline)
         KWCSS_DEFINE_PROPERTY(bool, enabled)
         KWCSS_DEFINE_PROPERTY(QPen, pen)
       KWCSS_END_NAMESPACE()
-      KWCSS_START_NAMESPACE(text.font, shadow)
+      KWCSS_START_NAMESPACE(text.character, shadow)
         KWCSS_DEFINE_PROPERTY(bool, enabled)
+        KWCSS_DEFINE_PROPERTY(QBrush, brush)
+        KWCSS_DEFINE_PROPERTY(int, offset)
       KWCSS_END_NAMESPACE()
     KWCSS_END_NAMESPACE()
     // Text layout settings
+    KWCSS_START_NAMESPACE(text, layout)
+      //KWCSS_DEFINE_PROPERTY(int, alignment)
+      KWCSS_START_NAMESPACE(text.layout, margins)
+        KWCSS_DEFINE_PROPERTY(float, left)
+        KWCSS_DEFINE_PROPERTY(float, right)
+        KWCSS_DEFINE_PROPERTY(float, top)
+        KWCSS_DEFINE_PROPERTY(float, bottom)
+      KWCSS_END_NAMESPACE()
+    KWCSS_END_NAMESPACE()
   KWCSS_END_NAMESPACE()
-  */
 }
 
 #endif // _KwDisplayStyles_h_

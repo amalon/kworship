@@ -51,6 +51,13 @@ class KwTextLayer : public KwAbstractLayer
     virtual ~KwTextLayer();
 
     /*
+     * Mutators
+     */
+
+    /// Set text styles.
+    void setStyle(const KwTextStyle& style);
+
+    /*
      * Methods
      */
 

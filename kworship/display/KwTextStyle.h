@@ -30,26 +30,73 @@
 #include <QBrush>
 #include <QPen>
 
+class KwCssScope;
+
 /// Background text layer.
 class KwTextStyle
 {
   public:
 
     /*
+     * Constructors + destructor.
+     */
+
+    /// Default constructor.
+    KwTextStyle();
+
+    /// Destructor.
+    virtual ~KwTextStyle();
+
+    /*
+     * CSS Styles interface.
+     */
+
+    /// Load styles from scope.
+    void loadFrom(KwCssScope* scope);
+
+    /*
      * Variables
      */
 
-    /// Font information.
-    QFont font;
+    /// Character style
+    struct Character
+    {
+      /// Font information.
+      QFont font;
 
-    /// Inner brush fill.
-    QBrush innerBrush;
+      /// Inner brush fill.
+      QBrush brush;
 
-    /// Outline pen.
-    QPen ountlinePen;
+      struct Outline
+      {
+        /// Whether to draw an outline around characters
+        bool enabled;
 
-    /// Shadow brush.
-    QBrush shadowBrush;
+        /// Outline pen.
+        QPen pen;
+      } outline;
+
+      struct Shadow
+      {
+        /// Whether to shadow behind characters
+        bool enabled;
+
+        /// Shadow brush.
+        QBrush brush;
+
+        /// Shadow offset.
+        int offset;
+      } shadow;
+    } character;
+
+    /// Layout style
+    struct Layout
+    {
+      /// Margins.
+      struct Margins {
+        float left, right, top, bottom;
+      } margins;
+    } layout;
 };
 
 #endif // _KwTextStyle_h_

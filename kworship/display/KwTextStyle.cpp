@@ -17,71 +17,58 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwTextManager_h_
-#define _KwTextManager_h_
-
 /**
- * @file KwTextManager.h
- * @brief Text manager.
+ * @file KwTextStyle.cpp
+ * @brief Graphical text style information.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwAbstractDisplayManager.h"
 #include "KwTextStyle.h"
+#include "KwDisplayStyles.h"
 
-#include <kdemacros.h>
-
-#include <QString>
-
-class KwCssScope;
-class KwTextLayer;
-
-/// Text manager.
-/**
- * High level interface for controlling text on screen.
+/*
+ * Constructors + destructor.
  */
-class KDE_EXPORT KwTextManager : public KwAbstractDisplayManager
+
+/// Default constructor.
+KwTextStyle::KwTextStyle()
 {
-  public:
+  character.outline.enabled = false;
+  character.shadow.enabled = false;
+  character.shadow.offset = 5;
+  layout.margins.left = 0.05f;
+  layout.margins.right = 0.05f;
+  layout.margins.top = 0.05f;
+  layout.margins.bottom = 0.05f;
+}
 
-    /*
-     * Constructors + destructors
-     */
+/// Destructor.
+KwTextStyle::~KwTextStyle()
+{
+}
 
-    /// Default constructor.
-    KwTextManager();
+/*
+ * CSS Styles interface.
+ */
 
-    /// Destructor.
-    virtual ~KwTextManager();
+/// Load styles from scope.
+void KwTextStyle::loadFrom(KwCssScope* scope)
+{
+#define GETSTYLE(A,B) A = KwDisplayStyles::text::B(scope)
+#define GETSTYLE1(A1) GETSTYLE(A1, A1)
+#define GETSTYLE2(A1,A2) GETSTYLE(A1.A2, A1::A2)
+#define GETSTYLE3(A1,A2,A3) GETSTYLE(A1.A2.A3, A1::A2::A3)
 
-    /*
-     * Main interface
-     */
-
-    /// Apply the styles in a scope.
-    void applyStyles(KwCssScope* scope);
-
-    /// Clear all text.
-    void clear();
-
-    /// Set the text.
-    void setText(const QString& text);
-
-    /// Set formatted text.
-    void setHtml(const QString& html);
-
-  private:
-
-    /*
-     * Variables
-     */
-
-    /// Current style.
-    KwTextStyle m_style;
-
-    /// Current text layer.
-    KwTextLayer* m_currentLayer;
-};
-
-#endif // _KwTextManager_h_
-
+  GETSTYLE2(character, font);
+  GETSTYLE2(character, brush);
+  GETSTYLE3(character, outline, enabled);
+  GETSTYLE3(character, outline, pen);
+  GETSTYLE3(character, shadow, enabled);
+  GETSTYLE3(character, shadow, brush);
+  GETSTYLE3(character, shadow, offset);
+  //GETSTYLE2(layout, alignment);
+  GETSTYLE3(layout, margins, left);
+  GETSTYLE3(layout, margins, right);
+  GETSTYLE3(layout, margins, top);
+  GETSTYLE3(layout, margins, bottom);
+}

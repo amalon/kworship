@@ -33,7 +33,8 @@
 
 /// Default constructor.
 KwTextManager::KwTextManager()
-: m_currentLayer(0)
+: m_style()
+, m_currentLayer(0)
 {
 }
 
@@ -50,7 +51,7 @@ KwTextManager::~KwTextManager()
 /// Apply the styles in a scope.
 void KwTextManager::applyStyles(KwCssScope* scope)
 {
-  Q_UNUSED(scope)
+  m_style.loadFrom(scope);
 }
 
 /// Clear all text.
@@ -63,6 +64,7 @@ void KwTextManager::clear()
 void KwTextManager::setText(const QString& text)
 {
   KwTextLayer* lyrics = new KwTextLayer(text);
+  lyrics->setStyle(m_style);
   m_display.clearLayers();
   m_display.setLayer(0, lyrics, true);
 
@@ -74,6 +76,7 @@ void KwTextManager::setText(const QString& text)
 void KwTextManager::setHtml(const QString& html)
 {
   KwTextLayer* lyrics = new KwTextLayer(html, true);
+  lyrics->setStyle(m_style);
   m_display.clearLayers();
   m_display.setLayer(0, lyrics, true);
 

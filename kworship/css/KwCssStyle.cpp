@@ -40,6 +40,65 @@ KwCssUnprocessed KwCssUnstringify<KwCssUnprocessed>(const KwCssUnprocessed& valu
   return value;
 }
 
+// Primitives
+template <>
+KwCssUnprocessed KwCssStringify<bool>(const bool& value)
+{
+  return KwCssUnprocessed(value ? "true" : "false");
+}
+template <>
+bool KwCssUnstringify<bool>(const KwCssUnprocessed& value, bool* success)
+{
+  if (value == "true")
+  {
+    *success = true;
+    return true;
+  }
+  else if (value == "false")
+  {
+    *success = true;
+    return false;
+  }
+  else
+  {
+    *success = false;
+    return false;
+  }
+}
+
+template <>
+KwCssUnprocessed KwCssStringify<int>(const int& value)
+{
+  return KwCssUnprocessed::number(value);
+}
+template <>
+int KwCssUnstringify<int>(const KwCssUnprocessed& value, bool* success)
+{
+  return value.toInt(success);
+}
+
+template <>
+KwCssUnprocessed KwCssStringify<float>(const float& value)
+{
+  return KwCssUnprocessed::number(value);
+}
+template <>
+float KwCssUnstringify<float>(const KwCssUnprocessed& value, bool* success)
+{
+  return value.toFloat(success);
+}
+
+template <>
+KwCssUnprocessed KwCssStringify<double>(const double& value)
+{
+  return KwCssUnprocessed::number(value);
+}
+template <>
+double KwCssUnstringify<double>(const KwCssUnprocessed& value, bool* success)
+{
+  return value.toDouble(success);
+}
+
 #include <KwResourceLink.h>
 template <>
 KwCssUnprocessed KwCssStringify<KwResourceLink>(const KwResourceLink& value)
@@ -133,4 +192,30 @@ QBrush KwCssUnstringify<QBrush>(const KwCssUnprocessed& value, bool* success)
 {
   *success = true; 
   return QBrush(Qt::black);
+}
+
+#include <QPen>
+template <>
+KwCssUnprocessed KwCssStringify<QPen>(const QPen& value)
+{
+  return "Pen()";
+}
+template <>
+QPen KwCssUnstringify<QPen>(const KwCssUnprocessed& value, bool* success)
+{
+  *success = true; 
+  return QPen();
+}
+
+#include <QFont>
+template <>
+KwCssUnprocessed KwCssStringify<QFont>(const QFont& value)
+{
+  return "Font()";
+}
+template <>
+QFont KwCssUnstringify<QFont>(const KwCssUnprocessed& value, bool* success)
+{
+  *success = true; 
+  return QFont();
 }

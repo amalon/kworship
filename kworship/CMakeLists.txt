@@ -57,6 +57,7 @@ set(kworshipdisplay_SRCS
     display/KwAbstractDisplayManager.cpp
     display/KwBackgroundManager.cpp
     display/KwTextManager.cpp
+    display/KwTextStyle.cpp
     display/KwOverlayManager.cpp
     display/KwDisplayStyles.cpp
 )
