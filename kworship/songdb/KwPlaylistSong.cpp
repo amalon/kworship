@@ -56,7 +56,7 @@ KwPlaylistSong::~KwPlaylistSong()
  */
 
 /// Get the song version object.
-KwSongdbVersion* KwPlaylistSong::getSongVersion()
+KwSongdbVersion* KwPlaylistSong::getSongVersion() const
 {
   return m_version;
 }

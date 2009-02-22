@@ -83,7 +83,7 @@ class KDE_EXPORT KwSongdbVersion
     int id();
 
     /// Get the song this is a version of.
-    KwSongdbSong* song();
+    KwSongdbSong* song() const;
 
     /// Get the name of this version.
     QString name() const;

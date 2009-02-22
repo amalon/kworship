@@ -100,7 +100,7 @@ int KwSongdbVersion::id()
 }
 
 /// Get the song this is a version of.
-KwSongdbSong* KwSongdbVersion::song()
+KwSongdbSong* KwSongdbVersion::song() const
 {
   return m_song;
 }

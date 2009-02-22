@@ -53,7 +53,7 @@ class KDE_EXPORT KwPlaylistSong : public KwPlaylistItem
      */
 
     /// Get the song version object.
-    KwSongdbVersion* getSongVersion();
+    KwSongdbVersion* getSongVersion() const;
 
     /// Get the lyrics layout.
     KwSongdbLyricsLayout& getLyricsLayout();

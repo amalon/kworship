@@ -627,6 +627,45 @@ class KwZionworxFilter::ExportToDom
     {
       QDomElement node = createPlaylistNode(document, element);
       QDomElement style = createOverlayStyle(document, node, self);
+      const KwSongdbVersion* version = self->getSongVersion();
+      const KwSongdbSong* song = version->song();
+      /// @todo Store and reload right to leftness of songs.
+      QDomElement item = createPlaylistItem(document, node,
+                                            "siSong", song->name(),
+                                            true);
+
+      QDomElement title1El = document.createElement("Title1");
+      if (!song->name().isEmpty())
+      {
+        title1El.appendChild(document.createTextNode(song->name()));
+      }
+      item.appendChild(title1El);
+
+      QDomElement title2El = document.createElement("Title2");
+      if (!song->alternateName().isEmpty())
+      {
+        title2El.appendChild(document.createTextNode(song->alternateName()));
+      }
+      item.appendChild(title2El);
+
+      QString lyrics = version->lyrics().plainVerses().join("\n\n");
+      QDomElement lyricsEl = document.createElement("Lyrics");
+      lyricsEl.appendChild(document.createTextNode(lyrics));
+      item.appendChild(lyricsEl);
+
+      QDomElement writerEl = document.createElement("Writer");
+      if (!version->writer().isEmpty())
+      {
+        writerEl.appendChild(document.createTextNode(version->writer()));
+      }
+      item.appendChild(writerEl);
+
+      QDomElement copyrightEl = document.createElement("Copyright");
+      if (!version->copyright().isEmpty())
+      {
+        copyrightEl.appendChild(document.createTextNode(version->copyright()));
+      }
+      item.appendChild(copyrightEl);
       return 0;
     }
     static int note(const KwPlaylistText* self, QDomDocument& document, QDomElement& element)
