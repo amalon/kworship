@@ -33,6 +33,7 @@
 #include <KwBiblePlaylistItem.h>
 #include <KwPlaylistPresentation.h>
 #include <KwCssStyleRule.h>
+#include <KwDisplayStyles.h>
 
 #include <VTable.h>
 
@@ -445,15 +446,131 @@ class KwZionworxFilter::ExportToDom
 {
   public:
 
+    /// Write a colour to a string.
+    static QString writeColour(const QColor& colour, bool wierd)
+    {
+      /// @todo Use symbolic colours when possible
+      if (wierd)
+      {
+        return QString::number((int32_t)((colour.red() << 16) | (colour.green() << 8) | colour.blue() | 0xFF000000));
+      }
+      else
+      {
+        return QString::number((int32_t)(colour.red() | (colour.green() << 8) | (colour.blue() << 16)));
+      }
+    }
     static QDomElement createPlaylistNode(QDomDocument& document, QDomElement& element)
     {
       QDomElement node = document.createElement("TPlayListNode");
       element.appendChild(node);
       return node;
     }
-    static QDomElement createOverlayStyle(QDomDocument& document, QDomElement& element)
+    static QDomElement createOverlayStyle(QDomDocument& document, QDomElement& element, const KwPlaylistItem* item)
     {
       QDomElement style = document.createElement("OverlayStyle");
+
+      style.appendChild(document.createTextNode("(TOverlayStyle)"));
+
+      QDomElement fontEl = document.createElement("Font");
+      {
+        fontEl.appendChild(document.createTextNode("(TFont)"));
+
+        QFont font = KwDisplayStyles::text::character::font(item);
+        QStringList textStyles;
+        if (font.italic())
+        {
+          textStyles += "fsItalic";
+        }
+        if (font.bold())
+        {
+          textStyles += "fsBold";
+        }
+
+        /// @todo find out what this element does, restore from saved
+        QDomElement charsetEl = document.createElement("Charset");
+        charsetEl.appendChild(document.createTextNode("ANSI_CHARSET"));
+        fontEl.appendChild(charsetEl);
+
+        QDomElement colorEl = document.createElement("Color");
+        colorEl.appendChild(document.createTextNode(writeColour(KwDisplayStyles::text::character::brush(item).color(), false)));
+        fontEl.appendChild(colorEl);
+
+        /// @todo Handle if font is specified in pixels
+        QDomElement heightEl = document.createElement("Height");
+        heightEl.appendChild(document.createTextNode(QString::number(-font.pointSize())));
+        fontEl.appendChild(heightEl);
+
+        /// @todo Get a sensible font name here
+        QDomElement nameEl = document.createElement("Name");
+        nameEl.appendChild(document.createTextNode("Tahoma"));
+        fontEl.appendChild(nameEl);
+
+        QDomElement StyleEl = document.createElement("Style");
+        StyleEl.appendChild(document.createTextNode(QString("[%1]").arg(textStyles.join(","))));
+        fontEl.appendChild(StyleEl);
+      }
+      style.appendChild(fontEl);
+
+      bool outline = KwDisplayStyles::text::character::outline::enabled(item);
+      bool shadow = KwDisplayStyles::text::character::shadow::enabled(item);
+      QDomElement textStyleEl = document.createElement("TextStyle");
+      textStyleEl.appendChild(document.createTextNode(outline ? "tsOutline" : shadow ? "tsShadow" : "tsPlain"));
+      style.appendChild(textStyleEl);
+
+      /// @todo Implement text alignment saving
+      QDomElement textAlignmentEl = document.createElement("TextAlignment");
+      textAlignmentEl.appendChild(document.createTextNode("taLeft"));
+      style.appendChild(textAlignmentEl);
+
+      QDomElement shadowWidthEl = document.createElement("ShadowWidth");
+      shadowWidthEl.appendChild(document.createTextNode(QString::number(KwDisplayStyles::text::character::shadow::offset(item))));
+      style.appendChild(shadowWidthEl);
+
+      QDomElement shadowColorEl = document.createElement("ShadowColor");
+      shadowColorEl.appendChild(document.createTextNode(writeColour(KwDisplayStyles::text::character::shadow::brush(item).color(), true)));
+      style.appendChild(shadowColorEl);
+
+      QDomElement outlineWidthEl = document.createElement("OutlineWidth");
+      outlineWidthEl.appendChild(document.createTextNode(QString::number(KwDisplayStyles::text::character::outline::pen(item).width())));
+      style.appendChild(outlineWidthEl);
+
+      QDomElement outlineColorEl = document.createElement("OutlineColor");
+      outlineColorEl.appendChild(document.createTextNode(writeColour(KwDisplayStyles::text::character::outline::pen(item).color(), true)));
+      style.appendChild(outlineColorEl);
+
+      QDomElement fillColorEl = document.createElement("FillColor");
+      fillColorEl.appendChild(document.createTextNode(writeColour(KwDisplayStyles::background::brush(item).color(), false)));
+      style.appendChild(fillColorEl);
+
+      /// @todo Implement image filename saving
+      if (0)
+      {
+        QDomElement imageFilenameEl = document.createElement("ImageFilename");
+        imageFilenameEl.appendChild(document.createTextNode(""));
+        style.appendChild(imageFilenameEl);
+      }
+
+      /// @todo Implement image alignment saving
+      QDomElement imageAlignmentEl = document.createElement("ImageAlignment");
+      imageAlignmentEl.appendChild(document.createTextNode("iaStretch"));
+      style.appendChild(imageAlignmentEl);
+
+      QDomElement marginRightEl = document.createElement("MarginRight");
+      marginRightEl.appendChild(document.createTextNode(QString::number(KwDisplayStyles::text::layout::margins::right(item))));
+      style.appendChild(marginRightEl);
+
+      QDomElement marginLeftEl = document.createElement("MarginLeft");
+      marginLeftEl.appendChild(document.createTextNode(QString::number(KwDisplayStyles::text::layout::margins::left(item))));
+      style.appendChild(marginLeftEl);
+
+      QDomElement marginTopEl = document.createElement("MarginTop");
+      marginTopEl.appendChild(document.createTextNode(QString::number(KwDisplayStyles::text::layout::margins::top(item))));
+      style.appendChild(marginTopEl);
+
+      QDomElement marginBottomEl = document.createElement("MarginBottom");
+      marginBottomEl.appendChild(document.createTextNode(QString::number(KwDisplayStyles::text::layout::margins::bottom(item))));
+      style.appendChild(marginBottomEl);
+
       element.appendChild(style);
       return style;
     }
@@ -490,17 +607,19 @@ class KwZionworxFilter::ExportToDom
     static int song(const KwPlaylistSong* self, QDomDocument& document, QDomElement& element)
     {
       QDomElement node = createPlaylistNode(document, element);
+      QDomElement style = createOverlayStyle(document, node, self);
       return 0;
     }
     static int note(const KwPlaylistText* self, QDomDocument& document, QDomElement& element)
     {
       QDomElement node = createPlaylistNode(document, element);
+      QDomElement style = createOverlayStyle(document, node, self);
       return 0;
     }
     static int bible(const KwBiblePlaylistItem* self, QDomDocument& document, QDomElement& element)
     {
       QDomElement node = createPlaylistNode(document, element);
-      QDomElement style = createOverlayStyle(document, node);
+      QDomElement style = createOverlayStyle(document, node, self);
       const KwBiblePassage& passage = self->passage();
       QDomElement item = createPlaylistItem(document, node,
                                             "siBible", passage.textualKey(),
@@ -709,7 +828,7 @@ QColor KwZionworxFilter::readColour(const QDomElement& el, bool* ok) const
   if (isOk)
   {
     // 0xff in msb apparently changes byte order
-    if ((colourNum >> 24) & 0xFF == 0xFF)
+    if (((colourNum >> 24) & 0xFF) == 0xFF)
     {
       // least significant byte is blue, followed by green and red
       result.setRgb((colourNum >> 16) & 0xFF,

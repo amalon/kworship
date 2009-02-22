@@ -28,6 +28,8 @@
 
 #include "KwCssStyle.h"
 
+#include <kdemacros.h>
+
 #include <QHash>
 
 #include <cassert>
@@ -35,7 +37,7 @@
 class KwCssAbstractStyleState;
 
 /// Set of cascading style properties.
-class KwCssStyleStates
+class KDE_EXPORT KwCssStyleStates
 {
   public:
 

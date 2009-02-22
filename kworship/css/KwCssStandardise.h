@@ -29,9 +29,11 @@
 #include "KwCssScope.h"
 #include "KwCssSchema.h"
 
+#include <kdemacros.h>
+
 /// Simple class for accessing a style.
 template <typename T>
-class KwCssStyleAccessor
+class KDE_EXPORT KwCssStyleAccessor
 {
   public:
     virtual ~KwCssStyleAccessor()
@@ -42,15 +44,15 @@ class KwCssStyleAccessor
      */
     T operator () (const KwCssScope* scope) const
     {
-      return scope->getStyles().getStyle<T>(getName());
+      return scope->getStyles().getStyle<T>(m_name);
     }
 
     void registerToSchema(KwCssSchema* schema) const
     {
-      schema->registerProperty<T>(getName());
+      schema->registerProperty<T>(m_name);
     }
   protected:
-    virtual QString getName() const = 0;
+    QString m_name;
 };
 
 #define KWCSS_SCHEMA \
@@ -88,21 +90,17 @@ class KwCssStyleAccessor
 
 /// Define a property in a css namespace.
 #define KWCSS_DEFINE_PROPERTY(TYPE, LNAME) \
-  KWCSS_EXTERN class Acc_##LNAME : public KwCssStyleAccessor< TYPE > \
+  class KDE_EXPORT Acc_##LNAME : public KwCssStyleAccessor< TYPE > \
   { \
     public: \
       Acc_##LNAME() \
       { \
+        m_name = _scopeName(); \
+        m_name.append("." #LNAME); \
         registerToSchema(schema()); \
       } \
-    protected: \
-      virtual QString getName() const \
-      { \
-        QString name = _scopeName(); \
-        name.append("." #LNAME); \
-        return name; \
-      } \
-  } LNAME;
+  }; \
+  KDE_EXPORT KWCSS_EXTERN Acc_##LNAME LNAME;
 
 #define KWCSS_EXTERN extern
 
