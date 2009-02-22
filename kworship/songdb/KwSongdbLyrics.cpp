@@ -72,3 +72,8 @@ void KwSongdbLyrics::setMarkup(const QString& markup)
   m_markup = markup;
 }
 
+/// Set the lyrics from plain text verses.
+void KwSongdbLyrics::setPlainVerses(const QStringList& plainVerses)
+{
+  m_markup = plainVerses.join("\n\n");
+}

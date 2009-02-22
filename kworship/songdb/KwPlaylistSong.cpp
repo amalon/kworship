@@ -26,14 +26,16 @@
 #include "KwPlaylistSong.h"
 #include "KwPlaylistSongNode.h"
 #include "KwSongdbVersion.h"
+#include "KwSongdbSong.h"
 
 /*
  * Constructors + destructor.
  */
 
 /// Primary constructor.
-KwPlaylistSong::KwPlaylistSong(KwSongdbVersion* version)
+KwPlaylistSong::KwPlaylistSong(KwSongdbVersion* version, bool owned)
 : KwPlaylistItem()
+, m_owned(owned)
 , m_version(version)
 , m_lyricsLayout(version->lyrics())
 {
@@ -42,6 +44,11 @@ KwPlaylistSong::KwPlaylistSong(KwSongdbVersion* version)
 /// Destructor.
 KwPlaylistSong::~KwPlaylistSong()
 {
+  if (m_owned)
+  {
+    delete m_version->song();
+    delete m_version;
+  }
 }
 
 /*

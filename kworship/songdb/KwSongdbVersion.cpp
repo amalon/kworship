@@ -218,6 +218,16 @@ void KwSongdbVersion::setLyricsMarkup(const QString& markup)
   }
 }
 
+/// Set the lyrics plain text verses.
+void KwSongdbVersion::setLyricsPlainVerses(const QStringList& plainVerses)
+{
+  if (plainVerses != m_lyrics.plainVerses())
+  {
+    m_modifiedFields |= Lyrics;
+    m_lyrics.setPlainVerses(plainVerses);
+  }
+}
+
 /// Set the lyrics.
 void KwSongdbVersion::setLyrics(const KwSongdbLyrics& lyrics)
 {

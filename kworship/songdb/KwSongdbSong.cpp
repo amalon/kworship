@@ -40,6 +40,7 @@ KwSongdbSong::KwSongdbSong()
 : m_id(-1)
 , m_modifiedFields(Name)
 , m_name()
+, m_alternateName()
 , m_versionsLoaded(false)
 , m_versionIds()
 {
@@ -50,12 +51,13 @@ KwSongdbSong::KwSongdbSong(int id)
 : m_id(id)
 , m_modifiedFields(0)
 , m_name()
+, m_alternateName()
 , m_versionsLoaded(false)
 , m_versionIds()
 {
   // Get the song data
   QSqlQuery query(KwSongdb::self()->database());
-  query.prepare("SELECT `name`, `css_style_sheet_id` "
+  query.prepare("SELECT `name`, `alternate_name`, `css_style_sheet_id` "
                 "FROM `Song` "
                 "WHERE `id` = ?");
   query.addBindValue(QVariant(id));
@@ -65,6 +67,7 @@ KwSongdbSong::KwSongdbSong(int id)
   // Copy the data
   Q_ASSERT(query.first());
   m_name = query.value(0).toString();
+  m_alternateName = query.value(1).toString();
 
   // Register with songdb
   KwSongdb::self()->registerSong(this);
@@ -89,6 +92,12 @@ int KwSongdbSong::id() const
 QString KwSongdbSong::name() const
 {
   return m_name;
+}
+
+/// Get the alternate name of the song.
+QString KwSongdbSong::alternateName() const
+{
+  return m_alternateName;
 }
 
 /// Get list of song versions.
@@ -131,6 +140,16 @@ void KwSongdbSong::setName(const QString& name)
   }
 }
 
+/// Set the alternate name.
+void KwSongdbSong::setAlternateName(const QString& name)
+{
+  if (name != m_alternateName)
+  {
+    m_modifiedFields |= AlternateName;
+    m_alternateName = name;
+  }
+}
+
 /// Save changes to the song data.
 void KwSongdbSong::save()
 {
@@ -145,6 +164,12 @@ void KwSongdbSong::save()
     handled |= Name;
     fields.push_back("`name`=?");
     values.push_back(QVariant(m_name));
+  }
+  if (m_modifiedFields.testFlag(AlternateName))
+  {
+    handled |= AlternateName;
+    fields.push_back("`alternate_name`=?");
+    values.push_back(QVariant(m_alternateName));
   }
 
   bool insertion = (m_id < 0);

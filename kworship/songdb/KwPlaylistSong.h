@@ -43,7 +43,7 @@ class KDE_EXPORT KwPlaylistSong : public KwPlaylistItem
      */
 
     /// Primary constructor.
-    KwPlaylistSong(KwSongdbVersion* version);
+    KwPlaylistSong(KwSongdbVersion* version, bool owned = false);
 
     /// Destructor.
     virtual ~KwPlaylistSong();
@@ -76,6 +76,9 @@ class KDE_EXPORT KwPlaylistSong : public KwPlaylistItem
     /*
      * Variables
      */
+
+    /// Whether the version is owned or part of a database.
+    bool m_owned;
 
     /// Song version.
     KwSongdbVersion* m_version;

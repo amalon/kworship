@@ -60,6 +60,7 @@ CREATE TABLE CssRuleStyle (
 CREATE TABLE Song (
   `id`                  INT            NOT NULL  AUTO_INCREMENT,
   `name`                VARCHAR(128)   NOT NULL,
+  `alternate_name`      VARCHAR(128)   NOT NULL,
   `css_style_sheet_id`  INT            NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`name`),

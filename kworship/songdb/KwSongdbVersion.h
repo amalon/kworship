@@ -28,6 +28,8 @@
 
 #include "KwSongdbLyrics.h"
 
+#include <kdemacros.h>
+
 #include <QHash>
 #include <QVector>
 
@@ -35,7 +37,7 @@ class KwSongdbSong;
 class KwSongdbSongBookSong;
 
 /// A song version from the database.
-class KwSongdbVersion
+class KDE_EXPORT KwSongdbVersion
 {
   public:
 
@@ -118,6 +120,9 @@ class KwSongdbVersion
 
     /// Set the lyrics markup.
     void setLyricsMarkup(const QString& markup);
+
+    /// Set the lyrics plain text verses.
+    void setLyricsPlainVerses(const QStringList& plainVerses);
 
     /// Set the lyrics.
     void setLyrics(const KwSongdbLyrics& lyrics);

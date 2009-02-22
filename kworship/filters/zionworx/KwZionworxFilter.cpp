@@ -30,6 +30,8 @@
 #include <KwPlaylistList.h>
 #include <KwPlaylistText.h>
 #include <KwPlaylistSong.h>
+#include <KwSongdbSong.h>
+#include <KwSongdbVersion.h>
 #include <KwBiblePlaylistItem.h>
 #include <KwPlaylistPresentation.h>
 #include <KwCssStyleRule.h>
@@ -134,9 +136,26 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
                 }
                 else if (itemType == "siSong")
                 {
-                  KwPlaylistText* song = new KwPlaylistText(item.firstChildElement("Title").text(),
-                                                            item.firstChildElement("Lyrics").text().split("\n\n"));
-                  newItem = song;
+                  QString title1 = item.firstChildElement("Title1").text();
+                  QString title2 = item.firstChildElement("Title2").text();
+                  QString writer = item.firstChildElement("Writer").text();
+                  QString copyright = item.firstChildElement("Copyright").text();
+                  QString lyricsStr = item.firstChildElement("Lyrics").text();
+                  // Remove windows line endings and use newline to split
+                  lyricsStr.replace("\r\n", "\n");
+                  QStringList lyricsPlain = lyricsStr.split("\n\n");
+
+                  /// @todo Find song in database if possible
+                  KwSongdbSong* song = new KwSongdbSong();
+                  song->setName(title1);
+                  song->setAlternateName(title2);
+                  KwSongdbVersion* version = new KwSongdbVersion(song);
+                  version->setWriter(writer);
+                  version->setCopyright(copyright);
+                  version->setLyricsPlainVerses(lyricsPlain);
+
+                  KwPlaylistSong* songItem = new KwPlaylistSong(version, true);
+                  newItem = songItem;
                 }
                 else if (itemType == "siQuickNote")
                 {

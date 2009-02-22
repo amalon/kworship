@@ -26,13 +26,15 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include <kdemacros.h>
+
 #include <QString>
 #include <QList>
 
 class KwSongdbVersion;
 
 /// A song from the database.
-class KwSongdbSong
+class KDE_EXPORT KwSongdbSong
 {
   public:
 
@@ -43,7 +45,8 @@ class KwSongdbSong
     /// Version data fields.
     enum Field
     {
-      Name = 0x1
+      Name = 0x1,
+      AlternateName = 0x2
     };
     Q_DECLARE_FLAGS(Fields, Field)
 
@@ -76,6 +79,9 @@ class KwSongdbSong
     /// Get the name of the song.
     QString name() const;
 
+    /// Get the alternate name of the song.
+    QString alternateName() const;
+
     /// Get list of song versions.
     QList<KwSongdbVersion*> versions();
 
@@ -85,6 +91,9 @@ class KwSongdbSong
 
     /// Set the name.
     void setName(const QString& name);
+
+    /// Set the alternate name.
+    void setAlternateName(const QString& name);
 
     /// Save changes to the song data.
     void save();
@@ -106,6 +115,9 @@ class KwSongdbSong
 
     /// Name.
     QString m_name;
+
+    /// Alternate name.
+    QString m_alternateName;
 
     /// Whether versions have been loaded.
     bool m_versionsLoaded;

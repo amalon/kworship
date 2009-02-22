@@ -64,6 +64,9 @@ class KwSongdbLyrics
     /// Set the lyrics from markup.
     void setMarkup(const QString& markup);
 
+    /// Set the lyrics from plain text verses.
+    void setPlainVerses(const QStringList& plainVerses);
+
     /*
      * Equality + inequality operators
      */
