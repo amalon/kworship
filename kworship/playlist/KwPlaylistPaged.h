@@ -28,11 +28,13 @@
 
 #include "KwPlaylistItem.h"
 
+#include <kdemacros.h>
+
 #include <QStringList>
 #include <QVector>
 
 /// A paged plain text playlist item.
-class KwPlaylistPaged : public KwPlaylistItem
+class KDE_EXPORT KwPlaylistPaged : public KwPlaylistItem
 {
   public:
     
@@ -67,6 +69,9 @@ class KwPlaylistPaged : public KwPlaylistItem
 
     /// Get the content of a page.
     QString getPageText(unsigned int pageIndex) const;
+
+    /// Get the list of blocks.
+    QStringList blocks() const;
 
     virtual KwPlaylistNode* getNode(KwPlaylistNode* parent);
 

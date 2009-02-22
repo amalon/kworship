@@ -103,6 +103,19 @@ QString KwPlaylistPaged::getPageText(unsigned int pageIndex) const
   return m_pageContents[pageIndex];
 }
 
+/// Get the list of blocks.
+QStringList KwPlaylistPaged::blocks() const
+{
+  QStringList result;
+  for (int block = 0; block < m_blockStarts.size(); ++block)
+  {
+    unsigned int first = m_blockStarts[block];
+    unsigned int count = (block == m_blockStarts.size()-1 ? -1 : m_blockStarts[block+1]-first);
+    result += QStringList(m_pageContents.mid(first, count)).join("\n");
+  }
+  return result;
+}
+
 KwPlaylistNode* KwPlaylistPaged::getNode(KwPlaylistNode* parent)
 {
   return new KwPlaylistPagedNode(parent, this);

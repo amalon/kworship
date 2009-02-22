@@ -159,8 +159,12 @@ KwDocument* KwZionworxFilter::load(const KUrl& url, const QString& mimeType)
                 }
                 else if (itemType == "siQuickNote")
                 {
+                  QStringList quickNote = readStringList(item.firstChildElement("QuickNote"));
+                  // Rejoin list and split on blank lines
+                  /// @todo Handle more than 2 newlines without losing data
+                  quickNote = quickNote.join("\n").split("\n\n");
                   KwPlaylistText* note = new KwPlaylistText(item.firstChildElement("Title").text(),
-                                                            readStringList(item.firstChildElement("QuickNote")));
+                                                            quickNote);
                   newItem = note;
                 }
                 else if (itemType == "siBible")
@@ -632,7 +636,7 @@ class KwZionworxFilter::ExportToDom
       /// @todo Store and reload right to leftness of songs.
       QDomElement item = createPlaylistItem(document, node,
                                             "siSong", song->name(),
-                                            true);
+                                            false);
 
       QDomElement title1El = document.createElement("Title1");
       if (!song->name().isEmpty())
@@ -672,6 +676,28 @@ class KwZionworxFilter::ExportToDom
     {
       QDomElement node = createPlaylistNode(document, element);
       QDomElement style = createOverlayStyle(document, node, self);
+      /// @todo Get bi di from text item
+      QDomElement item = createPlaylistItem(document, node,
+                                            "siQuickNote", self->getLabel(),
+                                            false);
+
+      QDomElement quickNoteEl = document.createElement("QuickNote");
+      quickNoteEl.appendChild(document.createTextNode("(TTntStringList)"));
+      {
+        QDomElement definedPropsEl = document.createElement("DefinedProperties");
+        QByteArray propsData;
+        KwPascalStream data(&propsData, QIODevice::WriteOnly);
+
+        QStringList quickNote = self->blocks();
+        // resplit on newlines
+        quickNote = quickNote.join("\n\n").split('\n');
+        data.writeProperty("Strings", quickNote);
+
+        propsData = propsData.toBase64();
+        definedPropsEl.appendChild(document.createTextNode(propsData));
+        quickNoteEl.appendChild(definedPropsEl);
+      }
+      item.appendChild(quickNoteEl);
       return 0;
     }
     static int bible(const KwBiblePlaylistItem* self, QDomDocument& document, QDomElement& element)

@@ -102,6 +102,14 @@ QByteArray KwPascalStream::readLString()
   return m_d->read(len);
 }
 
+/// Read wide string.
+QString KwPascalStream::readWString()
+{
+  uint32_t len = read32();
+  QByteArray data = m_d->read(len>>1);
+  return QString::fromUtf8(data, data.size());
+}
+
 /// Read UTF8 string.
 QString KwPascalStream::readUtf8String()
 {
@@ -298,7 +306,12 @@ KwPascalStream& KwPascalStream::operator >> (QVariant& var)
     case vaSingle:
     case vaCurrency:
     case vaDate:
+      /// @todo Implement missing readers
+      var = 0;
+      break;
     case vaWString:
+      var = readWString();
+      break;
     case vaInt64:
       /// @todo Implement missing readers
       var = 0;

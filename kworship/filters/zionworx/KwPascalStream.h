@@ -73,6 +73,9 @@ class KwPascalStream
     /// Read long string.
     QByteArray readLString();
 
+    /// Read wide string.
+    QString readWString();
+
     /// Read UTF8 string.
     QString readUtf8String();
 
@@ -149,22 +152,22 @@ class KwPascalStream
       vaInt8,
       vaInt16,
       vaInt32,
-      vaExtended,
+      vaExtended, // 5
       vaString,
       vaIdent,
       vaFalse,
       vaTrue,
-      vaBinary,
+      vaBinary, // 10
       vaSet,
       vaLString,
       vaNil,
       vaCollection,
-      vaSingle,
+      vaSingle, // 15
       vaCurrency,
       vaDate,
       vaWString,
       vaInt64,
-      vaUTF8String
+      vaUTF8String // 20
     };
 
     /*
