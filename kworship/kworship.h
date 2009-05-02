@@ -22,7 +22,7 @@
 
 #include "ui_prefs_base.h"
 #include "ui_prefsDisplay_base.h"
-#include "ui_prefsSongDB_base.h"
+#include "ui_prefsDatabase_base.h"
 #include "ui_prefsPresentations_base.h"
 #include "KwLocalDisplayController.h"
 

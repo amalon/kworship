@@ -140,7 +140,6 @@ target_link_libraries(kworshipmain
                       ${QT_LIBRARIES}
                       ${PHONON_LIBS}
                       unipresent
-                      kworshipsongdb
 )
 
 set(kworship_SRCS
