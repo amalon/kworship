@@ -26,7 +26,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "UpExport.h"
 
 #include <QObject>
 #include <QString>
@@ -39,7 +39,7 @@ class UpPresentation;
 /** An abstract presentation manager.
  * Inherit from this class to implement each backend.
  */
-class KDE_EXPORT UpBackend : public QObject
+class UNIPRESENT_EXPORT UpBackend : public QObject
 {
   Q_OBJECT
   public:

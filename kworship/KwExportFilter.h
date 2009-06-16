@@ -27,8 +27,7 @@
  */
 
 #include "KwFilter.h"
-
-#include <kdemacros.h>
+#include "KwExport.h"
 
 #include <QStringList>
 #include <QString>
@@ -38,7 +37,7 @@ class KwDocument;
 class KUrl;
 
 /// Export file filter.
-class KDE_EXPORT KwExportFilter : public virtual KwFilter
+class KWMAIN_EXPORT KwExportFilter : public virtual KwFilter
 {
   public:
 

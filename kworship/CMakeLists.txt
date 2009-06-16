@@ -151,8 +151,8 @@ target_link_libraries(kworship kworshipmain)
 
 ########### install files ###############
 
-install(TARGETS kworshipmain DESTINATION ${LIB_INSTALL_DIR} )
-install(TARGETS kworship DESTINATION ${BIN_INSTALL_DIR} )
+install(TARGETS kworshipmain DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS} )
+install(TARGETS kworship DESTINATION ${INSTALL_TARGETS_DEFAULT_ARGS} )
 
 install( FILES kworship.desktop  DESTINATION  ${XDG_APPS_INSTALL_DIR} )
 install( FILES kworship.kcfg  DESTINATION  ${KCFG_INSTALL_DIR} )

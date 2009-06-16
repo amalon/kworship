@@ -31,7 +31,7 @@
 #include "KwTextManager.h"
 #include "KwOverlayManager.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 class KwCssScope;
 
@@ -41,7 +41,7 @@ class KwMediaManager;
 /**
  * High level interface for controlling a display object.
  */
-class KDE_EXPORT KwDisplayManager
+class KWMAIN_EXPORT KwDisplayManager
 {
   public:
 

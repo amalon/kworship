@@ -27,17 +27,16 @@
  */
 
 #include "KwBiblePassage.h"
+#include "KwBibleExport.h"
 
 #include <KwPlaylistItem.h>
-
-#include <kdemacros.h>
 
 #include <QString>
 
 class KwBibleManager;
 
 /// A playlist item for bible passages.
-class KDE_EXPORT KwBiblePlaylistItem : public KwPlaylistItem
+class KWBIBLE_EXPORT KwBiblePlaylistItem : public KwPlaylistItem
 {
     KW_PLAYLIST_ITEM
     KW_CSS_SCOPE("bible")

@@ -109,8 +109,8 @@ QStringList KwPlaylistPaged::blocks() const
   QStringList result;
   for (int block = 0; block < m_blockStarts.size(); ++block)
   {
-    unsigned int first = m_blockStarts[block];
-    unsigned int count = (block == m_blockStarts.size()-1 ? -1 : m_blockStarts[block+1]-first);
+    int first = m_blockStarts[block];
+    int count = (block == m_blockStarts.size()-1 ? -1 : m_blockStarts[block+1]-first);
     result += QStringList(m_pageContents.mid(first, count)).join("\n");
   }
   return result;

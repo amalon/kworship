@@ -29,7 +29,7 @@
 #include "KwAbstractDisplayManager.h"
 #include "KwTextStyle.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 #include <QString>
 
@@ -40,7 +40,7 @@ class KwTextLayer;
 /**
  * High level interface for controlling text on screen.
  */
-class KDE_EXPORT KwTextManager : public KwAbstractDisplayManager
+class KWMAIN_EXPORT KwTextManager : public KwAbstractDisplayManager
 {
   public:
 

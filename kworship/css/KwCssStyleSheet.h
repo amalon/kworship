@@ -26,7 +26,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 #include <QList>
 
@@ -38,7 +38,7 @@ class KwCssSchema;
  * Represents a set of style definitions.
  * These definitions may be backed up by a CSS-like file.
  */
-class KDE_EXPORT KwCssStyleSheet
+class KWMAIN_EXPORT KwCssStyleSheet
 {
   public:
 

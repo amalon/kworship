@@ -25,9 +25,9 @@
 #include "ui_prefsDatabase_base.h"
 #include "ui_prefsPresentations_base.h"
 #include "KwLocalDisplayController.h"
+#include "KwExport.h"
 
 #include <kxmlguiwindow.h>
-#include <kdemacros.h>
 
 #include <QModelIndex>
 
@@ -63,7 +63,7 @@ class QTextEdit;
  * @author Andreas Pakulat <apaku@gmx.de>
  * @version 0.1
  */
-class KDE_EXPORT kworship : public KXmlGuiWindow
+class KWMAIN_EXPORT kworship : public KXmlGuiWindow
 {
     Q_OBJECT
 public:

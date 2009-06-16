@@ -26,8 +26,9 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "KwExport.h"
+
 #include <KApplication>
-#include <kdemacros.h>
 
 #include <QSqlDatabase>
 
@@ -36,7 +37,7 @@ class KwFilterManager;
 class kworship;
 
 /// Application global data.
-class KDE_EXPORT KwApplication
+class KWMAIN_EXPORT KwApplication
 {
   public:
 

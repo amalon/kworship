@@ -26,7 +26,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "KwExport.h"
 
 #include <KParts/Plugin>
 
@@ -39,7 +39,7 @@ class KConfigDialog;
 class QDockWidget;
 
 /// An abstract KWorship plugin.
-class KDE_EXPORT KwPlugin : public KParts::Plugin
+class KWMAIN_EXPORT KwPlugin : public KParts::Plugin
 {
     Q_OBJECT
 

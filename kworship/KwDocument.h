@@ -26,8 +26,9 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "KwExport.h"
+
 #include <KUrl>
-#include <kdemacros.h>
 
 #include <QObject>
 
@@ -35,7 +36,7 @@ class KwPlaylistList;
 class KwLoadSaveFilter;
 
 /// A KWorship document (anything saved in a KWorship data file).
-class KDE_EXPORT KwDocument : public QObject
+class KWMAIN_EXPORT KwDocument : public QObject
 {
     Q_OBJECT
 

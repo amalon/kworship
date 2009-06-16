@@ -26,7 +26,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "UpExport.h"
 
 #include <QObject>
 #include <QUrl>
@@ -39,7 +39,7 @@ class UpPresentation;
 class UpPresentationsModel;
 
 /// Overall unipresent manager.
-class KDE_EXPORT UpManager : public QObject
+class UNIPRESENT_EXPORT UpManager : public QObject
 {
     Q_OBJECT
 

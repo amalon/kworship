@@ -29,22 +29,22 @@
 #include "KwCssAbstractStyle.h"
 #include "KwCssUnprocessed.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 /// Stringify a type.
 template <typename T>
-KDE_EXPORT KwCssUnprocessed KwCssStringify(const T& value);
+KWMAIN_EXPORT KwCssUnprocessed KwCssStringify(const T& value);
 
 /// Unstringify a type.
 template <typename T>
-KDE_EXPORT T KwCssUnstringify(const KwCssUnprocessed& value, bool* success);
+KWMAIN_EXPORT T KwCssUnstringify(const KwCssUnprocessed& value, bool* success);
 
 /// Typed cascading style property.
 /**
  * @param T The type of the property.
  */
 template <typename T>
-class KDE_EXPORT KwCssStyle : public KwCssAbstractStyle
+class KWMAIN_EXPORT KwCssStyle : public KwCssAbstractStyle
 {
   public:
 

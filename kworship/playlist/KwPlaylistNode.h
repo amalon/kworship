@@ -28,7 +28,7 @@
 
 #include "NodeBasedModel.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 class KwDisplayManager;
 
@@ -36,7 +36,7 @@ class KwDisplayManager;
 /**
  * Inherit from this class for each playlist node type.
  */
-class KDE_EXPORT KwPlaylistNode : public DefaultModelNode
+class KWMAIN_EXPORT KwPlaylistNode : public DefaultModelNode
 {
   public:
     

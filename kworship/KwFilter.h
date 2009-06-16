@@ -26,12 +26,12 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "KwExport.h"
 
 #include <QString>
 
 /// Export file filter.
-class KDE_EXPORT KwFilter
+class KWMAIN_EXPORT KwFilter
 {
   public:
 

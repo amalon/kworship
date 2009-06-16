@@ -30,7 +30,7 @@
 #include "KwFilterObject.h"
 #include "Factory.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 #include <QString>
 #include <QList>
@@ -56,7 +56,7 @@ class KwPlaylistNode;
 /**
  * Inherit from this class for each playlist item type.
  */
-class KDE_EXPORT KwPlaylistItem : public KwFilterObject, public KwCssScope
+class KWMAIN_EXPORT KwPlaylistItem : public KwFilterObject, public KwCssScope
 {
   public:
 

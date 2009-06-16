@@ -26,13 +26,13 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "KwSongdbExport.h"
 
 #include <QString>
 #include <QStringList>
 
 /// Contains and manupulates a set of song lyrics.
-class KDE_EXPORT KwSongdbLyrics
+class KWSONGDB_EXPORT KwSongdbLyrics
 {
   public:
 

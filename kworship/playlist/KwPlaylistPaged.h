@@ -28,13 +28,13 @@
 
 #include "KwPlaylistItem.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 #include <QStringList>
 #include <QVector>
 
 /// A paged plain text playlist item.
-class KDE_EXPORT KwPlaylistPaged : public KwPlaylistItem
+class KWMAIN_EXPORT KwPlaylistPaged : public KwPlaylistItem
 {
   public:
     

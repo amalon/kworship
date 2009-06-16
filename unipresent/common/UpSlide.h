@@ -26,17 +26,17 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "UpExport.h"
+
 #include <QObject>
 #include <QPixmap>
-
-#include <kdemacros.h>
 
 class QTextDocument;
 
 /** An abstract presentation slide.
  * Inherit from this class to implement each backend's presentation slide.
  */
-class KDE_EXPORT UpSlide : public QObject
+class UNIPRESENT_EXPORT UpSlide : public QObject
 {
   Q_OBJECT
   public:

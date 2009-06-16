@@ -26,7 +26,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "KwSongdbExport.h"
 
 #include <QString>
 #include <QList>
@@ -34,7 +34,7 @@
 class KwSongdbVersion;
 
 /// A song from the database.
-class KDE_EXPORT KwSongdbSong
+class KWSONGDB_EXPORT KwSongdbSong
 {
   public:
 

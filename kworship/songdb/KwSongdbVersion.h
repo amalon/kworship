@@ -27,8 +27,7 @@
  */
 
 #include "KwSongdbLyrics.h"
-
-#include <kdemacros.h>
+#include "KwSongdbExport.h"
 
 #include <QHash>
 #include <QVector>
@@ -37,7 +36,7 @@ class KwSongdbSong;
 class KwSongdbSongBookSong;
 
 /// A song version from the database.
-class KDE_EXPORT KwSongdbVersion
+class KWSONGDB_EXPORT KwSongdbVersion
 {
   public:
 

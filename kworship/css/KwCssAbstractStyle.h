@@ -26,7 +26,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 #include <QString>
 
@@ -34,7 +34,7 @@ class KwCssAbstractStyle;
 class KwCssAbstractStyleState;
 
 /// Abstract cascading style property.
-class KDE_EXPORT KwCssAbstractStyle
+class KWMAIN_EXPORT KwCssAbstractStyle
 {
   public:
 

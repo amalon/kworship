@@ -29,14 +29,14 @@
 #include "KwPlaylistItem.h"
 #include "KwResourceLink.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 #include <QUrl>
 
 class KwDisplayManager;
 
 /// A file based playlist item.
-class KDE_EXPORT KwPlaylistFile : public KwPlaylistItem
+class KWMAIN_EXPORT KwPlaylistFile : public KwPlaylistItem
 {
     KW_PLAYLIST_ITEM
 

@@ -26,7 +26,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "KwExport.h"
 
 #include <QList>
 #include <QHash>
@@ -37,7 +37,7 @@ class KwExportFilter;
 class KwLoadSaveFilter;
 
 /// Manages file filter.
-class KDE_EXPORT KwFilterManager
+class KWMAIN_EXPORT KwFilterManager
 {
   public:
 

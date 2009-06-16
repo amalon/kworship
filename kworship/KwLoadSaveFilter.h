@@ -28,15 +28,14 @@
 
 #include "KwImportFilter.h"
 #include "KwExportFilter.h"
-
-#include <kdemacros.h>
+#include "KwExport.h"
 
 /// Load and save file filter.
 /**
  * Load save filters can be included on the list of file formats in
  * save and load as well as in import and export.
  */
-class KDE_EXPORT KwLoadSaveFilter : public KwImportFilter, public KwExportFilter
+class KWMAIN_EXPORT KwLoadSaveFilter : public KwImportFilter, public KwExportFilter
 {
   public:
 

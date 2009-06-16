@@ -28,7 +28,7 @@
 
 #include "KwPlaylistItem.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 #include <QList>
 
@@ -36,7 +36,7 @@
 /**
  * Inherit from this class for each playlist item type.
  */
-class KDE_EXPORT KwPlaylistList : public KwPlaylistItem
+class KWMAIN_EXPORT KwPlaylistList : public KwPlaylistItem
 {
     KW_PLAYLIST_ITEM
 

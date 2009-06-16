@@ -26,15 +26,15 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwPlaylistItem.h"
 #include "KwSongdbLyricsLayout.h"
+#include "KwSongdbExport.h"
 
-#include <kdemacros.h>
+#include <KwPlaylistItem.h>
 
 class KwSongdbVersion;
 
 /// A song playlist item.
-class KDE_EXPORT KwPlaylistSong : public KwPlaylistItem
+class KWSONGDB_EXPORT KwPlaylistSong : public KwPlaylistItem
 {
   public:
     

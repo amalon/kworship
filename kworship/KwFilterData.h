@@ -26,10 +26,10 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <kdemacros.h>
+#include "KwExport.h"
 
 /// Additional data stored by the import filter.
-class KDE_EXPORT KwFilterData
+class KWMAIN_EXPORT KwFilterData
 {
   public:
 

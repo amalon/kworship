@@ -29,11 +29,11 @@
 #include "KwCssScope.h"
 #include "KwCssSchema.h"
 
-#include <kdemacros.h>
+#include <KwExport.h>
 
 /// Simple class for accessing a style.
 template <typename T>
-class KDE_EXPORT KwCssStyleAccessor
+class KWMAIN_EXPORT KwCssStyleAccessor
 {
   public:
     virtual ~KwCssStyleAccessor()
@@ -44,7 +44,7 @@ class KDE_EXPORT KwCssStyleAccessor
      */
     T operator () (const KwCssScope* scope) const
     {
-      return scope->getStyles().getStyle<T>(m_name);
+      return scope->getStyles().template getStyle<T>(m_name);
     }
 
     void registerToSchema(KwCssSchema* schema) const
@@ -90,7 +90,7 @@ class KDE_EXPORT KwCssStyleAccessor
 
 /// Define a property in a css namespace.
 #define KWCSS_DEFINE_PROPERTY(TYPE, LNAME) \
-  class KDE_EXPORT Acc_##LNAME : public KwCssStyleAccessor< TYPE > \
+  class KWMAIN_EXPORT Acc_##LNAME : public KwCssStyleAccessor< TYPE > \
   { \
     public: \
       Acc_##LNAME() \
@@ -100,7 +100,7 @@ class KDE_EXPORT KwCssStyleAccessor
         registerToSchema(schema()); \
       } \
   }; \
-  KDE_EXPORT KWCSS_EXTERN Acc_##LNAME LNAME;
+  KWMAIN_EXPORT KWCSS_EXTERN Acc_##LNAME LNAME;
 
 #define KWCSS_EXTERN extern
 

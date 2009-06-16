@@ -1,6 +1,6 @@
 /***************************************************************************
  *   This file is part of KWorship.                                        *
- *   Copyright 2008 James Hogan <james@albanarts.com>                      *
+ *   Copyright 2009 James Hogan <james@albanarts.com>                      *
  *                                                                         *
  *   KWorship is free software: you can redistribute it and/or modify      *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,60 +17,23 @@
  *   Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.   *
  ***************************************************************************/
 
-#ifndef _KwImportFilter_h_
-#define _KwImportFilter_h_
+#ifndef _KwExport_h_
+#define _KwExport_h_
 
 /**
- * @file KwImportFilter.h
- * @brief Import file filter.
+ * @file KwExport.h
+ * @brief Define export macros for kworshipmain.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "KwFilter.h"
-#include "KwExport.h"
+#include <kdemacros.h>
 
-#include <QStringList>
+#if defined(MAKE_KWORSHIPMAIN_LIB)
+  // Building library
+  #define KWMAIN_EXPORT KDE_EXPORT
+#else
+  // Using library
+  #define KWMAIN_EXPORT KDE_IMPORT
+#endif
 
-class KwDocument;
-class KUrl;
-
-/// Import file filter.
-class KWMAIN_EXPORT KwImportFilter : public virtual KwFilter
-{
-  public:
-
-    /*
-     * Constructors + destructor
-     */
-
-    /// Primary constructor.
-    KwImportFilter();
-
-    /// Destructor.
-    virtual ~KwImportFilter();
-
-    /*
-     * Main interface
-     */
-    
-    /// Load the document from a file.
-    virtual KwDocument* load(const KUrl& url, const QString& mimeType) = 0;
-
-    /*
-     * Accessors
-     */
-
-    /// Get a list of importable mime types.
-    QStringList importMimeTypes() const;
-
-  protected:
-
-    /*
-     * Variables
-     */
-
-    /// List of import mime types.
-    QStringList m_importMimeTypes;
-};
-
-#endif // _KwImportFilter_h_
+#endif // _KwExport_h_

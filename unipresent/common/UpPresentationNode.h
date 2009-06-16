@@ -26,14 +26,14 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "NodeBasedModel.h"
+#include "UpExport.h"
 
-#include <kdemacros.h>
+#include <NodeBasedModel.h>
 
 class UpPresentation;
 
 /// A presentations node for a presentation.
-class KDE_EXPORT UpPresentationNode : public DefaultModelNode
+class UNIPRESENT_EXPORT UpPresentationNode : public DefaultModelNode
 {
   public:
     

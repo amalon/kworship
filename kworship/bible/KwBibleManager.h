@@ -26,9 +26,9 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-#include <Factory.h>
+#include "KwBibleExport.h"
 
-#include <kdemacros.h>
+#include <Factory.h>
 
 #include <QObject>
 #include <QStringList>
@@ -57,7 +57,7 @@ class KwBibleModule;
   bool X::s_registered = false;
 
 /// A bible manager (analagous to a SWORD manager).
-class KDE_EXPORT KwBibleManager : public QObject
+class KWBIBLE_EXPORT KwBibleManager : public QObject
 {
     Q_OBJECT
 

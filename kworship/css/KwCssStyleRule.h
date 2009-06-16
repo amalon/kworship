@@ -29,9 +29,9 @@
 #include "KwCssScopeKey.h"
 #include "KwCssStyles.h"
 
-#include "CountedReference.h"
+#include <KwExport.h>
 
-#include <kdemacros.h>
+#include <CountedReference.h>
 
 #include <QString>
 #include <QStringList>
@@ -39,7 +39,7 @@
 #include <QList>
 
 /// Rule for apply cascading styles.
-class KDE_EXPORT KwCssStyleRule
+class KWMAIN_EXPORT KwCssStyleRule
 {
   public:
 
