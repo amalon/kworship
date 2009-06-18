@@ -148,10 +148,10 @@ IF (    UNO_OO_HOME
       OUTPUT ${UNO_RDB} ${UNO_HPPFILES}
       COMMAND ${UNO_TOOL_ENV} ${UNO_REGMERGE} ${UNO_RDB} / ${UNO_OO_RDBS} #${UNO_URDFILES}
       COMMAND ${UNO_TOOL_ENV} ${UNO_CPPUMAKER} -Gc -BUCR -O${UNO_COMPONENT_INC} ${UNO_TYPELIST} ${UNO_RDB}
-      COMMAND ${UNO_TOOL_ENV} echo ${UNO_REGCOMP} -register -r ${UNO_RDB} -c connector.uno.${UNO_SHLIB_EXT}
-      COMMAND ${UNO_TOOL_ENV} echo ${UNO_REGCOMP} -register -r ${UNO_RDB} -c remotebridge.uno.${UNO_SHLIB_EXT}
-      COMMAND ${UNO_TOOL_ENV} echo ${UNO_REGCOMP} -register -r ${UNO_RDB} -c bridgefac.uno.${UNO_SHLIB_EXT}
-      COMMAND ${UNO_TOOL_ENV} echo ${UNO_REGCOMP} -register -r ${UNO_RDB} -c uuresolver.uno.${UNO_SHLIB_EXT}
+      COMMAND ${UNO_TOOL_ENV} ${UNO_REGCOMP} -register -r ${UNO_RDB} -c connector.uno.${UNO_SHLIB_EXT}
+      COMMAND ${UNO_TOOL_ENV} ${UNO_REGCOMP} -register -r ${UNO_RDB} -c remotebridge.uno.${UNO_SHLIB_EXT}
+      COMMAND ${UNO_TOOL_ENV} ${UNO_REGCOMP} -register -r ${UNO_RDB} -c bridgefac.uno.${UNO_SHLIB_EXT}
+      COMMAND ${UNO_TOOL_ENV} ${UNO_REGCOMP} -register -r ${UNO_RDB} -c uuresolver.uno.${UNO_SHLIB_EXT}
       DEPENDS ${UNO_OO_RDBS}
     )
 

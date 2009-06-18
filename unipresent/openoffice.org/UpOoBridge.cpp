@@ -28,9 +28,9 @@
 
 #include <KStandardDirs>
 #include <KLocale>
+#include <KDebug>
 
 #include <QByteArray>
-#include <QtDebug>
 
 #include <cppuhelper/bootstrap.hxx>
 #include <osl/file.hxx>
@@ -64,7 +64,7 @@ UpOoBridge::UpOoBridge()
   QString rdbFileBa = KStandardDirs::locate("data", TYPESDB);
   if (rdbFileBa.isNull())
   {
-    qDebug() << BACKEND_NAME << i18n("couldn't find data %1").arg(TYPESDB);
+    kdError() << BACKEND_NAME << i18n("couldn't find data %1").arg(TYPESDB);
     return;
   }
 
@@ -81,6 +81,11 @@ UpOoBridge::UpOoBridge()
     Reference<XUnoUrlResolver> resolver(componentFactory->createInstanceWithContext(
                                         OUString::createFromAscii("com.sun.star.bridge.UnoUrlResolver"),
                                         componentContext), UNO_QUERY);
+    if (!resolver.is())
+    {
+      kdError() << BACKEND_NAME << i18n("could not create instance of XUnoUrlResolver");
+      return;
+    }
     try
     {
       m_serviceManager = resolver->resolve(connectionString);
@@ -93,7 +98,7 @@ UpOoBridge::UpOoBridge()
       {
         // not valid
         OUString message = exception.Message;
-        qDebug() << BACKEND_NAME << QString::fromUtf16((const sal_Unicode*)message, message.getLength()) << i18n("(start OpenOffice.org with %1)").arg(QString()+"soffice \"-accept=" + connectionBaCore + "\"");
+        kdDebug() << BACKEND_NAME << QString::fromUtf16((const sal_Unicode*)message, message.getLength()) << i18n("(start OpenOffice.org with %1)").arg(QString()+"soffice \"-accept=" + connectionBaCore + "\"");
         return;
       }
       else
