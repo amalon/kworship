@@ -35,7 +35,7 @@
 #include <com/sun/star/presentation/XPresentationSupplier.hpp>
 #include <com/sun/star/presentation/XPresentation.hpp>
 
-#include <cassert>
+#include <QtGlobal>
 
 using namespace com::sun::star::drawing;
 using namespace com::sun::star::frame;
@@ -54,7 +54,7 @@ UpOoPresentation::UpOoPresentation(uno::XInterface* interface, UpOoBackend* pare
 {
   // Get the url
   Reference<XModel> model(interface, UNO_QUERY);
-  assert(0 != model.get());
+  Q_ASSERT(0 != model.get());
   m_url = QString::fromUtf16((const sal_Unicode*)model->getURL());
 }
 
@@ -97,7 +97,7 @@ void UpOoPresentation::setSlideshow(QString slideshow)
 int UpOoPresentation::numSlides()
 {
   Reference<XDrawPagesSupplier> drawPagesSupplier(m_interface, UNO_QUERY);
-  assert(0 != drawPagesSupplier.get());
+  Q_ASSERT(0 != drawPagesSupplier.get());
   Reference<XDrawPages> drawPages = drawPagesSupplier->getDrawPages();
   return drawPages->getCount();
 }
@@ -105,7 +105,7 @@ int UpOoPresentation::numSlides()
 UpSlide* UpOoPresentation::slide(int index)
 {
   Reference<XDrawPagesSupplier> drawPagesSupplier(m_interface, UNO_QUERY);
-  assert(0 != drawPagesSupplier.get());
+  Q_ASSERT(0 != drawPagesSupplier.get());
   Reference<XDrawPages> drawPages = drawPagesSupplier->getDrawPages();
   Reference<XDrawPage> drawPage;
   drawPages->getByIndex(index) >>= drawPage;

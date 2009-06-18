@@ -28,8 +28,6 @@
 #include <com/sun/star/drawing/XShapes.hpp>
 #include <com/sun/star/text/XText.hpp>
 
-#include <cassert>
-
 using namespace com::sun::star::drawing;
 using namespace com::sun::star::text;
 using namespace com::sun::star::uno;
