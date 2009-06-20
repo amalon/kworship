@@ -91,7 +91,9 @@ int KwBibleModuleSword::numChapters(int book)
   if (testament >= 0)
   {
     sword::VerseKey key = m_module->getKey();
-    return key.books[testament][testamentBook].chapmax;
+    key.Testament(1+testament);
+    key.Book(1+testamentBook);
+    return key.getChapterMax();
   }
   return 0;
 }
@@ -105,9 +107,12 @@ int KwBibleModuleSword::numVerses(int book, int chapter)
     if (testament >= 0)
     {
       sword::VerseKey key = m_module->getKey();
-      if (chapter < key.books[testament][testamentBook].chapmax)
+      key.Testament(1+testament);
+      key.Book(1+testamentBook);
+      if (chapter < key.getChapterMax())
       {
-        return key.books[testament][testamentBook].versemax[chapter];
+        key.Chapter(1+chapter);
+        return key.getVerseMax();
       }
     }
   }
@@ -157,7 +162,9 @@ void KwBibleModuleSword::obtainBooks()
     int testamentBook;
     int testament = bibleToTestamentBook(bibleIndex, &testamentBook);
     Q_ASSERT(testament >= 0);
-    books << QString::fromUtf8(key.books[testament][testamentBook].name);
+    key.Testament(1+testament);
+    key.Book(1+testamentBook);
+    books << QString::fromUtf8(key.getBookName());
   }
   setBooks(books);
 }

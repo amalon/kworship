@@ -2,15 +2,13 @@ project(kworship_bible_biblegateway)
 
 find_package(KDE4 REQUIRED)
 include (KDE4Defaults)
-find_package(Sword REQUIRED)
 
 set(kworship_bible_biblegateway_SRCS
     KwBibleManagerBibleGateway.cpp
     KwBibleModuleBibleGateway.cpp
 )
 
-include_directories(${SWORD_INCLUDE_DIR}
-                    ..)
+include_directories(..)
 
 kde4_add_plugin(kworship_bible_biblegateway ${kworship_bible_biblegateway_SRCS})
 
