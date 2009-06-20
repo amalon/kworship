@@ -41,6 +41,8 @@ else (NOT SHOULD_BUILD_OOO_PLUGIN)
         com.sun.star.container.XEnumerationAccess
         com.sun.star.container.XIndexAccess
         com.sun.star.container.XHierarchicalNameAccess
+        com.sun.star.document.XDocumentEventBroadcaster
+        com.sun.star.document.XDocumentEventListener
         com.sun.star.drawing.XDrawPagesSupplier
         com.sun.star.drawing.XDrawPages
         com.sun.star.drawing.XDrawPage
@@ -51,9 +53,14 @@ else (NOT SHOULD_BUILD_OOO_PLUGIN)
         com.sun.star.lang.XComponent
         com.sun.star.lang.XMultiComponentFactory
         com.sun.star.lang.XMultiServiceFactory
+        com.sun.star.lang.XTypeProvider
         com.sun.star.presentation.XPresentationSupplier
         com.sun.star.presentation.XPresentation
+        com.sun.star.presentation.XPresentation2
+        com.sun.star.presentation.XSlideShowController
         com.sun.star.registry.XSimpleRegistry
+        com.sun.star.uno.XAggregation
+        com.sun.star.uno.XWeak
     )
 
     set(unipresent_openoffice_SRCS

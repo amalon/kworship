@@ -54,11 +54,13 @@ UpOoSlide::~UpOoSlide()
 
 QString UpOoSlide::title()
 {
-  return UpSlide::title();
+  // see presentation::DrawPage::HeaderText
+  return outline();
 }
 
 QString UpOoSlide::outline()
 {
+  // see presentation::OutlinerShape
   QStringList result;
   // Go through the shapes
   Reference<XShapes> shapes(m_interface, UNO_QUERY);
@@ -78,6 +80,10 @@ QString UpOoSlide::outline()
 
 QPixmap UpOoSlide::preview()
 {
+  // see drawing::XSlidePreviewCache:getSlidePreview
+  // see http://www.oooforum.org/forum/viewtopic.phtml?t=14697 about event
+  // listeners for when slide preview not immediately available
+  // would have to return empty pixmap and have signal to say its changed
   return QPixmap();
 }
 

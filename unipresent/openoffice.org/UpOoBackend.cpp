@@ -41,21 +41,102 @@
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/container/XEnumeration.hpp>
 #include <com/sun/star/container/XEnumerationAccess.hpp>
+#include <com/sun/star/document/XDocumentEventBroadcaster.hpp>
+#include <com/sun/star/document/XDocumentEventListener.hpp>
 #include <com/sun/star/frame/XComponentLoader.hpp>
 #include <com/sun/star/frame/XDesktop.hpp>
 #include <com/sun/star/lang/XMultiComponentFactory.hpp>
 #include <com/sun/star/presentation/XPresentationSupplier.hpp>
 #include <com/sun/star/uno/XComponentContext.hpp>
+#include <cppuhelper/implbase1.hxx>
 
 using namespace com::sun::star::beans;
 using namespace com::sun::star::container;
+using namespace com::sun::star::document;
 using namespace com::sun::star::frame;
 using namespace com::sun::star::lang;
 using namespace com::sun::star::presentation;
 using namespace com::sun::star::uno;
+using namespace com::sun::star;
 using namespace rtl;
 
 K_EXPORT_COMPONENT_FACTORY( unipresent_openoffice, KGenericFactory<UpOoBackend>("unipresent_openoffice") )
+
+/*
+ * Types
+ */
+
+class UpOoBackend::DocumentEventListener : public ::cppu::WeakImplHelper1<XDocumentEventListener>
+{
+  public:
+    /*
+     * Constructors + destructor
+     */
+
+    /// Primary constructor.
+    DocumentEventListener(UpOoBackend* backend, const Reference<XDocumentEventBroadcaster>& broadcaster)
+    : m_backend(backend)
+    , m_broadcaster(broadcaster)
+    {
+      kdDebug() << __PRETTY_FUNCTION__;
+    }
+
+    /// Virtual destructor.
+    ~DocumentEventListener()
+    {
+      kdDebug() << __PRETTY_FUNCTION__;
+      if (m_broadcaster.is())
+      {
+        Reference<XDocumentEventListener> xRefListener = static_cast<XDocumentEventListener*>(this); 
+        m_broadcaster->removeDocumentEventListener(xRefListener); 
+      }
+    }
+
+    /*
+     * Virtual functions
+     */
+
+    /// Main document event handler.
+    virtual void SAL_CALL documentEventOccured(const DocumentEvent& event)
+      throw(RuntimeException)
+    {
+      // Only handle new documents
+      // NOTE: OnCreate and OnLoadFinished can be used before the presentation is made visible
+      //       OnNew and OnLoad are only after the presentation is made visible
+      if (event.EventName.equalsAscii("OnNew") ||
+          event.EventName.equalsAscii("OnLoad"))
+      {
+        // Specifically, only presentations
+        Reference<XPresentationSupplier> presentationDoc(event.Source, UNO_QUERY);
+        if (presentationDoc.is())
+        {
+          UpOoPresentation* newPresentation = new UpOoPresentation(presentationDoc.get(), m_backend);
+          m_backend->m_presentations.push_back(newPresentation);
+          emit m_backend->loadedPresentation(newPresentation);
+        }
+      }
+    }
+
+    /// Handle disposing.
+    virtual void SAL_CALL disposing(const lang::EventObject& event) 
+      throw(RuntimeException) 
+    {
+      kdDebug() << __PRETTY_FUNCTION__ << &event;
+      /// @todo check this behaviour is correct, is it the broadcaster that is being disposed of?
+      m_broadcaster = 0;
+    }
+
+  private:
+    /*
+     * Variables
+     */
+
+    /// Backend object.
+    UpOoBackend* m_backend;
+
+    /// Broadcaster that this listener is registered with.
+    Reference<XDocumentEventBroadcaster> m_broadcaster;
+};
 
 /*
  * Constructors + destructor
@@ -65,6 +146,7 @@ K_EXPORT_COMPONENT_FACTORY( unipresent_openoffice, KGenericFactory<UpOoBackend>(
 UpOoBackend::UpOoBackend(QObject* parent, const QStringList& params)
 : UpBackend(parent, params)
 , m_bridge(0)
+, m_globalDocumentEventListener()
 , m_presentations()
 {
   updatePresentations();
@@ -238,6 +320,12 @@ void UpOoBackend::updatePresentations()
         m_presentations.push_back(new UpOoPresentation(presentationSupplier.get(), this));
       }
     }
+
+    // Add listener to global document events
+    Reference<XDocumentEventBroadcaster> broadcaster(componentFactoryServer->createInstanceWithContext(OUString::createFromAscii("com.sun.star.frame.GlobalEventBroadcaster"), componentContext), UNO_QUERY);
+    m_globalDocumentEventListener = new DocumentEventListener(this, broadcaster); 
+    Reference<XDocumentEventListener> xRefListener = static_cast<XDocumentEventListener*>(m_globalDocumentEventListener.get()); 
+    broadcaster->addDocumentEventListener(xRefListener); 
   }
 }
 

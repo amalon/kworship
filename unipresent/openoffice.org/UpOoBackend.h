@@ -28,7 +28,11 @@
 
 #include "UpBackend.h"
 
+#include <com/sun/star/uno/Reference.h>
+
 class UpOoBridge;
+
+using namespace com::sun::star;
 
 /// OpenOffice.org presentation manager.
 class UpOoBackend : public UpBackend
@@ -80,11 +84,21 @@ class UpOoBackend : public UpBackend
   private:
 
     /*
+     * Types
+     */
+
+    /// Listener for document events.
+    class DocumentEventListener;
+
+    /*
      * Variables
      */
 
     /// Office bridge.
     UpOoBridge* m_bridge;
+
+    /// Global document event listener.
+    uno::Reference<DocumentEventListener> m_globalDocumentEventListener;
 
     /// List of presentations.
     QList<UpPresentation*> m_presentations;
