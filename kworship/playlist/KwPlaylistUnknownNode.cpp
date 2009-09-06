@@ -68,3 +68,7 @@ QVariant KwPlaylistUnknownNode::getData(int role, int column)
   return QVariant();
 }
 
+KwPlaylistItem *KwPlaylistUnknownNode::playlistItem() const
+{
+  return m_item;
+}

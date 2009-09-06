@@ -109,8 +109,13 @@ private slots:
     void fileSaveAs();
     void toggleFullscreen(bool checked);
     void optionsPreferences();
+    void playlist_clicked(QModelIndex);
     void playlist_doubleClicked(QModelIndex);
     void playlistReset();
+    void playlistInsert();
+    void playlistDelete();
+    void playlistMoveUp();
+    void playlistMoveDown();
 
     /// Add the new docker to the interface.
     void newDocker(QDockWidget* docker);
@@ -162,6 +167,10 @@ private:
 
     KwDocument* m_document;
     KwPlaylistModel* m_playlistModel;
+    KAction* m_playlistInsertAction;
+    KAction* m_playlistDeleteAction;
+    KAction* m_playlistMoveUpAction;
+    KAction* m_playlistMoveDownAction;
 
     UpManager* m_presentationManager;
     QTreeView* m_selectPresTree;

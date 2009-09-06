@@ -48,6 +48,58 @@ KwDataFile::~KwDataFile()
 }
 
 /*
+ * Individual playlist items
+ */
+
+/** Insert a set of playlist items.
+ * @param items List of playlist items to insert.
+ * @param resources Resource manager.
+ */
+void KwDataFile::insertPlaylistItems(const QList<KwPlaylistItem*>& items, KwResourceManager* resourceManager)
+{
+  QDomElement root = m_domDocument->documentElement();
+
+  QDomElement children = m_domDocument->createElement("playlist_items");
+  root.appendChild(children);
+
+  foreach (const KwPlaylistItem* item, items)
+  {
+    item->exportToDom(*m_domDocument, children, resourceManager);
+  }
+}
+
+/** Create a set of playlist items from the data.
+ * @param resources Resource manager.
+ * @returns Newly created playlist items which the user must delete.
+ */
+QList<KwPlaylistItem*> KwDataFile::extractPlaylistItems(KwResourceManager* resourceManager) const
+{
+  QDomElement root = m_domDocument->documentElement();
+  QList<KwPlaylistItem*> items;
+
+  QDomElement list = root.firstChildElement("playlist_items");
+  while (!list.isNull())
+  {
+    QDomNodeList children = list.childNodes();
+    for (int i = 0; i < children.count(); ++i)
+    {
+      QDomElement child = children.item(i).toElement();
+      if (!child.isNull())
+      {
+        KwPlaylistItem* item = KwPlaylistItem::createFromDom(child, resourceManager);
+        if (0 != item)
+        {
+          items << item;
+        }
+      }
+    }
+    list = list.nextSiblingElement("playlist_items");
+  }
+
+  return items;
+}
+
+/*
  * Playlists
  */
 
@@ -78,6 +130,17 @@ KwPlaylistList* KwDataFile::extractPlaylist(KwResourceManager* resourceManager) 
   }
 
   return 0;
+}
+
+/*
+ * Main resource interface
+ */
+
+#include <QtDebug>
+void KwDataFile::addResource(const KwResourceLink* link)
+{
+  // Basically don't do anything, but perhaps report it
+  qDebug() << __PRETTY_FUNCTION__ << "(" << link << ") - Ignoring";
 }
 
 /*

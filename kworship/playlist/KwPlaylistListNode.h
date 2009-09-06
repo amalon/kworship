@@ -61,6 +61,9 @@ class KwPlaylistListNode : public KwPlaylistNode
 
     virtual Qt::ItemFlags getFlags(Qt::ItemFlags& defaultFlags) const;
 
+    // Reimplemented
+    virtual KwPlaylistItem *playlistItem() const;
+
   protected:
 
     virtual KwPlaylistNode* _getChild(int index);

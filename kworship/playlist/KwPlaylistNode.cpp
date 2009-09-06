@@ -49,7 +49,7 @@ KwPlaylistNode::~KwPlaylistNode()
 /// Get the flags for this node.
 Qt::ItemFlags KwPlaylistNode::getFlags(Qt::ItemFlags& defaultFlags) const
 {
-  return defaultFlags;
+  return Qt::ItemIsDragEnabled | defaultFlags;
 }
 
 /// Activate the node using a display manager.
@@ -57,3 +57,7 @@ void KwPlaylistNode::activate(KwDisplayManager*)
 {
 }
 
+KwPlaylistItem *KwPlaylistNode::playlistItem() const
+{
+  return 0;
+}

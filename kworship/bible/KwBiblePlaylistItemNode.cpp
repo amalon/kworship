@@ -76,3 +76,7 @@ void KwBiblePlaylistItemNode::activate(KwDisplayManager* manager)
   manager->text.setHtml(m_item->passage().renderedText());
 }
 
+KwPlaylistItem *KwBiblePlaylistItemNode::playlistItem() const
+{
+  return m_item;
+}

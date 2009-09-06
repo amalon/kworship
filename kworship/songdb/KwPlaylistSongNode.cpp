@@ -80,3 +80,7 @@ KwPlaylistNode* KwPlaylistSongNode::_getChild(int index)
   return new KwPlaylistSongNodeVerse(this, m_item, index);
 }
 
+KwPlaylistItem *KwPlaylistSongNode::playlistItem() const
+{
+  return m_item;
+}

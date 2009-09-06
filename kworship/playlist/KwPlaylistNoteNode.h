@@ -51,6 +51,9 @@ class KwPlaylistNoteNode : public KwPlaylistNode
 
     virtual QVariant getData(int role, int column);
 
+    // Reimplemented
+    virtual KwPlaylistItem *playlistItem() const;
+
   private:
 
     /*

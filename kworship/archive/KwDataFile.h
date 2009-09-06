@@ -26,7 +26,10 @@
  * @author James Hogan <james@albanarts.com>
  */
 
-class KwResourceManager;
+#include "KwResourceManager.h"
+
+#include <QList>
+
 class KwPlaylistItem;
 class KwPlaylistList;
 
@@ -36,7 +39,7 @@ class QDomDocument;
 class QDomElement;
 
 /// A KWorship XML data file.
-class KwDataFile
+class KwDataFile : public KwResourceManager
 {
   public:
 
@@ -51,6 +54,22 @@ class KwDataFile
     virtual ~KwDataFile();
 
     /*
+     * Individual playlist items
+     */
+
+    /** Insert a set of playlist items.
+     * @param items List of playlist items to insert.
+     * @param resources Resource manager.
+     */
+    void insertPlaylistItems(const QList<KwPlaylistItem*>& items, KwResourceManager* resourceManager);
+
+    /** Create a set of playlist items from the data.
+     * @param resources Resource manager.
+     * @returns Newly created playlist items which the user must delete.
+     */
+    QList<KwPlaylistItem*> extractPlaylistItems(KwResourceManager* resourceManager) const;
+
+    /*
      * Playlists
      */
 
@@ -61,9 +80,17 @@ class KwDataFile
     void insertPlaylist(const KwPlaylistList* playlist, KwResourceManager* resourceManager);
 
     /** Create a playlist object from the data.
+     * @param resources Resource manager.
      * @returns Newly created playlist which the user must delete.
      */
     KwPlaylistList* extractPlaylist(KwResourceManager* resourceManager) const;
+
+    /*
+     * Main resource interface
+     */
+
+    // Reimplemented
+    virtual void addResource(const KwResourceLink* link);
 
     /*
      * Reading and writing

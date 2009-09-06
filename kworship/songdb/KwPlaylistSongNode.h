@@ -53,6 +53,9 @@ class KwPlaylistSongNode : public KwPlaylistNode
 
     virtual int getChildCount() const;
 
+    // Reimplemented
+    virtual KwPlaylistItem *playlistItem() const;
+
   protected:
 
     virtual KwPlaylistNode* _getChild(int index);

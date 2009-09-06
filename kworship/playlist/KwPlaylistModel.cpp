@@ -23,6 +23,7 @@
  * @author James Hogan <james@albanarts.com>
  */
 
+#include "KwDataFile.h"
 #include "KwPlaylistModel.h"
 #include "KwPlaylistNode.h"
 #include "KwPlaylistList.h"
@@ -38,6 +39,7 @@
 #include <QMimeData>
 #include <QUrl>
 #include <QStringList>
+#include <QTextStream>
 
 /*
  * Constructors + destructor.
@@ -57,6 +59,36 @@ KwPlaylistModel::~KwPlaylistModel()
 /*
  * Modification interface
  */
+
+/// Add a file to the list.
+void KwPlaylistModel::addFile(const QModelIndex& parent, const QUrl& file, int position)
+{
+  // Get the file's mime type
+  KMimeType::Ptr result = KMimeType::findByUrl(KUrl(file));
+  KwPlaylistItem* newItem = 0;
+  if (!result->isDefault())
+  {
+    if (result->name().startsWith("image/"))
+    {
+      newItem = new KwPlaylistImage(file);
+    }
+    else if (result->name().startsWith("video/"))
+    {
+      newItem = new KwPlaylistVideo(file);
+    }
+    // perhaps its a presentation
+    /// @todo match against all known presentation mime types
+    else if (result->name() == "application/vnd.oasis.opendocument.presentation")
+    {
+      newItem = new KwPlaylistPresentation(file);
+    }
+  }
+  if (0 == newItem)
+  {
+    newItem = new KwPlaylistFile(file);
+  }
+  addItem(parent, newItem, position);
+}
 
 /// Add an item to the list.
 void KwPlaylistModel::addItem(const QModelIndex& parent, KwPlaylistItem* item, int position)
@@ -80,6 +112,7 @@ void KwPlaylistModel::addItem(const QModelIndex& parent, KwPlaylistItem* item, i
 QStringList KwPlaylistModel::mimeTypes() const
 {
   QStringList mimes;
+  mimes << "application/x-kworship+xml";
   //mimes << "application/x.kworship.song.list";
   mimes << "text/uri-list";
   return mimes;
@@ -103,6 +136,41 @@ Qt::ItemFlags KwPlaylistModel::flags(const QModelIndex& index) const
   return defaultFlags;
 }
 
+QMimeData *KwPlaylistModel::mimeData(const QModelIndexList &indexes) const
+{
+  QMimeData *mimeData = new QMimeData();
+  QByteArray encodedData;
+
+  QTextStream stream(&encodedData, QIODevice::WriteOnly);
+  KwDataFile data;
+
+  QList<KwPlaylistItem*> items;
+  foreach(QModelIndex index, indexes)
+  {
+    if (index.isValid())
+    {
+      KwPlaylistNode *node = itemFromIndex(index);
+      KwPlaylistItem *item = node->playlistItem();
+      if (0 != item)
+      {
+        items << item;
+      }
+      else
+      {
+        Q_ASSERT(false);
+        delete mimeData;
+        return 0;
+      }
+    }
+  }
+  // Use data file as resource manager for now
+  data.insertPlaylistItems(items, &data);
+  data.writeTo(stream);
+
+  mimeData->setData("application/x-kworship+xml", encodedData);
+  return mimeData;
+}
+
 bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent)
 {
   Q_UNUSED(column)
@@ -123,7 +191,26 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
     row = list->getChildCount();
   }
 
-  if (0 && data->hasFormat("application/x.kworship.song.list"))
+  if (data->hasFormat("application/x-kworship+xml"))
+  {
+    QByteArray encodedData = data->data("application/x-kworship+xml");
+    QTextStream stream(&encodedData, QIODevice::ReadOnly);
+
+    KwDataFile data;
+    data.readFrom(stream.device());
+
+    // Use data file as resource manager for now
+    QList<KwPlaylistItem*> items = data.extractPlaylistItems(&data);
+
+    foreach (KwPlaylistItem* item, items)
+    {
+      addItem(parent, item, row);
+      ++row;
+    }
+
+    return true;
+  }
+  else if (0 && data->hasFormat("application/x.kworship.song.list"))
   {
     QByteArray encodedData = data->data("application/x.kworship.song.list");
     QDataStream stream(&encodedData, QIODevice::ReadOnly);
@@ -158,31 +245,7 @@ bool KwPlaylistModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
     QList<QUrl> files = data->urls();
     foreach (QUrl file, files)
     {
-      // Get the file's mime type
-      KMimeType::Ptr result = KMimeType::findByUrl(KUrl(file));
-      KwPlaylistItem* newItem = 0;
-      if (!result->isDefault())
-      {
-        if (result->name().startsWith("image/"))
-        {
-          newItem = new KwPlaylistImage(file);
-        }
-        else if (result->name().startsWith("video/"))
-        {
-          newItem = new KwPlaylistVideo(file);
-        }
-        // perhaps its a presentation
-        /// @todo match against all known presentation mime types
-        else if (result->name() == "application/vnd.oasis.opendocument.presentation")
-        {
-          newItem = new KwPlaylistPresentation(file);
-        }
-      }
-      if (0 == newItem)
-      {
-        newItem = new KwPlaylistFile(file);
-      }
-      addItem(parent, newItem, row);
+      addFile(parent, file, row);
       ++row;
     }
 

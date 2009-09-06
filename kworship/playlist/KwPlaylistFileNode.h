@@ -53,6 +53,9 @@ class KwPlaylistFileNode : public KwPlaylistNode
 
     virtual void activate(KwDisplayManager* manager);
 
+    // Reimplemented
+    virtual KwPlaylistItem *playlistItem() const;
+
   private:
 
     /*

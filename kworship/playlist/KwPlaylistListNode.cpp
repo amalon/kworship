@@ -85,7 +85,12 @@ int KwPlaylistListNode::getChildCount() const
 
 Qt::ItemFlags KwPlaylistListNode::getFlags(Qt::ItemFlags& defaultFlags) const
 {
-  return Qt::ItemIsDropEnabled | defaultFlags;
+  return Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | defaultFlags;
+}
+
+KwPlaylistItem *KwPlaylistListNode::playlistItem() const
+{
+  return m_item;
 }
 
 KwPlaylistNode* KwPlaylistListNode::_getChild(int index)

@@ -67,3 +67,7 @@ QVariant KwPlaylistNoteNode::getData(int role, int column)
   return QVariant();
 }
 
+KwPlaylistItem *KwPlaylistNoteNode::playlistItem() const
+{
+  return m_item;
+}

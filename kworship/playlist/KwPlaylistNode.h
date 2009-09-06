@@ -31,6 +31,7 @@
 #include <KwExport.h>
 
 class KwDisplayManager;
+class KwPlaylistItem;
 
 /// A node on a playlist tree.
 /**
@@ -60,6 +61,8 @@ class KWMAIN_EXPORT KwPlaylistNode : public DefaultModelNode
     /// Activate the node using a display manager.
     virtual void activate(KwDisplayManager* manager);
 
+    /// Get the corresponding playlist item if one exists.
+    virtual KwPlaylistItem *playlistItem() const;
 };
 
 #endif // _KwPlaylistNode_h_

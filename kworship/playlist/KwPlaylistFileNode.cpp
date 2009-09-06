@@ -69,6 +69,11 @@ QVariant KwPlaylistFileNode::getData(int role, int column)
   return QVariant();
 }
 
+KwPlaylistItem *KwPlaylistFileNode::playlistItem() const
+{
+  return m_item;
+}
+
 void KwPlaylistFileNode::activate(KwDisplayManager* manager)
 {
   m_item->activate(manager);

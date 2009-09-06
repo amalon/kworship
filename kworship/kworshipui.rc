@@ -8,12 +8,19 @@
     <Menu name="menuPresentation"><text>&amp;Presentation</text>
     </Menu>
     <Menu name="menuPlaylist"><text>&amp;Playlist</text>
+      <Action name="playlist_insert" />
+      <Action name="playlist_delete" />
       <Action name="playlist_move_up" />
       <Action name="playlist_move_down" />
-      <Action name="playlist_delete" />
     </Menu>
   </MenuBar>
   <ToolBar fullWidth="false" name="displayToolBar" newline="true"><text>Display Toolbar</text>
     <Action name="display_clear"/>
+  </ToolBar>
+  <ToolBar fullWidth="false" name="toolbarPlaylist" newline="true"><text>Playlist Toolbar</text>
+    <Action name="playlist_insert" />
+    <Action name="playlist_delete" />
+    <Action name="playlist_move_up" />
+    <Action name="playlist_move_down" />
   </ToolBar>
 </gui>

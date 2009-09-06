@@ -53,6 +53,9 @@ class KWMAIN_EXPORT KwPlaylistModel : public NodeBasedModel<KwPlaylistNode>
      * Modification interface
      */
 
+    /// Add a file to the list.
+    void addFile(const QModelIndex& parent, const QUrl& file, int position = -1);
+
     /// Add an item to the list.
     void addItem(const QModelIndex& parent, KwPlaylistItem* item, int position = -1);
 
@@ -63,6 +66,7 @@ class KWMAIN_EXPORT KwPlaylistModel : public NodeBasedModel<KwPlaylistNode>
     QStringList mimeTypes() const;
     Qt::DropActions supportedDropActions() const;
     Qt::ItemFlags flags(const QModelIndex& index) const;
+    QMimeData *mimeData(const QModelIndexList &indexes) const;
     bool dropMimeData(const QMimeData* data, Qt::DropAction action, int row, int column, const QModelIndex& parent);
 
 };

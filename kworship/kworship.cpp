@@ -156,9 +156,12 @@ kworship::kworship()
   m_document->playlist()->addStyleSheet(styleRules);
 
   m_view->treePlaylist->setModel(m_playlistModel);
+  m_view->treePlaylist->setSelectionMode(QAbstractItemView::ExtendedSelection);
   m_view->treePlaylist->setExpandsOnDoubleClick(false);
+  m_view->treePlaylist->setDragEnabled(true);
   m_view->treePlaylist->setAcceptDrops(true);
 
+  connect(m_view->treePlaylist, SIGNAL(clicked(QModelIndex)), this, SLOT(playlist_clicked(QModelIndex)));
   connect(m_view->treePlaylist, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(playlist_doubleClicked(QModelIndex)));
 
   m_mediaManager = new KwMediaManager();
@@ -373,6 +376,26 @@ void kworship::setupActions()
   KAction* clearDisplayAction = new KAction(KIcon("clear"), i18n("Clear display"), this);
   actionCollection()->addAction( QLatin1String("display_clear"), clearDisplayAction);
   connect(clearDisplayAction, SIGNAL(triggered()), this, SLOT(displayClear()));
+
+  // Playlist actions
+  m_playlistInsertAction = new KAction(KIcon("insert"), i18n("Insert into playlist"), this);
+  actionCollection()->addAction( QLatin1String("playlist_insert"), m_playlistInsertAction);
+  connect(m_playlistInsertAction, SIGNAL(triggered()), this, SLOT(playlistInsert()));
+
+  m_playlistDeleteAction = new KAction(KIcon("delete"), i18n("Delete from playlist"), this);
+  m_playlistDeleteAction->setEnabled(false);
+  actionCollection()->addAction( QLatin1String("playlist_delete"), m_playlistDeleteAction);
+  connect(m_playlistDeleteAction, SIGNAL(triggered()), this, SLOT(playlistDelete()));
+
+  m_playlistMoveUpAction = new KAction(KIcon("up"), i18n("Move playlist item up"), this);
+  m_playlistMoveUpAction->setEnabled(false);
+  actionCollection()->addAction( QLatin1String("playlist_move_up"), m_playlistMoveUpAction);
+  connect(m_playlistMoveUpAction, SIGNAL(triggered()), this, SLOT(playlistMoveUp()));
+
+  m_playlistMoveDownAction = new KAction(KIcon("down"), i18n("Move playlist item down"), this);
+  m_playlistMoveDownAction->setEnabled(false);
+  actionCollection()->addAction( QLatin1String("playlist_move_down"), m_playlistMoveDownAction);
+  connect(m_playlistMoveDownAction, SIGNAL(triggered()), this, SLOT(playlistMoveDown()));
 }
 
 void kworship::settingsChanged()
@@ -655,6 +678,17 @@ void kworship::optionsPreferences()
   dialog->show();
 }
 
+void kworship::playlist_clicked(QModelIndex index)
+{
+  KwPlaylistNode* node = m_playlistModel->itemFromIndex(index);
+  /// @todo Move this code to selection changed vfunc/slot of view so it can handle deselection
+  // A node must be selected and correspond to a playlist item
+  bool selected = (0 != node && 0 != node->playlistItem());
+  m_playlistDeleteAction->setEnabled(selected);
+  m_playlistMoveUpAction->setEnabled(selected);
+  m_playlistMoveDownAction->setEnabled(selected);
+}
+
 void kworship::playlist_doubleClicked(QModelIndex index)
 {
   KwPlaylistNode* node = m_playlistModel->itemFromIndex(index);
@@ -665,6 +699,32 @@ void kworship::playlistReset()
 {
   // Connect up the new document
   m_playlistModel->setRootNode(m_document->playlist()->getNode(0));
+}
+
+void kworship::playlistInsert()
+{
+  KUrl defaultUrl("kfiledialog:///playlist_insert");
+
+  KUrl::List urls = KFileDialog::getOpenUrls(defaultUrl, QString(), this, i18n("Insert Files into Playlist"));
+  foreach (KUrl url, urls)
+  {
+    m_playlistModel->addFile(QModelIndex(), url);
+  }
+}
+
+void kworship::playlistDelete()
+{
+  /// @todo Implement
+}
+
+void kworship::playlistMoveUp()
+{
+  /// @todo Implement
+}
+
+void kworship::playlistMoveDown()
+{
+  /// @todo Implement
 }
 
 #include <iostream>
