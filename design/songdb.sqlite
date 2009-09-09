@@ -1,0 +1,112 @@
+/* Sqlite */
+
+/* Style sheets */
+
+CREATE TABLE CssStyleSheet (
+  `id`                  INTEGER  PRIMARY KEY  NOT NULL
+);
+
+CREATE TABLE CssRule (
+  `id`                  INTEGER  PRIMARY KEY  NOT NULL,
+  `style_sheet_id`      INTEGER               NOT NULL,
+  UNIQUE (`style_sheet_id`),
+  FOREIGN KEY (`style_sheet_id`) REFERENCES CssStyleSheet (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE CssRuleCriteriaScope (
+  `rule_id`             INTEGER               NOT NULL,
+  `order`               INTEGER               NOT NULL,
+  `type`                VARCHAR(32)               NULL,
+  `name`                VARCHAR(32)               NULL,
+  PRIMARY KEY (`rule_id`, `order`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE CssRuleCriteriaClass (
+  `rule_id`             INTEGER               NOT NULL,
+  `class`               VARCHAR(64)           NOT NULL,
+  PRIMARY KEY (`rule_id`, `class`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE CssRuleUsedClass (
+  `rule_id`             INTEGER               NOT NULL,
+  `class`               VARCHAR(64)           NOT NULL,
+  PRIMARY KEY (`rule_id`, `class`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE CssRuleStyle (
+  `rule_id`             INTEGER               NOT NULL,
+  `style`               VARCHAR(64)           NOT NULL,
+  `value`               VARCHAR(256)          NOT NULL,
+  PRIMARY KEY (`rule_id`, `style`),
+  FOREIGN KEY (`rule_id`) REFERENCES CssRule (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+/* Songs */
+
+CREATE TABLE Song (
+  `id`                  INTEGER  PRIMARY KEY  NOT NULL,
+  `name`                VARCHAR(128)          NOT NULL,
+  `alternate_name`      VARCHAR(128)          NOT NULL DEFAULT "",
+  `css_style_sheet_id`  INTEGER                   NULL,
+  UNIQUE (`name`),
+  UNIQUE (`css_style_sheet_id`),
+  FOREIGN KEY (`css_style_sheet_id`) REFERENCES CssStyleSheet (`id`)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE SongBook (
+  `id`                  INTEGER  PRIMARY KEY  NOT NULL,
+  `abreviation`         VARCHAR(8)            NOT NULL,
+  `name`                VARCHAR(128)          NOT NULL,
+  `description`         MEDIUMTEXT                NULL,
+  UNIQUE (`abreviation`)
+);
+
+CREATE TABLE SongVersion (
+  `id`                  INTEGER  PRIMARY KEY  NOT NULL,
+  `song_id`             INTEGER               NOT NULL,
+  `name`                VARCHAR(128)              NULL,
+  `css_style_sheet_id`  INTEGER                   NULL,
+  `writer`              VARCHAR(128)              NULL,
+  `copyright`           VARCHAR(128)              NULL,
+  `lyrics`              TEXT                  NOT NULL,
+  UNIQUE (`song_id`, `name`),
+  FOREIGN KEY (`song_id`) REFERENCES Song (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (`css_style_sheet_id`) REFERENCES CssStyleSheet (`id`)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE SongBookSong (
+  `book_id`             INTEGER               NOT NULL,
+  `book_number`         INTEGER               NOT NULL,
+  `version_id`          INTEGER               NOT NULL,
+  PRIMARY KEY (`book_id`, `book_number`),
+  FOREIGN KEY (`book_id`) REFERENCES SongBook (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT,
+  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+CREATE TABLE SongMedia (
+  `id`                  INTEGER  PRIMARY KEY  NOT NULL,
+  `version_id`          INTEGER               NOT NULL,
+  `url`                 VARCHAR(128)          NOT NULL,
+  `audio_use`           BOOLEAN               NOT NULL  DEFAULT FALSE,
+  `audio_volume`        FLOAT                 NOT NULL  DEFAULT 1.0,
+  `video_use`           BOOLEAN               NOT NULL  DEFAULT FALSE,
+  FOREIGN KEY (`version_id`) REFERENCES SongVersion (`id`)
+    ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+/* Populate the database with some data */
+

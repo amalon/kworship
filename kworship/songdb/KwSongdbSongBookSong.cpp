@@ -129,21 +129,21 @@ void KwSongdbSongBookSong::save()
   if (m_modifiedFields.testFlag(SongBook))
   {
     handled |= SongBook;
-    fields.push_back("`book_id`=?");
+    fields.push_back("`book_id`");
     values.push_back(QVariant(m_songBook->id()));
   }
 
   if (m_modifiedFields.testFlag(SongNumber))
   {
     handled |= SongNumber;
-    fields.push_back("`book_number`=?");
+    fields.push_back("`book_number`");
     values.push_back(QVariant(m_songNumber));
   }
 
   if (m_modifiedFields.testFlag(Version))
   {
     handled |= Version;
-    fields.push_back("`version_id`=?");
+    fields.push_back("`version_id`");
     values.push_back(QVariant(m_version->id()));
   }
 
@@ -155,11 +155,17 @@ void KwSongdbSongBookSong::save()
     if (insertion)
     {
       // Insert a new row
-      query.prepare("INSERT INTO `SongBookSong` "
-                    "SET " + fields.join(","));
+      QString qs = QString::fromAscii("?,").repeated(fields.size());
+      qs.chop(1);
+      query.prepare("INSERT INTO `SongBookSong` (" + fields.join(",") + ")"
+                    " VALUES (" + qs + ")");
     }
     else
     {
+      for (int i = 0; i < fields.size(); ++i)
+      {
+        fields[i] += "=?";
+      }
       query.prepare("UPDATE `SongBookSong` "
                     "SET " + fields.join(",") + " "
                     "WHERE book_id = ? AND book_number = ?");
@@ -174,8 +180,7 @@ void KwSongdbSongBookSong::save()
     }
 
     // Execute query
-    bool worked = query.exec();
-    Q_ASSERT(worked);
+    KW_SONGDB_QUERY(query);
 
     // Update which fields are modified
     m_modifiedFields &= ~handled;

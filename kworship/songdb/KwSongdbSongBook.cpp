@@ -44,6 +44,7 @@ KwSongdbSongBook::KwSongdbSongBook()
 {
 }
 
+#include <QtDebug>
 /// Construct from the database.
 KwSongdbSongBook::KwSongdbSongBook(int id)
 : m_id(id)
@@ -58,11 +59,14 @@ KwSongdbSongBook::KwSongdbSongBook(int id)
                 "FROM `SongBook` "
                 "WHERE `id` = ?");
   query.addBindValue(QVariant(id));
-  bool worked = query.exec();
-  Q_ASSERT(worked);
+  KW_SONGDB_QUERY(query);
 
   // Copy the data
-  Q_ASSERT(query.first());
+  if (!query.first())
+  {
+    qDebug() << "first failed, active:" << query.isActive() << ", select:" << query.isSelect();
+    exit(1);
+  }
   m_abreviation = query.value(0).toString();
   m_name = query.value(1).toString();
   m_description = query.value(2).toString();
@@ -151,21 +155,21 @@ void KwSongdbSongBook::save()
   if (m_modifiedFields.testFlag(Abreviation))
   {
     handled |= Abreviation;
-    fields.push_back("`abreviation`=?");
+    fields.push_back("`abreviation`");
     values.push_back(QVariant(m_abreviation));
   }
 
   if (m_modifiedFields.testFlag(Name))
   {
     handled |= Name;
-    fields.push_back("`name`=?");
+    fields.push_back("`name`");
     values.push_back(QVariant(m_name));
   }
 
   if (m_modifiedFields.testFlag(Description))
   {
     handled |= Description;
-    fields.push_back("`description`=?");
+    fields.push_back("`description`");
     values.push_back(QVariant(m_description));
   }
 
@@ -177,11 +181,17 @@ void KwSongdbSongBook::save()
     if (insertion)
     {
       // Insert a new row
-      query.prepare("INSERT INTO `SongBook` "
-                    "SET " + fields.join(","));
+      QString qs = QString::fromAscii("?,").repeated(fields.size());
+      qs.chop(1);
+      query.prepare("INSERT INTO `SongBook` (" + fields.join(",") + ")"
+                    " VALUES (" + qs + ")");
     }
     else
     {
+      for (int i = 0; i < fields.size(); ++i)
+      {
+        fields[i] += "=?";
+      }
       query.prepare("UPDATE `SongBook` "
                     "SET " + fields.join(",") + " "
                     "WHERE id = ?");
@@ -195,8 +205,7 @@ void KwSongdbSongBook::save()
     }
 
     // Execute query
-    bool worked = query.exec();
-    Q_ASSERT(worked);
+    KW_SONGDB_QUERY(query);
 
     // Update which fields are modified
     m_modifiedFields &= ~handled;

@@ -51,6 +51,7 @@ KwSongdbVersion::KwSongdbVersion(KwSongdbSong* song)
 {
 }
 
+#include <QtDebug>
 /// Construct from the database.
 KwSongdbVersion::KwSongdbVersion(int id)
 : m_id(id)
@@ -69,11 +70,14 @@ KwSongdbVersion::KwSongdbVersion(int id)
                 "FROM `SongVersion` "
                 "WHERE `id` = ?");
   query.addBindValue(QVariant(id));
-  bool worked = query.exec();
-  Q_ASSERT(worked);
+  KW_SONGDB_QUERY(query);
 
   // Copy the data
-  Q_ASSERT(query.first());
+  if (!query.first())
+  {
+    qDebug() << "first failed, active:" << query.isActive() << ", select:" << query.isSelect();
+    exit(1);
+  }
   m_song = KwSongdb::self()->songById(query.value(0).toInt());
   m_name = query.value(1).toString();
   m_writer = query.value(2).toString();
@@ -155,8 +159,7 @@ QList<KwSongdbSongBookSong*> KwSongdbVersion::songBookNumbers()
                   "FROM `SongBookSong` "
                   "WHERE `version_id` = ?");
     query.addBindValue(QVariant(m_id));
-    bool worked = query.exec();
-    Q_ASSERT(worked);
+    KW_SONGDB_QUERY(query);
 
     m_songBookNumbersLoaded = true;
 
@@ -250,28 +253,28 @@ void KwSongdbVersion::save()
   if (m_modifiedFields.testFlag(Name))
   {
     handled |= Name;
-    fields.push_back("`name`=?");
+    fields.push_back("`name`");
     values.push_back(QVariant(m_name));
   }
 
   if (m_modifiedFields.testFlag(Writer))
   {
     handled |= Writer;
-    fields.push_back("`writer`=?");
+    fields.push_back("`writer`");
     values.push_back(QVariant(m_writer));
   }
 
   if (m_modifiedFields.testFlag(Copyright))
   {
     handled |= Copyright;
-    fields.push_back("`copyright`=?");
+    fields.push_back("`copyright`");
     values.push_back(QVariant(m_copyright));
   }
 
   if (m_modifiedFields.testFlag(Lyrics))
   {
     handled |= Lyrics;
-    fields.push_back("`lyrics`=?");
+    fields.push_back("`lyrics`");
     values.push_back(QVariant(m_lyrics.markup()));
   }
 
@@ -283,13 +286,19 @@ void KwSongdbVersion::save()
     if (insertion)
     {
       // Insert a new row
-      fields.push_back("`song_id`=?");
+      fields.push_back("`song_id`");
       values.push_back(QVariant(m_song->id()));
-      query.prepare("INSERT INTO `SongVersion` "
-                    "SET " + fields.join(","));
+      QString qs = QString::fromAscii("?,").repeated(fields.size());
+      qs.chop(1);
+      query.prepare("INSERT INTO `SongVersion` (" + fields.join(",") + ")"
+                    " VALUES (" + qs + ")");
     }
     else
     {
+      for (int i = 0; i < fields.size(); ++i)
+      {
+        fields[i] += "=?";
+      }
       query.prepare("UPDATE `SongVersion` "
                     "SET " + fields.join(",") + " "
                     "WHERE id = ?");
@@ -303,8 +312,7 @@ void KwSongdbVersion::save()
     }
 
     // Execute query
-    bool worked = query.exec();
-    Q_ASSERT(worked);
+    KW_SONGDB_QUERY(query);
 
     // Update which fields are modified
     m_modifiedFields &= ~handled;

@@ -34,6 +34,8 @@ class KwSongdbSong;
 class KwSongdbVersion;
 class KwSongdbSongBook;
 
+#define KW_SONGDB_QUERY(query) KwSongdb::self()->handleQuery(query,__FILE__,__LINE__)
+
 /// A song database manager class.
 class KwSongdb
 {
@@ -55,6 +57,16 @@ class KwSongdb
 
     /// Destructor.
     virtual ~KwSongdb();
+
+    /*
+     * Functionality.
+     */
+
+    /** Detect errors and handle nicely.
+     * @param query SQL query to check the result of.
+     * @return Whether the query was successful.
+     */
+    bool handleQuery(QSqlQuery &query, const char *src = 0, int line = 0);
 
     /*
      * Accessors

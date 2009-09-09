@@ -64,12 +64,12 @@ KwSongdbTree::KwSongdbTree(QWidget* parent)
   filters->resize(2);
   (*filters)[0].tableName = "`SongBook`";
   (*filters)[0].idExpression = "`SongBook`.`id`";
-  (*filters)[0].labelExpression = "CONCAT(`SongBook`.`abreviation`, \" \", `SongBook`.`name`)";
+  (*filters)[0].labelExpression = "(`SongBook`.`abreviation`||\" \"||`SongBook`.`name`)";
   (*filters)[0].orderBy << "`SongBook`.`name` ASC";
   (*filters)[0].icon = KIcon("bt_book");
   (*filters)[1].tableName = "`SongVersion`";
   (*filters)[1].idExpression = "`SongVersion`.`id`";
-  (*filters)[1].labelExpression = "CONCAT(`SongBookSong`.`book_number`, \" - \", `Song`.`name`)";
+  (*filters)[1].labelExpression = "(`SongBookSong`.`book_number`||\" - \"||`Song`.`name`)";
   (*filters)[1].innerJoinClauses << "`SongBookSong` ON `SongBookSong`.`book_id` = `SongBook`.`id`"
                                  << "`SongVersion` ON `SongVersion`.`id` = `SongBookSong`.`version_id`"
                                  << "`Song` ON `Song`.`id` = `SongVersion`.`song_id`";

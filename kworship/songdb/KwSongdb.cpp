@@ -29,6 +29,7 @@
 #include "KwSongdbSongBook.h"
 
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QVariant>
 
 /*
@@ -55,7 +56,8 @@ KwSongdb::KwSongdb(QSqlDatabase& db)
   Q_ASSERT(0 == s_singleton);
   s_singleton = this;
 
-  // If any tables are missing, set them up
+  /// @todo If any tables are missing, set them up
+  /// @todo MYSQL: "SET GLOBAL sql_mode='ANSI';" to enable || instead of CONCAT
 }
 
 /// Destructor.
@@ -81,6 +83,36 @@ KwSongdb::~KwSongdb()
     }
   }
 
+}
+
+/*
+ * Functionality.
+ */
+
+#include <QtDebug>
+bool KwSongdb::handleQuery(QSqlQuery &query, const char *src, int line)
+{
+  bool ok = query.exec();
+  if (!ok)
+  {
+    qDebug() << "SQL QUERY FAILED:" << query.lastError().text();
+  }
+  else
+  {
+    qDebug() << "SQL QUERY SUCCEEDED!";
+  }
+  if (true || !ok)
+  {
+    if (0 != src && 0 != line)
+    {
+      qDebug() << "\tIn " << src << "#" << line;
+    }
+    qDebug() << "\tQUERY:" << query.executedQuery();
+    //qDebug() << "\tEXECUTED QUERY:" << query.executedQuery();
+    //qDebug() << "\tORIGINAL QUERY:" << query.lastQuery();
+    qDebug() << "\tWITH BINDINGS:" << query.boundValues();
+  }
+  return ok;
 }
 
 /*
@@ -162,8 +194,7 @@ QList<KwSongdbSongBook*> KwSongdb::songBooks()
   QSqlQuery query(m_database);
   query.prepare("SELECT `id` "
                 "FROM `SongBook`");
-  bool worked = query.exec();
-  Q_ASSERT(worked);
+  KW_SONGDB_QUERY(query);
 
   // Then load them individually into a list
   QList<KwSongdbSongBook*> songBooks;

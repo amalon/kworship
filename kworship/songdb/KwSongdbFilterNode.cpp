@@ -269,7 +269,7 @@ void KwSongdbFilterNode::setupQuery()
       m_query->addBindValue(knownValue->idValue);
       knownValue = knownValue->next;
     }
-    m_query->exec();
+    KW_SONGDB_QUERY(*m_query);
   }
 }
 
