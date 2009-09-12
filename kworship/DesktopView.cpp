@@ -213,7 +213,6 @@ void DesktopView::setup()
   assert(0 != desktop);
   int screens = desktop->numScreens();
   assert(0 != screens);
-  int primary = desktop->primaryScreen();
 
   // Cleanup any previous scene
   delete scene();
