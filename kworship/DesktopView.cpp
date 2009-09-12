@@ -178,6 +178,19 @@ void DesktopView::mousePressEvent(QMouseEvent* event)
   QGraphicsView::mousePressEvent(event);
 }
 
+void DesktopView::changeEvent(QEvent *event)
+{
+  switch (event->type())
+  {
+    case QEvent::EnabledChange:
+    case QEvent::PaletteChange:
+      setup();
+      break;
+    default:
+      break;
+  }
+}
+
 /*
  * Private slots
  */
@@ -225,10 +238,9 @@ void DesktopView::setup()
     QRectF geom = desktop->screenGeometry(i);
 
     // rectangle
-    QGraphicsRectItem* rect = scene->addRect(geom, QPen(Qt::black),
-                                             isScreenSelected(i)   ? Qt::blue :
-                                             QBrush((primary == i) ? Qt::gray :
-                                             Qt::lightGray));
+    QGraphicsRectItem* rect = scene->addRect(geom, QPen(palette().color(QPalette::Foreground)),
+                                             isScreenSelected(i)   ? palette().color(QPalette::Highlight) :
+                                             QBrush(palette().color(QPalette::Button)));
 
     // text
     QString string;
@@ -238,6 +250,8 @@ void DesktopView::setup()
     QFont font;
     font.setPixelSize(geom.height() * 0.8f);
     text->setFont(font);
+    text->setDefaultTextColor(isScreenSelected(i) ? palette().color(QPalette::HighlightedText)
+                                                  : palette().color(QPalette::ButtonText));
 
     QRectF textRect = text->boundingRect();
     text->setPos(QPointF(geom.x() + (geom.width()  - textRect.width()) / 2,

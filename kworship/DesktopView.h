@@ -97,6 +97,8 @@ class DesktopView : public QGraphicsView
 
     void mousePressEvent(QMouseEvent* event);
 
+    void changeEvent(QEvent *event);
+
   private slots:
 
     /*
