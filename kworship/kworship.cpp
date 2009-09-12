@@ -22,6 +22,7 @@
 #include "settings.h"
 #include "prefsDisplay.h"
 #include "prefsDatabase.h"
+#include "prefsPresentations.h"
 #include "KwDatabaseSetup.h"
 #include "KwDocument.h"
 #include "KwApplication.h"
@@ -665,9 +666,8 @@ void kworship::optionsPreferences()
   prefsDatabase *songdbSettingsDlg = new prefsDatabase(dialog);
   dialog->addPage(songdbSettingsDlg, i18n("Database"), "applications-multimedia", i18n("Database"));
 
-  QWidget *presentationSettingsDlg = new QWidget(dialog);
-  ui_prefsPresentations_base.setupUi(presentationSettingsDlg);
-  dialog->addPage(presentationSettingsDlg, i18n("Presentations"), "view-presentation", i18n("Presentations and Slideshows"));
+  prefsPresentations *presentationsSettingsDlg = new prefsPresentations(dialog);
+  dialog->addPage(presentationsSettingsDlg, i18n("Presentations"), "view-presentation", i18n("Presentations and Slideshows"));
 
   // Let the plugins have their say
   KwApplication::self()->pluginManager()->setupConfigDialog(dialog);

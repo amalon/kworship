@@ -103,6 +103,7 @@ set(kworshipmain_SRCS
     kworshipview.cpp
     prefsDisplay.cpp
     prefsDatabase.cpp
+    prefsPresentations.cpp
     DesktopView.cpp
     KwDatabaseSetup.cpp
     KwDocument.cpp
