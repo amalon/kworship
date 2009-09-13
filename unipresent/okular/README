@@ -1,0 +1,4 @@
+Code specific to the okular backend.
+
+This uses DBus to interface with Okular.
+

@@ -17,3 +17,5 @@ add_subdirectory (kpresenter2)
 # OpenOffice.org backend
 add_subdirectory (openoffice.org)
 
+# Okular backend
+add_subdirectory (okular)

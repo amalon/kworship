@@ -1,6 +1,6 @@
 /***************************************************************************
  *   This file is part of KWorship.                                        *
- *   Copyright 2008 James Hogan <james@albanarts.com>                      *
+ *   Copyright 2008-2009 James Hogan <james@albanarts.com>                 *
  *                                                                         *
  *   KWorship is free software: you can redistribute it and/or modify      *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,14 +18,14 @@
  ***************************************************************************/
 
 /**
- * @file UpKpr2Backend.cpp
- * @brief KPresenter 2 presentation manager.
+ * @file UpOkBackend.cpp
+ * @brief Okular presentation manager.
  * @author James Hogan <james@albanarts.com>
  */
 
-#include "UpKpr2Backend.h"
-#include "UpKpr2Process.h"
-#include "UpKpr2Presentation.h"
+#include "UpOkBackend.h"
+#include "UpOkProcess.h"
+#include "UpOkPresentation.h"
 
 #include <KRun>
 #include <KLocale>
@@ -39,14 +39,14 @@
 
 #include <cassert>
 
-K_EXPORT_COMPONENT_FACTORY( unipresent_kpresenter2, KGenericFactory<UpKpr2Backend>("unipresent_kpresenter2") )
+K_EXPORT_COMPONENT_FACTORY( unipresent_okular, KGenericFactory<UpOkBackend>("unipresent_okular") )
 
 /*
  * Constructors + destructor
  */
 
 /// Primary constructor.
-UpKpr2Backend::UpKpr2Backend(QObject* parent, const QStringList& params)
+UpOkBackend::UpOkBackend(QObject* parent, const QStringList& params)
 : UpBackend(parent, params)
 , m_processes()
 , m_presentations()
@@ -59,7 +59,7 @@ UpKpr2Backend::UpKpr2Backend(QObject* parent, const QStringList& params)
   QStringList serviceNames = reply;
   foreach (QString serviceName, serviceNames)
   {
-    if (serviceName.startsWith("org.koffice.kpresenter-"))
+    if (serviceName.startsWith("org.kde.okular-"))
     {
       dbusServiceOwnerChange(serviceName, QString(), "dummy"); // the new owner string isn't used
     }
@@ -67,9 +67,9 @@ UpKpr2Backend::UpKpr2Backend(QObject* parent, const QStringList& params)
 }
 
 /// Destructor.
-UpKpr2Backend::~UpKpr2Backend()
+UpOkBackend::~UpOkBackend()
 {
-  foreach (UpKpr2Process* process, m_processes)
+  foreach (UpOkProcess* process, m_processes)
   {
     delete process;
   }
@@ -79,50 +79,49 @@ UpKpr2Backend::~UpKpr2Backend()
  * General meta information
  */
 
-QString UpKpr2Backend::id() const
+QString UpOkBackend::id() const
 {
-  return "KOffice2/KPresenter";
+  return "Okular";
 }
 
-QString UpKpr2Backend::name() const
+QString UpOkBackend::name() const
 {
-  return i18n("KPresenter 2");
+  return i18n("Okular");
 }
 
-QString UpKpr2Backend::description() const
+QString UpOkBackend::description() const
 {
-  return i18n("Controls a running KPresenter 2 presentation");
+  return i18n("Controls a running Okular presentation");
 }
 
-QStringList UpKpr2Backend::mimeTypes() const
+QStringList UpOkBackend::mimeTypes() const
 {
-  /// @todo Find mime types from kpresenter if possible
+  /// @todo Find mime types from okular if possible
   return QStringList()
-    << "application/x-kpresenter"
-    << "application/vnd.oasis.opendocument.presentation"
+    << "application/pdf"
     ;
 }
 
-QIcon UpKpr2Backend::icon() const
+QIcon UpOkBackend::icon() const
 {
-  return KIcon("kpresenter");
+  return KIcon("okular");
 }
 
 /*
  * Activation
  */
 
-bool UpKpr2Backend::isActive()
+bool UpOkBackend::isActive()
 {
   return !m_processes.isEmpty();
 }
 
-bool UpKpr2Backend::activate()
+bool UpOkBackend::activate()
 {
   return true;
 }
 
-void UpKpr2Backend::deactivate()
+void UpOkBackend::deactivate()
 {
 }
 
@@ -130,14 +129,14 @@ void UpKpr2Backend::deactivate()
  * Presentation management
  */
 
-QList<UpPresentation*> UpKpr2Backend::presentations()
+QList<UpPresentation*> UpOkBackend::presentations()
 {
   return m_presentations;
 }
 
-bool UpKpr2Backend::openPresentation(const QUrl& url)
+bool UpOkBackend::openPresentation(const QUrl& url)
 {
-  // Ensure the program is up and running 
+  // Ensure the program is up and running
   activate();
 
   // Check if the presentation is already open
@@ -150,8 +149,8 @@ bool UpKpr2Backend::openPresentation(const QUrl& url)
   }
 
   // Otherwise open it now
-  /// @todo Configurable kpresenter exec
-  bool started = KRun::run("kpresenter", KUrl::List() << url, 0);
+  /// @todo Configurable okular exec
+  bool started = KRun::run("okular", KUrl::List() << url, 0);
 
   return started;
 }
@@ -161,24 +160,24 @@ bool UpKpr2Backend::openPresentation(const QUrl& url)
  */
 
 /// DBus service ownership change.
-void UpKpr2Backend::dbusServiceOwnerChange(const QString& name, const QString& oldOwner, const QString& newOwner)
+void UpOkBackend::dbusServiceOwnerChange(const QString& name, const QString& oldOwner, const QString& newOwner)
 {
   // Is it an interesting service name?
-  if (name.startsWith("org.koffice.kpresenter-"))
+  if (name.startsWith("org.kde.okular-"))
   {
     // Oooh, perhaps there are new presentations available
     if (oldOwner.isEmpty())
     {
-      UpKpr2Process* process = new UpKpr2Process(name, this);
+      UpOkProcess* process = new UpOkProcess(name, this);
       m_processes[name] = process;
       // Link presentation event signals
-      connect(process, SIGNAL(loadedPresentation(UpKpr2Presentation*)),
-              this,    SLOT  (dbusLoadedPresentation(UpKpr2Presentation*)));
-      connect(process, SIGNAL(unloadedPresentation(UpKpr2Presentation*)),
-              this,    SLOT  (dbusUnloadedPresentation(UpKpr2Presentation*)));
+      connect(process, SIGNAL(loadedPresentation(UpOkPresentation*)),
+              this,    SLOT  (dbusLoadedPresentation(UpOkPresentation*)));
+      connect(process, SIGNAL(unloadedPresentation(UpOkPresentation*)),
+              this,    SLOT  (dbusUnloadedPresentation(UpOkPresentation*)));
       // Trigger adding of presentations that are already open
-      QList<UpKpr2Presentation*> presentations = process->presentations();
-      foreach (UpKpr2Presentation* pres, presentations)
+      QList<UpOkPresentation*> presentations = process->presentations();
+      foreach (UpOkPresentation* pres, presentations)
       {
         dbusLoadedPresentation(pres);
       }
@@ -196,15 +195,15 @@ void UpKpr2Backend::dbusServiceOwnerChange(const QString& name, const QString& o
   }
 }
 
-// Slots for UpKpr2Process signals
+// Slots for UpOkProcess signals
 
-void UpKpr2Backend::dbusLoadedPresentation(UpKpr2Presentation* presentation)
+void UpOkBackend::dbusLoadedPresentation(UpOkPresentation* presentation)
 {
   m_presentations.push_back(presentation);
   loadedPresentation(presentation);
 }
 
-void UpKpr2Backend::dbusUnloadedPresentation(UpKpr2Presentation* presentation)
+void UpOkBackend::dbusUnloadedPresentation(UpOkPresentation* presentation)
 {
   m_presentations.removeOne(presentation);
   unloadedPresentation(presentation);

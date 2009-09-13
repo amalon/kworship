@@ -31,6 +31,7 @@
 
 #include <KLocale>
 #include <KGenericFactory>
+#include <KIcon>
 
 #include <QTimer>
 
@@ -86,7 +87,7 @@ QStringList UpKpr1Backend::mimeTypes() const
 
 QIcon UpKpr1Backend::icon() const
 {
-  return QIcon();
+  return KIcon("kpresenter");
 }
 
 /*

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Okular
+Comment=UniPresent backend for Okular
+X-KDE-ServiceTypes=UniPresent/Backend
+Type=Service
+X-KDE-Library=unipresent_okular
