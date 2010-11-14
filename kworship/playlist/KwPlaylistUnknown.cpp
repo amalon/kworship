@@ -54,6 +54,9 @@ QString KwPlaylistUnknown::itemType() const
 
 void KwPlaylistUnknown::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
+  Q_UNUSED(document);
+  Q_UNUSED(element);
+  Q_UNUSED(resourceManager);
   // Do nothing, the preserved dom will be restored by KwPlaylistItem
 }
 

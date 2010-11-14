@@ -33,6 +33,7 @@
 UpBackend::UpBackend(QObject* parent, const QStringList& params)
 : QObject(parent)
 {
+  Q_UNUSED(params);
 }
 
 /// Destructor.

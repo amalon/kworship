@@ -777,6 +777,7 @@ KwZionworxFilter::ExportToDom::ExportVTable KwZionworxFilter::ExportToDom::call;
 
 bool KwZionworxFilter::save(KwDocument* doc, const KUrl& url, const QString& mimeType)
 {
+  Q_UNUSED(mimeType);
   /// @todo Handle non-local files
   if (!url.isLocalFile())
   {

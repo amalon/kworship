@@ -86,6 +86,7 @@ KwCssScope::~KwCssScope()
 /// Import the style information from a DOM.
 void KwCssScope::importStylesFromDom(const QDomElement& element, KwResourceManager* resourceManager)
 {
+  Q_UNUSED(resourceManager);
   // Classes
   QDomNodeList elems = element.elementsByTagName("class");
   for (int i = 0; i < elems.count(); ++i)
@@ -119,6 +120,7 @@ void KwCssScope::importStylesFromDom(const QDomElement& element, KwResourceManag
 /// Export the style information to a DOM.
 void KwCssScope::exportStylesToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
+  Q_UNUSED(resourceManager);
   // Start with the classes
   foreach (QString className, m_classes)
   {

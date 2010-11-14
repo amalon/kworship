@@ -63,6 +63,8 @@ KwSongdbPlugin::KwSongdbPlugin(QObject* parent, const QStringList& params)
 , m_editSongAction(0)
 , m_editSongBooksAction(0)
 {
+  Q_UNUSED(params);
+
   setXMLFile("songdb/kworship_songdbui.rc");
 
   // Set up actions

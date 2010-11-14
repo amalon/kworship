@@ -68,6 +68,7 @@ QString KwBiblePlaylistItem::itemType() const
 
 void KwBiblePlaylistItem::exportDetailsToDom(QDomDocument& document, QDomElement& element, KwResourceManager* resourceManager) const
 {
+  Q_UNUSED(resourceManager);
   QDomElement passageElem = document.createElement("passage");
   element.appendChild(passageElem);
   m_passage.exportToDom(document, passageElem);

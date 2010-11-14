@@ -72,6 +72,7 @@ KwBiblePlugin::KwBiblePlugin(QObject* parent, const QStringList& params)
 , m_editRange(0)
 , m_textPassage(0)
 {
+  Q_UNUSED(params);
   setXMLFile("bible/kworship_bibleui.rc");
 }
 

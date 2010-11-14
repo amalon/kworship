@@ -109,6 +109,7 @@ KwSongdbSongBooksEditWidget::KwSongdbSongBooksEditWidget()
   foreach (KwSongdbSongBook* songBook, songBooks)
   {
     KwSongdbSongBookItem* item = new KwSongdbSongBookItem(songBook, listSongBooks);
+    Q_UNUSED(item);
   }
 }
 

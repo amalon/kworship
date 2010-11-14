@@ -266,6 +266,7 @@ void KwMediaManager::stopVideo(bool stopLinkedAudio)
       {
         assert((*it).isValid());
         bool disconnected = (*it).disconnect();
+        Q_UNUSED(disconnected);
         assert(disconnected);
         disconnectVideoOutput(it.key());
       }

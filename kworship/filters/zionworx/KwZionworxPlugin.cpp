@@ -46,6 +46,7 @@ KwZionworxPlugin::KwZionworxPlugin(QObject* parent, const QStringList& params)
            i18n("Zionworx filters"),
            i18n("The Zionworx filters allow Zionworx playlists to be loaded and saved."))
 {
+  Q_UNUSED(params);
 }
 
 /// Destructor.

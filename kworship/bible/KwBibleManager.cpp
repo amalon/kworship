@@ -50,6 +50,7 @@ KwBibleManager* KwBibleManager::singleton(const QString& key)
 KwBibleManager::KwBibleManager(QObject* parent, const QStringList& params)
 : QObject(parent)
 {
+  Q_UNUSED(params);
 }
 
 /// Destructor.
