@@ -52,7 +52,7 @@ KwBibleModule::~KwBibleModule()
 KwBibleModule::Key KwBibleModule::createKey(const QString& text, bool* valid)
 {
   // Find the key relative to the first chapter of the first book.
-  return createKey(createKey(0, 0), text);
+  return createKey(createKey(0, 0), text, valid);
 }
 
 /// Create a key from a string relative to another key.
