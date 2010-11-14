@@ -48,7 +48,7 @@ KwBibleManagerBibleGateway::KwBibleManagerBibleGateway(QObject* parent, const QS
 : KwBibleManager(parent, params)
 , m_cached(false)
 , m_languages()
-, m_versionsById()
+, m_versions()
 , m_versionsByName()
 , m_versionsByLanguage()
 {
@@ -58,7 +58,7 @@ KwBibleManagerBibleGateway::KwBibleManagerBibleGateway(QObject* parent, const QS
 /// Destructor.
 KwBibleManagerBibleGateway::~KwBibleManagerBibleGateway()
 {
-  foreach (Version* version, m_versionsById)
+  foreach (Version* version, m_versions)
   {
     delete version->module;
     delete version;
@@ -99,7 +99,7 @@ KwBibleModule* KwBibleManagerBibleGateway::module(const QString& name)
       if (!moduleIds.isEmpty())
       {
         int id = moduleIds.first();
-        version = m_versionsById[id];
+        version = m_versions[id];
       }
     }
   }
@@ -107,7 +107,7 @@ KwBibleModule* KwBibleManagerBibleGateway::module(const QString& name)
   {
     if (0 == version->module)
     {
-      version->module = new KwBibleModuleBibleGateway(version->id);
+      version->module = new KwBibleModuleBibleGateway(version->url);
     }
     return version->module;
   }
@@ -133,7 +133,7 @@ QStringList KwBibleManagerBibleGateway::moduleNamesInLanguage(const QString& lan
     const QList<int>& moduleIds = m_versionsByLanguage[languageId];
     foreach (int id, moduleIds)
     {
-      names << m_versionsById[id]->name;
+      names << m_versions[id]->name;
     }
   }
   return names;
@@ -155,14 +155,15 @@ void KwBibleManagerBibleGateway::ensureCached()
   if (!m_cached)
   {
     QString tmpFile;
-    if (KIO::NetAccess::download(KUrl("http://www.biblegateway.com/"), tmpFile, 0))
+    // First get list from drop down menu on main page
+#if 0
+    if (KIO::NetAccess::download(KUrl("http://mobile.biblegateway.com/"), tmpFile, 0))
     {
       QFile file(tmpFile);
       if (file.open(QFile::ReadOnly | QFile::Text))
       {
         QByteArray rawPage = file.readAll();
         file.close();
-        /// @todo Convert to use KDE DOM as its a bit more flexible of invalid XML
         QString page = QString::fromUtf8(rawPage);
         QRegExp rx("<select\\s+name=\"qs_version\">.*</select>");
         if (-1 != rx.indexIn(page))
@@ -190,24 +191,102 @@ void KwBibleManagerBibleGateway::ensureCached()
                 }
                 else if (langId >= 0)
                 {
-                  bool ok;
-                  int versionId = el.attribute("value").toInt(&ok);
-                  if (ok)
+                  QString versionId = el.attribute("value");
+                  // Ensure there is none with this shortname already
+                  QHash<QString, Version*>::const_iterator it = m_versionsByShortName.constFind(versionId);
+                  if (it == m_versionsByShortName.constEnd())
                   {
-                    // Ensure there is none with this id already
-                    QHash<int, Version*>::const_iterator it = m_versionsById.constFind(versionId);
-                    if (it == m_versionsById.constEnd())
+                    Version* version = new Version;
+                    version->name = text;
+                    version->shortname = versionId;
+                    version->id = m_versionsById.size();
+                    version->module = 0;
+                    m_versionsById[version->id] = version;
+                    m_versionsByName[text] = version;
+                    m_versionsByShortName[versionId] = version;
+                    *langMods << version->id;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+#endif
+    if (KIO::NetAccess::download(KUrl("http://mobile.biblegateway.com/versions"), tmpFile, 0))
+    {
+      QFile file(tmpFile);
+      if (file.open(QFile::ReadOnly | QFile::Text))
+      {
+        QByteArray rawPage = file.readAll();
+        file.close();
+        QString page = QString::fromUtf8(rawPage);
+        QRegExp rx("<table[^>]*class=\"infotable\">.*</table>");
+        if (-1 != rx.indexIn(page))
+        {
+          QDomDocument dom;
+          if (dom.setContent(rx.cap(), false))
+          {
+            // Go through all the options (languages and versions)
+            int langId = -1;
+            int rowSpan = 0;
+            QList<int>* langMods = 0;
+            QDomNodeList rows = dom.elementsByTagName("tr");
+            for (int i = 0; i < rows.count(); ++i)
+            {
+              QDomElement row = rows.at(i).toElement();
+              if (!row.isNull())
+              {
+                QDomNodeList cols = row.elementsByTagName("td");
+                for (int j = 0; j < cols.count(); ++j)
+                {
+                  QDomElement cell = cols.at(j).toElement();
+                  if (!cell.isNull())
+                  {
+                    // if first columnn and rowspan, its a language
+                    QString rowSpanStr = cell.attribute("rowspan");
+                    bool ok;
+                    int newRowSpan = rowSpanStr.toInt(&ok);
+                    if (!j && ok && newRowSpan)
                     {
-                      Version* version = new Version;
-                      version->name = text;
-                      version->id = versionId;
-                      version->module = 0;
-                      m_versionsById[versionId] = version;
-                      m_versionsByName[text] = version;
-                      *langMods << versionId;
+                      QString text = cell.text();
+                      m_languages << text;
+                      ++langId;
+                      langMods = &m_versionsByLanguage[langId];
+                      rowSpan = newRowSpan;
+                    }
+                    else if (langId >= 0)
+                    {
+                      QDomNodeList as = cell.elementsByTagName("a");
+                      if (as.count())
+                      {
+                        QDomElement ael = as.at(0).toElement();
+                        if (!ael.isNull())
+                        {
+                          QString href = ael.attribute("href");
+                          QString text = ael.text();
+                          QHash<QString, Version*>::const_iterator it = m_versionsByName.constFind(text);
+                          if (it == m_versionsByName.constEnd())
+                          {
+                            Version* version = new Version;
+                            version->name = text;
+                            version->id = m_versions.size();
+                            version->module = 0;
+                            version->url = href;
+                            m_versions.push_back(version);
+                            m_versionsByName[text] = version;
+                            *langMods << version->id;
+                          }
+                        }
+                      }
+                      // jump out of column loop
+                      break;
                     }
                   }
                 }
+                if (rowSpan)
+                  --rowSpan;
               }
             }
             m_cached = true;
@@ -229,14 +308,14 @@ void KwBibleManagerBibleGateway::clear()
 {
   if (m_cached)
   {
-    foreach (Version* version, m_versionsById)
+    foreach (Version* version, m_versions)
     {
       delete version->module;
       delete version;
     }
     m_cached = false;
     m_languages.clear();
-    m_versionsById.clear();
+    m_versions.clear();
     m_versionsByName.clear();
     m_versionsByLanguage.clear();
   }

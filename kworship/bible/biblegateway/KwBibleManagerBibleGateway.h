@@ -31,6 +31,7 @@
 #include <QString>
 #include <QStringList>
 #include <QList>
+#include <QVector>
 #include <QHash>
 
 class KwBibleModuleBibleGateway;
@@ -100,13 +101,14 @@ class KwBibleManagerBibleGateway : public KwBibleManager
     struct Version
     {
       QString name;
+      QString url;
       int id;
       int lang;
       KwBibleModuleBibleGateway* module;
     };
 
     /// Versions by id.
-    QHash<int, Version*> m_versionsById;
+    QVector<Version*> m_versions;
 
     /// Versions by name.
     QHash<QString, Version*> m_versionsByName;

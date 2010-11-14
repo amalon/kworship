@@ -42,7 +42,7 @@ class KwBibleModuleBibleGateway : public KwBibleModule
      */
 
     /// Default constructor.
-    KwBibleModuleBibleGateway(int id);
+    KwBibleModuleBibleGateway(QString url);
 
     /// Destructor.
     virtual ~KwBibleModuleBibleGateway();

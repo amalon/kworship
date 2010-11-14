@@ -41,10 +41,10 @@
  */
 
 /// Default constructor.
-KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(int id)
+KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(QString vurl)
 : KwBibleModule()
 {
-  KUrl url(QString("http://www.biblegateway.com/versions/index.php?action=getVersionInfo&vid=%1").arg(id));
+  KUrl url("http://mobile.biblegateway.com/" + vurl);
 
   QString tmpFile;
   if (KIO::NetAccess::download(url, tmpFile, 0))
@@ -105,7 +105,7 @@ KwBibleModuleBibleGateway::KwBibleModuleBibleGateway(int id)
                 // Get the link
                 book->chapters.push_back(Chapter());
                 Chapter* chapter = &book->chapters[book->chapters.size()-1];
-                chapter->url = "http://www.biblegateway.com" + link.getAttribute("href").string();
+                chapter->url = "http://mobile.biblegateway.com/" + link.getAttribute("href").string();
                 chapter->fetched = false;
               }
             }
@@ -236,7 +236,7 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
               {
                 // Get the verse number and validate
                 bool numeric;
-                QString verseNumber = sup.getAttribute("value").string();
+                QString verseNumber = sup.innerText().string();
                 Verse verseInfo;
                 int check = verseNumber.toInt(&numeric);
                 if (!numeric)
@@ -290,10 +290,18 @@ KwBibleModuleBibleGateway::Chapter* KwBibleModuleBibleGateway::fetchChapter(int 
                       {
                         break;
                       }
-                      /// @todo Handle footnotes properly
+                      // ignore footnote references
                       else if (siblingElement.getAttribute("class") == "footnote")
                       {
                         append = false;
+                      }
+                    }
+                    // and the actual footnotes section
+                    else if (siblingElement.tagName() == "div")
+                    {
+                      if (siblingElement.getAttribute("class") == "footnotes")
+                      {
+                        break;
                       }
                     }
 
