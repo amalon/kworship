@@ -103,13 +103,13 @@ class KWBIBLE_EXPORT KwBibleManager : public QObject
     virtual KwBibleModule* module(const QString& name) = 0;
 
     /// Get the list of module names.
-    virtual QStringList moduleNames() = 0;
+    virtual QStringList moduleNames(bool* ok = 0) = 0;
 
     /// Get the list of module names in a specific language.
-    virtual QStringList moduleNamesInLanguage(const QString& lang) = 0;
+    virtual QStringList moduleNamesInLanguage(const QString& lang, bool* ok = 0) = 0;
 
     /// Get a list of module languages.
-    virtual QStringList languages() = 0;
+    virtual QStringList languages(bool* ok = 0) = 0;
 };
 
 #endif // _KwBibleManager_h_

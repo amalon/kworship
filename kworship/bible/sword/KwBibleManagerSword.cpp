@@ -111,14 +111,18 @@ KwBibleModule* KwBibleManagerSword::module(const QString& name)
   }
 }
 
-QStringList KwBibleManagerSword::moduleNames()
+QStringList KwBibleManagerSword::moduleNames(bool* ok)
 {
+  if (ok)
+    *ok = true;
   return m_modules.keys();
 }
 
-QStringList KwBibleManagerSword::moduleNamesInLanguage(const QString& lang)
+QStringList KwBibleManagerSword::moduleNamesInLanguage(const QString& lang, bool* ok)
 {
   QHash<QString, QStringList>::const_iterator it = m_modulesByLanguage.constFind(lang);
+  if (ok)
+    *ok = (it != m_modulesByLanguage.constEnd());
   if (it != m_modulesByLanguage.constEnd())
   {
     return *it;
@@ -129,8 +133,10 @@ QStringList KwBibleManagerSword::moduleNamesInLanguage(const QString& lang)
   }
 }
 
-QStringList KwBibleManagerSword::languages()
+QStringList KwBibleManagerSword::languages(bool* ok)
 {
+  if (ok)
+    *ok = true;
   return m_languages;
 }
 

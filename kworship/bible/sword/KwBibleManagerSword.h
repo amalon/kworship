@@ -67,13 +67,13 @@ class KwBibleManagerSword : public KwBibleManager
     virtual KwBibleModule* module(const QString& name);
 
     // Reimplemented
-    virtual QStringList moduleNames();
+    virtual QStringList moduleNames(bool* ok = 0);
 
     // Reimplemented
-    virtual QStringList moduleNamesInLanguage(const QString& lang);
+    virtual QStringList moduleNamesInLanguage(const QString& lang, bool* ok = 0);
 
     // Reimplemented
-    virtual QStringList languages();
+    virtual QStringList languages(bool* ok = 0);
 
   private:
 

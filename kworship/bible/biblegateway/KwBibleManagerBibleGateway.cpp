@@ -117,15 +117,15 @@ KwBibleModule* KwBibleManagerBibleGateway::module(const QString& name)
   }
 }
 
-QStringList KwBibleManagerBibleGateway::moduleNames()
+QStringList KwBibleManagerBibleGateway::moduleNames(bool* ok)
 {
-  ensureCached();
+  ensureCached(ok);
   return m_versionsByName.keys();
 }
 
-QStringList KwBibleManagerBibleGateway::moduleNamesInLanguage(const QString& lang)
+QStringList KwBibleManagerBibleGateway::moduleNamesInLanguage(const QString& lang, bool* ok)
 {
-  ensureCached();
+  ensureCached(ok);
   int languageId = m_languages.indexOf(lang);
   QStringList names;
   if (languageId >= 0)
@@ -139,9 +139,9 @@ QStringList KwBibleManagerBibleGateway::moduleNamesInLanguage(const QString& lan
   return names;
 }
 
-QStringList KwBibleManagerBibleGateway::languages()
+QStringList KwBibleManagerBibleGateway::languages(bool* ok)
 {
-  ensureCached();
+  ensureCached(ok);
   return m_languages;
 }
 
@@ -150,7 +150,7 @@ QStringList KwBibleManagerBibleGateway::languages()
  */
 
 /// Ensure the version information is cached.
-void KwBibleManagerBibleGateway::ensureCached()
+void KwBibleManagerBibleGateway::ensureCached(bool* ok)
 {
   if (!m_cached)
   {
@@ -294,12 +294,20 @@ void KwBibleManagerBibleGateway::ensureCached()
         }
       }
 
+      if (ok)
+        *ok = true;
       KIO::NetAccess::removeTempFile(tmpFile);
     }
     else
     {
+      if (ok)
+        *ok = false;
       KMessageBox::error(0, KIO::NetAccess::lastErrorString());
     }
+  }
+  else if (ok)
+  {
+    *ok = true;
   }
 }
 

@@ -152,14 +152,6 @@ void KwBiblePlugin::slotConnect()
 
   // This will force the connection
   fillBiblesList(mgr);
-  if (mgr->comboBibles->count() == 0)
-  {
-    KMessageBox::information(m_docker, i18n("No bibles found"));
-  }
-  else
-  {
-    mgr->comboBibles->setEnabled(true);
-  }
 }
 
 /// Fired when the bible is changed.
@@ -489,7 +481,9 @@ void KwBiblePlugin::_unload()
 /// Fill up the bibles list for a manager.
 void KwBiblePlugin::fillBiblesList(BibleManager* mgr)
 {
-  QStringList languages = mgr->manager->languages();
+  bool ok;
+  QStringList languages = mgr->manager->languages(&ok);
+  mgr->comboBibles->setEnabled(false);
   mgr->comboBibles->clear();
   mgr->comboBibles->addItem(i18n("-- select a translation --"));
   foreach (QString language, languages)
@@ -503,6 +497,13 @@ void KwBiblePlugin::fillBiblesList(BibleManager* mgr)
         mgr->comboBibles->addItem("    " + module, QVariant(module));
       }
     }
+  }
+  // re-enable or clear
+  if (ok && mgr->comboBibles->count() > 1) {
+    mgr->comboBibles->setEnabled(true);
+  }
+  else {
+    mgr->comboBibles->clear();
   }
 }
 
