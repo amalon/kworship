@@ -822,7 +822,7 @@ bool KwZionworxFilter::save(KwDocument* doc, const KUrl& url, const QString& mim
   if (!file.finalize())
   {
     KMessageBox::error(0,
-        i18n("Cannot finalize file %1:\n%2.")
+        i18n("Cannot finalise file %1:\n%2.")
         .arg(file.fileName())
         .arg(file.errorString()),
         i18n("KWorship"));
