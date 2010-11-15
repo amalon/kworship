@@ -1,0 +1,1007 @@
+# KWorship American English Translation.
+# Copyright (C) 2010 James Hogan
+# This file is distributed under the same license as the KWorship package.
+#
+# James Hogan <james@albanarts.com>, 2008, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: kworship\n"
+"Report-Msgid-Bugs-To: bugs.kworship.org\n"
+"POT-Creation-Date: 2010-11-15 00:53+0000\n"
+"PO-Revision-Date: 2010-11-15 00:27+0000\n"
+"Last-Translator: James Hogan <james@albanarts.com>\n"
+"Language-Team: American English <en-us@kworship.org>\n"
+"Language: American English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: kworship/archive/KwKWorshipFilter.cpp:65
+#: kworship/archive/KwKWorshipFilter.cpp:107
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:81
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:785
+msgid "Non-local loads not yet supported"
+msgstr ""
+
+#: kworship/archive/KwKWorshipFilter.cpp:66
+#: kworship/archive/KwKWorshipFilter.cpp:91
+#: kworship/archive/KwKWorshipFilter.cpp:108
+#: kworship/archive/KwKWorshipFilter.cpp:119
+#: kworship/archive/KwKWorshipFilter.cpp:137
+#: kworship/archive/KwKWorshipFilter.cpp:153
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:82
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:102
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:112
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:228
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:442
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:455
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:786
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:797
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:828
+#: kworship/kworship.cpp:325 kworship/kworship.cpp:332
+#: kworship/kworship.cpp:639 kworship/kworship.cpp:646 kworship/main.cpp:30
+msgid "KWorship"
+msgstr ""
+
+#: kworship/archive/KwKWorshipFilter.cpp:90
+msgid "Non-archived loads not yet implemented"
+msgstr ""
+
+#: kworship/archive/KwKWorshipFilter.cpp:116
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:794
+msgid ""
+"Cannot write file %1:\n"
+"%2."
+msgstr ""
+
+#: kworship/archive/KwKWorshipFilter.cpp:136
+msgid "Non-archived saves not yet implemented"
+msgstr ""
+
+#: kworship/archive/KwKWorshipFilter.cpp:150
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:825
+msgid ""
+"Cannot finalise file %1:\n"
+"%2."
+msgstr ""
+"Cannot finalize file %1:\n"
+"%2."
+
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:102
+msgid "Non sequential chapter list in book '%1'"
+msgstr ""
+
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:102
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:118
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:245
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:251
+msgid "Error parsing webpage: %1"
+msgstr ""
+
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:118
+msgid "Book list table not found"
+msgstr ""
+
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:245
+msgid ""
+"Non numeric superscript encountered: '%1'. It may correspond to a verse "
+"range."
+msgstr ""
+
+#: kworship/bible/biblegateway/KwBibleModuleBibleGateway.cpp:251
+msgid ""
+"Non sequential verse list in chapter %1 of book '%2'. Expected verse %3 but "
+"got verse %4."
+msgstr ""
+
+#: kworship/bible/KwBiblePassage.cpp:433
+msgctxt "empty bible passage"
+msgid "empty"
+msgstr ""
+
+#: kworship/bible/KwBiblePassage.cpp:450 kworship/bible/KwBiblePassage.cpp:461
+#: kworship/bible/KwBiblePassage.cpp:469
+msgctxt "bible index (chapter:verse)"
+msgid "%1:%2"
+msgstr ""
+
+#: kworship/bible/KwBiblePassage.cpp:448 kworship/bible/KwBiblePassage.cpp:459
+msgctxt "bible index (book, chapter:verse)"
+msgid "%1 %2"
+msgstr ""
+
+#: kworship/bible/KwBiblePassage.cpp:458
+msgctxt "bible passage range (book chapter:verse, book chapter:verse)"
+msgid "%1 - %2"
+msgstr ""
+
+#: kworship/bible/KwBiblePassage.cpp:468
+msgctxt "bible passage range (book chapter:verse, chapter:verse)"
+msgid "%1 - %2"
+msgstr ""
+
+#: kworship/bible/KwBiblePassage.cpp:476
+msgctxt "bible passage range (book chapter:verse, verse)"
+msgid "%1-%2"
+msgstr ""
+
+#: kworship/bible/KwBiblePassage.cpp:481
+msgctxt "bible index (range, version)"
+msgid "%1 (%2)"
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:62 kworship/bible/KwBiblePlugin.cpp:355
+msgid "Bible"
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:63
+msgid ""
+"The bible plugin allows for the navigation and display of bible extracts "
+"from various sources."
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:157
+msgid "No bibles found"
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:383
+msgid "&Verses"
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:398 kworship/songdb/KwSongdbPlugin.cpp:131
+msgid "Insert Into Playlist"
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:404
+msgid "Show Now"
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:431
+msgid "Connect to %1"
+msgstr ""
+
+#: kworship/bible/KwBiblePlugin.cpp:494
+msgid "-- select a translation --"
+msgstr ""
+
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:101
+msgid "Doesn't look like a ZionWorx playlist"
+msgstr ""
+
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:111
+msgid "Only version 2.6 is supported (version is %1)"
+msgstr ""
+
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:227
+msgid "Problems were encountered reading numbered verses in bible passage %1"
+msgstr ""
+
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:441
+msgid "Unrecognised item type \"%1\""
+msgstr "Unrecognized item type \"%1\""
+
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:454
+msgid "Invalid XML"
+msgstr ""
+
+#: kworship/filters/zionworx/KwZionworxFilter.cpp:735
+msgctxt "Verse number, bible verse, for zionworx export"
+msgid "%1.  %2"
+msgstr ""
+
+#: kworship/filters/zionworx/KwZionworxPlugin.cpp:46
+msgid "Zionworx filters"
+msgstr ""
+
+#: kworship/filters/zionworx/KwZionworxPlugin.cpp:47
+msgid "The Zionworx filters allow Zionworx playlists to be loaded and saved."
+msgstr ""
+
+#: kworship/filters/zionworx/stringlisttest/KwZwStringList.cpp:45
+msgid "Add string"
+msgstr ""
+
+#: kworship/filters/zionworx/stringlisttest/main.cpp:31
+msgid "KWorship Zionworx"
+msgstr ""
+
+#: kworship/filters/zionworx/stringlisttest/main.cpp:32 kworship/main.cpp:31
+msgid "Free/Open source church worship & presentation software"
+msgstr ""
+
+#: kworship/filters/zionworx/stringlisttest/main.cpp:34 kworship/main.cpp:33
+msgid "(C) 2008 James Hogan"
+msgstr ""
+
+#: kworship/filters/zionworx/stringlisttest/main.cpp:38 kworship/main.cpp:37
+msgid "James Hogan"
+msgstr ""
+
+#: kworship/KwFilter.cpp:36
+msgid "Unspecified filter file format"
+msgstr ""
+
+#: kworship/kworship.cpp:197
+msgid "Custom Slideshows"
+msgstr ""
+
+#: kworship/kworship.cpp:201
+msgid "Add Slideshow to Playlist"
+msgstr ""
+
+#: kworship/kworship.cpp:205
+msgid "Add Link to Slideshow into Playlist"
+msgstr ""
+
+#: kworship/kworship.cpp:210
+msgid "Save Copy of Slideshow into Playlist"
+msgstr ""
+
+#: kworship/kworship.cpp:241
+msgid "Previous Slide"
+msgstr ""
+
+#: kworship/kworship.cpp:245
+msgid "Previous Step"
+msgstr ""
+
+#: kworship/kworship.cpp:249
+msgid "Next Step"
+msgstr ""
+
+#: kworship/kworship.cpp:253
+msgid "Next Slide"
+msgstr ""
+
+#: kworship/kworship.cpp:257
+msgid "Start/Stop Slideshow"
+msgstr ""
+
+#: kworship/kworship.cpp:264
+msgid "Slide Notes"
+msgstr ""
+
+#: kworship/kworship.cpp:324
+msgid "Loading of \"%1\" failed."
+msgstr ""
+
+#: kworship/kworship.cpp:331
+msgid "No load filter exists for the mime type \"%1\""
+msgstr ""
+
+#: kworship/kworship.cpp:373
+msgid "Show Main Display"
+msgstr ""
+
+#: kworship/kworship.cpp:377
+msgid "Clear display"
+msgstr ""
+
+#: kworship/kworship.cpp:382
+msgid "Insert into playlist"
+msgstr ""
+
+#: kworship/kworship.cpp:386
+msgid "Delete from playlist"
+msgstr ""
+
+#: kworship/kworship.cpp:391
+msgid "Move playlist item up"
+msgstr ""
+
+#: kworship/kworship.cpp:396
+msgid "Move playlist item down"
+msgstr ""
+
+#: kworship/kworship.cpp:524
+msgid ""
+"The current playlist has been modified. These modifications will be lost if "
+"you continue without saving. Would you like to save now?"
+msgstr ""
+
+#: kworship/kworship.cpp:527
+msgid "Playlist is modified"
+msgstr ""
+
+#: kworship/kworship.cpp:576
+msgid "Open Playlist"
+msgstr ""
+
+#: kworship/kworship.cpp:620
+msgid "Save Playlist As"
+msgstr ""
+
+#: kworship/kworship.cpp:638
+msgid "Saving to \"%1\" failed."
+msgstr ""
+
+#: kworship/kworship.cpp:645
+msgid "No save filter exists for the mime type \"%1\""
+msgstr ""
+
+#. i18n: file: kworship/prefsPresentations_base.ui:17
+#. i18n: ectx: attribute (title), widget (QWidget, tabGeneral)
+#: kworship/kworship.cpp:661 rc.cpp:155
+#: relwithdebinfo/kworship/ui_prefsPresentations_base.h:92
+msgid "General"
+msgstr ""
+
+#: kworship/kworship.cpp:664
+msgid "Display"
+msgstr ""
+
+#: kworship/kworship.cpp:664
+msgid "Display and Screen"
+msgstr ""
+
+#: kworship/kworship.cpp:667
+msgid "Database"
+msgstr ""
+
+#: kworship/kworship.cpp:670
+msgid "Presentations"
+msgstr ""
+
+#: kworship/kworship.cpp:670
+msgid "Presentations and Slideshows"
+msgstr ""
+
+#: kworship/kworship.cpp:708
+msgid "Insert Files into Playlist"
+msgstr ""
+
+#: kworship/main.cpp:41
+msgid "Document to open"
+msgstr ""
+
+#: kworship/playlist/KwPlaylistPresentation.cpp:87
+msgid ""
+"The presentation could not be opened by any of the presentation backends."
+msgstr ""
+
+#: kworship/playlist/KwPlaylistPresentation.cpp:88
+#: kworship/playlist/KwPlaylistPresentation.cpp:95
+msgid "Presentation could not be opened"
+msgstr ""
+
+#: kworship/playlist/KwPlaylistPresentation.cpp:94
+msgid ""
+"No presentation backend is known to be able to open files of the MIME type "
+"\"%1\". Please install an appropriate presentation backend or associate this "
+"MIME type with an existing backend in the configuration."
+msgstr ""
+
+#: kworship/playlist/KwPlaylistUnknownNode.cpp:58
+msgid "Unrecognised playlist item of type '%1'"
+msgstr "Unrecognized playlist item of type '%1'"
+
+#: kworship/prefsDatabase.cpp:93
+msgid "Success"
+msgstr ""
+
+#: kworship/prefsDatabase.cpp:93
+msgid "Successfully connected to the database using the provided settings."
+msgstr ""
+
+#: kworship/prefsDatabase.cpp:97
+msgid "Failure"
+msgstr ""
+
+#: kworship/prefsDatabase.cpp:97
+msgid ""
+"Could not connect to the database using the provided settings. Please check "
+"the settings and try again.\n"
+"\n"
+"%1"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:56
+msgid "Songdb"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:57
+msgid ""
+"The song database plugin allows for the management and display of song "
+"lyrics."
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:72
+msgid "Unlock Song Database"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:76
+msgid "Lock Song Database"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:81
+msgid "Group By"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:85
+#: kworship/songdb/KwSongdbPlugin.cpp:175
+msgid "Add Song"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:89
+msgid "Edit Song"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongBooksEditWidget_base.ui:5
+#. i18n: ectx: property (windowTitle), widget (QWidget, KwSongdbSongBooksEditWidget_base)
+#: kworship/songdb/KwSongdbPlugin.cpp:93
+#: kworship/songdb/KwSongdbSongBooksEditWidget.cpp:62 rc.cpp:170
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongBooksEditWidget_base.h:147
+msgid "Edit Song Books"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:98
+msgid "Song DB"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:143
+msgid "Song database not connected: %1"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:189
+msgid "Edit Song - %1"
+msgstr ""
+
+#: kworship/songdb/KwSongdbPlugin.cpp:195
+msgid "Please select a song."
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongBookItem.cpp:134
+#: kworship/songdb/KwSongdbSongEditWidget.cpp:299
+msgid "%1 - %2"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongBooksEditWidget.cpp:91
+msgid "Add Song Book"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongBooksEditWidget.cpp:96
+msgid "Remove Song Book"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongBookSongItem.cpp:128
+msgid "%1 #%2"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongEditWidget.cpp:57
+msgid "Add Song Version"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongEditWidget.cpp:62
+msgid "Duplicate Song Version"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongEditWidget.cpp:70
+msgid "Add Song Book Number"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongEditWidget.cpp:75
+msgid "Remove Song Book Number"
+msgstr ""
+
+#: kworship/songdb/KwSongdbSongEditWidget.cpp:85
+msgid "Add Verse"
+msgstr ""
+
+#: kworship/songdb/KwSongdbVersion.cpp:123
+#: kworship/songdb/KwSongdbVersionItem.cpp:39
+#: kworship/songdb/KwSongdbVersionItem.cpp:146
+#: kworship/songdb/KwSongdbVersionNode.cpp:47
+msgid "Default version"
+msgstr ""
+
+#. i18n: file: kworship/bible/kworship_bibleui.rc:4
+#. i18n: ectx: Menu (menuBible)
+#: rc.cpp:3
+msgid "&Bible"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:9
+#. i18n: ectx: label, entry (displayShowStartup), group (Display)
+#: rc.cpp:6
+msgid "show on startup"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:13
+#. i18n: ectx: label, entry (displayScreenAuto), group (Display)
+#: rc.cpp:9
+msgid "screen mode automatic"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:17
+#. i18n: ectx: label, entry (displayScreenChoose), group (Display)
+#: rc.cpp:12
+msgid "screen mode choose"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:21
+#. i18n: ectx: label, entry (displayScreen), group (Display)
+#: rc.cpp:15
+msgid "screen number"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:27
+#. i18n: ectx: label, entry (databaseType), group (Database)
+#: rc.cpp:18
+msgid "database type"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:36
+#. i18n: ectx: label, entry (databaseLocationAuto), group (Database)
+#: rc.cpp:21
+msgid "auto database location"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:40
+#. i18n: ectx: label, entry (databaseLocationCustom), group (Database)
+#: rc.cpp:24
+msgid "custom database location"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:44
+#. i18n: ectx: label, entry (databaseLocation), group (Database)
+#. i18n: file: kworship/kworship.kcfg:47
+#. i18n: ectx: label, entry (databaseHost), group (Database)
+#. i18n: file: kworship/kworship.kcfg:44
+#. i18n: ectx: label, entry (databaseLocation), group (Database)
+#. i18n: file: kworship/kworship.kcfg:47
+#. i18n: ectx: label, entry (databaseHost), group (Database)
+#: rc.cpp:27 rc.cpp:30
+msgid "database hostname"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:51
+#. i18n: ectx: label, entry (databaseName), group (Database)
+#: rc.cpp:33
+msgid "database name"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:55
+#. i18n: ectx: label, entry (databaseUsername), group (Database)
+#: rc.cpp:36
+msgid "database username"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:59
+#. i18n: ectx: label, entry (databasePassword), group (Database)
+#: rc.cpp:39
+msgid "database password"
+msgstr ""
+
+#. i18n: file: kworship/kworship.kcfg:65
+#. i18n: ectx: label, entry (presLivePreview), group (Presentations)
+#: rc.cpp:42
+msgid "live preview during presentations"
+msgstr ""
+
+#. i18n: file: kworship/kworshipui.rc:4
+#. i18n: ectx: Menu (menuDisplay)
+#: rc.cpp:45
+msgid "&Display"
+msgstr ""
+
+#. i18n: file: kworship/kworshipui.rc:8
+#. i18n: ectx: Menu (menuPresentation)
+#: rc.cpp:48
+msgid "&Presentation"
+msgstr ""
+
+#. i18n: file: kworship/kworshipui.rc:10
+#. i18n: ectx: Menu (menuPlaylist)
+#: rc.cpp:51
+msgid "&Playlist"
+msgstr ""
+
+#. i18n: file: kworship/kworshipui.rc:17
+#. i18n: ectx: ToolBar (displayToolBar)
+#: rc.cpp:54
+msgid "Display Toolbar"
+msgstr ""
+
+#. i18n: file: kworship/kworshipui.rc:20
+#. i18n: ectx: ToolBar (toolbarPlaylist)
+#: rc.cpp:57
+msgid "Playlist Toolbar"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:13
+#. i18n: ectx: property (windowTitle), widget (QWidget, kworshipview_base)
+#: rc.cpp:60 relwithdebinfo/kworship/ui_kworshipview_base.h:330
+msgid "kworship_base"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:22
+#. i18n: ectx: property (windowTitle), widget (QDockWidget, dockThemes)
+#: rc.cpp:63 relwithdebinfo/kworship/ui_kworshipview_base.h:331
+msgid "Themes"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:33
+#. i18n: ectx: attribute (title), widget (QWidget, tabThemeSolid)
+#: rc.cpp:66 relwithdebinfo/kworship/ui_kworshipview_base.h:332
+msgid "Solid"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:53
+#. i18n: ectx: attribute (title), widget (QWidget, tabThemeImage)
+#: rc.cpp:69 relwithdebinfo/kworship/ui_kworshipview_base.h:333
+msgid "Image"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:73
+#. i18n: ectx: attribute (title), widget (QWidget, tabThemeVideo)
+#: rc.cpp:72 relwithdebinfo/kworship/ui_kworshipview_base.h:334
+msgid "Video"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:93
+#. i18n: ectx: attribute (title), widget (QWidget, tabThemeTheme)
+#: rc.cpp:75 relwithdebinfo/kworship/ui_kworshipview_base.h:335
+msgid "Theme"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:129
+#. i18n: ectx: property (windowTitle), widget (QDockWidget, dockPreview)
+#: rc.cpp:78 relwithdebinfo/kworship/ui_kworshipview_base.h:339
+msgid "Live Preview"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:143
+#. i18n: ectx: property (windowTitle), widget (QDockWidget, dockNowPlaying)
+#: rc.cpp:81 relwithdebinfo/kworship/ui_kworshipview_base.h:340
+msgid "Now Playing"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:161
+#. i18n: ectx: property (windowTitle), widget (QDockWidget, dockLyrics)
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:247
+#. i18n: ectx: property (title), widget (QGroupBox, groupLyrics)
+#. i18n: file: kworship/kworshipview_base.ui:161
+#. i18n: ectx: property (windowTitle), widget (QDockWidget, dockLyrics)
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:247
+#. i18n: ectx: property (title), widget (QGroupBox, groupLyrics)
+#: rc.cpp:84 rc.cpp:212
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:331
+#: relwithdebinfo/kworship/ui_kworshipview_base.h:341
+msgid "Lyrics"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:178
+#. i18n: ectx: property (windowTitle), widget (QDockWidget, dockPresentation)
+#: rc.cpp:87 relwithdebinfo/kworship/ui_kworshipview_base.h:342
+msgid "Presentation"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:221
+#. i18n: ectx: property (format), widget (QProgressBar, progressPresSlides)
+#: rc.cpp:91 relwithdebinfo/kworship/ui_kworshipview_base.h:343
+#, no-c-format
+msgid "Slide %v of %m"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:234
+#. i18n: ectx: property (format), widget (QProgressBar, progressPresSteps)
+#: rc.cpp:95 relwithdebinfo/kworship/ui_kworshipview_base.h:344
+#, no-c-format
+msgid "Step %v of %m"
+msgstr ""
+
+#. i18n: file: kworship/kworshipview_base.ui:256
+#. i18n: ectx: property (windowTitle), widget (QDockWidget, dockPlaylist)
+#: rc.cpp:98 relwithdebinfo/kworship/ui_kworshipview_base.h:345
+msgid "Playlist"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:30
+#. i18n: ectx: property (text), widget (QLabel, labelType)
+#: rc.cpp:101 relwithdebinfo/kworship/ui_prefsDatabase_base.h:247
+msgid "Database Type"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:41
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_databaseType)
+#: rc.cpp:104 relwithdebinfo/kworship/ui_prefsDatabase_base.h:250
+msgid "SQLite"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:46
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_databaseType)
+#: rc.cpp:107 relwithdebinfo/kworship/ui_prefsDatabase_base.h:251
+msgid "MySQL"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:51
+#. i18n: ectx: property (text), item, widget (QComboBox, kcfg_databaseType)
+#: rc.cpp:110 relwithdebinfo/kworship/ui_prefsDatabase_base.h:252
+msgid "PostgreSQL"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:72
+#. i18n: ectx: property (title), widget (QGroupBox, groupFile)
+#: rc.cpp:113 relwithdebinfo/kworship/ui_prefsDatabase_base.h:254
+msgid "Database Location"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:78
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_databaseLocationAuto)
+#: rc.cpp:116 relwithdebinfo/kworship/ui_prefsDatabase_base.h:255
+msgid "Use the default database location."
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:85
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_databaseLocationCustom)
+#: rc.cpp:119 relwithdebinfo/kworship/ui_prefsDatabase_base.h:256
+msgid "Use a custom database location."
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:104
+#. i18n: ectx: property (text), widget (QLabel, label_6)
+#: rc.cpp:122 relwithdebinfo/kworship/ui_prefsDatabase_base.h:257
+msgid "Location"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:130
+#. i18n: ectx: property (title), widget (QGroupBox, groupConnection)
+#: rc.cpp:125 relwithdebinfo/kworship/ui_prefsDatabase_base.h:259
+msgid "Database Connection"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:138
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: rc.cpp:128 relwithdebinfo/kworship/ui_prefsDatabase_base.h:260
+msgid "Host"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:148
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: rc.cpp:131 relwithdebinfo/kworship/ui_prefsDatabase_base.h:261
+msgid "Database name"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:158
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: rc.cpp:134 relwithdebinfo/kworship/ui_prefsDatabase_base.h:262
+msgid "Username"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:168
+#. i18n: ectx: property (text), widget (QLabel, label_5)
+#: rc.cpp:137 relwithdebinfo/kworship/ui_prefsDatabase_base.h:263
+msgid "Password"
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:193
+#. i18n: ectx: property (text), widget (QLabel, labelPasswordWarning)
+#: rc.cpp:140 relwithdebinfo/kworship/ui_prefsDatabase_base.h:264
+msgid "Password stored as plain text."
+msgstr ""
+
+#. i18n: file: kworship/prefsDatabase_base.ui:202
+#. i18n: ectx: property (text), widget (QPushButton, buttonTest)
+#: rc.cpp:143 relwithdebinfo/kworship/ui_prefsDatabase_base.h:265
+msgid "&Test connection settings"
+msgstr ""
+
+#. i18n: file: kworship/prefsDisplay_base.ui:26
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_displayScreenAuto)
+#: rc.cpp:146 relwithdebinfo/kworship/ui_prefsDisplay_base.h:87
+msgid "Choose the display screen automatically."
+msgstr ""
+
+#. i18n: file: kworship/prefsDisplay_base.ui:33
+#. i18n: ectx: property (text), widget (QRadioButton, kcfg_displayScreenChoose)
+#: rc.cpp:149 relwithdebinfo/kworship/ui_prefsDisplay_base.h:88
+msgid "Let me choose the display screen."
+msgstr ""
+
+#. i18n: file: kworship/prefsDisplay_base.ui:43
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_displayShowStartup)
+#: rc.cpp:152 relwithdebinfo/kworship/ui_prefsDisplay_base.h:89
+msgid "Show display on startup."
+msgstr ""
+
+#. i18n: file: kworship/prefsPresentations_base.ui:23
+#. i18n: ectx: property (text), widget (QCheckBox, kcfg_presLivePreview)
+#: rc.cpp:158 relwithdebinfo/kworship/ui_prefsPresentations_base.h:91
+msgid "Enable live preview during presentations"
+msgstr ""
+
+#. i18n: file: kworship/prefsPresentations_base.ui:31
+#. i18n: ectx: attribute (title), widget (QWidget, tabBackends)
+#: rc.cpp:161 relwithdebinfo/kworship/ui_prefsPresentations_base.h:94
+msgid "Backends"
+msgstr ""
+
+#. i18n: file: kworship/prefsPresentations_base.ui:43
+#. i18n: ectx: property (title), widget (QGroupBox, groupBackend)
+#: rc.cpp:164 relwithdebinfo/kworship/ui_prefsPresentations_base.h:93
+msgid "Information"
+msgstr ""
+
+#. i18n: file: kworship/songdb/kworship_songdbui.rc:4
+#. i18n: ectx: Menu (menuSongs)
+#: rc.cpp:167
+msgid "&Song DB"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongBooksEditWidget_base.ui:47
+#. i18n: ectx: property (title), widget (QGroupBox, groupSongBook)
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:166
+#. i18n: ectx: property (title), widget (QGroupBox, groupSongBook)
+#. i18n: file: kworship/songdb/KwSongdbSongBooksEditWidget_base.ui:47
+#. i18n: ectx: property (title), widget (QGroupBox, groupSongBook)
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:166
+#. i18n: ectx: property (title), widget (QGroupBox, groupSongBook)
+#: rc.cpp:173 rc.cpp:200
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongBooksEditWidget_base.h:148
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:324
+msgid "Song Book"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongBooksEditWidget_base.ui:56
+#. i18n: ectx: property (text), widget (QLabel, labelAbreviation)
+#: rc.cpp:176
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongBooksEditWidget_base.h:149
+msgid "&Abreviation"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongBooksEditWidget_base.ui:66
+#. i18n: ectx: property (text), widget (QLabel, labelDescription)
+#: rc.cpp:179
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongBooksEditWidget_base.h:150
+msgid "&Description"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongBooksEditWidget_base.ui:82
+#. i18n: ectx: property (text), widget (QLabel, labelName)
+#: rc.cpp:182
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongBooksEditWidget_base.h:151
+msgid "&Name"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:18
+#. i18n: ectx: property (text), widget (QLabel, labelSongName)
+#: rc.cpp:185
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:319
+msgid "Song &Name"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:92
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: rc.cpp:188
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:320
+msgid "&Version Name"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:105
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: rc.cpp:191
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:321
+msgid "&Writer"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:115
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: rc.cpp:194
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:322
+msgid "&Copyright"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:131
+#. i18n: ectx: property (text), widget (QLabel, label_4)
+#: rc.cpp:197
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:323
+msgid "Song &Books"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:175
+#. i18n: ectx: property (text), widget (QLabel, labelSongBook)
+#: rc.cpp:203
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:325
+msgid "Song B&ook"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:188
+#. i18n: ectx: property (text), widget (QLabel, labelSongBookNumber)
+#: rc.cpp:206
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:326
+msgid "Song N&umber"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:217
+#. i18n: ectx: property (text), widget (QPushButton, btnEditSongBooks)
+#: rc.cpp:209
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:330
+msgid "&Edit Song Books"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:266
+#. i18n: ectx: attribute (title), widget (QWidget, tabLyricsEditor)
+#: rc.cpp:215
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:332
+msgid "&Editor"
+msgstr ""
+
+#. i18n: file: kworship/songdb/KwSongdbSongEditWidget_base.ui:271
+#. i18n: ectx: attribute (title), widget (QWidget, tabLyricsMarkup)
+#: rc.cpp:218
+#: relwithdebinfo/kworship/songdb/ui_KwSongdbSongEditWidget_base.h:333
+msgid "&Markup"
+msgstr ""
+
+#: rc.cpp:219
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "James Hogan"
+
+#: rc.cpp:220
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "james@albanarts.com"
+
+#: unipresent/kpresenter1/UpKpr1Backend.cpp:71
+msgid "KPresenter 1"
+msgstr ""
+
+#: unipresent/kpresenter1/UpKpr1Backend.cpp:76
+msgid "Controls a running KPresenter 1 presentation"
+msgstr ""
+
+#: unipresent/kpresenter2/UpKpr2Backend.cpp:89
+msgid "KPresenter 2"
+msgstr ""
+
+#: unipresent/kpresenter2/UpKpr2Backend.cpp:94
+msgid "Controls a running KPresenter 2 presentation"
+msgstr ""
+
+#: unipresent/kpresenter2/UpKpr2Presentation.cpp:107
+#: unipresent/kpresenter2/UpKpr2Presentation.cpp:113
+#: unipresent/kpresenter2/UpKpr2Presentation.cpp:127
+#: unipresent/kpresenter2/UpKpr2Presentation.cpp:315
+#: unipresent/okular/UpOkPresentation.cpp:77
+#: unipresent/okular/UpOkPresentation.cpp:83
+msgid "All slides"
+msgstr ""
+
+#: unipresent/kpresenter2/UpKpr2Slide.cpp:72
+#: unipresent/okular/UpOkSlide.cpp:55
+msgid "Page %1"
+msgstr ""
+
+#: unipresent/okular/UpOkBackend.cpp:89
+msgid "Okular"
+msgstr ""
+
+#: unipresent/okular/UpOkBackend.cpp:94
+msgid "Controls a running Okular presentation"
+msgstr ""
+
+#: unipresent/openoffice.org/UpOoBackend.cpp:172
+msgid "OpenOffice.org"
+msgstr ""
+
+#: unipresent/openoffice.org/UpOoBackend.cpp:177
+msgid "Controls a running OpenOffice.org presentation"
+msgstr ""
+
+#: unipresent/openoffice.org/UpOoBridge.cpp:63
+msgid "OpenOffice.org backend:"
+msgstr ""
+
+#: unipresent/openoffice.org/UpOoBridge.cpp:67
+msgid "couldn't find data %1"
+msgstr ""
+
+#: unipresent/openoffice.org/UpOoBridge.cpp:86
+msgid "could not create instance of XUnoUrlResolver"
+msgstr ""
+
+#: unipresent/openoffice.org/UpOoBridge.cpp:101
+msgid "(start OpenOffice.org with %1)"
+msgstr ""
