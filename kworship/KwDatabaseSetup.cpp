@@ -26,6 +26,8 @@
 #include "KwDatabaseSetup.h"
 #include "settings.h"
 
+#include <kstandarddirs.h>
+
 /*
  * Constructors + destructor
  */
@@ -81,8 +83,7 @@ bool KwDatabaseSetup::initialiseFromConfig()
         }
         else
         {
-          /// @todo Use kde apps dir as default location
-          url = QUrl("file://~/kworship.db");
+          url = KStandardDirs::locateLocal("appdata", "kworship.db");
         }
         return initialiseFile(strType,
                               url);
